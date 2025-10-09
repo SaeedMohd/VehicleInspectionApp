@@ -69,54 +69,54 @@ class GetAccountDetailTask(mContext: Activity) : AsyncTask<String, Int, ArrayLis
         var result: String? = null
         val userAccountArrayList = ArrayList<UserAccountModel>()
 
-        try {
-            val values = ContentValues()
-            when (searchParam) {
-                GetAccountDetailTask.SearchParam.NAME -> {
-                    values.put("AccountName", Name.toString())
-                    result = Utility.postRequest(getShopsByName, values)
-                }
-                GetAccountDetailTask.SearchParam.CITY -> {
-                    values.put("City", Name.toString())
-                    result = Utility.postRequest(getShopsByCity, values)
-                }
-
-                GetAccountDetailTask.SearchParam.ZIP -> {
-                    values.put("Zip", Name.toString())
-                    result = Utility.postRequest(getShopsByZip, values)
-                }
-
-                GetAccountDetailTask.SearchParam.FIVE_DIGITS -> {
-                    values.put("AccountID", Name.toString())
-                    result = Utility.postRequest(getShopsBy5Digits, values)
-                }
-            }
-
-
-            //------------------------------------Parsing
-
-            val jObject = JSONObject(result!!.toString())
-            var ProfileResult = JSONObject()
-            when (searchParam) {
-                GetAccountDetailTask.SearchParam.NAME -> ProfileResult = jObject.getJSONObject("GetAccountDetailResult")
-                GetAccountDetailTask.SearchParam.CITY -> ProfileResult = jObject.getJSONObject("GetAccountDetailByAccountCityResult")
-
-                GetAccountDetailTask.SearchParam.ZIP -> ProfileResult = jObject.getJSONObject("GetAccountDetailByZipResult")
-
-                GetAccountDetailTask.SearchParam.FIVE_DIGITS -> ProfileResult = jObject.getJSONObject("GetAccountDetailBy5DigitAccountIDResult")
-            }
-
-
-            val j2 = ProfileResult.getJSONArray("AccountUsers")
-            val gson = Gson()
-
-            for (i in 0..j2.length() - 1) {
-                val vm = gson.fromJson(j2.get(i).toString(), UserAccountModel::class.java)
-                userAccountArrayList.add(vm)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+//        try {
+//            val values = ContentValues()
+//            when (searchParam) {
+//                GetAccountDetailTask.SearchParam.NAME -> {
+//                    values.put("AccountName", Name.toString())
+//                    result = Utility.postRequest(getShopsByName, values)
+//                }
+//                GetAccountDetailTask.SearchParam.CITY -> {
+//                    values.put("City", Name.toString())
+//                    result = Utility.postRequest(getShopsByCity, values)
+//                }
+//
+//                GetAccountDetailTask.SearchParam.ZIP -> {
+//                    values.put("Zip", Name.toString())
+//                    result = Utility.postRequest(getShopsByZip, values)
+//                }
+//
+//                GetAccountDetailTask.SearchParam.FIVE_DIGITS -> {
+//                    values.put("AccountID", Name.toString())
+//                    result = Utility.postRequest(getShopsBy5Digits, values)
+//                }
+//            }
+//
+//
+//            //------------------------------------Parsing
+//
+//            val jObject = JSONObject(result!!.toString())
+//            var ProfileResult = JSONObject()
+//            when (searchParam) {
+//                GetAccountDetailTask.SearchParam.NAME -> ProfileResult = jObject.getJSONObject("GetAccountDetailResult")
+//                GetAccountDetailTask.SearchParam.CITY -> ProfileResult = jObject.getJSONObject("GetAccountDetailByAccountCityResult")
+//
+//                GetAccountDetailTask.SearchParam.ZIP -> ProfileResult = jObject.getJSONObject("GetAccountDetailByZipResult")
+//
+//                GetAccountDetailTask.SearchParam.FIVE_DIGITS -> ProfileResult = jObject.getJSONObject("GetAccountDetailBy5DigitAccountIDResult")
+//            }
+//
+//
+//            val j2 = ProfileResult.getJSONArray("AccountUsers")
+//            val gson = Gson()
+//
+//            for (i in 0..j2.length() - 1) {
+//                val vm = gson.fromJson(j2.get(i).toString(), UserAccountModel::class.java)
+//                userAccountArrayList.add(vm)
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
 
         //Log.dMainActivity.TAG, "size= " + userAccountArrayList.size)
         return userAccountArrayList

@@ -19,10 +19,12 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
+import com.inspection.databinding.ActivityFormsBinding
+import com.inspection.databinding.SearchDialogBinding
 import com.inspection.model.AAAFacilityComplete
-import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
-import kotlinx.android.synthetic.main.search_dialog.*
-import kotlinx.android.synthetic.main.search_dialog.view.*
+//import kotlinx.android.synthetic.main.fragment_aar_manual_visitation_form.*
+//import kotlinx.android.synthetic.main.search_dialog.*
+//import kotlinx.android.synthetic.main.search_dialog.view.*
 import java.util.ArrayList
 
 
@@ -34,16 +36,20 @@ class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog
 
     var searchResultArrayList: ArrayList<String>? = null
     var selectedString = ""
+    private lateinit var binding: SearchDialogBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.search_dialog)
+        binding = SearchDialogBinding.inflate(layoutInflater)
+//        setContentView(R.layout.activity_forms)
+        setContentView(binding.root)
+//        setContentView(R.layout.search_dialog)
 
         searchResultArrayList = arrayList
 
-        searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList!!)
+        binding.searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList!!)
 
-        searchDialogEditText.addTextChangedListener(object : TextWatcher {
+        binding.searchDialogEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
             }
@@ -54,11 +60,11 @@ class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchResultArrayList = ArrayList<String>(arrayList.filter { obj -> obj.contains(s.toString().trim(), true) })
-                searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList!!)
+                binding.searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList!!)
             }
         })
 
-        searchDialogListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
+        binding.searchDialogListView.onItemClickListener = AdapterView.OnItemClickListener({ adapterView: AdapterView<*>, view1: View, i: Int, l: Long ->
             selectedString = searchResultArrayList!!.get(i)
             dismiss()
         })

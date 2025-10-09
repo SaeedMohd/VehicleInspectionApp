@@ -109,7 +109,7 @@
                         <Button
                             android:id="@+id/addstartDateButton"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:layout_column="1"
                             android:layout_marginLeft="20dp"
                             android:gravity="center"
@@ -128,7 +128,7 @@
                         <Button
                             android:id="@+id/addendDateButton"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:layout_column="3"
                             android:gravity="center"
                             android:layout_marginLeft="20dp"
@@ -149,7 +149,7 @@
                         <Button
                             android:id="@+id/addsignDateButton"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:layout_column="1"
                             android:layout_marginLeft="20dp"
                             android:gravity="center"
@@ -178,20 +178,24 @@
                         <Button
                             android:id="@+id/addcancelButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="25dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="30dp"
                             android:layout_column="4"
                             android:enabled="false"
-                            android:background="@drawable/grey_background_button"
+                            android:background="@drawable/new_btn_bkg"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@null"
                             android:text="Cancel" />
 
                         <Button
                             android:id="@+id/addsaveButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="25dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="15dp"
                             android:layout_column="5"
-                            android:background="@drawable/green_background_button"
+                            android:background="@drawable/new_btn_bkg"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@null"
                             android:enabled="false"
                             android:text="Save" />
                     </TableRow>
@@ -218,15 +222,17 @@
                     <Button
                         android:id="@+id/addNewAarButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_marginBottom="10dp"
                         android:layout_marginRight="20dp"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:layout_alignParentRight="true"
                         android:text="Add new RSP Tracking"
-                        android:textColor="@color/white" />
+                        />
                 </RelativeLayout>
 
                 <TableLayout
@@ -660,14 +666,15 @@
                         />
                     <Button
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="5dp"
                         android:text="SUBMIT"
                         android:id="@+id/submitNewAAR_PortalTracking"
-                        android:textColor="@color/white"
                         android:layout_column="1"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:layout_gravity="top|right"/>
                     <ImageButton
                         android:layout_marginTop="25dp"
@@ -761,7 +768,7 @@
                     <Button
                         android:id="@+id/inspectionDateButton"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_column="0"
                         android:gravity="center"
                         android:background="@color/transparent"
@@ -836,6 +843,7 @@
                         android:layout_column="0"
                         android:text="Logged Into RSP"
                         android:textStyle="bold"
+                        app:buttonTint="@drawable/checkbox_bkg"
                         />
                 </TableRow>
             </TableLayout>
@@ -874,14 +882,15 @@
                         />
                     <Button
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="5dp"
                         android:text="SUBMIT"
                         android:id="@+id/edit_submitNewAAR_PortalTracking"
-                        android:textColor="@color/white"
                         android:layout_column="1"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:layout_gravity="top|right"/>
                     <ImageButton
                         android:layout_marginTop="25dp"
@@ -933,7 +942,7 @@
                     <Button
                         android:id="@+id/edit_inspectionDateButton"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_column="0"
                         android:gravity="center"
                         android:background="@color/transparent"
@@ -1010,6 +1019,7 @@
                         android:layout_column="0"
                         android:text="Logged Into RSP"
                         android:textStyle="bold"
+                        app:buttonTint="@drawable/checkbox_bkg"
                         />
                 </TableRow>
             </TableLayout>
@@ -1026,7 +1036,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsSPA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -1036,7 +1046,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/rspLoadingText"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsSPA"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"

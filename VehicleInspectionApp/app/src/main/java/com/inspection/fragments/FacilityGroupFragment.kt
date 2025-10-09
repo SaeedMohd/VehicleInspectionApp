@@ -12,10 +12,10 @@ import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.Utility
+import com.inspection.databinding.FacilityGroupLayoutBinding
+import com.inspection.databinding.FragmentArrayRepairShopPortalAddendumBinding
 import com.inspection.fragmentsNames
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.app_bar_forms.*
-import kotlinx.android.synthetic.main.facility_group_layout.*
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -40,6 +40,8 @@ class FacilityGroupFragment : Fragment() {
     private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
     private var revSourceArray = ArrayList<String>()
 
+    private var _binding: FacilityGroupLayoutBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,21 +59,22 @@ class FacilityGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        contactInfoButton.text = "Location & Contact Info"
+        _binding = FacilityGroupLayoutBinding.bind(view)
+        binding.contactInfoButton.text = "Location & Contact Info"
         var fragment = FacilityGeneralInformationFragment.newInstance(false)
-        fragmentManager!!.beginTransaction()
+        requireFragmentManager().beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
         updateSelectedIndicator(R.id.generalInformationButton)
         (activity as FormsActivity).currentFragment=fragmentsNames.FacilityGeneralInfo.toString()
         (activity as FormsActivity).saveRequired = false
 
-        generalInformationButton.setOnClickListener {
+        binding.generalInformationButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = FacilityGeneralInformationFragment.newInstance(false)
-                fragmentManager!!.beginTransaction()
+                requireFragmentManager().beginTransaction()
                         .replace(R.id.facilityGroupDetailsFragment, fragment)
                         .commit()
                 (activity as FormsActivity).currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
@@ -80,12 +83,12 @@ class FacilityGroupFragment : Fragment() {
             }
         }
 
-        rspButton.setOnClickListener {
+        binding.rspButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("", "")
-                fragmentManager!!.beginTransaction()
+                requireFragmentManager().beginTransaction()
                         .replace(R.id.facilityGroupDetailsFragment, fragment)
                         .commit()
                 updateSelectedIndicator(R.id.rspButton)
@@ -94,13 +97,13 @@ class FacilityGroupFragment : Fragment() {
             }
         }
 
-        contactInfoButton.setOnClickListener {
+        binding.contactInfoButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = FragmentARRAVLocation.newInstance(false)
-                fragmentManager!!.beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                requireFragmentManager().beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment, "FragmentARRAVLocation")
                         .commit()
                 (activity as FormsActivity).currentFragment = fragmentsNames.FacilityContactInfo.toString()
                 (activity as FormsActivity).saveRequired = false
@@ -108,13 +111,13 @@ class FacilityGroupFragment : Fragment() {
             }
         }
 
-        personnelButton.setOnClickListener {
+        binding.personnelButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = FragmentARRAVPersonnel.newInstance(false)
-                fragmentManager!!.beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                requireFragmentManager().beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment,"FragmentARRAVPersonnel")
                         .commit()
                 (activity as FormsActivity).currentFragment=fragmentsNames.FacilityPersonnel.toString()
                 (activity as FormsActivity).saveRequired = false
@@ -122,12 +125,12 @@ class FacilityGroupFragment : Fragment() {
             }
         }
 
-        visitationTrackingButton.setOnClickListener {
+        binding.visitationTrackingButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = VisitationTrackingSubFragment.newInstance("", "")
-                fragmentManager!!.beginTransaction()
+                requireFragmentManager().beginTransaction()
                         .replace(R.id.facilityGroupDetailsFragment, fragment)
                         .commit()
                 (activity as FormsActivity).currentFragment=fragmentsNames.VisitationTracking.toString()
@@ -155,44 +158,44 @@ class FacilityGroupFragment : Fragment() {
     fun updateSelectedIndicator(selectedViewId: Int){
         when(selectedViewId){
             R.id.generalInformationButton->{
-                generalInformationSelectedIndicator.visibility = View.VISIBLE
-                rspSelectedIndicator.visibility = View.INVISIBLE
-                contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                personnelSelectedIndicator.visibility = View.INVISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.VISIBLE
+                binding.rspSelectedIndicator.visibility = View.INVISIBLE
+                binding.contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                binding.personnelSelectedIndicator.visibility = View.INVISIBLE
+                binding.visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.rspButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                rspSelectedIndicator.visibility = View.VISIBLE
-                contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                personnelSelectedIndicator.visibility = View.INVISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.rspSelectedIndicator.visibility = View.VISIBLE
+                binding.contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                binding.personnelSelectedIndicator.visibility = View.INVISIBLE
+                binding.visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
             
             R.id.contactInfoButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                rspSelectedIndicator.visibility = View.INVISIBLE
-                contactInfoSelectedIndicator.visibility = View.VISIBLE
-                personnelSelectedIndicator.visibility = View.INVISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.rspSelectedIndicator.visibility = View.INVISIBLE
+                binding.contactInfoSelectedIndicator.visibility = View.VISIBLE
+                binding.personnelSelectedIndicator.visibility = View.INVISIBLE
+                binding.visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
             
             R.id.personnelButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                rspSelectedIndicator.visibility = View.INVISIBLE
-                contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                personnelSelectedIndicator.visibility = View.VISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.rspSelectedIndicator.visibility = View.INVISIBLE
+                binding.contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                binding.personnelSelectedIndicator.visibility = View.VISIBLE
+                binding.visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
             }
 
             
             R.id.visitationTrackingButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                rspSelectedIndicator.visibility = View.INVISIBLE
-                contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                personnelSelectedIndicator.visibility = View.INVISIBLE
-                visitationTrackingSelectedIndicator.visibility = View.VISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.rspSelectedIndicator.visibility = View.INVISIBLE
+                binding.contactInfoSelectedIndicator.visibility = View.INVISIBLE
+                binding.personnelSelectedIndicator.visibility = View.INVISIBLE
+                binding.visitationTrackingSelectedIndicator.visibility = View.VISIBLE
 //                amendmentOrdersTrackingButton.visibility = View.INVISIBLE
             }
             
@@ -217,11 +220,11 @@ class FacilityGroupFragment : Fragment() {
 //        if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) facRSPIndicator.setBackgroundResource(R.drawable.green_background_button) else facRSPIndicator.setBackgroundResource(R.drawable.red_button_background)
 //        if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) facPersonnelIndicator.setBackgroundResource(R.drawable.green_background_button) else facPersonnelIndicator.setBackgroundResource(R.drawable.red_button_background)
 //        if (IndicatorsDataModel.getInstance().tblFacility[0].Location) facLocationIndicator.setBackgroundResource(R.drawable.green_background_button) else facLocationIndicator.setBackgroundResource(R.drawable.red_button_background)
-        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) rspButton.setTextColor(Color.parseColor("#26C3AA")) else rspButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) personnelButton.setTextColor(Color.parseColor("#26C3AA")) else personnelButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-        visitationTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) binding.generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else binding.generalInformationButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) binding.rspButton.setTextColor(Color.parseColor("#26C3AA")) else binding.rspButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) binding.personnelButton.setTextColor(Color.parseColor("#26C3AA")) else binding.personnelButton.setTextColor(Color.parseColor("#A42600"))
+        if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) binding.contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else binding.contactInfoButton.setTextColor(Color.parseColor("#A42600"))
+        binding.visitationTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
 //        amendmentOrdersTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
     }
 

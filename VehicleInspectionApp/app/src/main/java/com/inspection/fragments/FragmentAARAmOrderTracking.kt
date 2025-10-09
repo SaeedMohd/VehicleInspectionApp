@@ -17,12 +17,14 @@ import com.android.volley.toolbox.Volley
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAmendmentOrderTrackingData
+import com.inspection.databinding.FragmentAaramOrderTrackingBinding
+import com.inspection.databinding.FragmentAaravSoftwareBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.TblAmendmentOrderTracking
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_aaram_order_tracking.*
+//import kotlinx.android.synthetic.main.fragment_aaram_order_tracking.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -38,7 +40,8 @@ class FragmentARRAVAmOrderTracking : Fragment() {
     private var eventsTypesArray = ArrayList<String>()
     private var employeeNamesArray = ArrayList<String>()
 
-
+    private var _binding: FragmentAaramOrderTrackingBinding? = null
+    private val binding get() = _binding!!
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
@@ -46,8 +49,8 @@ class FragmentARRAVAmOrderTracking : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
+            mParam1 = requireArguments().getString(ARG_PARAM1)
+            mParam2 = requireArguments().getString(ARG_PARAM2)
         }
     }
 
@@ -58,7 +61,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = FragmentAaramOrderTrackingBinding.bind(view)
 //        if (FacilityDataModel.getInstance().tblAmendmentOrderTracking.size>0) {
 //            aoIDVal.text = FacilityDataModel.getInstance().tblAmendmentOrderTracking[0].AOID
 //            employeeDropDown.text = FacilityDataModel.getInstance().tblAmendmentOrderTracking[0].AOTEmployee
@@ -69,52 +72,49 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 //        reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        employeeDropDown.adapter = reasonAdapter
         scopeOfServiceChangesWatcher()
-        exitNewAO_DialogeBtnId.setOnClickListener({
+        binding.exitNewAODialogeBtnId.setOnClickListener({
 
-            AOCardView.visibility=View.GONE
-            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
+            binding.AOCardView.visibility=View.GONE
+            binding.alphaBackgroundForAOTDialogs.visibility = View.GONE
 
-
-
-        })
-
-        showNewAarCardButton.setOnClickListener(View.OnClickListener {
-
-            AOCardView.visibility=View.VISIBLE
-            alphaBackgroundForAOT_Dialogs.visibility = View.VISIBLE
 
 
         })
 
+        binding.showNewAarCardButton.setOnClickListener(View.OnClickListener {
 
-        exitEventDialogeBtnId.setOnClickListener({
-
-            addNewEventCard.visibility=View.GONE
-            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
-
-
-        })
-
-        showNewEventDialogue.setOnClickListener(View.OnClickListener {
-
-            addNewEventCard.visibility=View.VISIBLE
-            alphaBackgroundForAOT_Dialogs.visibility = View.VISIBLE
+            binding.AOCardView.visibility=View.VISIBLE
+            binding.alphaBackgroundForAOTDialogs.visibility = View.VISIBLE
 
 
         })
 
 
-        event_date_textviewVal.setOnClickListener {
+        binding.exitEventDialogeBtnId.setOnClickListener({
+
+            binding.addNewEventCard.visibility=View.GONE
+            binding.alphaBackgroundForAOTDialogs.visibility = View.GONE
+
+
+        })
+
+        binding.showNewEventDialogue.setOnClickListener(View.OnClickListener {
+            binding.addNewEventCard.visibility=View.VISIBLE
+            binding.alphaBackgroundForAOTDialogs.visibility = View.VISIBLE
+        })
+
+
+        binding.eventDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
-                event_date_textviewVal!!.text = sdf.format(c.time)
+                binding.eventDateTextviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
@@ -123,35 +123,24 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         prepareSpinnerEmployees()
         prepareSpinnerReasonTypes()
         prepareSpinnerEventsTypes()
-        submitNewEventButton.setOnClickListener(View.OnClickListener {
-
-
-            addNewEventCard.visibility=View.GONE
-            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
-
-
+        binding.submitNewEventButton.setOnClickListener(View.OnClickListener {
+            binding.addNewEventCard.visibility=View.GONE
+            binding.alphaBackgroundForAOTDialogs.visibility = View.GONE
             var item = TblAmendmentOrderTracking()
                 for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
-                    if (eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
-
+                    if (binding.eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
                         item.EventTypeID = fac.AmendmentEventID
-
                 }
                 for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
-                    if (eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
+                    if (binding.eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
                         for (fac2 in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
                             if (fac2.EventTypeID.equals(fac.AmendmentEventID)){
-
                                 item.EventID=fac2.EventID
                             }
-
-
                         }
-
-
                 }
                 for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
-                    if (eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
+                    if (binding.eventsDropDown.getSelectedItem().toString().equals(fac.AmendmentEventName))
 
                         for (fac2 in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
                             if (fac2.EventTypeID.equals(fac.AmendmentEventID)){
@@ -172,20 +161,18 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
 
         })
-        submitNewAOTButton.setOnClickListener(View.OnClickListener {
-
-
+        binding.submitNewAOTButton.setOnClickListener(View.OnClickListener {
             var item = TblAmendmentOrderTracking()
                 for (fac in FacilityDataModel.getInstance().tblAmendmentOrderTracking) {
-                    if (employeeDropDown.getSelectedItem().toString().equals(fac.AOTEmployee))
+                    if (binding.employeeDropDown.getSelectedItem().toString().equals(fac.AOTEmployee))
 
                         item.AOID = fac.AOID
 
                 }
 
-                        item.AOTEmployee=employeeDropDown.getSelectedItem().toString()
+                        item.AOTEmployee=binding.employeeDropDown.getSelectedItem().toString()
             for (fac in TypeTablesModel.getInstance().tblAmendmentOrderTrackingSubReasonsType) {
-                if (reasonDropDown.getSelectedItem().toString().equals(fac.AmendmentSubReasonName))
+                if (binding.reasonDropDown.getSelectedItem().toString().equals(fac.AmendmentSubReasonName))
 
                    item.ReasonID = fac.AmendmentSubReasonID
 
@@ -195,7 +182,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
             Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAmendmentOrderTrackingData +FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facId="+FacilityDataModel.getInstance().tblFacilities[0].FACID+"&aoId=${item.AOID.toString()}&employeeId=E654117&reasonId=${item.ReasonID.toString()}&insertBy=E110997&insertDate="+Date().toApiSubmitFormat()+"&updateBy=SumA&updateDate="+Date().toApiSubmitFormat()+"&active=1",
                     Response.Listener { response ->
-                        activity!!.runOnUiThread(Runnable {
+                        requireActivity().runOnUiThread(Runnable {
                             if (response.toString().contains("returnCode&gt;0&",false)) {
                                 Utility.showSubmitAlertDialog(activity, true, "Amendment Order Tracking")
                                 FacilityDataModel.getInstance().tblAmendmentOrderTracking.add(item)
@@ -204,15 +191,15 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                             } else {
                                 Utility.showSubmitAlertDialog(activity, false, "Amendment Order Tracking")
                             }
-                            amendmentLoadingView.visibility = View.GONE
-                            AOCardView.visibility = View.GONE
-                            alphaBackgroundForAOT_Dialogs.visibility = View.GONE
+                            binding.amendmentLoadingView.visibility = View.GONE
+                            binding.AOCardView.visibility = View.GONE
+                            binding.alphaBackgroundForAOTDialogs.visibility = View.GONE
                         })
                     }, Response.ErrorListener {
                 Utility.showSubmitAlertDialog(activity, false, "Amendment Order Tracking")
-                amendmentLoadingView.visibility = View.GONE
-                AOCardView.visibility = View.GONE
-                alphaBackgroundForAOT_Dialogs.visibility = View.GONE
+                    binding.amendmentLoadingView.visibility = View.GONE
+                    binding.AOCardView.visibility = View.GONE
+                    binding.alphaBackgroundForAOTDialogs.visibility = View.GONE
 
             }))
 
@@ -236,7 +223,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         }
         var reasonAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, reasonsTypesArray)
         reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        reasonDropDown.adapter = reasonAdapter
+        binding.reasonDropDown.adapter = reasonAdapter
 
 
     }
@@ -249,7 +236,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         }
         var reasonAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, eventsTypesArray)
         reasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        eventsDropDown.adapter = reasonAdapter
+        binding.eventsDropDown.adapter = reasonAdapter
 
 
     }
@@ -264,7 +251,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         }
         var employeeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, employeesArray)
         employeeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        employeeDropDown.adapter = employeeAdapter
+        binding.employeeDropDown.adapter = employeeAdapter
 
 
     }
@@ -325,10 +312,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                         textView.text =fac.AmendmentSubReasonName
                 }
                 tableRow.addView(textView)
-
-
-
-                AmendmentOrdersAndTrackingTableLayout.addView(tableRow)
+                binding.AmendmentOrdersAndTrackingTableLayout.addView(tableRow)
             }
         }
     }
@@ -484,17 +468,17 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             tableRow.addView(textView)
 
 
-            AmendmentOrdersAndTrackingTableLayout.addView(tableRow)
+            binding.AmendmentOrdersAndTrackingTableLayout.addView(tableRow)
 
         }
         alt_AOT_TableRow(2)
     }
 
     fun alt_AOT_TableRow(alt_row : Int) {
-        var childViewCount = AmendmentOrdersAndTrackingTableLayout.getChildCount();
+        var childViewCount = binding.AmendmentOrdersAndTrackingTableLayout.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= AmendmentOrdersAndTrackingTableLayout.getChildAt(i) as TableRow;
+            var row : TableRow= binding.AmendmentOrdersAndTrackingTableLayout.getChildAt(i) as TableRow;
 
             for (j in 0..row.getChildCount()-1) {
 
@@ -567,7 +551,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
                     }
                     tableRow.addView(textView)
 
-                    newEventTableLayout.addView(tableRow)
+                    binding.newEventTableLayout.addView(tableRow)
                 }
             }
         }
@@ -626,7 +610,7 @@ class FragmentARRAVAmOrderTracking : Fragment() {
             tableRow.addView(textView)
 
 
-            newEventTableLayout.addView(tableRow)
+            binding.newEventTableLayout.addView(tableRow)
 
         }
 
@@ -666,10 +650,10 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
 
     fun altEventTableRow(alt_row : Int) {
-        var childViewCount = newEventTableLayout.getChildCount();
+        var childViewCount = binding.newEventTableLayout.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= newEventTableLayout.getChildAt(i) as TableRow;
+            var row : TableRow= binding.newEventTableLayout.getChildAt(i) as TableRow;
 
 
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Wi-Fi signal arcs -->
+    <path
+        android:fillColor="#FF0000"
+        android:pathData="M24,12C17.268,12 12,17.268 12,24h24c0-6.732-5.268-12-12-12zM24,24c-3.314,0-6,2.686-6,6h12c0-3.314-2.686-6-6-6zM24,30c-1.105,0-2,0.895-2,2h4c0-1.105-0.895-2-2-2z"/>
+
+    <!-- Diagonal line crossing through the Wi-Fi signal -->
+    <path
+        android:fillColor="#FF0000"
+        android:pathData="M8,8 L40,40"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+</vector>

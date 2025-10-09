@@ -14,14 +14,16 @@ import android.widget.ImageView
 import com.inspection.FormsActivity
 
 import com.inspection.R
+import com.inspection.databinding.BillingGroupLayoutBinding
+import com.inspection.databinding.FragmentAwardsAndDistinctionsBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
-import kotlinx.android.synthetic.main.billing_group_layout.*
-import kotlinx.android.synthetic.main.facility_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_billing.*
-import kotlinx.android.synthetic.main.surveys_group_layout.*
+//import kotlinx.android.synthetic.main.billing_group_layout.*
+//import kotlinx.android.synthetic.main.facility_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_aarav_billing.*
+//import kotlinx.android.synthetic.main.surveys_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,6 +49,8 @@ class BillingGroupFragment : Fragment() {
     private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
     private var revSourceArray = ArrayList<String>()
 
+    private var _binding: BillingGroupLayoutBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,56 +68,56 @@ class BillingGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = BillingGroupLayoutBinding.bind(view)
         var fragment = FragmentAARAVBillingPlans.newInstance("","")
-        fragmentManager!!.beginTransaction()
+        requireFragmentManager().beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
         updateSelectedIndicator(R.id.billingPlanButton)
 
-        billingPlanButton.setOnClickListener {
+        binding.billingPlanButton.setOnClickListener {
             var fragment = FragmentAARAVBillingPlans.newInstance("","")
-            fragmentManager!!.beginTransaction()
+            requireFragmentManager().beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
             updateSelectedIndicator(R.id.billingPlanButton)
         }
 
-        billingButton.setOnClickListener {
+        binding.billingButton.setOnClickListener {
             var fragment = FragmentAARAVBilling.newInstance("", "")
-            fragmentManager!!.beginTransaction()
+            requireFragmentManager().beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
             updateSelectedIndicator(R.id.billingButton)
         }
 
-        paymentsButton.setOnClickListener {
+        binding.paymentsButton.setOnClickListener {
             var fragment = FragmentAARAVPayments.newInstance("","")
-            fragmentManager!!.beginTransaction()
+            requireFragmentManager().beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
             updateSelectedIndicator(R.id.paymentsButton)
         }
 
-        vendorRevenueButton.setOnClickListener {
+        binding.vendorRevenueButton.setOnClickListener {
             var fragment = FragmentAARAVVendorRevenue.newInstance("","")
-            fragmentManager!!.beginTransaction()
+            requireFragmentManager().beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
             updateSelectedIndicator(R.id.vendorRevenueButton)
         }
 
-        billingHistoryButton.setOnClickListener {
+        binding.billingHistoryButton.setOnClickListener {
             var fragment = FragmentAARAVBillingHistory.newInstance("","")
-            fragmentManager!!.beginTransaction()
+            requireFragmentManager().beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
             updateSelectedIndicator(R.id.billingHistoryButton)
         }
 
-        billingAdjustmentButton.setOnClickListener {
+        binding.billingAdjustmentButton.setOnClickListener {
             var fragment = FragmentAARAVBillingAdjustment.newInstance("","")
-            fragmentManager!!.beginTransaction()
+            requireFragmentManager().beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
             updateSelectedIndicator(R.id.billingAdjustmentButton)
@@ -125,57 +129,57 @@ class BillingGroupFragment : Fragment() {
     fun updateSelectedIndicator(selectedViewId: Int){
         when(selectedViewId){
             R.id.billingPlanButton->{
-                billingPlanSelectedIndicator.visibility = View.VISIBLE
-                billingSelectedIndicator.visibility = View.INVISIBLE
-                paymentsSelectedIndicator.visibility = View.INVISIBLE
-                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
-                billingHistorySelectedIndicator.visibility = View.INVISIBLE
-                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingPlanSelectedIndicator.visibility = View.VISIBLE
+                binding.billingSelectedIndicator.visibility = View.INVISIBLE
+                binding.paymentsSelectedIndicator.visibility = View.INVISIBLE
+                binding.vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                binding.billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.billingButton->{
-                billingPlanSelectedIndicator.visibility = View.INVISIBLE
-                billingSelectedIndicator.visibility = View.VISIBLE
-                paymentsSelectedIndicator.visibility = View.INVISIBLE
-                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
-                billingHistorySelectedIndicator.visibility = View.INVISIBLE
-                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingSelectedIndicator.visibility = View.VISIBLE
+                binding.paymentsSelectedIndicator.visibility = View.INVISIBLE
+                binding.vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                binding.billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.paymentsButton->{
-                billingPlanSelectedIndicator.visibility = View.INVISIBLE
-                billingSelectedIndicator.visibility = View.INVISIBLE
-                paymentsSelectedIndicator.visibility = View.VISIBLE
-                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
-                billingHistorySelectedIndicator.visibility = View.INVISIBLE
-                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingSelectedIndicator.visibility = View.INVISIBLE
+                binding.paymentsSelectedIndicator.visibility = View.VISIBLE
+                binding.vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                binding.billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.vendorRevenueButton->{
-                billingPlanSelectedIndicator.visibility = View.INVISIBLE
-                billingSelectedIndicator.visibility = View.INVISIBLE
-                paymentsSelectedIndicator.visibility = View.INVISIBLE
-                vendorRevenueSelectedIndicator.visibility = View.VISIBLE
-                billingHistorySelectedIndicator.visibility = View.INVISIBLE
-                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingSelectedIndicator.visibility = View.INVISIBLE
+                binding.paymentsSelectedIndicator.visibility = View.INVISIBLE
+                binding.vendorRevenueSelectedIndicator.visibility = View.VISIBLE
+                binding.billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                binding.billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.billingHistoryButton->{
-                billingPlanSelectedIndicator.visibility = View.INVISIBLE
-                billingSelectedIndicator.visibility = View.INVISIBLE
-                paymentsSelectedIndicator.visibility = View.INVISIBLE
-                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
-                billingHistorySelectedIndicator.visibility = View.VISIBLE
-                billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingSelectedIndicator.visibility = View.INVISIBLE
+                binding.paymentsSelectedIndicator.visibility = View.INVISIBLE
+                binding.vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingHistorySelectedIndicator.visibility = View.VISIBLE
+                binding.billingAdjustmentSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.billingAdjustmentButton->{
-                billingPlanSelectedIndicator.visibility = View.INVISIBLE
-                billingSelectedIndicator.visibility = View.INVISIBLE
-                paymentsSelectedIndicator.visibility = View.INVISIBLE
-                vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
-                billingHistorySelectedIndicator.visibility = View.INVISIBLE
-                billingAdjustmentSelectedIndicator.visibility = View.VISIBLE
+                binding.billingPlanSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingSelectedIndicator.visibility = View.INVISIBLE
+                binding.paymentsSelectedIndicator.visibility = View.INVISIBLE
+                binding.vendorRevenueSelectedIndicator.visibility = View.INVISIBLE
+                binding.billingHistorySelectedIndicator.visibility = View.INVISIBLE
+                binding.billingAdjustmentSelectedIndicator.visibility = View.VISIBLE
             }
         }
 
@@ -185,12 +189,12 @@ class BillingGroupFragment : Fragment() {
     }
 
     fun refreshTabIndicators() {
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited) billingButton.setTextColor(Color.parseColor("#26C3AA")) else billingButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingPlanVisited) billingPlanButton.setTextColor(Color.parseColor("#26C3AA")) else billingPlanButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited) billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA")) else billingAdjustmentButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited) billingHistoryButton.setTextColor(Color.parseColor("#26C3AA")) else billingHistoryButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].PaymentsVisited) paymentsButton.setTextColor(Color.parseColor("#26C3AA")) else paymentsButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenueVisited) vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA")) else vendorRevenueButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited) binding.billingButton.setTextColor(Color.parseColor("#26C3AA")) else binding.billingButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingPlanVisited) binding.billingPlanButton.setTextColor(Color.parseColor("#26C3AA")) else binding.billingPlanButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited) binding.billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA")) else binding.billingAdjustmentButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited) binding.billingHistoryButton.setTextColor(Color.parseColor("#26C3AA")) else binding.billingHistoryButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].PaymentsVisited) binding.paymentsButton.setTextColor(Color.parseColor("#26C3AA")) else binding.paymentsButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenueVisited) binding.vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA")) else binding.vendorRevenueButton.setTextColor(Color.parseColor("#A42600"))
     }
 
 

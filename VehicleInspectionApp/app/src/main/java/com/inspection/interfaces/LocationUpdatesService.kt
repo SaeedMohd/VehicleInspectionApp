@@ -16,7 +16,7 @@ import com.android.volley.toolbox.Volley
 import com.inspection.MainActivity
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Constants
-import org.jetbrains.anko.runOnUiThread
+//import org.jetbrains.anko.runOnUiThread
 import java.util.*
 
 class LocationUpdatesService : IntentService("LocationUpdatesService") {

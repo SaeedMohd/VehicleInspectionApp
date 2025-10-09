@@ -156,6 +156,7 @@ class VisitationsModel {
         var DueDate = ""
         var active = "0"
         var insertBy1 = ""
+        var city = ""
     }
 
 

@@ -138,7 +138,7 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/terminationReasonTextView"
+                        android:id="@+id/terminationReasonTextView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
@@ -269,56 +269,64 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="18sp"
-                                android:text="AAR" />
+                                android:text="AAR"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/aabCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="18sp"
-                                android:text="AAB" />
+                                android:text="AAB"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/aagCheckBox"
                                 android:layout_width="wrap_content"
                                 android:textSize="18sp"
                                 android:layout_height="wrap_content"
-                                android:text="AAG" />
+                                android:text="AAG"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/cogCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="18sp"
-                                android:text="COG" />
+                                android:text="COG"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/corCheckBox"
                                 android:layout_width="wrap_content"
                                 android:textSize="18sp"
                                 android:layout_height="wrap_content"
-                                android:text="COR" />
+                                android:text="COR"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/ersCheckBox"
                                 android:layout_width="wrap_content"
                                 android:textSize="18sp"
                                 android:layout_height="wrap_content"
-                                android:text="ERS" />
+                                android:text="ERS"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/mprCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="18sp"
-                                android:text="MPR" />
+                                android:text="MPR"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/pspCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="18sp"
-                                android:text="PSP" />
+                                android:text="PSP"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -738,7 +746,7 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/terminationReasonTextView"
+                        android:id="@+id/terminationReasonTextView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
@@ -828,7 +836,8 @@
                             android:textSize="18sp"
                             android:clickable="true"
                             android:padding="5dp"
-                            android:text="American Express" />
+                            android:text="American Express"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                         <CheckBox
                             android:id="@+id/cash_checkbox"
@@ -838,7 +847,8 @@
                             android:textSize="18sp"
                             android:clickable="true"
                             android:padding="5dp"
-                            android:text="Cash" />
+                            android:text="Cash"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                         <CheckBox
                             android:id="@+id/check_checkbox"
@@ -848,7 +858,8 @@
                             android:clickable="true"
                             android:textSize="18sp"
                             android:padding="5dp"
-                            android:text="Check" />
+                            android:text="Check"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                         <CheckBox
                             android:id="@+id/debit_checkbox"
@@ -859,7 +870,8 @@
                             android:clickable="true"
                             android:padding="5dp"
                             android:text="Debit"
-                            app:layout_wrapBefore="true" />
+                            app:layout_wrapBefore="true"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                         <CheckBox
                             android:id="@+id/discover_checkbox"
@@ -869,7 +881,8 @@
                             android:clickable="true"
                             android:textSize="18sp"
                             android:padding="5dp"
-                            android:text="Discover" />
+                            android:text="Discover"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                         <CheckBox
                             android:id="@+id/goodyear_checkbox"
@@ -879,7 +892,8 @@
                             android:textSize="18sp"
                             android:clickable="true"
                             android:padding="5dp"
-                            android:text="Goodyear Credit Card" />
+                            android:text="Goodyear Credit Card"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                         <CheckBox
                             android:id="@+id/mastercard_checkbox"
@@ -890,7 +904,8 @@
                             android:padding="5dp"
                             android:textSize="18sp"
                             android:text="Master Card"
-                            app:layout_wrapBefore="true" />
+                            app:layout_wrapBefore="true"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                         <CheckBox
                             android:id="@+id/paypal_checkbox"
@@ -899,7 +914,8 @@
                             android:layout_marginTop="5dp"
                             android:clickable="true"
                             android:textSize="18sp"
-                            android:text="PayPal" />
+                            android:text="PayPal"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                         <CheckBox
                             android:id="@+id/visa_checkbox"
@@ -909,7 +925,8 @@
                             android:clickable="true"
                             android:textSize="18sp"
                             android:padding="5dp"
-                            android:text="Visa" />
+                            android:text="Visa"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
                         <CheckBox
                             android:id="@+id/zelle_checkbox"
                             android:layout_width="wrap_content"
@@ -918,7 +935,8 @@
                             android:clickable="true"
                             android:textSize="18sp"
                             android:padding="5dp"
-                            android:text="Zelle" />
+                            android:text="Zelle"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
                         <CheckBox
                             android:id="@+id/venmo_checkbox"
                             android:layout_width="wrap_content"
@@ -927,7 +945,8 @@
                             android:clickable="true"
                             android:textSize="18sp"
                             android:padding="5dp"
-                            android:text="Venmo" />
+                            android:text="Venmo"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
                         <CheckBox
                             android:id="@+id/apple_checkbox"
                             android:layout_width="wrap_content"
@@ -936,7 +955,8 @@
                             android:clickable="true"
                             android:textSize="18sp"
                             android:padding="5dp"
-                            android:text="Apple Pay" />
+                            android:text="Apple Pay"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
                     </com.google.android.flexbox.FlexboxLayout>
 
 
@@ -955,7 +975,7 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/website_textview"
+                        android:id="@+id/website_textview3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
@@ -995,7 +1015,8 @@
                         android:textSize="18sp"
                         android:layout_column="0"
                         android:text="Wi-Fi Available"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
                 </LinearLayout>
 
                 <View
@@ -1011,7 +1032,7 @@
                     android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/website_textview"
+                        android:id="@+id/website_textview4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="0"
@@ -1388,6 +1409,7 @@
                         android:layout_height="wrap_content"
                         android:layout_column="1"
                         android:layout_alignParentRight="true"
+                        android:layout_gravity="left"
                         android:background="@color/transparent"
                         android:text="test"
                         android:textColor="@color/blue"
@@ -1536,16 +1558,20 @@
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:background="@drawable/grey_background_button"
+                    android:layout_height="40dp"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:text="Cancel" />
 
                 <Button
                     android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:text="Save" />
             </LinearLayout>
         </LinearLayout>
@@ -1560,7 +1586,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsFac"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -1570,7 +1596,7 @@
             android:id="@+id/progressBarText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsFac"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"

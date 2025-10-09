@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -19,11 +20,13 @@ import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
+import com.inspection.databinding.FragmentAaravCommentsBinding
+import com.inspection.databinding.FragmentAaravPaymentsBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.billing_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_payments.*
+//import kotlinx.android.synthetic.main.billing_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_aarav_payments.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +48,8 @@ class FragmentAARAVPayments : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    private var _binding: FragmentAaravPaymentsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,36 +67,35 @@ class FragmentAARAVPayments : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAaravPaymentsBinding.bind(view)
         preparePaymentsSpinners()
-        newCheckDateBtn.setOnClickListener {
-//            if (newCheckDateBtn.text.equals("SELECT DATE")) {
+        binding.newCheckDateBtn.setOnClickListener {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newCheckDateBtn!!.text = sdf.format(c.time)
+                    binding.newCheckDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
-//            }
         }
 
-        newTrxDateBtn.setOnClickListener {
+        binding.newTrxDateBtn.setOnClickListener {
 //            if (newTrxDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newTrxDateBtn!!.text = sdf.format(c.time)
+                    binding.newTrxDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
@@ -114,24 +117,25 @@ class FragmentAARAVPayments : Fragment() {
 ////            }
 //        }
 
-        addNewPaymentBtn.setOnClickListener( {
+        binding.addNewPaymentBtn.setOnClickListener( {
             showAddNewPaymentDialog()
         })
 
-        paymentSubmitButton.setOnClickListener({
+        binding.paymentSubmitButton.setOnClickListener({
             validateBillinPlanData()
         })
 
         fillInvoicesTableView()
         fillPaymentsTableView()
 
-        exitDialogeBtn.setOnClickListener({
-            addNewPaymentDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitDialogeBtn.setOnClickListener({
+            binding.addNewPaymentDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
         })
 
         IndicatorsDataModel.getInstance().tblBilling[0].PaymentsVisited = true
-        (activity as FormsActivity).paymentsButton.setTextColor(Color.parseColor("#26C3AA"))
+        requireActivity().findViewById<Button>(R.id.paymentsButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).paymentsButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
     }
@@ -148,22 +152,22 @@ class FragmentAARAVPayments : Fragment() {
         }
         var paymentTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, paymentTypeArray)
         paymentTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newPaymentTypeSpinner.adapter = paymentTypeAdapter
+        binding.newPaymentTypeSpinner.adapter = paymentTypeAdapter
     }
 
 
 
     private fun validateBillinPlanData() {
         var isInputsValid = true
-        newInvNoText.setError(null)
-        newTrxDateBtn.setError(null)
-        if (newInvNoText.text.toString().isNullOrEmpty()) {
-            newInvNoText.setError("Required Field")
-        } else if (newPaymentIDText.text.toString().isNullOrEmpty()) {
-            newPaymentIDText.setError("Required Field")
-        } else if (newTrxDateBtn.text.toString().equals("SELECT DATE")) {
+        binding.newInvNoText.setError(null)
+        binding.newTrxDateBtn.setError(null)
+        if (binding.newInvNoText.text.toString().isNullOrEmpty()) {
+            binding.newInvNoText.setError("Required Field")
+        } else if (binding.newPaymentIDText.text.toString().isNullOrEmpty()) {
+            binding.newPaymentIDText.setError("Required Field")
+        } else if (binding.newTrxDateBtn.text.toString().equals("SELECT DATE")) {
             isInputsValid = false
-            newTrxDateBtn.setError("Required Field")
+            binding.newTrxDateBtn.setError("Required Field")
         } else {
             submitPaymentData()
         }
@@ -172,20 +176,20 @@ class FragmentAARAVPayments : Fragment() {
 
 
     private fun submitPaymentData(){
-        addNewPaymentDialog.visibility = View.GONE
-        alphaBackgroundForDialogs.visibility = View.GONE
+        binding.addNewPaymentDialog.visibility = View.GONE
+        binding.alphaBackgroundForDialogs.visibility = View.GONE
     }
 
     private fun showAddNewPaymentDialog() {
-        alphaBackgroundForDialogs.visibility = View.VISIBLE
-        addNewPaymentDialog.visibility = View.VISIBLE
+        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+        binding.addNewPaymentDialog.visibility = View.VISIBLE
     }
 
     fun fillInvoicesTableView() {
 
-        if (InvoiceResultsTbl.childCount > 1) {
-            for (i in InvoiceResultsTbl.childCount - 1 downTo 1) {
-                InvoiceResultsTbl.removeViewAt(i)
+        if (binding.InvoiceResultsTbl.childCount > 1) {
+            for (i in binding.InvoiceResultsTbl.childCount - 1 downTo 1) {
+                binding.InvoiceResultsTbl.removeViewAt(i)
             }
         }
 
@@ -297,7 +301,7 @@ class FragmentAARAVPayments : Fragment() {
                     textView.text = if (get(it).BillBalanceDue.isNullOrEmpty()) "" else "%.3f".format(get(it).BillBalanceDue.toFloat())
                     tableRow.addView(textView)
 
-                    InvoiceResultsTbl.addView(tableRow)
+                    binding.InvoiceResultsTbl.addView(tableRow)
 
                 }
             }
@@ -306,9 +310,9 @@ class FragmentAARAVPayments : Fragment() {
 
     fun fillPaymentsTableView() {
 
-        if (paymentsResultsTbl.childCount > 1) {
-            for (i in paymentsResultsTbl.childCount - 1 downTo 1) {
-                paymentsResultsTbl.removeViewAt(i)
+        if (binding.paymentsResultsTbl.childCount > 1) {
+            for (i in binding.paymentsResultsTbl.childCount - 1 downTo 1) {
+                binding.paymentsResultsTbl.removeViewAt(i)
             }
         }
 
@@ -407,7 +411,7 @@ class FragmentAARAVPayments : Fragment() {
             textView.text = "Test" // get(it).CITY
             tableRow.addView(textView)
 
-            paymentsResultsTbl.addView(tableRow)
+            binding.paymentsResultsTbl.addView(tableRow)
         }
 
     }

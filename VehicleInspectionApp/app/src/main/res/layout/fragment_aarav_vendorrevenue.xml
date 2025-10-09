@@ -40,16 +40,18 @@ tools:context=".fragments.FragmentAARAVVendorRevenue">
             <Button
                 android:id="@+id/addNewVenRevBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:visibility="gone"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="+ ADD VENDOR REVENUE"
-                android:textColor="@color/white" />
+                />
 
         </RelativeLayout>
 
@@ -192,15 +194,16 @@ tools:context=".fragments.FragmentAARAVVendorRevenue">
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="5dp"
                     android:text="SUBMIT"
                     android:id="@+id/venRevSubmitButton"
-                    android:textColor="@color/white"
                     android:ems="12"
                     android:layout_column="1"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_gravity="top|right"/>
                 <ImageButton
                     android:layout_marginTop="25dp"
@@ -263,7 +266,7 @@ tools:context=".fragments.FragmentAARAVVendorRevenue">
                 <Button
                     android:id="@+id/newCheckDateBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="1"
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
@@ -342,7 +345,7 @@ tools:context=".fragments.FragmentAARAVVendorRevenue">
                 <Button
                     android:id="@+id/newReceiptDateBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="0"
                     android:layout_gravity="center_vertical"
                     android:background="@color/transparent"

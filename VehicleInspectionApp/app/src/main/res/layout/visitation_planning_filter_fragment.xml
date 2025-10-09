@@ -171,14 +171,17 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:checked="true"
-                    android:text="Annual\nVisitations" />
+                    app:buttonTint="@drawable/checkbox_bkg"
+                    android:text="Annual\nVisitations"
+                    />
 
                 <CheckBox
                     android:id="@+id/adHocVisitationsCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="1"
-                    android:text="AdHoc\nVisitations" />
+                    android:text="AdHoc\nVisitations"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
 
                 <CheckBox
                     android:id="@+id/deficienciesCheckBox"
@@ -187,7 +190,8 @@
                     android:layout_column="2"
                     android:layout_gravity="center_vertical"
                     android:checked="true"
-                    android:text="Deficiencies" />
+                    android:text="Deficiencies"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
 
                 <CheckBox
                     android:id="@+id/quarterlyOrOtherVisistationsCheckBox"
@@ -197,7 +201,8 @@
                     android:checked="true"
                     android:enabled="true"
                     android:visibility="visible"
-                    android:text="Quarterly" />
+                    android:text="Quarterly"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
             </TableRow>
             <TableRow android:layout_marginTop="5dp">
                 <CheckBox
@@ -206,7 +211,8 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:checked="true"
-                    android:text="Not Started" />
+                    android:text="Not Started"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
 
                 <CheckBox
                     android:id="@+id/inProgressCheckBox"
@@ -214,32 +220,37 @@
                     android:layout_height="match_parent"
                     android:layout_column="1"
                     android:checked="true"
-                    android:text="In Progress" />
+                    android:text="In Progress"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
                 <CheckBox
                     android:id="@+id/overdueCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="2"
                     android:checked="true"
-                    android:text="Overdue" />
+                    android:text="Overdue"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
                 <CheckBox
                     android:id="@+id/completedCheckBox"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="3"
-                    android:text="Completed" />
+                    android:text="Completed"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
                 <Button
                     android:id="@+id/searchVisitaionsButton"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_column="6"
                     android:layout_span="2"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_alignParentRight="true"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:text="Search"
-                    android:textColor="@color/white" />
+                    />
             </TableRow>
             <TableRow>
                 <TextView
@@ -283,7 +294,7 @@
         android:alpha="0.8"
         android:clickable="true"
         android:background="@color/mainColor"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ProgressBar
             android:id="@+id/progressBarRecords"

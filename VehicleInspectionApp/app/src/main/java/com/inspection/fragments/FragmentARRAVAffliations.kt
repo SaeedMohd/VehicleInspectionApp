@@ -23,10 +23,12 @@ import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateAffiliationsData
+import com.inspection.databinding.FragmentAarPromotionsBinding
+import com.inspection.databinding.FragmentArravAffliationsBinding
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
-import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
+//import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -54,6 +56,8 @@ class FragmentARRAVAffliations : Fragment() {
     private var selectedTypeDetailName = ""
     var rowIndex = 0
     var indexToRemove=0
+    private var _binding: FragmentArravAffliationsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,257 +71,289 @@ class FragmentARRAVAffliations : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = FragmentArravAffliationsBinding.bind(view)
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited = true
-        (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+//        (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA"))
+        requireActivity().findViewById<Button>(R.id.AffiliationsButton).setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
-        edit_afDetails_textviewVal.tag = "0"
+        binding.editAfDetailsTextviewVal.tag = "0"
 
-        affiliations_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.affiliationsTextviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 affTypesList = TypeTablesModel.getInstance().AARAffiliationType
-                var selectedTypeID = affTypesList.filter { s->s.AffiliationTypeName.equals(affiliations_textviewVal.selectedItem.toString())}[0].AARAffiliationTypeID
+                var selectedTypeID = affTypesList.filter { s->s.AffiliationTypeName.equals(binding.affiliationsTextviewVal.selectedItem.toString())}[0].AARAffiliationTypeID
                 affTypesDetailsArray.clear()
                 for (fac in affTypesDetailsList.filter { s->s.AARAffiliationTypeID.equals(selectedTypeID) }) {
                     affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
                 }
                 var afTypeDetailsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, affTypesDetailsArray)
                 afTypeDetailsAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                afDetails_textviewVal.adapter = afTypeDetailsAdapter
+                binding.afDetailsTextviewVal.adapter = afTypeDetailsAdapter
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
         }
 
-        edit_affiliations_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.editAffiliationsTextviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 edit_affTypesList = TypeTablesModel.getInstance().AARAffiliationType
-                var selectedTypeID = affTypesList.filter { s->s.AffiliationTypeName.equals(edit_affiliations_textviewVal.selectedItem.toString())}[0].AARAffiliationTypeID
+                var selectedTypeID = affTypesList.filter { s->s.AffiliationTypeName.equals(binding.editAffiliationsTextviewVal.selectedItem.toString())}[0].AARAffiliationTypeID
                 edit_affTypesDetailsArray.clear()
                 for (fac in edit_affTypesDetailsList.filter { s->s.AARAffiliationTypeID.equals(selectedTypeID) }) {
                     edit_affTypesDetailsArray.add(fac.AffiliationDetailTypeName)
                 }
                 var edit_afTypeDetailsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, edit_affTypesDetailsArray)
                 edit_afTypeDetailsAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                edit_afDetails_textviewVal.adapter = edit_afTypeDetailsAdapter
-                if (!edit_afDetails_textviewVal.tag.equals("0")){
-                    edit_afDetails_textviewVal.setSelection(edit_affTypesDetailsArray.indexOf(edit_afDetails_textviewVal.tag.toString()))
-                    edit_afDetails_textviewVal.tag = "0"
+                binding.editAfDetailsTextviewVal.adapter = edit_afTypeDetailsAdapter
+                if (!binding.editAfDetailsTextviewVal.tag.equals("0")){
+                    binding.editAfDetailsTextviewVal.setSelection(edit_affTypesDetailsArray.indexOf(binding.editAfDetailsTextviewVal.tag.toString()))
+                    binding.editAfDetailsTextviewVal.tag = "0"
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
         }
 
-        exitAffDialogeBtnId.setOnClickListener {
-            affiliationsCard.visibility=View.GONE
+        binding.exitAffDialogeBtnId.setOnClickListener {
+            binding.affiliationsCard.visibility=View.GONE
             (activity as FormsActivity).overrideBackButton = false
-            alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+            binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
         }
 
-        edit_exitAffDialogeBtnId.setOnClickListener {
+        binding.editExitAffDialogeBtnId.setOnClickListener {
             fillAffTableView()
             altLocationTableRow(2)
-            edit_affiliationsCard.visibility=View.GONE
+            binding.editAffiliationsCard.visibility=View.GONE
             (activity as FormsActivity).overrideBackButton = false
-            alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+            binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
         }
 //        addNewAffil.isEnabled = false
-        addNewAffil.setOnClickListener {
-            affiliations_textviewVal.setSelection(0)
-            afDetails_textviewVal.setSelection(0)
-            afDtlseffective_date_textviewVal.text="SELECT DATE"
-            afDtlsexpiration_date_textviewVal.text = "SELECT DATE"
-            affcomments_editTextVal.setText("")
-            affiliationsCard.visibility=View.VISIBLE
+        binding.addNewAffil.setOnClickListener {
+            binding.affiliationsTextviewVal.setSelection(0)
+            binding.afDetailsTextviewVal.setSelection(0)
+            binding.afDtlseffectiveDateTextviewVal.text="SELECT DATE"
+            binding.afDtlsexpirationDateTextviewVal.text = "SELECT DATE"
+            binding.affcommentsEditTextVal.setText("")
+            binding.affiliationsCard.visibility=View.VISIBLE
             (activity as FormsActivity).overrideBackButton = true
-            alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
+            binding.alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
         }
 
         fillAffTableView()
 
-        afDtlseffective_date_textviewVal.setOnClickListener {
+        binding.afDtlseffectiveDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!afDtlseffective_date_textviewVal.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(afDtlseffective_date_textviewVal.text.toString()))
+            if (!binding.afDtlseffectiveDateTextviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.afDtlseffectiveDateTextviewVal.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                afDtlseffective_date_textviewVal!!.text = sdf.format(c.time)
+                binding.afDtlseffectiveDateTextviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
-        afDtlsexpiration_date_textviewVal.setOnClickListener {
+        binding.afDtlsexpirationDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!afDtlsexpiration_date_textviewVal.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(afDtlsexpiration_date_textviewVal.text.toString()))
+            if (!binding.afDtlsexpirationDateTextviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.afDtlsexpirationDateTextviewVal.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                afDtlsexpiration_date_textviewVal!!.text = sdf.format(c.time)
+                binding.afDtlsexpirationDateTextviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
 
-        edit_afDtlseffective_date_textviewVal.setOnClickListener {
+        binding.editAfDtlseffectiveDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!edit_afDtlseffective_date_textviewVal.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(edit_afDtlseffective_date_textviewVal.text.toString()))
+            if (!binding.editAfDtlseffectiveDateTextviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.editAfDtlseffectiveDateTextviewVal.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                edit_afDtlseffective_date_textviewVal!!.text = sdf.format(c.time)
+                binding.editAfDtlseffectiveDateTextviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
-        edit_afDtlsexpiration_date_textviewVal.setOnClickListener {
+        binding.editAfDtlsexpirationDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!edit_afDtlsexpiration_date_textviewVal.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(edit_afDtlsexpiration_date_textviewVal.text.toString()))
+            if (!binding.editAfDtlsexpirationDateTextviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.editAfDtlsexpirationDateTextviewVal.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                edit_afDtlsexpiration_date_textviewVal!!.text = sdf.format(c.time)
+                binding.editAfDtlsexpirationDateTextviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
-        submitNewAffil.setOnClickListener {
-            if (validateInputs()) {
-                progressBarText.text = "Saving ..."
-                affLoadingView.visibility = View.VISIBLE
-                var affiliationItem = TblAffiliations()
-                affiliationItem.effDate = if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                affiliationItem.expDate = if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                affiliationItem.comment = affcomments_editTextVal.text.toString()
+        binding.submitNewAffil.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                if (validateInputs()) {
+                    binding.progressBarText.text = "Saving ..."
+                    binding.affLoadingView.visibility = View.VISIBLE
+                    var affiliationItem = TblAffiliations()
+                    affiliationItem.effDate = if (binding.afDtlseffectiveDateTextviewVal.text.equals("SELECT DATE")) "" else binding.afDtlseffectiveDateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                    affiliationItem.expDate = if (binding.afDtlsexpirationDateTextviewVal.text.equals("SELECT DATE")) "" else binding.afDtlsexpirationDateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                    affiliationItem.comment = binding.affcommentsEditTextVal.text.toString()
 
-                if (afDetails_textviewVal.selectedItem != null){
-                    affiliationItem.AffiliationTypeDetailID = TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(afDetails_textviewVal.selectedItem.toString()) }[0].AffiliationTypeDetailID.toInt()
-                } else {
-                    affiliationItem.AffiliationTypeDetailID = 0
-                }
+                    if (binding.afDetailsTextviewVal.selectedItem != null){
+                        affiliationItem.AffiliationTypeDetailID = TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(binding.afDetailsTextviewVal.selectedItem.toString()) }[0].AffiliationTypeDetailID.toInt()
+                    } else {
+                        affiliationItem.AffiliationTypeDetailID = 0
+                    }
 
-                affiliationItem.AffiliationTypeID= TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(affiliations_textviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID.toInt()
-                Log.v("Affiliations ADD --- ",UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getAffiliationChanges(0,0)),
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread {
-                                if (response.toString().contains("returnCode>0<",false)) {
-                                    Utility.showSubmitAlertDialog(activity, true, "Affiliation")
-                                    affiliationItem.AffiliationID = response.toString().substring(response.toString().indexOf("<AffiliationID")+15,response.toString().indexOf("</AffiliationID")).toInt()
-                                    FacilityDataModel.getInstance().tblAffiliations.add(affiliationItem)
-                                    FacilityDataModelOrg.getInstance().tblAffiliations.add(affiliationItem)
-                                    fillAffTableView()
-                                    altLocationTableRow(2)
-                                    (activity as FormsActivity).saveDone = true
-                                    HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
-                                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
-                                } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                    Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
+                    affiliationItem.AffiliationTypeID= TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(binding.affiliationsTextviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID.toInt()
+                    Log.v("Affiliations ADD --- ",UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getAffiliationChanges(0,0)),
+                            Response.Listener { response ->
+                                requireActivity().runOnUiThread {
+                                    if (response.toString().contains("returnCode>0<",false)) {
+                                        Utility.showSubmitAlertDialog(activity, true, "Affiliation")
+                                        affiliationItem.AffiliationID = response.toString().substring(response.toString().indexOf("<AffiliationID")+15,response.toString().indexOf("</AffiliationID")).toInt()
+                                        FacilityDataModel.getInstance().tblAffiliations.add(affiliationItem)
+                                        FacilityDataModelOrg.getInstance().tblAffiliations.add(affiliationItem)
+                                        fillAffTableView()
+                                        altLocationTableRow(2)
+                                        (activity as FormsActivity).saveDone = true
+                                        HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
+                                        HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
+                                    } else {
+                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                        Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
+                                    }
+                                    binding.affLoadingView.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                    binding.progressBarText.text = "Loading ..."
+                                    binding.affiliationsCard.visibility = View.GONE
+                                    binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
                                 }
-                                affLoadingView.visibility = View.GONE
-                                (activity as FormsActivity).overrideBackButton = false
-                                progressBarText.text = "Loading ..."
-                                affiliationsCard.visibility = View.GONE
-                                alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                            }
-                        }, Response.ErrorListener {
-                    Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
-                    affLoadingView.visibility = View.GONE
-                    (activity as FormsActivity).overrideBackButton = false
-                    affiliationsCard.visibility = View.GONE
-                    alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                }))
-            }else {
-                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
+                            }, Response.ErrorListener {
+                        Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
+                            binding.affLoadingView.visibility = View.GONE
+                        (activity as FormsActivity).overrideBackButton = false
+                            binding.affiliationsCard.visibility = View.GONE
+                            binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+                    }))
+                }else {
+                    Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
+                }
+            } else {
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
             }
         }
         prepareAffiliations()
     }
 
+    fun updateDialogs() {
+        if (binding.alphaBackgroundForAffilliationsDialogs != null) binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+        if (binding.affiliationsCard != null) binding.affiliationsCard.visibility = View.GONE
+        if (binding.editAffiliationsCard != null) binding.editAffiliationsCard.visibility = View.GONE
+    }
+
     fun getAffiliationChanges(action : Int, rowId: Int) : String { // 0: Add 1: Edit
         var strChanges = ""
-        if (action==0) {
-            strChanges = "Affiliations added with "
-            strChanges += "Type (" + affiliations_textviewVal.getSelectedItem().toString()+ ") - "
-            if (afDetails_textviewVal.selectedItem != null) {
-                strChanges += "Type Detail (" + afDetails_textviewVal.getSelectedItem().toString() + ") - "
+        try {
+            if (action == 0) {
+                strChanges = "Affiliations added with "
+                strChanges += "Type (" + binding.affiliationsTextviewVal.getSelectedItem()
+                    .toString() + ") - "
+                if (binding.afDetailsTextviewVal.selectedItem != null) {
+                    strChanges += "Type Detail (" + binding.afDetailsTextviewVal.getSelectedItem()
+                        .toString() + ") - "
+                }
+                strChanges += "Effective Date (" + if (binding.afDtlsexpirationDateTextviewVal.text.equals(
+                        "SELECT DATE"
+                    )
+                ) "" else binding.afDtlsexpirationDateTextviewVal.text.toString()
+                    .appToApiSubmitFormatMMDDYYYY() + ") - "
+                strChanges += "Expiration Date (" + if (binding.afDtlseffectiveDateTextviewVal.text.equals(
+                        "SELECT DATE"
+                    )
+                ) "" else binding.afDtlseffectiveDateTextviewVal.text.toString()
+                    .appToApiSubmitFormatMMDDYYYY() + ") - "
+                strChanges += "Comments (" + binding.affcommentsEditTextVal.text.toString() + ")"
             }
-            strChanges += "Effective Date (" + if (afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlsexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY() + ") - "
-            strChanges += "Expiration Date (" + if (afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY() + ") - "
-            strChanges += "Comments (" + affcomments_editTextVal.text.toString() + ")"
-        }
-        if (action==1) {
-            val Comments = edit_affcomments_editTextVal.text.toString()
-            val effDate = if (edit_afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-            val expDate = if (edit_afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-            val afType = edit_affiliations_textviewVal.selectedItem.toString()
-            val afTypeDetail = if (edit_afDetails_textviewVal.selectedItem == null) "" else edit_afDetails_textviewVal.selectedItem.toString()
-            if (Comments != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].comment) {
-                strChanges += "Comments changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].comment+ ") to (${Comments}) - "
-            }
-            if (effDate != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].effDate.apiToAppFormatMMDDYYYY()) {
-                strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].effDate.apiToAppFormatMMDDYYYY() + ") to (" + effDate + ") - "
-            }
-            if (expDate != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].expDate.apiToAppFormatMMDDYYYY()) {
-                strChanges += "Expiration Date changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].expDate.apiToAppFormatMMDDYYYY() + ") to (" + expDate + ") - "
-            }
+            if (action == 1) {
+                val Comments = binding.editAffcommentsEditTextVal.text.toString()
+                val effDate =
+                    if (binding.editAfDtlseffectiveDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editAfDtlseffectiveDateTextviewVal.text.toString()
+                        .appToApiSubmitFormatMMDDYYYY()
+                val expDate =
+                    if (binding.editAfDtlsexpirationDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editAfDtlsexpirationDateTextviewVal.text.toString()
+                        .appToApiSubmitFormatMMDDYYYY()
+                val afType = binding.editAffiliationsTextviewVal.selectedItem.toString()
+                val afTypeDetail =
+                    if (binding.editAfDetailsTextviewVal.selectedItem == null) "" else binding.editAfDetailsTextviewVal.selectedItem.toString()
+                if (Comments != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].comment) {
+                    strChanges += "Comments changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].comment + ") to (${Comments}) - "
+                }
+                if (effDate != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].effDate.apiToAppFormatMMDDYYYY()) {
+                    strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].effDate.apiToAppFormatMMDDYYYY() + ") to (" + effDate + ") - "
+                }
+                if (expDate != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].expDate.apiToAppFormatMMDDYYYY()) {
+                    strChanges += "Expiration Date changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].expDate.apiToAppFormatMMDDYYYY() + ") to (" + expDate + ") - "
+                }
 
-            if (afType != (TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeID }[0].AffiliationTypeName)) {
-                strChanges += "Affiliation Type changed from (" + TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeID }[0].AffiliationTypeName + ") to (" + afType + ") - "
-            }
+                if (afType != (TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeID }[0].AffiliationTypeName)) {
+                    strChanges += "Affiliation Type changed from (" + TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeID }[0].AffiliationTypeName + ") to (" + afType + ") - "
+                }
 
-            if (afTypeDetail.isNotEmpty()) {
-                if (TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID}.isNotEmpty()) {
-                    if (afTypeDetail != (TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }[0].AffiliationDetailTypeName)) {
-                        strChanges += "Affiliation Type Detail changed from (" + TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }[0].AffiliationDetailTypeName + ") to (" + afTypeDetail + ") - "
+                if (afTypeDetail.isNotEmpty()) {
+                    if (TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }
+                            .isNotEmpty()) {
+                        if (afTypeDetail != (TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }[0].AffiliationDetailTypeName)) {
+                            strChanges += "Affiliation Type Detail changed from (" + TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }[0].AffiliationDetailTypeName + ") to (" + afTypeDetail + ") - "
+                        }
+                    } else {
+                        strChanges += "Affiliation Type Detail changed from ( ) to (" + afTypeDetail + ") - "
                     }
-                } else {
-                    strChanges += "Affiliation Type Detail changed from ( ) to (" + afTypeDetail + ") - "
                 }
             }
+            strChanges = strChanges.removeSuffix(" - ")
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        strChanges = strChanges.removeSuffix(" - ")
         return strChanges
     }
 
@@ -337,11 +373,11 @@ class FragmentARRAVAffliations : Fragment() {
 
         var afDetailsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, affTypesDetailsArray);
         afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        afDetails_textviewVal.adapter = afDetailsAdapter
+        binding.afDetailsTextviewVal.adapter = afDetailsAdapter
 
         var edit_afDetailsAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, affTypesDetailsArray);
         edit_afDetailsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        edit_afDetails_textviewVal.adapter = edit_afDetailsAdapter
+        binding.editAfDetailsTextviewVal.adapter = edit_afDetailsAdapter
 
         affTypesList = TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.active.equals("true")}.toCollection(ArrayList())
         affTypesArray.clear()
@@ -357,23 +393,23 @@ class FragmentARRAVAffliations : Fragment() {
 
         var afTypeAdapter= ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, affTypesArray);
         afTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        affiliations_textviewVal.adapter = afTypeAdapter
+        binding.affiliationsTextviewVal.adapter = afTypeAdapter
 
         var edit_afTypeAdapter= ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, edit_affTypesArray);
         edit_afTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        edit_affiliations_textviewVal.adapter = edit_afTypeAdapter
+        binding.editAffiliationsTextviewVal.adapter = edit_afTypeAdapter
 
     }
 
 
     fun fillAffTableView(){
 
-        mainViewLinearId.isEnabled=true
+        binding.mainViewLinearId.isEnabled=true
 
-        if (mainAffTableLayout.childCount>1) {
-            for (i in mainAffTableLayout.childCount - 1 downTo 1) {
-                mainAffTableLayout.removeViewAt(i)
+        if (binding.mainAffTableLayout.childCount>1) {
+            for (i in binding.mainAffTableLayout.childCount - 1 downTo 1) {
+                binding.mainAffTableLayout.removeViewAt(i)
             }
         }
         val rowLayoutParam = TableRow.LayoutParams()
@@ -500,80 +536,83 @@ class FragmentARRAVAffliations : Fragment() {
                     updateButton.setOnClickListener {
 
 
-                        rowIndex = mainAffTableLayout.indexOfChild(tableRow)
-                        edit_afDtlseffective_date_textviewVal.setText(if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate.equals("") || FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "SELECT DATE" else  FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate.apiToAppFormatMMDDYYYY())
-                        edit_afDtlsexpiration_date_textviewVal.setText(if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate.equals("") || FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "SELECT DATE" else  FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate.apiToAppFormatMMDDYYYY())
-                        edit_affcomments_editTextVal.setText(FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment)
-                        edit_affiliations_textviewVal.setSelection(edit_affTypesArray.indexOf(textView.text.toString()))
+                        rowIndex = binding.mainAffTableLayout.indexOfChild(tableRow)
+                        binding.editAfDtlseffectiveDateTextviewVal.setText(if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate.equals("") || FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "SELECT DATE" else  FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate.apiToAppFormatMMDDYYYY())
+                        binding.editAfDtlsexpirationDateTextviewVal.setText(if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate.equals("") || FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "SELECT DATE" else  FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate.apiToAppFormatMMDDYYYY())
+                        binding.editAffcommentsEditTextVal.setText(FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment)
+                        binding.editAffiliationsTextviewVal.setSelection(edit_affTypesArray.indexOf(textView.text.toString()))
                         if (textView1.text.isNotEmpty()) {
-                            edit_afDetails_textviewVal.setSelection(edit_affTypesDetailsArray.indexOf(textView1.text.toString()))
+                            binding.editAfDetailsTextviewVal.setSelection(edit_affTypesDetailsArray.indexOf(textView1.text.toString()))
                         }
-                        edit_afDetails_textviewVal.tag=textView1.text.toString()
-                        edit_afDtlseffective_date_textviewVal.setError(null)
-                        edit_affiliationsCard.visibility = View.VISIBLE
+                        binding.editAfDetailsTextviewVal.tag=textView1.text.toString()
+                        binding.editAfDtlseffectiveDateTextviewVal.setError(null)
+                        binding.editAffiliationsCard.visibility = View.VISIBLE
                         (activity as FormsActivity).overrideBackButton = true
-                        alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
+                        binding.alphaBackgroundForAffilliationsDialogs.visibility = View.VISIBLE
 
-                        var childViewCount = mainAffTableLayout.getChildCount();
+                        var childViewCount = binding.mainAffTableLayout.getChildCount();
 
                     }
-                    edit_submitNewAffil.setOnClickListener {
+                    binding.editSubmitNewAffil.setOnClickListener {
+                        if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                            if (validateInputsForUpdate()) {
+                                binding.progressBarText.text = "Saving ..."
+                                binding.affLoadingView.visibility = View.VISIBLE
+                                var startDate = if (binding.editAfDtlseffectiveDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editAfDtlseffectiveDateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                var endDate = if (binding.editAfDtlsexpirationDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editAfDtlsexpirationDateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                var comment = binding.editAffcommentsEditTextVal.text.toString()
+    //
+                                var affTypeID = TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(binding.editAffiliationsTextviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID
+                                var affDetailID = if (binding.editAfDetailsTextviewVal.selectedItem != null) TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(binding.editAfDetailsTextviewVal.selectedItem.toString()) }[0].AffiliationTypeDetailID else "0"
+                                var affiliationID = if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID>-1) FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID else ""
+                                indexToRemove = rowIndex
+                                Log.v("AFFILIATION EDIT --- ",UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}")
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 1, getAffiliationChanges(1,rowIndex-1)),
+                                        Response.Listener { response ->
+                                            requireActivity().runOnUiThread {
+                                                if (response.toString().contains("returnCode>0<",false)) {
+                                                    Utility.showSubmitAlertDialog(activity, true, "Affiliation")
+                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
+                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
+                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
+                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
+                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment= comment
 
-                        if (validateInputsForUpdate()) {
-                            progressBarText.text = "Saving ..."
-                            affLoadingView.visibility = View.VISIBLE
-                            var startDate = if (edit_afDtlseffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlseffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                            var endDate = if (edit_afDtlsexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_afDtlsexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                            var comment = edit_affcomments_editTextVal.text.toString()
-//
-                            var affTypeID = TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(edit_affiliations_textviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID
-                            var affDetailID = if (edit_afDetails_textviewVal.selectedItem != null) TypeTablesModel.getInstance().AffiliationDetailType.filter { s->s.AffiliationDetailTypeName.equals(edit_afDetails_textviewVal.selectedItem.toString()) }[0].AffiliationTypeDetailID else "0"
-                            var affiliationID = if (FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID>-1) FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationID else ""
-                            indexToRemove = rowIndex
-                            Log.v("AFFILIATION EDIT --- ",UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}")
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 1, getAffiliationChanges(1,rowIndex-1)),
-                                    Response.Listener { response ->
-                                        activity!!.runOnUiThread {
-                                            if (response.toString().contains("returnCode>0<",false)) {
-                                                Utility.showSubmitAlertDialog(activity, true, "Affiliation")
-                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
-                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
-                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
-                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
-                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment= comment
-
-                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
-                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
-                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
-                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
-                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].comment= comment
-                                                (activity as FormsActivity).saveDone = true
-                                                affLoadingView.visibility = View.GONE
-                                                progressBarText.text = "Loading ..."
-                                                fillAffTableView()
-                                                altLocationTableRow(2)
-                                                HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
-                                                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
-                                            } else {
-                                                var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
+                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
+                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
+                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
+                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
+                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].comment= comment
+                                                    (activity as FormsActivity).saveDone = true
+                                                    binding.affLoadingView.visibility = View.GONE
+                                                    binding.progressBarText.text = "Loading ..."
+                                                    fillAffTableView()
+                                                    altLocationTableRow(2)
+                                                    HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
+                                                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
+                                                } else {
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                    Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
+                                                }
+                                                binding.affLoadingView.visibility = View.GONE
+                                                (activity as FormsActivity).overrideBackButton = false
+                                                binding.editAffiliationsCard.visibility = View.GONE
+                                                binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
                                             }
-                                            affLoadingView.visibility = View.GONE
-                                            (activity as FormsActivity).overrideBackButton = false
-                                            edit_affiliationsCard.visibility = View.GONE
-                                            alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                                        }
-                                    }, Response.ErrorListener {
-                                Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
-                                affLoadingView.visibility = View.GONE
-                                (activity as FormsActivity).overrideBackButton = false
-                                edit_affiliationsCard.visibility = View.GONE
-                                alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                            }))
-                        } else
-                            Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
+                                        }, Response.ErrorListener {
+                                    Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
+                                        binding.affLoadingView.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                        binding.editAffiliationsCard.visibility = View.GONE
+                                        binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+                                }))
+                            } else
+                                Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
+                        } else {
+                            Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
+                        }
                     }
-                    mainAffTableLayout.addView(tableRow)
+                    binding.mainAffTableLayout.addView(tableRow)
                 }
             }
         }
@@ -584,20 +623,20 @@ class FragmentARRAVAffliations : Fragment() {
     fun validateInputs() : Boolean {
         var isInputsValid = true
 
-        afDtlseffective_date_textviewVal.setError(null)
+        binding.afDtlseffectiveDateTextviewVal.setError(null)
 
-        if(afDtlseffective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(binding.afDtlseffectiveDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             isInputsValid=false
-            afDtlseffective_date_textviewVal.setError("Required Field")
+            binding.afDtlseffectiveDateTextviewVal.setError("Required Field")
         }
 
-        if(!afDtlsexpiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(!binding.afDtlsexpirationDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
-            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(afDtlseffective_date_textviewVal!!.text.toString())
-            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(afDtlsexpiration_date_textviewVal!!.text.toString())
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.afDtlsexpirationDateTextviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.afDtlsexpirationDateTextviewVal!!.text.toString())
             if (expDate.before(effDate)) {
                 isInputsValid = false
-                afDtlsexpiration_date_textviewVal.setError("Should be after Effective Date")
+                binding.afDtlsexpirationDateTextviewVal.setError("Should be after Effective Date")
             }
         }
 
@@ -612,20 +651,20 @@ class FragmentARRAVAffliations : Fragment() {
     fun validateInputsForUpdate() : Boolean {
         var isInputsValid = true
 
-        edit_afDtlseffective_date_textviewVal.setError(null)
+        binding.editAfDtlseffectiveDateTextviewVal.setError(null)
 
-        if(edit_afDtlseffective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(binding.editAfDtlseffectiveDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             isInputsValid=false
-            edit_afDtlseffective_date_textviewVal.setError("Required Field")
+            binding.editAfDtlseffectiveDateTextviewVal.setError("Required Field")
         }
 
-        if(!edit_afDtlsexpiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(!binding.editAfDtlsexpirationDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
-            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_afDtlseffective_date_textviewVal!!.text.toString())
-            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_afDtlsexpiration_date_textviewVal!!.text.toString())
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.editAfDtlseffectiveDateTextviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.editAfDtlsexpirationDateTextviewVal!!.text.toString())
             if (expDate.before(effDate)) {
                 isInputsValid = false
-                edit_afDtlsexpiration_date_textviewVal.setError("Should be after Effective Date")
+                binding.editAfDtlsexpirationDateTextviewVal.setError("Should be after Effective Date")
             }
         }
 
@@ -638,10 +677,10 @@ class FragmentARRAVAffliations : Fragment() {
     }
 
         fun altLocationTableRow(alt_row: Int) {
-            var childViewCount = mainAffTableLayout.getChildCount();
+            var childViewCount = binding.mainAffTableLayout.getChildCount();
 
             for (i in 1..childViewCount - 1) {
-                var row: TableRow = mainAffTableLayout.getChildAt(i) as TableRow;
+                var row: TableRow = binding.mainAffTableLayout.getChildAt(i) as TableRow;
 
                 if (i % alt_row != 0) {
                     row.setBackground(getResources().getDrawable(

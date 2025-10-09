@@ -1,7 +1,13 @@
 package com.inspection.fragments
 
 
+//import kotlinx.android.synthetic.main.dialog_forgot_password.view.*
+//import kotlinx.android.synthetic.main.fragment_visitation_form.*
+//import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
+//import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.progressBarRecords
+import android.R.attr
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -27,20 +33,21 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.github.barteksc.pdfviewer.PDFView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.inspection.R
 import com.inspection.Utils.*
+import com.inspection.databinding.VisitationPlanningFilterFragmentBinding
+import com.inspection.interfaces.LocationAlarmManager.REQUEST_CODE
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.dialog_forgot_password.view.*
-import kotlinx.android.synthetic.main.fragment_visitation_form.*
-import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
-import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.progressBarRecords
+import kotlinx.coroutines.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
-import org.json.JSONObject
-import org.json.XML
+import org.w3c.dom.Text
+import shaded.org.json.JSONObject
+import shaded.org.json.XML
 import java.io.BufferedInputStream
 import java.io.IOException
 import java.io.InputStream
@@ -63,7 +70,8 @@ import javax.net.ssl.HttpsURLConnection
  */
 class VisitationPlanningFragment : Fragment() {
 
-    // TODO: Rename and change types of parameters
+    private var _binding: VisitationPlanningFilterFragmentBinding? = null
+    private val binding get() = _binding!!
     private var mParam1: String? = null
     private var mParam2: String? = null
     var fragment: Fragment? = null
@@ -78,6 +86,7 @@ class VisitationPlanningFragment : Fragment() {
     var firstLoading = true
     var isVisitationPlanning = false
     var requiredSpecialistName = ""
+
     var visitationsModel: VisitationsModel = VisitationsModel()
     var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
     var allClubCodes = ArrayList<String>()
@@ -88,6 +97,8 @@ class VisitationPlanningFragment : Fragment() {
     var visitationID =""
     var totalVisitations = 0
     var overridOverdue = VisitationStatus.Overdue
+    var facilities = ArrayList<CsiFacility>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +106,7 @@ class VisitationPlanningFragment : Fragment() {
             mParam1 = requireArguments().getString(ARG_PARAM1)
             mParam2 = requireArguments().getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -105,7 +117,9 @@ class VisitationPlanningFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        visitationfacilityListView.visibility = View.GONE
+        _binding = VisitationPlanningFilterFragmentBinding.bind(view)
+
+        binding.visitationfacilityListView.visibility = View.GONE
         pdfView = view.findViewById(R.id.pdfView)
         var visitationYearFilterSpinnerEntries = mutableListOf<String>()
         var currentYear = Calendar.getInstance().get(Calendar.YEAR)
@@ -115,11 +129,11 @@ class VisitationPlanningFragment : Fragment() {
         }
         visitationYearFilterSpinnerEntries.sortDescending()
 //        visitationYearFilterSpinnerEntries.add(0, "Any")
-        visitationYearFilterSpinner.adapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
-        visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-        visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
+        binding.visitationYearFilterSpinner.adapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, visitationYearFilterSpinnerEntries)
+        binding.visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
+        binding.visitationYearFilterSpinner.setSelection(visitationYearFilterSpinnerEntries.indexOf("" + Calendar.getInstance().get(Calendar.YEAR)))
 
-        searchVisitaionsButton.setOnClickListener {
+        binding.searchVisitaionsButton.setOnClickListener {
             it.hideKeyboard()
             reloadVisitationsList()
         }
@@ -132,7 +146,7 @@ class VisitationPlanningFragment : Fragment() {
 
 //        getTypeTables()
         loadSpecialists()
-        loadSpecialistDetails()
+//        loadSpecialistDetails()
         loadSpecialistName()
 //        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
 //                Response.Listener { response ->
@@ -168,8 +182,9 @@ class VisitationPlanningFragment : Fragment() {
 //            Log.v("Loading error", "" + it.message)
 //        }))
 
-
     }
+
+
 
     val spinnersOnItemSelectListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -182,6 +197,8 @@ class VisitationPlanningFragment : Fragment() {
 
     }
 
+
+
     fun prepareInitialStateForFilters(){
 //        clubCodeEditText.setText("252")
 //        clubCodeEditText.setText(specialistArrayModel.sortedWith(compareBy { it.clubcode })[0].clubcode)
@@ -189,26 +206,22 @@ class VisitationPlanningFragment : Fragment() {
     }
 
 
-    fun firstLoadingCompleted(){
+    fun firstLoadingCompleted(){1
 
         prepareInitialStateForFilters()
+        binding.visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH))
+        binding.visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
+        binding.visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
+        binding.progressBarRecords.indeterminateDrawable.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
 
-        visitationMonthsSpinner.setSelection(Calendar.getInstance().get(Calendar.MONTH))
-        visitationMonthsSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-
-
-        visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
-
-        progressBarRecords.indeterminateDrawable.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
-
-        searchVisitaionsButton.setOnClickListener({
+        binding.searchVisitaionsButton.setOnClickListener({
             reloadVisitationsList()
             it.hideKeyboard()
         })
 
-        clubCodeEditText.addTextChangedListener(object : TextWatcher {
+        binding.clubCodeEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
             }
@@ -222,7 +235,7 @@ class VisitationPlanningFragment : Fragment() {
             }
         })
 
-        visitationfacilityIdVal.addTextChangedListener(object : TextWatcher {
+        binding.visitationfacilityIdVal.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 
             }
@@ -238,7 +251,7 @@ class VisitationPlanningFragment : Fragment() {
 
         })
 
-        visitationSpecialistName.setOnClickListener {
+        binding.visitationSpecialistName.setOnClickListener {
             var personnelNames = ArrayList<String>()
 //            (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
 //                personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
@@ -255,24 +268,24 @@ class VisitationPlanningFragment : Fragment() {
             searchDialog.show()
             searchDialog.setOnDismissListener {
                 if (searchDialog.selectedString == "Any") {
-                    visitationSpecialistName.setText("")
+                    binding.visitationSpecialistName.setText("")
                 } else {
-                    visitationSpecialistName.setText(searchDialog.selectedString)
+                    binding.visitationSpecialistName.setText(searchDialog.selectedString)
                 }
                 //reloadVisitationsList()
             }
         }
 
-        clubCodeEditText.setOnClickListener {
+        binding.clubCodeEditText.setOnClickListener {
             var searchDialog = SearchDialog(context, allClubCodes)
             searchDialog.show()
             searchDialog.setOnDismissListener {
-                clubCodeEditText.setText(searchDialog.selectedString)
+                binding.clubCodeEditText.setText(searchDialog.selectedString)
                 //reloadVisitationsList()
             }
         }
 
-        facilityNameButton.setOnClickListener {
+        binding.facilityNameButton.setOnClickListener {
 //            recordsProgressView.visibility = View.VISIBLE
 //            Log.v("VISITATION FAC NAME --- ",Constants.getAllFacilities + "")
 //            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
@@ -286,16 +299,56 @@ class VisitationPlanningFragment : Fragment() {
 //                            }
 //                            facilityNames.sort()
 //                            facilityNames.add(0, "Any")
-                            var searchDialog = SearchDialog(context, facilityNames)
+//
+                            var facNamesFiltered = ArrayList<String>()
+                            if (binding.visitationSpecialistName.text.contains("Select") || binding.visitationSpecialistName.text.isEmpty()) {
+                                facilities.forEach {
+                                    facNamesFiltered.add(it.facname + " || " + it.facnum)
+                                }
+
+                            } else {
+                                var selectedSpecialistEmail =
+                                    TypeTablesModel.getInstance().EmployeeList.filter { s ->
+                                        s.FullName.equals(binding.visitationSpecialistName.text.toString())
+                                    }[0].Email.substring(
+                                        0,
+                                        TypeTablesModel.getInstance().EmployeeList.filter { s ->
+                                            s.FullName.equals(binding.visitationSpecialistName.text.toString())
+                                        }[0].Email.indexOf("@")
+                                    )
+                                facilities.filter { s ->
+                                    s.specialistemail.lowercase()
+                                        .contains(selectedSpecialistEmail.lowercase())
+                                }.forEach {
+                                    facNamesFiltered.add(it.facname + " || " + it.facnum)
+                                }
+                            }
+                            Log.v("Filtered --> ", facNamesFiltered.size.toString())
+//                            var facNamesFiltered = facilityNames.filter { s->s.contains(visitationSpecialistName.text.toString())}
+                            if (facNamesFiltered.size == 0)
+//                                Utility.showMessageDialog(activity, "Information", "No Assigned Facilities for the selected Specialist")
+                                Utility.showUnifiedInformationDialog(activity,"No Assigned Facilities for the selected Specialist")
+                            else {
+                            var searchDialog = SearchDialog(context, facNamesFiltered)
                             searchDialog.show()
                             searchDialog.setOnDismissListener {
                                 if (searchDialog.selectedString == "Any" || searchDialog.selectedString == "") {
-                                    facilityNameButton.setText("")
-                                    visitationfacilityIdVal.setText("")
+                                    binding.facilityNameButton.setText("")
+                                    binding.visitationfacilityIdVal.setText("")
                                 } else {
-                                    facilityNameButton.setText(searchDialog.selectedString.substring(0,searchDialog.selectedString.indexOf(" || ")))
-                                    visitationfacilityIdVal.setText(searchDialog.selectedString.substringAfter("|| "))
+                                    binding.facilityNameButton.setText(
+                                        searchDialog.selectedString.substring(
+                                            0,
+                                            searchDialog.selectedString.indexOf(" || ")
+                                        )
+                                    )
+                                    binding.visitationfacilityIdVal.setText(
+                                        searchDialog.selectedString.substringAfter(
+                                            "|| "
+                                        )
+                                    )
                                 }
+                            }
                                 //reloadVisitationsList()
                             }
 //                        }
@@ -309,32 +362,32 @@ class VisitationPlanningFragment : Fragment() {
 //            }))
         }
 
-        annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.annualVisitationCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
            // reloadVisitationsList()
         }
 
-        quarterlyOrOtherVisistationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.quarterlyOrOtherVisistationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
            // reloadVisitationsList()
         }
 
-        adHocVisitationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-           // reloadVisitationsList()
-        }
-
-
-        deficienciesCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.adHocVisitationsCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
            // reloadVisitationsList()
         }
 
 
-
-        pendingCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.deficienciesCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
            // reloadVisitationsList()
         }
 
 
 
-        completedCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.pendingCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+           // reloadVisitationsList()
+        }
+
+
+
+        binding.completedCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
 
 
            // reloadVisitationsList()
@@ -348,12 +401,12 @@ class VisitationPlanningFragment : Fragment() {
 
 
     private fun loadFacilityNames(){
-        var facilities : ArrayList<CsiFacility>
+        facilities.clear()
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                 Response.Listener { response ->
                     Log.v("test","testtesttest-----------")
                     requireActivity().runOnUiThread {
-                        recordsProgressView.visibility = View.INVISIBLE
+                        binding.recordsProgressView.visibility = View.INVISIBLE
                         CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
                         (0 until facilities.size).forEach {
@@ -362,20 +415,24 @@ class VisitationPlanningFragment : Fragment() {
                         Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
                         facilities.removeIf { s->s.accspecid.isNullOrEmpty() }
                         if (facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
+//                            (0 until facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.size).forEach {
+//                                facilityNames.add(facilities[it].facname + " || " + facilities[it].facnum)
+//                            }
 //                            defaultFacNumber = facilities.filter { s -> s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID) }.sortedWith(compareBy { it.facnum })[0].facnum
 //                            adHocFacilityIdVal.setText(defaultFacNumber)
                             defaultClubCode = facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
-                            clubCodeEditText.setText(defaultClubCode)
+                            binding.clubCodeEditText.setText(defaultClubCode)
                         } else {
-                            clubCodeEditText.setText("252")
+                            binding.clubCodeEditText.setText("252")
                         }
                         facilityNames.sort()
                         facilityNames.add(0, "Any")
                         firstLoadingCompleted()
                     }
                 }, Response.ErrorListener {
-            Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
-            recordsProgressView.visibility = View.INVISIBLE
+//            Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
+                Utility.showUnifiedErrorDialog(activity,"Error while retrieving Facilities - " + it.message)
+                binding.recordsProgressView.visibility = View.INVISIBLE
             Log.v("error while loading", "error while loading facilities")
             Log.v("Loading error", "" + it.message)
         }))
@@ -386,9 +443,9 @@ class VisitationPlanningFragment : Fragment() {
 
         var parametersString = StringBuilder()
         if (true) {
-            if (clubCodeEditText.text.trim().isNotEmpty()) {
+            if (binding.clubCodeEditText.text.trim().isNotEmpty()) {
                 with(parametersString) {
-                    append("clubCode=" + clubCodeEditText.text.trim())
+                    append("clubCode=" + binding.clubCodeEditText.text.trim())
                     append("&")
                 }
             } else {
@@ -399,15 +456,15 @@ class VisitationPlanningFragment : Fragment() {
             }
 
             with(parametersString) {
-                append("facNum=" + visitationfacilityIdVal.text.trim())
+                append("facNum=" + binding.visitationfacilityIdVal.text.trim())
                 append("&")
             }
 
-            if (!visitationSpecialistName.text.contains("Select") && visitationSpecialistName.text.length > 1) {
+            if (!binding.visitationSpecialistName.text.contains("Select") && binding.visitationSpecialistName.text.length > 1) {
                 with(parametersString) {
                     //TODO added to void specialist value until they let us know how we will use it
                     try {
-                        var specialistName = visitationSpecialistName.text
+                        var specialistName = binding.visitationSpecialistName.text
 //                        var specialistId =  CsiSpecialistSingletonModel.getInstance().csiSpecialists.filter { s -> s.specialistname.equals(specialistName.toString()) }[0].accspecid
                         var specialistId =  TypeTablesModel.getInstance().EmployeeList.filter { s -> s.FullName.equals(specialistName.toString()) }[0].NTLogin
 //                        var errorMessage = response.toString().substring(response.toString().indexOf(";message")+12,response.toString().indexOf("&lt;/message"))
@@ -428,7 +485,7 @@ class VisitationPlanningFragment : Fragment() {
                 }
             }
 
-            if (!facilityNameButton.text.contains("Select") && facilityNameButton.text.length > 1) {
+            if (!binding.facilityNameButton.text.contains("Select") && binding.facilityNameButton.text.length > 1) {
                 with(parametersString) {
 //                    append(("dba=" + URLEncoder.encode(facilityNameButton.text.toString(), "UTF-8")))
 //                    append("dba=" + facilityNameButton.text.toString())
@@ -443,9 +500,9 @@ class VisitationPlanningFragment : Fragment() {
             }
 
 
-            if (visitationYearFilterSpinner.selectedItem != "Any") {
+            if (binding.visitationYearFilterSpinner.selectedItem != "Any") {
                 with(parametersString) {
-                    append("inspectionYear=" + visitationYearFilterSpinner.selectedItem)
+                    append("inspectionYear=" + binding.visitationYearFilterSpinner.selectedItem)
                     append("&")
                 }
             }else{
@@ -455,8 +512,8 @@ class VisitationPlanningFragment : Fragment() {
                 }
             }
             var InsMonth = 0
-            InsMonth = visitationMonthsSpinner.selectedItemPosition+1
-            if (visitationMonthsSpinner.selectedItem != "Any") {
+            InsMonth = binding.visitationMonthsSpinner.selectedItemPosition+1
+            if (binding.visitationMonthsSpinner.selectedItem != "Any") {
                 with(parametersString) {
                     append("inspectionMonth=" + InsMonth)
                     append("&")
@@ -468,7 +525,7 @@ class VisitationPlanningFragment : Fragment() {
                 }
             }
 
-            if (annualVisitationCheckBox.isChecked) {
+            if (binding.annualVisitationCheckBox.isChecked) {
                 with(parametersString) {
                     append("annualVisitations=1")
                     append("&")
@@ -480,7 +537,7 @@ class VisitationPlanningFragment : Fragment() {
                 }
             }
 
-            if (quarterlyOrOtherVisistationsCheckBox.isChecked) {
+            if (binding.quarterlyOrOtherVisistationsCheckBox.isChecked) {
                 with(parametersString) {
                     append("quarterlyVisitations=1")
                     append("&")
@@ -493,7 +550,7 @@ class VisitationPlanningFragment : Fragment() {
             }
 
 
-            if (pendingCheckBox.isChecked || overdueCheckBox.isChecked || inProgressCheckBox.isChecked) {
+            if (binding.pendingCheckBox.isChecked || binding.overdueCheckBox.isChecked || binding.inProgressCheckBox.isChecked) {
                 with(parametersString) {
                     append("pendingVisitations=1")
                     append("&")
@@ -505,7 +562,7 @@ class VisitationPlanningFragment : Fragment() {
                 }
             }
 
-            if (completedCheckBox.isChecked) {
+            if (binding.completedCheckBox.isChecked) {
                 with(parametersString) {
                     append("completedVisitations=1")
                     append("&")
@@ -517,7 +574,7 @@ class VisitationPlanningFragment : Fragment() {
                 }
             }
 
-            if (deficienciesCheckBox.isChecked) {
+            if (binding.deficienciesCheckBox.isChecked) {
                 with(parametersString) {
                     append("deficiencies=1")
                 }
@@ -526,9 +583,12 @@ class VisitationPlanningFragment : Fragment() {
                     append("deficiencies=0")
                 }
             }
-            recordsProgressView.visibility = View.VISIBLE
+            binding.recordsProgressView.visibility = View.VISIBLE
 
-            var client = OkHttpClient()
+
+            var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
+//            var client = OkHttpClient()
+            var client = clientBuilder.build()
 //                    .newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
             var request = okhttp3.Request.Builder().url(Constants.getVisitations + parametersString+Utility.getLoggingParameters(activity, 0, "Search Visitations ...")).build()
 
@@ -540,8 +600,9 @@ class VisitationPlanningFragment : Fragment() {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.v("failure http", "failed with exception : " + e!!.message)
                     requireActivity().runOnUiThread {
-                        Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
-                        recordsProgressView.visibility = View.INVISIBLE
+//                        Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
+                        Utility.showUnifiedErrorDialog(activity,"Error while retrieving Visitations - " + e.message)
+                        binding.recordsProgressView.visibility = View.INVISIBLE
                     }
                 }
 
@@ -550,20 +611,22 @@ class VisitationPlanningFragment : Fragment() {
                     var responseString = response!!.body!!.string()
                     //  activity!!.toast("success!!!")
                     //     recordsProgressView.visibility = View.INVISIBLE
+                    Log.v("GET VISITATIONS", responseString)
 //                    FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Visitation --> ${responseString}")
                     if (responseString.toString().contains("returnCode>1<",false) || !responseString.toString().contains("returnCode>",false)) {
                         requireActivity().runOnUiThread {
 //                            if (responseString.toString().contains("message", false))
 //                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
 //                            else
-                            Utility.showMessageDialog(activity, "Retrieve Data Error", responseString)
-                            recordsProgressView.visibility = View.GONE
-                            visitationfacilityListView.visibility = View.VISIBLE
+//                            Utility.showMessageDialog(activity, "Retrieve Data Error", responseString)
+                            Utility.showUnifiedErrorDialog(activity,"Error while retrieving Visitations - " + responseString)
+                            binding.recordsProgressView.visibility = View.GONE
+                            binding.visitationfacilityListView.visibility = View.VISIBLE
                             visitationsModel.pendingVisitationsArray.clear()
                             visitationsModel.completedVisitationsArray.clear()
                             visitationsModel.deficienciesArray.clear()
                             var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                            visitationfacilityListView.adapter = visitationPlanningAdapter
+                            binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                             totalVisitations = 0
 
                         }
@@ -573,10 +636,11 @@ class VisitationPlanningFragment : Fragment() {
                         if (obj.toString().equals("{\"responseXml\":\"\"}")) {
                             activity!!.runOnUiThread {
                                 visitationsModel.listArray.clear()
-                                visitationfacilityListView.adapter = null
-                                recordsProgressView.visibility = View.GONE
-                                visitationfacilityListView.visibility = View.VISIBLE
-                                Utility.showMessageDialog(requireContext(), "Information", "No available visitations to show")
+                                binding.visitationfacilityListView.adapter = null
+                                binding.recordsProgressView.visibility = View.GONE
+                                binding.visitationfacilityListView.visibility = View.VISIBLE
+//                                Utility.showMessageDialog(requireContext(), "Information", "No available visitations to show")
+                                Utility.showUnifiedInformationDialog(requireContext(),"No available visitations to show")
                             }
                         } else {
                             var jsonObj = obj.getJSONObject("responseXml")
@@ -605,17 +669,17 @@ class VisitationPlanningFragment : Fragment() {
                                                                     PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
                                                                 }
                                                                 activity!!.runOnUiThread {
-                                                                    recordsProgressView.visibility = View.GONE
-                                                                    visitationfacilityListView.visibility = View.VISIBLE
+                                                                    binding.recordsProgressView.visibility = View.GONE
+                                                                    binding.visitationfacilityListView.visibility = View.VISIBLE
                                                                     // New Logic
                                                                     FillVisitationList()
                                                                     //
 //                                                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                                                                     var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel)
-                                                                    visitationfacilityListView.adapter = visitationPlanningAdapter
+                                                                    binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                                                                     totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
 //                                                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
-                                                                    resultsCount.text = "Filtered Visitations --> ( " + totalVisitations + " )"
+                                                                    binding.resultsCount.text = "Filtered Visitations --> ( " + totalVisitations + " )"
                                                                 }
 
                                                             }
@@ -625,10 +689,10 @@ class VisitationPlanningFragment : Fragment() {
                                                     item.recordid = -1
                                                     PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
                                                     activity!!.runOnUiThread {
-                                                        recordsProgressView.visibility = View.GONE
-                                                        visitationfacilityListView.visibility = View.VISIBLE
+                                                        binding.recordsProgressView.visibility = View.GONE
+                                                        binding.visitationfacilityListView.visibility = View.VISIBLE
                                                         var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                                        visitationfacilityListView.adapter = visitationPlanningAdapter
+                                                        binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                                                         totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
 //                                                Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
                                                     }
@@ -643,12 +707,13 @@ class VisitationPlanningFragment : Fragment() {
                                 item.recordid = -1
                                 PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
                                 activity!!.runOnUiThread {
-                                    recordsProgressView.visibility = View.GONE
-                                    visitationfacilityListView.visibility = View.VISIBLE
+                                    binding.recordsProgressView.visibility = View.GONE
+                                    binding.visitationfacilityListView.visibility = View.VISIBLE
                                     var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                    visitationfacilityListView.adapter = visitationPlanningAdapter
+                                    binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                                     totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-                                    Utility.showMessageDialog(activity, "Filter Result", " " + totalVisitations + " Visitations Filtered ...")
+//                                    Utility.showMessageDialog(activity, "Filter Result", " " + totalVisitations + " Visitations Filtered ...")
+                                    Utility.showUnifiedInformationDialog(requireContext(),"Filter Result - "+ totalVisitations + " Visitations Filtered ...")
                                 }
                                 it.printStackTrace()
                             }))
@@ -665,35 +730,37 @@ class VisitationPlanningFragment : Fragment() {
                         requireActivity().runOnUiThread {
                             var responseString = response.toString()
                             if (responseString.toString().contains("returnCode>1<",false)) {
-                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message")+9,responseString.indexOf("</message")))
+//                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message")+9,responseString.indexOf("</message")))
+                                Utility.showUnifiedErrorDialog(activity,"Error while retrieving Visitations - " + responseString.substring(responseString.indexOf("<message")+9,responseString.indexOf("</message")))
                             } else {
                 //                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
                                 var obj = XML.toJSONObject(response.substring(response.indexOf("<responseXml"), response.indexOf("<returnCode")))
                                 var jsonObj = obj.getJSONObject("responseXml")
                                 var visitationsModel = parseVisitationsData(jsonObj)
-                                recordsProgressView.visibility = View.GONE
-                                visitationfacilityListView.visibility = View.VISIBLE
+                                binding.recordsProgressView.visibility = View.GONE
+                                binding.visitationfacilityListView.visibility = View.VISIBLE
                                 var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                visitationfacilityListView.adapter = visitationPlanningAdapter
+                                binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                             }
                         }
                     }, Response.ErrorListener {
                 Log.v("error while loading", "error while loading visitation records")
-                Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Visitation records - " + it.message)
+//                Utility.showMessageDialog(activity,"Retrieve Data Error","Connection Error while retrieving Visitation records - " + it.message)
+                    Utility.showUnifiedErrorDialog(activity,"Error while retrieving Visitations - " + it.message)
             }))
         }
     }
 
     fun reviewFilters(visitationType : String, visitationStatus : String) : Boolean {
         var hideVisitation = false
-        if (!annualVisitationCheckBox.isChecked && visitationType.equals(VisitationTypes.Annual.toString())) return true
-        if (!quarterlyOrOtherVisistationsCheckBox.isChecked && visitationType.equals(VisitationTypes.Quarterly.toString())) return true
-        if (!adHocVisitationsCheckBox.isChecked && visitationType.equals(VisitationTypes.AdHoc.toString())) return true
-        if (!deficienciesCheckBox.isChecked && visitationType.equals(VisitationTypes.Deficiency.toString())) return true
-        if (!pendingCheckBox.isChecked && visitationStatus.equals("Not Started")) return true
-        if (!inProgressCheckBox.isChecked && visitationStatus.contains("Progress",true)) return true
-        if (!overdueCheckBox.isChecked && visitationStatus.contains("Overdue",true)) return true
-        if (!completedCheckBox.isChecked && visitationStatus.equals("Completed")) return true
+        if (!binding.annualVisitationCheckBox.isChecked && visitationType.equals(VisitationTypes.Annual.toString())) return true
+        if (!binding.quarterlyOrOtherVisistationsCheckBox.isChecked && visitationType.equals(VisitationTypes.Quarterly.toString())) return true
+        if (!binding.adHocVisitationsCheckBox.isChecked && visitationType.equals(VisitationTypes.AdHoc.toString())) return true
+        if (!binding.deficienciesCheckBox.isChecked && visitationType.equals(VisitationTypes.Deficiency.toString())) return true
+        if (!binding.pendingCheckBox.isChecked && visitationStatus.equals("Not Started")) return true
+        if (!binding.inProgressCheckBox.isChecked && visitationStatus.contains("Progress",true)) return true
+        if (!binding.overdueCheckBox.isChecked && visitationStatus.contains("Overdue",true)) return true
+        if (!binding.completedCheckBox.isChecked && visitationStatus.equals("Completed")) return true
         return hideVisitation
     }
 
@@ -717,6 +784,7 @@ class VisitationPlanningFragment : Fragment() {
             item.FACNo = it.FACNo
             item.FacID = it.FacID
             item.FacilityAnnualInspectionMonth = it.FacilityAnnualInspectionMonth
+            item.city = facilities.first { s -> s.facnum == it.FACNo && s.clubcode==it.ClubCode}.city
 //            visitationsModel.listArray.add(item)
             // Check Visitation Type
             var visitationTypeAndStatus = determineVisitationTypeAndStatus(item.FacilityAnnualInspectionMonth.toInt(),item.FacID.toInt(),item.ClubCode.toInt())
@@ -762,6 +830,7 @@ class VisitationPlanningFragment : Fragment() {
             item.VisitationType = it.VisitationTypeID.toString()
             item.VisitationStatus = "Completed"
             item.insertBy1 = it.insertBy1
+            item.city = facilities.first { s -> s.facnum == it.FACNo }.city
             when (item.VisitationType.toInt()) {
                 1 -> item.VisitationType = "Annual"
                 2 -> item.VisitationType = "Quarterly"
@@ -786,6 +855,7 @@ class VisitationPlanningFragment : Fragment() {
             item.FacilityAnnualInspectionMonth = it.FacilityAnnualInspectionMonth
             item.DueDate = it.DueDate.apiToAppFormatMMDDYYYY()
             item.VisitationType = "Deficiency"
+            item.city = facilities.first { s -> s.facnum == it.FACNo }.city
             val dueDate = it.DueDate.substring(0,10)
             val format = SimpleDateFormat("yyyy-MM-dd");
             try {
@@ -912,13 +982,13 @@ class VisitationPlanningFragment : Fragment() {
 
         if (visitationsModel.completedVisitationsArray.size>0) {
             // Quarterly , Annual & Add Hoc
-            if (!annualVisitationCheckBox.isChecked) {
+            if (!binding.annualVisitationCheckBox.isChecked) {
                 visitationsModel.completedVisitationsArray.removeIf { s -> s.VisitationTypeID==1}
             }
-            if (!quarterlyOrOtherVisistationsCheckBox.isChecked) {
+            if (!binding.quarterlyOrOtherVisistationsCheckBox.isChecked) {
                 visitationsModel.completedVisitationsArray.removeIf { s -> s.VisitationTypeID==2}
             }
-            if (!adHocVisitationsCheckBox.isChecked) {
+            if (!binding.adHocVisitationsCheckBox.isChecked) {
                 visitationsModel.completedVisitationsArray.removeIf { s -> s.VisitationTypeID==3}
             }
 //            visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(5, 7).equals(filteredMonth) }
@@ -955,7 +1025,7 @@ class VisitationPlanningFragment : Fragment() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
                 Response.Listener { response ->
                     Log.v("****response", response)
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(java.util.ArrayList())
 
 //                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
@@ -997,10 +1067,11 @@ class VisitationPlanningFragment : Fragment() {
                             requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].FullName
                             var positionID = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].PositionID
                             if (positionID.equals("1")) {
-                                visitationSpecialistName.setText(requiredSpecialistName)
+                                binding.visitationSpecialistName.setText(requiredSpecialistName)
                             }
 //                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].NTLogin
                             ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].NTLogin
+                            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].FullName
                         }
                         loadClubCodes()
 //                    }
@@ -1020,7 +1091,7 @@ class VisitationPlanningFragment : Fragment() {
                     requireActivity().runOnUiThread {
                         specialistModel = Gson().fromJson(response.toString(), Array<CsiSpecialistDetails>::class.java).toCollection(ArrayList())
                         if (specialistModel != null && specialistModel.size > 0) {
-                            visitationSpecialistName.setText(specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize() )
+                            binding.visitationSpecialistName.setText(specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize() )
                             ApplicationPrefs.getInstance(activity).loggedInUserID = specialistModel[0].accspecid
                             ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize()
                         }
@@ -1029,6 +1100,26 @@ class VisitationPlanningFragment : Fragment() {
             Log.v("error while loading", "error while loading Specialist Details")
             Log.v("Loading error", "" + it.message)
         }))
+    }
+
+
+    private fun loadSpecialistDetailsUpdated() {
+//        FirebaseCrashlytics.getInstance().setCustomKey("Screen", "Visitation Planning Screen")
+//        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Specialist Details")
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistDetails + ApplicationPrefs.getInstance(context).loggedInUserEmail,
+            Response.Listener { response ->
+                requireActivity().runOnUiThread {
+                    specialistModel = Gson().fromJson(response.toString(), Array<CsiSpecialistDetails>::class.java).toCollection(ArrayList())
+                    if (specialistModel != null && specialistModel.size > 0) {
+                        binding.visitationSpecialistName.setText(specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize() )
+                        ApplicationPrefs.getInstance(activity).loggedInUserID = specialistModel[0].accspecid
+                        ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize()
+                    }
+                }
+            }, Response.ErrorListener {
+                Log.v("error while loading", "error while loading Specialist Details")
+                Log.v("Loading error", "" + it.message)
+            }))
     }
 
     fun onButtonPressed(uri: Uri) {
@@ -1577,10 +1668,10 @@ class VisitationPlanningFragment : Fragment() {
                             vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString() + " / In Progress"
                         }
                     } else {
-                        if (visitationTypeAndStatus.second==VisitationStatus.Overdue && overrideOverdueFlag)
+                            if (visitationTypeAndStatus.second==VisitationStatus.Overdue && overrideOverdueFlag)
                                 vh.visitationStatusValueTextView.text = overridOverdue.toString().replace("Not", "Not ")
-                        else
-                        vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not", "Not ")
+                            else
+                                vh.visitationStatusValueTextView.text = visitationTypeAndStatus.second.toString().replace("Not", "Not ")
                     }
                 } else {
                     if (visitationTypeAndStatus.second==VisitationStatus.Overdue && overrideOverdueFlag)
@@ -1719,14 +1810,14 @@ class VisitationPlanningFragment : Fragment() {
 
         fun reviewFilters(visitationType : String, visitationStatus : String) : Boolean {
             var hideVisitation = false
-            if (!annualVisitationCheckBox.isChecked && visitationType.equals(VisitationTypes.Annual.toString())) return true
-            if (!quarterlyOrOtherVisistationsCheckBox.isChecked && visitationType.equals(VisitationTypes.Quarterly.toString())) return true
-            if (!adHocVisitationsCheckBox.isChecked && visitationType.equals(VisitationTypes.AdHoc.toString())) return true
-            if (!deficienciesCheckBox.isChecked && visitationType.equals(VisitationTypes.Deficiency.toString())) return true
-            if (!pendingCheckBox.isChecked && visitationStatus.equals("Not Started")) return true
-            if (!inProgressCheckBox.isChecked && visitationStatus.contains("Progress",true)) return true
-            if (!overdueCheckBox.isChecked && visitationStatus.contains("Overdue",true)) return true
-            if (!completedCheckBox.isChecked && visitationStatus.equals("Completed")) return true
+            if (!binding.annualVisitationCheckBox.isChecked && visitationType.equals(VisitationTypes.Annual.toString())) return true
+            if (!binding.quarterlyOrOtherVisistationsCheckBox.isChecked && visitationType.equals(VisitationTypes.Quarterly.toString())) return true
+            if (!binding.adHocVisitationsCheckBox.isChecked && visitationType.equals(VisitationTypes.AdHoc.toString())) return true
+            if (!binding.deficienciesCheckBox.isChecked && visitationType.equals(VisitationTypes.Deficiency.toString())) return true
+            if (!binding.pendingCheckBox.isChecked && visitationStatus.equals("Not Started")) return true
+            if (!binding.inProgressCheckBox.isChecked && visitationStatus.contains("Progress",true)) return true
+            if (!binding.overdueCheckBox.isChecked && visitationStatus.contains("Overdue",true)) return true
+            if (!binding.completedCheckBox.isChecked && visitationStatus.equals("Completed")) return true
             return hideVisitation
         }
 
@@ -1774,6 +1865,7 @@ class VisitationPlanningFragment : Fragment() {
 
             vh.facilityNameValueTextView.text = visitationPlanningModelList.listArray[position].BusinessName
             vh.facilityNoValueTextView.text = visitationPlanningModelList.listArray[position].FACNo
+            vh.visitationCityView.text = visitationPlanningModelList.listArray[position].city
             if (visitationPlanningModelList.listArray[position].FACNo.equals("3114")) {
                 Log.v("HERE ---->"," START TRACE -----")
             }
@@ -1852,14 +1944,14 @@ class VisitationPlanningFragment : Fragment() {
 
         fun reviewFilters(visitationType : String, visitationStatus : String) : Boolean {
             var hideVisitation = false
-            if (!annualVisitationCheckBox.isChecked && visitationType.contains(VisitationTypes.Annual.toString())) return true
-            if (!quarterlyOrOtherVisistationsCheckBox.isChecked && visitationType.contains(VisitationTypes.Quarterly.toString())) return true
-            if (!adHocVisitationsCheckBox.isChecked && visitationType.contains(VisitationTypes.AdHoc.toString())) return true
-            if (!deficienciesCheckBox.isChecked && visitationType.contains(VisitationTypes.Deficiency.toString())) return true
-            if (!pendingCheckBox.isChecked && visitationStatus.contains("Not Started")) return true
-            if (!inProgressCheckBox.isChecked && visitationStatus.contains("Progress",true)) return true
-            if (!overdueCheckBox.isChecked && visitationStatus.contains("Overdue",true)) return true
-            if (!completedCheckBox.isChecked && visitationStatus.equals("Completed")) return true
+            if (!binding.annualVisitationCheckBox.isChecked && visitationType.contains(VisitationTypes.Annual.toString())) return true
+            if (!binding.quarterlyOrOtherVisistationsCheckBox.isChecked && visitationType.contains(VisitationTypes.Quarterly.toString())) return true
+            if (!binding.adHocVisitationsCheckBox.isChecked && visitationType.contains(VisitationTypes.AdHoc.toString())) return true
+            if (!binding.deficienciesCheckBox.isChecked && visitationType.contains(VisitationTypes.Deficiency.toString())) return true
+            if (!binding.pendingCheckBox.isChecked && visitationStatus.contains("Not Started")) return true
+            if (!binding.inProgressCheckBox.isChecked && visitationStatus.contains("Progress",true)) return true
+            if (!binding.overdueCheckBox.isChecked && visitationStatus.contains("Overdue",true)) return true
+            if (!binding.completedCheckBox.isChecked && visitationStatus.equals("Completed")) return true
             return hideVisitation
         }
 
@@ -1882,46 +1974,46 @@ class VisitationPlanningFragment : Fragment() {
     @SuppressLint("SetJavaScriptEnabled")
     fun launchNextAction(isCompleted : Boolean){
         if (isCompleted) {
-            recordsProgressView.visibility = View.VISIBLE
+            binding.recordsProgressView.visibility = View.VISIBLE
             if (Constants.specialistEmailForPDF.equals("")) {
-                webView!!.clearCache(true)
-                webView!!.webViewClient = object : WebViewClient() {
+                binding.webView!!.clearCache(true)
+                binding.webView!!.webViewClient = object : WebViewClient() {
                     override fun onPageFinished(view: WebView?, url: String?) {
                         if (view?.getTitle().equals("")) {
                             view?.reload();
                         }
                     }
                 }
-                webCardView.visibility = View.VISIBLE
+                binding.webCardView.visibility = View.VISIBLE
 //                webView.visibility = View.GONE
-                pdfName.text = "Visitation PDF For Specialist (ID: " + Constants.visitationIDForPDF + ")"
-                exitPDFDialogeBtn.setOnClickListener {
-                    webView.loadUrl("about:blank")
-                    recordsProgressView.visibility = View.GONE
-                    webCardView.visibility = View.GONE
+                binding.pdfName.text = "Visitation PDF For Specialist (ID: " + Constants.visitationIDForPDF + ")"
+                binding.exitPDFDialogeBtn.setOnClickListener {
+                    binding.webView.loadUrl("about:blank")
+                    binding.recordsProgressView.visibility = View.GONE
+                    binding.webCardView.visibility = View.GONE
                 }
                     Log.v("DOWNLOAD ",Constants.getPDF + Constants.visitationIDForPDF)
 //                RetrievePDFFromURL(pdfView).execute(Constants.getPDF + Constants.visitationIDForPDF)
 //                RetrievePDFFromURL(pdfView).execute("https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf")
 
-                webView.requestFocus()
-                webView.settings.javaScriptEnabled = true
-                webView.settings.loadWithOverviewMode = true;
-                webView.settings.useWideViewPort = true;
-                webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE;
-                webView.settings.setSupportZoom(true);
-                webView.settings.builtInZoomControls = true;
-                webView.settings.allowFileAccess = true;
-                webView.settings.allowContentAccess = true;
-                webView.settings.domStorageEnabled = true;
-                webView.settings.allowFileAccessFromFileURLs = true;
-                webView.settings.allowUniversalAccessFromFileURLs = true;
+                binding.webView.requestFocus()
+                binding.webView.settings.javaScriptEnabled = true
+                binding.webView.settings.loadWithOverviewMode = true;
+                binding.webView.settings.useWideViewPort = true;
+                binding.webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE;
+                binding.webView.settings.setSupportZoom(true);
+                binding.webView.settings.builtInZoomControls = true;
+                binding.webView.settings.allowFileAccess = true;
+                binding.webView.settings.allowContentAccess = true;
+                binding.webView.settings.domStorageEnabled = true;
+                binding.webView.settings.allowFileAccessFromFileURLs = true;
+                binding.webView.settings.allowUniversalAccessFromFileURLs = true;
 
 //              var url = URLEncoder.encode(Constants.getPDF + Constants.visitationIDForPDF, "UTF-8" );
-                webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + Constants.getPDF + Constants.visitationIDForPDF)
+                binding.webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + Constants.getPDF + Constants.visitationIDForPDF)
 //                webView.loadUrl(Constants.getPDF + Constants.visitationIDForPDF)
 //                webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + url)
-                webView.webViewClient = object : WebViewClient() {
+                binding.webView.webViewClient = object : WebViewClient() {
                     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                         view.loadUrl(url)
                         return true
@@ -1934,7 +2026,7 @@ class VisitationPlanningFragment : Fragment() {
             }
         } else {
             IndicatorsDataModel.getInstance().init()
-
+            binding.recordsProgressView.visibility = View.VISIBLE
             ////
 
             Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGVisitationsLog,
@@ -2016,9 +2108,32 @@ class VisitationPlanningFragment : Fragment() {
                 IndicatorsDataModel.getInstance().markVisitedScreen(PRGDataModel.getInstance().tblPRGVisitationsLog.filter { s -> s.facid == FacilityDataModel.getInstance().tblFacilities[0].FACNo && s.clubcode == FacilityDataModel.getInstance().clubCode.toInt() && s.facannualinspectionmonth == FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth && s.inspectioncycle == FacilityDataModel.getInstance().tblFacilities[0].InspectionCycle && s.visitationtype == FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType.toString() }.sortedByDescending { it.changedate }[0].visitedscreens)
             }
         }
+//        visitationsModel.pendingVisitationsArray.clear()
+//        visitationsModel.completedVisitationsArray.clear()
+//        visitationsModel.deficienciesArray.clear()
+
+//        binding.visitationfacilityListView.refreshDrawableState()
         var intent = Intent(context, com.inspection.FormsActivity::class.java)
         startActivity(intent)
+        binding.visitationfacilityListView.visibility = View.GONE
+        binding.recordsProgressView.visibility = View.GONE
+//        startActivityForResult(intent,100)
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        Log.v("FragmentA", "Returned from Activity B with data -- STARTED")
+//        if (requestCode === 100) {
+////            if (resultCode === /Activity.RESULT_OK) {
+//                // The user returned successfully from Activity B
+//                // Handle the data returned (if any)
+//                Log.v("FragmentA", "Returned from Activity B with data")
+////            } else {
+////                Log.v("FragmentA", "User canceled or there was an error.")
+////            }
+//        }
+//    }
+
     fun getFacilityPRGData(isCompleted : Boolean) {
         PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
         PRGDataModel.getInstance().tblPRGFacilitiesPhotos.clear()
@@ -2170,12 +2285,13 @@ class VisitationPlanningFragment : Fragment() {
         var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
         var client = clientBuilder.build()
         var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
-        recordsProgressView.visibility = View.VISIBLE
+        binding.recordsProgressView.visibility = View.VISIBLE
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
                 activity!!.runOnUiThread {
-                    Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
+//                    Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
+                    Utility.showUnifiedErrorDialog(activity,"Get Type Tables - " + e.message)
                 }
             }
             override fun onResponse(call: Call, response: okhttp3.Response) {
@@ -2183,8 +2299,9 @@ class VisitationPlanningFragment : Fragment() {
                 var responseString = response!!.body!!.string()
                 if (responseString.toString().contains("returnCode>1<", false)) {
                     activity!!.runOnUiThread {
-                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
-                        recordsProgressView.visibility = View.GONE
+//                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
+                        Utility.showUnifiedErrorDialog(activity,"Get Type Tables - " + responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
+                        binding.recordsProgressView.visibility = View.GONE
                     }
                 } else {
 //                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
@@ -2227,30 +2344,32 @@ class VisitationPlanningFragment : Fragment() {
         var request2 = okhttp3.Request.Builder().url(String.format(Constants.getFacilityData+Utility.getLoggingParameters(activity, 0, "Load Visitations ..."), facilityNumber, clubCode)).build()
         this.clubCode = clubCode
         if (isCompleted) {
-            progressBarText.text = "Generating PDF ..."
+            binding.progressBarText.text = "Generating PDF ..."
         } else {
-            progressBarText.text = "Loading ..."
+            binding.progressBarText.text = "Loading ..."
         }
-        recordsProgressView.visibility = View.VISIBLE
+        binding.recordsProgressView.visibility = View.VISIBLE
 
         client.newCall(request2).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 activity!!.runOnUiThread {
-                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e?.message)
-                    recordsProgressView.visibility = View.GONE
-                    progressBarText.text = "Loading ..."
+//                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Origin ERROR Connection Error. Please check internet connection - " + e?.message)
+                    Utility.showUnifiedErrorDialog(activity,"Get Facility Data - " + e.message)
+                    binding.recordsProgressView.visibility = View.GONE
+                    binding.progressBarText.text = "Loading ..."
                 }
             }
 
             override fun onResponse(call: Call, response: okhttp3.Response) {
                 var responseString = response!!.body!!.string()
                 activity!!.runOnUiThread {
-                    recordsProgressView.visibility = View.GONE
-                    progressBarText.text = "Loading ..."
+//                    binding.recordsProgressView.visibility = View.GONE
+                    binding.progressBarText.text = "Loading ..."
                     if (!responseString.contains("FacID not found")) {
                         if (responseString.toString().contains("returnCode>1<", false)) {
                             activity!!.runOnUiThread {
-                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
+//                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
+                                Utility.showUnifiedErrorDialog(activity,"Get Facility Data - " + responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
                             }
                         } else {
 //                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
@@ -2260,13 +2379,15 @@ class VisitationPlanningFragment : Fragment() {
                             jsonObj = removeEmptyJsonTags(jsonObj)
                             parseFacilityDataJsonToObject(jsonObj)
                             getFacilityPRGData(isCompleted)
-
+                            FirebaseCrashlytics.getInstance().log("User Clicked Load Facility")
+                            FirebaseCrashlytics.getInstance().setCustomKey("Facility", facilityNumber.toString())
+                            FirebaseCrashlytics.getInstance().setCustomKey("ClubCode", clubCode.toString())
                             FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = visitationType
-
                         }
                     } else {
                         activity!!.runOnUiThread {
-                            Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
+//                            Utility.showMessageDialog(activity, "Retrieve Data Error", "Facility data not found")
+                            Utility.showUnifiedErrorDialog(activity,"Facility data not found")
                         }
                     }
                 }
@@ -2784,6 +2905,16 @@ class VisitationPlanningFragment : Fragment() {
             } else {
                 FacilityDataModel.getInstance().tblPromotions.add(Gson().fromJson<TblPromotions>(jsonObj.get("Promotions").toString(), TblPromotions::class.java))
                 FacilityDataModelOrg.getInstance().tblPromotions.add(Gson().fromJson<TblPromotions>(jsonObj.get("Promotions").toString(), TblPromotions::class.java))
+            }
+        }
+
+        if (jsonObj.has("FacilityPhotos")) {
+            if (jsonObj.get("FacilityPhotos").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().FacilityPhotos = Gson().fromJson<ArrayList<FacilityPhotos>>(jsonObj.get("FacilityPhotos").toString(), object : TypeToken<ArrayList<FacilityPhotos>>() {}.type)
+                FacilityDataModelOrg.getInstance().FacilityPhotos = Gson().fromJson<ArrayList<FacilityPhotos>>(jsonObj.get("FacilityPhotos").toString(), object : TypeToken<ArrayList<FacilityPhotos>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().FacilityPhotos.add(Gson().fromJson<FacilityPhotos>(jsonObj.get("FacilityPhotos").toString(), FacilityPhotos::class.java))
+                FacilityDataModelOrg.getInstance().FacilityPhotos.add(Gson().fromJson<FacilityPhotos>(jsonObj.get("FacilityPhotos").toString(), FacilityPhotos::class.java))
             }
         }
 
@@ -3556,6 +3687,24 @@ class VisitationPlanningFragment : Fragment() {
         } else {
             jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
         }
+
+        if (jsonObj.has("FacilityPhotos")) {
+            if (!jsonObj.get("FacilityPhotos").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("FacilityPhotos")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("FacilityPhotos"))
+                    jsonObj.put("FacilityPhotos", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "FacilityPhotos")
+            }
+        }
+
         if (jsonObj.has("Promotions")) {
             if (!jsonObj.get("Promotions").toString().equals("")) {
                 try {
@@ -3899,6 +4048,10 @@ class VisitationPlanningFragment : Fragment() {
             var oneArray = TblPromotions()
             oneArray.PromoID=-1
             jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("FacilityPhotos")) {
+            var oneArray = FacilityPhotos()
+            oneArray.PhotoId=-1
+            jsonObj.put(key, Gson().toJson(oneArray))
         }
         return jsonObj;
     }
@@ -3921,14 +4074,15 @@ class VisitationPlanningFragment : Fragment() {
                     { response ->
                         Log.v("Send PDF Response ", "" + response)
                         requireActivity().runOnUiThread {
-                            recordsProgressView.visibility = View.GONE
-                            Utility.showMessageDialog(activity, "Confirmation...", "PDF for Visitation Number ${Constants.visitationIDForPDF} has been sent to $specialistEmail")
+                            binding.recordsProgressView.visibility = View.GONE
+                            Utility.showUnifiedConfirmationDialog(activity,  "PDF for Visitation Number ${Constants.visitationIDForPDF} has been sent to $specialistEmail")
+//                            Utility.showMessageDialog(activity, "Confirmation...", "PDF for Visitation Number ${Constants.visitationIDForPDF} has been sent to $specialistEmail")
                             Constants.specialistEmailForPDF = ""
                         }
                     }, {
                 Log.v("Send PDF Error ", "" + it.message)
                 it.printStackTrace()
-                recordsProgressView.visibility = View.GONE
+                    binding.recordsProgressView.visibility = View.GONE
             })).setRetryPolicy(DefaultRetryPolicy(
                     30000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -3946,6 +4100,7 @@ class VisitationPlanningFragment : Fragment() {
         val visitationTypeTextView:TextView
         val visitationStatusValueTextView: TextView
         val visitationStatusTextView:TextView
+        val visitationCityView:TextView
         val loadBtn: Button
         val emailPDFBtn: Button
         val listBkg: CardView
@@ -3962,7 +4117,7 @@ class VisitationPlanningFragment : Fragment() {
             this.loadBtn = view?.findViewById(R.id.loadBtn) as Button
             this.emailPDFBtn = view?.findViewById(R.id.emailPDFBtn) as Button
             this.listBkg = view?.findViewById(R.id.listBkg) as CardView
-
+            this.visitationCityView  = view?.findViewById(R.id.cityValueTextView) as TextView
         }
 
     }
@@ -4033,6 +4188,14 @@ class VisitationPlanningFragment : Fragment() {
             return fragment
         }
     }
+
+//    override fun onResume() {
+//        super.onResume()
+//        Log.v("Fragment", "User returned to this fragment");
+//    }
+
+
+
 }
 
 

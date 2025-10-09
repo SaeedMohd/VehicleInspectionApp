@@ -23,26 +23,13 @@ import com.inspection.Utils.Constants
 import com.inspection.Utils.Utility
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.Utils.toApiSubmitFormat
+import com.inspection.databinding.FragmentVisitationTrackingSubBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
-import kotlinx.android.synthetic.main.facility_group_layout.visitationTrackingButton
-import kotlinx.android.synthetic.main.fragment_visitation_form.cancelButton
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.alphaBackgroundForVTrackingDialogs
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.edit_VTrackingCard
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.edit_aarsigns_val
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.edit_certificate_val
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.edit_exitVTrackingDialogeBtnId
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.edit_memberbenefits_val
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.edit_qualitycontrol_val
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.edit_stafftraining_val
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.edit_submitVTracking
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.edit_vid
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.mainTrackingTableLayout
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.mainVTViewLinearId
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.progressBarTexttracking
-import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.trackingLoadingView
+//import kotlinx.android.synthetic.main.facility_group_layout.visitationTrackingButton
+//import kotlinx.android.synthetic.main.fragment_visitation_tracking_sub.mainTrackingTableLayout
 import java.util.Date
 
 // TODO: Rename parameter arguments, choose names that match
@@ -59,7 +46,8 @@ class VisitationTrackingSubFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    private var _binding: FragmentVisitationTrackingSubBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -76,27 +64,96 @@ class VisitationTrackingSubFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentVisitationTrackingSubBinding.bind(view)
+
         IndicatorsDataModel.getInstance().tblFacility[0].VisitationTrackingVisited = true
-        (activity as FormsActivity).visitationTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+//        (activity as FormsActivity).visitationTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
+        requireActivity().findViewById<Button>(R.id.visitationTrackingButton).setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
         fillVisitationTrackingTableView()
-        edit_exitVTrackingDialogeBtnId.setOnClickListener {
-            fillVisitationTrackingTableView()
-            altTrackingTableRow(2)
-            edit_VTrackingCard.visibility=View.GONE
-            (activity as FormsActivity).overrideBackButton = false
-            alphaBackgroundForVTrackingDialogs.visibility = View.GONE
+        binding.editAarsignsVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
+        binding.editQualitycontrolVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl)
+        binding.editStafftrainingVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining)
+        binding.editMemberbenefitsVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster)
+        binding.editCertificateVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval)
+        binding.editSubmitVTracking.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                var visitationID = FacilityDataModel.getInstance().tblVisitationTracking[0].visitationID
+                val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                val clubCode = FacilityDataModel.getInstance().clubCode
+                val insertDate = Date().toApiSubmitFormat()
+                val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+                val updateDate = Date().toApiSubmitFormat()
+                val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+                val facilityRep = FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName
+                val automotiveSpecialist = FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName
+                val aarSign = if (binding.editAarsignsVal.text.isNullOrEmpty()) "" else binding.editAarsignsVal.text.toString()
+                val qa = if (binding.editQualitycontrolVal.text.isNullOrEmpty()) "" else binding.editQualitycontrolVal.text.toString()
+                Log.v("STAFF TRAINING -->" , binding.editStafftrainingVal.text.toString())
+                val staffTraining = if (binding.editStafftrainingVal.text.isNullOrEmpty()) "" else binding.editStafftrainingVal.text.toString()
+                val memberBenefits = if (binding.editMemberbenefitsVal.text.isNullOrEmpty()) "" else binding.editMemberbenefitsVal.text.toString()
+                val certificateOfApproval = if (binding.editCertificateVal.text.isNullOrEmpty()) "" else binding.editCertificateVal.text.toString()
+                val visitmethod = FacilityDataModel.getInstance().tblVisitationTracking[0].VisitationMethodTypeID
+                val visitmethodStr = TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(FacilityDataModel.getInstance().tblVisitationTracking[0].VisitationMethodTypeID) }
+
+                binding.progressBarTexttracking.text = "Saving ..."
+                var urlString = facilityNo + "&clubcode=" + clubCode + "&StaffTraining=" + staffTraining + "&QualityControl=" + qa + "&AARSigns=" + aarSign + "&MemberBenefitPoster=" + memberBenefits + "&CertificateOfApproval=" + certificateOfApproval + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&sessionId=" + ApplicationPrefs.getInstance(activity).sessionID + "&userId=" + insertBy + "&headerUpdate=NO&visitationReason=" + if (FacilityDataModel.getInstance().tblVisitationTracking[0].VisitationReasonTypeID.equals("") || FacilityDataModel.getInstance().tblVisitationTracking[0].VisitationReasonTypeID.equals("0")) "" else TypeTablesModel.getInstance().VisitationReasonType.filter { s -> s.VisitationReasonTypeID.toString().equals(FacilityDataModel.getInstance().tblVisitationTracking[0].VisitationReasonTypeID) }[0].VisitationReasonTypeName + "&emailPDF=" + (if (FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility) "1" else "0") + "&emailTo=" + FacilityDataModel.getInstance().tblVisitationTracking[0].email + "&waiveVisitation=" + (if (FacilityDataModel.getInstance().tblVisitationTracking[0].waiveVisitations) "1" else "0") + "&waiveComments=" + FacilityDataModel.getInstance().tblVisitationTracking[0].waiverComments + "&facilityRep=" + facilityRep + "&automotiveSpecialist=" + automotiveSpecialist + "&visitationId=" + visitationID + "&visitMethod=" + visitmethod + "&annualVisitationMonth=" + FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth + "&visitMethodStr=" + visitmethodStr
+                Log.v("URL STRING",urlString)
+                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString + Utility.getLoggingParameters(activity, 0, "UPDATE VISITATION TRACKING DETAILS"),
+                        Response.Listener { response ->
+                            requireActivity().runOnUiThread {
+                                Log.v("VT RESPONSE ||| ", response.toString())
+                                if (response.toString().contains("Success", false)) {
+                                    FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining=staffTraining
+                                    FacilityDataModel.getInstance().tblVisitationTracking[0].QualityControl=qa
+                                    FacilityDataModel.getInstance().tblVisitationTracking[0].MemberBenefitPoster=memberBenefits
+                                    FacilityDataModel.getInstance().tblVisitationTracking[0].CertificateOfApproval=certificateOfApproval
+                                    FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns=aarSign
+                                    (activity as FormsActivity).saveRequired = false
+                                    (activity as FormsActivity).saveDone = true
+    //                                Utility.showMessageDialog(activity, "Confirmation ...", "Visitation Data Saved Successfully")
+                                    Utility.showUnifiedConfirmationDialog(activity,"Visitation Data Saved Successfully")
+                                    (activity as FormsActivity).saveVisitedScreensRequired = false
+    //                                            cancelButton.isEnabled = false
+                                    binding.trackingLoadingView.visibility = View.GONE
+                                    binding.progressBarTexttracking.text = "Loading ..."
+    //                                edit_VTrackingCard.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                    binding.alphaBackgroundForVTrackingDialogs.visibility = View.GONE
+                                } else {
+                                    binding.trackingLoadingView.visibility = View.GONE
+                                    binding.progressBarTexttracking.text = "Loading ..."
+                                    Utility.showSubmitAlertDialog(activity, false, "Error saving Visitation Details")
+                                }
+                            }
+                        }, Response.ErrorListener {
+                        binding.trackingLoadingView.visibility = View.GONE
+                        binding.progressBarTexttracking.text = "Loading ..."
+                    Utility.showSubmitAlertDialog(activity, false, "Error saving Visitation Details (Error: " + it.message + " )")
+                }))
+
+            } else {
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
+            }
         }
+//        edit_exitVTrackingDialogeBtnId.setOnClickListener {
+//            fillVisitationTrackingTableView()
+//            altTrackingTableRow(2)
+//            edit_VTrackingCard.visibility=View.GONE
+//            (activity as FormsActivity).overrideBackButton = false
+//            alphaBackgroundForVTrackingDialogs.visibility = View.GONE
+//        }
     }
 
 
     fun fillVisitationTrackingTableView(){
 
-        mainVTViewLinearId.isEnabled=true
+        binding.mainVTViewLinearId.isEnabled=true
 
-        if (mainTrackingTableLayout.childCount>1) {
-            for (i in mainTrackingTableLayout.childCount - 1 downTo 1) {
-                mainTrackingTableLayout.removeViewAt(i)
+        if (binding.mainTrackingTableLayout.childCount>1) {
+            for (i in binding.mainTrackingTableLayout.childCount - 1 downTo 1) {
+                binding.mainTrackingTableLayout.removeViewAt(i)
             }
         }
         val rowLayoutParam = TableRow.LayoutParams()
@@ -242,74 +299,79 @@ class VisitationTrackingSubFragment : Fragment() {
                     updateButton.isEnabled=true
                     updateButton.gravity = Gravity.CENTER
                     updateButton.setBackgroundColor(Color.TRANSPARENT)
-                    tableRow.addView(updateButton)
+//                    tableRow.addView(updateButton)
 
                     updateButton.setOnClickListener {
-                        rowIndex = mainTrackingTableLayout.indexOfChild(tableRow)
-                        edit_vid.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].visitationID)
-                        edit_aarsigns_val.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].AARSigns)
-                        edit_qualitycontrol_val.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].QualityControl)
-                        edit_stafftraining_val.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].StaffTraining)
-                        edit_memberbenefits_val.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].MemberBenefitPoster)
-                        edit_certificate_val.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].CertificateOfApproval)
-                        edit_VTrackingCard.visibility = View.VISIBLE
+                        rowIndex = binding.mainTrackingTableLayout.indexOfChild(tableRow)
+//                        edit_vid.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].visitationID)
+                        binding.editAarsignsVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].AARSigns)
+                        binding.editQualitycontrolVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].QualityControl)
+                        binding.editStafftrainingVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].StaffTraining)
+                        binding.editMemberbenefitsVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].MemberBenefitPoster)
+                        binding.editCertificateVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].CertificateOfApproval)
+                        binding.editVTrackingCard.visibility = View.VISIBLE
                         (activity as FormsActivity).overrideBackButton = true
-                        alphaBackgroundForVTrackingDialogs.visibility = View.VISIBLE
+                        binding.alphaBackgroundForVTrackingDialogs.visibility = View.VISIBLE
 
-                        var childViewCount = mainTrackingTableLayout.getChildCount();
-                        edit_submitVTracking.setOnClickListener {
-                            var visitationID = FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].visitationID
-                            val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
-                            val clubCode = FacilityDataModel.getInstance().clubCode
-                            val insertDate = Date().toApiSubmitFormat()
-                            val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
-                            val updateDate = Date().toApiSubmitFormat()
-                            val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
-                            val facilityRep = FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].facilityRepresentativeName
-                            val automotiveSpecialist = FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].automotiveSpecialistName
-                            val aarSign = if (edit_aarsigns_val.text.isNullOrEmpty()) "" else edit_aarsigns_val.text.toString()
-                            val qa = if (edit_qualitycontrol_val.text.isNullOrEmpty()) "" else edit_qualitycontrol_val.text.toString()
-                            Log.v("STAFF TRAINING -->" , edit_stafftraining_val.text.toString())
-                            val staffTraining = if (edit_stafftraining_val.text.isNullOrEmpty()) "" else edit_stafftraining_val.text.toString()
-                            val memberBenefits = if (edit_memberbenefits_val.text.isNullOrEmpty()) "" else edit_memberbenefits_val.text.toString()
-                            val certificateOfApproval = if (edit_certificate_val.text.isNullOrEmpty()) "" else edit_certificate_val.text.toString()
-                            val visitmethod = FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].VisitationMethodTypeID
-                            val visitmethodStr = TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].VisitationMethodTypeID) }
+                        var childViewCount = binding.mainTrackingTableLayout.getChildCount();
+                        binding.editSubmitVTracking.setOnClickListener {
+                            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                                var visitationID = FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].visitationID
+                                val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                                val clubCode = FacilityDataModel.getInstance().clubCode
+                                val insertDate = Date().toApiSubmitFormat()
+                                val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+                                val updateDate = Date().toApiSubmitFormat()
+                                val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+                                val facilityRep = FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].facilityRepresentativeName
+                                val automotiveSpecialist = FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].automotiveSpecialistName
+                                val aarSign = if (binding.editAarsignsVal.text.isNullOrEmpty()) "" else binding.editAarsignsVal.text.toString()
+                                val qa = if (binding.editQualitycontrolVal.text.isNullOrEmpty()) "" else binding.editQualitycontrolVal.text.toString()
+                                Log.v("STAFF TRAINING -->" , binding.editStafftrainingVal.text.toString())
+                                val staffTraining = if (binding.editStafftrainingVal.text.isNullOrEmpty()) "" else binding.editStafftrainingVal.text.toString()
+                                val memberBenefits = if (binding.editMemberbenefitsVal.text.isNullOrEmpty()) "" else binding.editMemberbenefitsVal.text.toString()
+                                val certificateOfApproval = if (binding.editCertificateVal.text.isNullOrEmpty()) "" else binding.editCertificateVal.text.toString()
+                                val visitmethod = FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].VisitationMethodTypeID
+                                val visitmethodStr = TypeTablesModel.getInstance().VisitationMethodType.filter { s->s.TypeID.toString().equals(FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].VisitationMethodTypeID) }
 
-                            progressBarTexttracking.text = "Saving ..."
-                            var urlString = facilityNo + "&clubcode=" + clubCode + "&StaffTraining=" + staffTraining + "&QualityControl=" + qa + "&AARSigns=" + aarSign + "&MemberBenefitPoster=" + memberBenefits + "&CertificateOfApproval=" + certificateOfApproval + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&sessionId=" + ApplicationPrefs.getInstance(activity).sessionID + "&userId=" + insertBy + "&headerUpdate=NO&visitationReason=" + textView5.text + "&emailPDF=" + (if (FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].emailVisitationPdfToFacility) "1" else "0") + "&emailTo=" + FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].email + "&waiveVisitation=" + (if (FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].waiveVisitations) "1" else "0") + "&waiveComments=" + FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].waiverComments + "&facilityRep=" + facilityRep + "&automotiveSpecialist=" + automotiveSpecialist + "&visitationId=" + visitationID + "&visitMethod=" + visitmethod + "&annualVisitationMonth=" + FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth + "&visitMethodStr=" + visitmethodStr
-                            Log.v("URL STRING",urlString)
-                            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Saved ... Type --> " + visitationType),
-                                    Response.Listener { response ->
-                                        requireActivity().runOnUiThread {
-                                            Log.v("VT RESPONSE ||| ", response.toString())
-                                            if (response.toString().contains("Success", false)) {
-                                                FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].StaffTraining=staffTraining
-                                                FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].QualityControl=qa
-                                                FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].MemberBenefitPoster=memberBenefits
-                                                FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].CertificateOfApproval=certificateOfApproval
-                                                FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].AARSigns=aarSign
-                                                (activity as FormsActivity).saveRequired = false
-                                                (activity as FormsActivity).saveDone = true
-                                                Utility.showMessageDialog(activity, "Confirmation ...", "Visitation Data Saved Successfully")
-                                                (activity as FormsActivity).saveVisitedScreensRequired = false
-//                                            cancelButton.isEnabled = false
-                                                trackingLoadingView.visibility = View.GONE
-                                                progressBarTexttracking.text = "Loading ..."
-                                                edit_VTrackingCard.visibility = View.GONE
-                                                (activity as FormsActivity).overrideBackButton = false
-                                                alphaBackgroundForVTrackingDialogs.visibility = View.GONE
-                                            } else {
-                                                trackingLoadingView.visibility = View.GONE
-                                                progressBarTexttracking.text = "Loading ..."
-                                                Utility.showSubmitAlertDialog(activity, false, "Error saving Visitation Details")
+                                binding.progressBarTexttracking.text = "Saving ..."
+                                var urlString = facilityNo + "&clubcode=" + clubCode + "&StaffTraining=" + staffTraining + "&QualityControl=" + qa + "&AARSigns=" + aarSign + "&MemberBenefitPoster=" + memberBenefits + "&CertificateOfApproval=" + certificateOfApproval + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&sessionId=" + ApplicationPrefs.getInstance(activity).sessionID + "&userId=" + insertBy + "&headerUpdate=NO&visitationReason=" + textView5.text + "&emailPDF=" + (if (FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].emailVisitationPdfToFacility) "1" else "0") + "&emailTo=" + FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].email + "&waiveVisitation=" + (if (FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].waiveVisitations) "1" else "0") + "&waiveComments=" + FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].waiverComments + "&facilityRep=" + facilityRep + "&automotiveSpecialist=" + automotiveSpecialist + "&visitationId=" + visitationID + "&visitMethod=" + visitmethod + "&annualVisitationMonth=" + FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth + "&visitMethodStr=" + visitmethodStr
+                                Log.v("URL STRING",urlString)
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Saved ... Type --> " + visitationType),
+                                        Response.Listener { response ->
+                                            requireActivity().runOnUiThread {
+                                                Log.v("VT RESPONSE ||| ", response.toString())
+                                                if (response.toString().contains("Success", false)) {
+                                                    FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].StaffTraining=staffTraining
+                                                    FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].QualityControl=qa
+                                                    FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].MemberBenefitPoster=memberBenefits
+                                                    FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].CertificateOfApproval=certificateOfApproval
+                                                    FacilityDataModel.getInstance().tblVisitationTracking[rowIndex-1].AARSigns=aarSign
+                                                    (activity as FormsActivity).saveRequired = false
+                                                    (activity as FormsActivity).saveDone = true
+    //                                                Utility.showMessageDialog(activity, "Confirmation ...", "Visitation Data Saved Successfully")
+                                                    Utility.showUnifiedConfirmationDialog(activity,"Visitation Data Saved Successfully")
+                                                    (activity as FormsActivity).saveVisitedScreensRequired = false
+    //                                            cancelButton.isEnabled = false
+                                                    binding.trackingLoadingView.visibility = View.GONE
+                                                    binding.progressBarTexttracking.text = "Loading ..."
+                                                    binding.editVTrackingCard.visibility = View.GONE
+                                                    (activity as FormsActivity).overrideBackButton = false
+                                                    binding.alphaBackgroundForVTrackingDialogs.visibility = View.GONE
+                                                } else {
+                                                    binding.trackingLoadingView.visibility = View.GONE
+                                                    binding.progressBarTexttracking.text = "Loading ..."
+                                                    Utility.showSubmitAlertDialog(activity, false, "Error saving Visitation Details")
+                                                }
                                             }
-                                        }
-                                    }, Response.ErrorListener {
-                                trackingLoadingView.visibility = View.GONE
-                                progressBarTexttracking.text = "Loading ..."
-                                Utility.showSubmitAlertDialog(activity, false, "Error saving Visitation Details (Error: " + it.message + " )")
-                            }))
+                                        }, Response.ErrorListener {
+                                        binding.trackingLoadingView.visibility = View.GONE
+                                        binding.progressBarTexttracking.text = "Loading ..."
+                                    Utility.showSubmitAlertDialog(activity, false, "Error saving Visitation Details (Error: " + it.message + " )")
+                                }))
+                            } else {
+                            Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
+                            }
                         }
                     }
 
@@ -369,7 +431,7 @@ class VisitationTrackingSubFragment : Fragment() {
 //                        } else
 //                            Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
 //                    }
-                    mainTrackingTableLayout.addView(tableRow)
+                    binding.mainTrackingTableLayout.addView(tableRow)
                 }
             }
         }
@@ -377,10 +439,10 @@ class VisitationTrackingSubFragment : Fragment() {
     }
 
     fun altTrackingTableRow(alt_row: Int) {
-        var childViewCount = mainTrackingTableLayout.getChildCount();
+        var childViewCount = binding.mainTrackingTableLayout.getChildCount();
 
         for (i in 1..childViewCount - 1) {
-            var row: TableRow = mainTrackingTableLayout.getChildAt(i) as TableRow;
+            var row: TableRow = binding.mainTrackingTableLayout.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.setBackground(getResources().getDrawable(

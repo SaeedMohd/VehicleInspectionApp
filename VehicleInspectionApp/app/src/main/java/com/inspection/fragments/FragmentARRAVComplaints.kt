@@ -24,13 +24,14 @@ import com.inspection.Utils.Constants
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.Utils.toast
+import com.inspection.databinding.FragmentAaravComplaintsBinding
+import com.inspection.databinding.FragmentAaravPersonnelBinding
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
 import com.inspection.model.AAAFacilityComplaints
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_aarav_complaints.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,7 +48,8 @@ class FragmentARRAVComplaints : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
     private var facilityComplaintsList = ArrayList<AAAFacilityComplaints>()
-
+    private var _binding: FragmentAaravComplaintsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,10 +63,11 @@ class FragmentARRAVComplaints : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAaravComplaintsBinding.bind(view)
 //        if (IndicatorsDataModel.getInstance().tblComplaints[0].visited) compTitle.setTextColor(Color.parseColor("#26C3AA")) else compTitle.setTextColor(Color.parseColor("#A42600"))
 
         IndicatorsDataModel.getInstance().tblComplaints[0].visited = true
-        compTitle.setTextColor(Color.parseColor("#26C3AA"))
+        binding.compTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
         programsChangesMade = false
@@ -83,9 +86,9 @@ class FragmentARRAVComplaints : Fragment() {
 //        prepareComplaints(true)
         //  prepareComplaintsSpinners()
         fillComplaintsTableView()
-        comNoTextViewId.text = getNoOfComplaintsForPast12M()
-        justComNoTextViewId.text = getNoOfJustComplaintsForPast12M()
-        justComRatioTextViewId.text = getJustComplaintsRatio()
+        binding.comNoTextViewId.text = getNoOfComplaintsForPast12M()
+        binding.justComNoTextViewId.text = getNoOfJustComplaintsForPast12M()
+        binding.justComRatioTextViewId.text = getJustComplaintsRatio()
 //
 //        newRecDateBtn.setOnClickListener {
 //            val c = Calendar.getInstance()
@@ -187,128 +190,128 @@ class FragmentARRAVComplaints : Fragment() {
 
     }
 
-    fun addTheLatestRowOfPortalAdmin() {
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-
-        val rowLayoutParam1 = TableRow.LayoutParams()
-        rowLayoutParam1.weight = 1F
-        rowLayoutParam1.column = 1
-
-        val rowLayoutParam2 = TableRow.LayoutParams()
-        rowLayoutParam2.weight = 1F
-        rowLayoutParam2.column = 2
-
-        val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
-        rowLayoutParam3.column = 3
-
-        val rowLayoutParam4 = TableRow.LayoutParams()
-        rowLayoutParam4.weight = 1F
-        rowLayoutParam4.column = 4
-        val rowLayoutParam5 = TableRow.LayoutParams()
-        rowLayoutParam5.weight = 1F
-        rowLayoutParam5.column = 5
-        val rowLayoutParam6 = TableRow.LayoutParams()
-        rowLayoutParam6.weight = 1F
-        rowLayoutParam6.column = 6
-        val rowLayoutParam7 = TableRow.LayoutParams()
-        rowLayoutParam7.weight = 1F
-        rowLayoutParam7.column = 7
-
-        val rowLayoutParam8 = TableRow.LayoutParams()
-        rowLayoutParam8.weight = 1F
-        rowLayoutParam8.column = 8
-        FacilityDataModel.getInstance().tblComplaintFiles[FacilityDataModel.getInstance().tblComplaintFiles.size - 1].apply {
-
-
-            var tableRow = TableRow(context)
-
-            var textView = TextView(context)
-            textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ComplaintID
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ""
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            TableRow.LayoutParams()
-            textView.text = ""
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ""
-            tableRow.addView(textView)
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam4
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = FirstName
-            tableRow.addView(textView)
-
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam5
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = LastName
-            tableRow.addView(textView)
-
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam6
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID == ComplaintID }[0].ComplaintReasonName
-            for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
-
-
-                if (ComplaintID.equals(fac.ComplaintReasonID)) {
-
-                    textView.text = fac.ComplaintReasonName
-                    Toast.makeText(context, "match", Toast.LENGTH_SHORT).show()
-
-                } else {
-                    Toast.makeText(context, "doesnt match", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            tableRow.addView(textView)
-
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam7
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ""
-            tableRow.addView(textView)
-
-
-            textView = TextView(context)
-            textView.layoutParams = rowLayoutParam8
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-            textView.text = ""
-            tableRow.addView(textView)
-
-
-            ComplaintsResultsTbl.addView(tableRow)
-
-        }
-        altDeffTableRow(2)
-    }
+//    fun addTheLatestRowOfPortalAdmin() {
+//        val rowLayoutParam = TableRow.LayoutParams()
+//        rowLayoutParam.weight = 1F
+//        rowLayoutParam.column = 0
+//
+//        val rowLayoutParam1 = TableRow.LayoutParams()
+//        rowLayoutParam1.weight = 1F
+//        rowLayoutParam1.column = 1
+//
+//        val rowLayoutParam2 = TableRow.LayoutParams()
+//        rowLayoutParam2.weight = 1F
+//        rowLayoutParam2.column = 2
+//
+//        val rowLayoutParam3 = TableRow.LayoutParams()
+//        rowLayoutParam3.weight = 1F
+//        rowLayoutParam3.column = 3
+//
+//        val rowLayoutParam4 = TableRow.LayoutParams()
+//        rowLayoutParam4.weight = 1F
+//        rowLayoutParam4.column = 4
+//        val rowLayoutParam5 = TableRow.LayoutParams()
+//        rowLayoutParam5.weight = 1F
+//        rowLayoutParam5.column = 5
+//        val rowLayoutParam6 = TableRow.LayoutParams()
+//        rowLayoutParam6.weight = 1F
+//        rowLayoutParam6.column = 6
+//        val rowLayoutParam7 = TableRow.LayoutParams()
+//        rowLayoutParam7.weight = 1F
+//        rowLayoutParam7.column = 7
+//
+//        val rowLayoutParam8 = TableRow.LayoutParams()
+//        rowLayoutParam8.weight = 1F
+//        rowLayoutParam8.column = 8
+//        FacilityDataModel.getInstance().tblComplaintFiles[FacilityDataModel.getInstance().tblComplaintFiles.size - 1].apply {
+//
+//
+//            var tableRow = TableRow(context)
+//
+//            var textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = ComplaintID
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam1
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = ""
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam2
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            TableRow.LayoutParams()
+//            textView.text = ""
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam3
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = ""
+//            tableRow.addView(textView)
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam4
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = FirstName
+//            tableRow.addView(textView)
+//
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam5
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = LastName
+//            tableRow.addView(textView)
+//
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam6
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = TypeTablesModel.getInstance().ComplaintFilesReasonType.filter { s -> s.ComplaintReasonID == ComplaintID }[0].ComplaintReasonName
+//            for (fac in TypeTablesModel.getInstance().ComplaintFilesReasonType) {
+//
+//
+//                if (ComplaintID.equals(fac.ComplaintReasonID)) {
+//
+//                    textView.text = fac.ComplaintReasonName
+//                    Toast.makeText(context, "match", Toast.LENGTH_SHORT).show()
+//
+//                } else {
+//                    Toast.makeText(context, "doesnt match", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            tableRow.addView(textView)
+//
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam7
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = ""
+//            tableRow.addView(textView)
+//
+//
+//            textView = TextView(context)
+//            textView.layoutParams = rowLayoutParam8
+//            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+//            textView.text = ""
+//            tableRow.addView(textView)
+//
+//
+//            ComplaintsResultsTbl.addView(tableRow)
+//
+//        }
+//        altDeffTableRow(2)
+//    }
 
     fun altDeffTableRow(alt_row: Int) {
-        var childViewCount = ComplaintsResultsTbl.getChildCount();
+        var childViewCount = binding.ComplaintsResultsTbl.getChildCount();
 
         for (i in 1..childViewCount - 1) {
-            var row: TableRow = ComplaintsResultsTbl.getChildAt(i) as TableRow;
+            var row: TableRow = binding.ComplaintsResultsTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.setBackground(getResources().getDrawable(
@@ -368,14 +371,14 @@ class FragmentARRAVComplaints : Fragment() {
         Log.v("Complaints --- ",Constants.getFacilityComplaintsURL + AnnualVisitationSingleton.getInstance().facilityId + "&all=" + boolAll.toString())
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityComplaintsURL + AnnualVisitationSingleton.getInstance().facilityId + "&all=" + boolAll.toString(),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread(Runnable {
+                    requireActivity().runOnUiThread(Runnable {
                         facilityComplaintsList = Gson().fromJson(response.toString(), Array<AAAFacilityComplaints>::class.java).toCollection(ArrayList())
 //                            drawProgramsTable()
                         //   BuildComplaintsList()
                     })
                 }, Response.ErrorListener {
             Log.v("error while loading", "error while loading facility complaints")
-            context!!.toast("Connection Error. Please check the internet connection")
+            requireContext().toast("Connection Error. Please check the internet connection")
         }))
     }
 
@@ -480,7 +483,7 @@ class FragmentARRAVComplaints : Fragment() {
                     textView.text = get(it).ComplaintResolutionName
                     tableRow.addView(textView)
 
-                    ComplaintsResultsTbl.addView(tableRow)
+                    binding.ComplaintsResultsTbl.addView(tableRow)
                 }
             }
         }

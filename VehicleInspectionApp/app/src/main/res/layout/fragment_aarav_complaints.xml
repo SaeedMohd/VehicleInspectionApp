@@ -186,14 +186,14 @@
                 </TableRow>
             </TableLayout>
 
-<LinearLayout
+            <LinearLayout
     android:layout_marginTop="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
     <TableLayout
-        android:id="@+id/ComplaintsResultsTbl"
+        android:id="@+id/ComplaintsResultsTbl2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:showDividers="middle|beginning|end"
@@ -672,7 +672,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsComp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -681,7 +681,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsComp"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"

@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -16,10 +17,12 @@ import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
+import com.inspection.databinding.FragmentAaravBillingadjustmentBinding
+import com.inspection.databinding.FragmentAaravBillinghistoryBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
-import kotlinx.android.synthetic.main.billing_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_billinghistory.*
+//import kotlinx.android.synthetic.main.billing_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_aarav_billinghistory.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +42,8 @@ class FragmentAARAVBillingHistory : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    private var _binding: FragmentAaravBillinghistoryBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,17 +61,19 @@ class FragmentAARAVBillingHistory : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAaravBillinghistoryBinding.bind(view)
         fillBillingHistoryTableView()
         IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited = true
-        (activity as FormsActivity).billingHistoryButton.setTextColor(Color.parseColor("#26C3AA"))
+        requireActivity().findViewById<Button>(R.id.billingHistoryButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).billingHistoryButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
     fun fillBillingHistoryTableView() {
 
-        if (billHistoryResultsTbl.childCount>1) {
-            for (i in billHistoryResultsTbl.childCount - 1 downTo 1) {
-                billHistoryResultsTbl.removeViewAt(i)
+        if (binding.billHistoryResultsTbl.childCount>1) {
+            for (i in binding.billHistoryResultsTbl.childCount - 1 downTo 1) {
+                binding.billHistoryResultsTbl.removeViewAt(i)
             }
         }
 
@@ -121,6 +127,13 @@ class FragmentAARAVBillingHistory : Fragment() {
         rowLayoutParam6.width = 0
         rowLayoutParam6.gravity = Gravity.CENTER_VERTICAL
 
+        val rowLayoutParam7 = TableRow.LayoutParams()
+        rowLayoutParam7.weight = 1F
+        rowLayoutParam7.column = 7
+        rowLayoutParam7.height = TableRow.LayoutParams.WRAP_CONTENT
+        rowLayoutParam7.width = 0
+        rowLayoutParam7.gravity = Gravity.CENTER_VERTICAL
+
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
 
@@ -169,24 +182,31 @@ class FragmentAARAVBillingHistory : Fragment() {
                     textView.layoutParams = rowLayoutParam4
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
-                    textView.text = if (get(it).InvoiceAmount.isNullOrEmpty()) "" else "%.3f".format(get(it).InvoiceAmount.toFloat())
+                    textView.text = get(it).BillBalanceDue
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
-                    textView.text = if (get(it).AmountReceived.isNullOrEmpty()) "" else "%.3f".format(get(it).AmountReceived.toFloat())
+                    textView.text = if (get(it).InvoiceAmount.isNullOrEmpty()) "" else "%.3f".format(get(it).InvoiceAmount.toFloat())
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam6
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
+                    textView.text = if (get(it).AmountReceived.isNullOrEmpty()) "" else "%.3f".format(get(it).AmountReceived.toFloat())
+                    tableRow.addView(textView)
+
+                    textView = TextView(context)
+                    textView.layoutParams = rowLayoutParam7
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 14f
                     textView.text = if (get(it).ReceiptDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).ReceiptDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
-                    billHistoryResultsTbl.addView(tableRow)
+                    binding.billHistoryResultsTbl.addView(tableRow)
                 }
             }
         }

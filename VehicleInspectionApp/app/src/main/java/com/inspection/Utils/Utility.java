@@ -17,6 +17,8 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.gson.Gson;
+import com.inspection.R;
 import com.inspection.Utils.*;
 import android.app.DatePickerDialog;
 import android.app.job.JobInfo;
@@ -32,8 +34,11 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
@@ -45,16 +50,28 @@ import android.os.PowerManager;
 import android.provider.*;
 import android.util.Log;
 import android.provider.ContactsContract.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.inspection.adapter.MultipartRequest;
+//import com.inspection.adapter.MultipartRequest;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+
 import com.inspection.interfaces.LocationJobScheduler;
 import com.inspection.model.VehicleProfileModel;
 import com.itextpdf.text.Image;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -77,6 +94,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -172,40 +190,51 @@ public class Utility {
     }
 
     public static void showSubmitAlertDialog (Activity act,Boolean isSuccess, String dataToSave){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                act);
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+//                act);
         if (isSuccess) {
-            alertDialogBuilder.setTitle("Confirmation ...");
-            alertDialogBuilder.setMessage(dataToSave + " Data Saved Succesfully");
+            showUnifiedConfirmationDialog(act,dataToSave + " Data Saved Successfully");
+//            alertDialogBuilder.setTitle("Confirmation ...");
+//            alertDialogBuilder.setMessage(dataToSave + " Data Saved Succesfully");
         } else {
-            alertDialogBuilder.setTitle("Sorry ...");
-            alertDialogBuilder.setMessage("Error occured while saving " + dataToSave + " Changes");
+            showUnifiedErrorDialog(act,"Error occurred while saving " + dataToSave + " Changes");
+//            alertDialogBuilder.setTitle("Sorry ...");
+//            alertDialogBuilder.setMessage("Error occured while saving " + dataToSave + " Changes");
         }
         // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("Ok",null);
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+//        alertDialogBuilder
+//                .setCancelable(false)
+//                .setPositiveButton("Ok",null);
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//        alertDialog.show();
     }
 
-    public static void showSubmitAlertDialog (Activity act,Boolean isSuccess, String dataToSave, String strCondition){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                act);
-        if (isSuccess) {
-            alertDialogBuilder.setTitle("Confirmation ...");
-            alertDialogBuilder.setMessage(dataToSave + " Data Saved Succesfully with comment ( " + strCondition +" )");
-        } else {
-            alertDialogBuilder.setTitle("Sorry ...");
-            alertDialogBuilder.setMessage("Error occured while saving " + dataToSave + " Changes - ( "+ strCondition +" )");
-        }
-        // set dialog message
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("Ok",null);
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
+//    public static void showSubmitAlertDialog (Activity act,Boolean isSuccess, String dataToSave, String strCondition){
+////        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+////                act);
+////        if (isSuccess) {
+////            alertDialogBuilder.setTitle("Confirmation ...");
+////            alertDialogBuilder.setMessage(dataToSave + " Data Saved Succesfully with comment ( " + strCondition +" )");
+////        } else {
+////            alertDialogBuilder.setTitle("Sorry ...");
+////            alertDialogBuilder.setMessage("Error occured while saving " + dataToSave + " Changes - ( "+ strCondition +" )");
+////        }
+////        // set dialog message
+////        alertDialogBuilder
+////                .setCancelable(false)
+////                .setPositiveButton("Ok",null);
+////        AlertDialog alertDialog = alertDialogBuilder.create();
+////        alertDialog.show();
+//        if (isSuccess) {
+//            showUnifiedConfirmationDialog(act,dataToSave + " Data Saved Successfully with comment ( " + strCondition +" )");
+////            alertDialogBuilder.setTitle("Confirmation ...");
+////            alertDialogBuilder.setMessage(dataToSave + " Data Saved Succesfully");
+//        } else {
+//            showUnifiedErrorDialog(act,"Error occured while saving " + dataToSave + " Changes");
+////            alertDialogBuilder.setTitle("Sorry ...");
+////            alertDialogBuilder.setMessage("Error occured while saving " + dataToSave + " Changes");
+//        }
+//    }
 
     public static String postRequest(String url, ContentValues values) {
         String request = "";
@@ -291,6 +320,7 @@ public class Utility {
         if (message != null && message.trim().length() > 0) {
             Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(title);
+
             builder.setMessage(message);
             builder.setPositiveButton("OK",
                     new DialogInterface.OnClickListener() {
@@ -308,6 +338,215 @@ public class Utility {
 
         }
     }
+
+    public static final void showInternetWarningDialog(Context context, String title
+                                               ) {
+//        Drawable icon;
+//        int iconColor;
+//        if (message != null && message.trim().length() > 0) {
+            Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View dialogView = inflater.inflate(R.layout.internet_connection_dialog, null);
+            builder.setView(dialogView);
+            TextView dialogTitle = dialogView.findViewById(R.id.tvTitle);
+            dialogTitle.setText(title);
+            Button okBtn = dialogView.findViewById(R.id.btnAction);
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(false);
+            okBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+            dialog.show();
+//        }
+    }
+
+    public static final void showUnifiedConfirmationDialog(Context context,
+                                                       String message) {
+//        Drawable icon;
+//        int iconColor;
+        if (message != null && message.trim().length() > 0) {
+            Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View dialogView = inflater.inflate(R.layout.confirmation_dialog, null);
+            builder.setView(dialogView);
+            TextView dialogMessage = dialogView.findViewById(R.id.tvMessage);
+            dialogMessage.setText(message);
+            Button okBtn = dialogView.findViewById(R.id.btnAction);
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(false);
+            okBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+            dialog.show();
+        }
+    }
+
+    public static final void showUnifiedErrorDialog(Context context,
+                                                           String message) {
+//        Drawable icon;
+//        int iconColor;
+        if (message != null && message.trim().length() > 0) {
+            Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View dialogView = inflater.inflate(R.layout.error_dialog, null);
+            builder.setView(dialogView);
+            TextView dialogMessage = dialogView.findViewById(R.id.tvMessage);
+            dialogMessage.setText(message);
+            Button okBtn = dialogView.findViewById(R.id.btnAction);
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(false);
+            okBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+            dialog.show();
+        }
+    }
+
+    public static final void showUnifiedErrorDialogWithSteps(Context context,
+                                                    String[] message,String[] status) {
+//        Drawable icon;
+//        int iconColor;
+        if (message != null && message.length > 0) {
+            Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View dialogView = inflater.inflate(R.layout.error_dialog_with_steps, null);
+            builder.setView(dialogView);
+            LinearLayout ll1 = dialogView.findViewById(R.id.success_1_ll);
+            LinearLayout ll2 = dialogView.findViewById(R.id.success_2_ll);
+            LinearLayout ll3 = dialogView.findViewById(R.id.success_3_ll);
+            LinearLayout ll4 = dialogView.findViewById(R.id.success_4_ll);
+            LinearLayout ll5 = dialogView.findViewById(R.id.success_5_ll);
+            TextView tv1 = dialogView.findViewById(R.id.tv_success_1_msg);
+            TextView tv2 = dialogView.findViewById(R.id.tv_success_2_msg);
+            TextView tv3 = dialogView.findViewById(R.id.tv_success_3_msg);
+            TextView tv4 = dialogView.findViewById(R.id.tv_success_4_msg);
+            TextView tv5 = dialogView.findViewById(R.id.tv_success_5_msg);
+            ImageView iv_success_1 = dialogView.findViewById(R.id.icon_success_1);
+            ImageView iv_success_2 = dialogView.findViewById(R.id.icon_success_2);
+            ImageView iv_success_3 = dialogView.findViewById(R.id.icon_success_3);
+            ImageView iv_success_4 = dialogView.findViewById(R.id.icon_success_4);
+            ImageView iv_success_5 = dialogView.findViewById(R.id.icon_success_5);
+
+            ImageView iv_error_1 = dialogView.findViewById(R.id.icon_error_1);
+            ImageView iv_error_2 = dialogView.findViewById(R.id.icon_error_2);
+            ImageView iv_error_3 = dialogView.findViewById(R.id.icon_error_3);
+            ImageView iv_error_4 = dialogView.findViewById(R.id.icon_error_4);
+            ImageView iv_error_5 = dialogView.findViewById(R.id.icon_error_5);
+            Button okBtn = dialogView.findViewById(R.id.btnAction);
+            for (int i = 0; i < message.length; i++) {
+                if (message[i] != null && message[i].trim().length() > 0) {
+                    if (i==0) {
+                        tv1.setText(message[i]);
+                        if (status[i]=="Success") {
+                            iv_success_1.setVisibility(View.VISIBLE);
+                            iv_error_1.setVisibility(View.GONE);
+                        } else {
+                            iv_success_1.setVisibility(View.GONE);
+                            iv_error_1.setVisibility(View.VISIBLE);
+                        }
+                        ll1.setVisibility(View.VISIBLE);
+                    } else if (i==1) {
+                        tv2.setText(message[i]);
+                        if (status[i]=="Success") {
+                            iv_success_2.setVisibility(View.VISIBLE);
+                            iv_error_2.setVisibility(View.GONE);
+                        } else {
+                            iv_success_2.setVisibility(View.GONE);
+                            iv_error_2.setVisibility(View.VISIBLE);
+                        }
+                        ll2.setVisibility(View.VISIBLE);
+                    } else if (i==2) {
+                        tv3.setText(message[i]);
+                        if (status[i]=="Success") {
+                            iv_success_3.setVisibility(View.VISIBLE);
+                            iv_error_3.setVisibility(View.GONE);
+                        } else {
+                            iv_success_3.setVisibility(View.GONE);
+                            iv_error_3.setVisibility(View.VISIBLE);
+                        }
+                        ll3.setVisibility(View.VISIBLE);
+                    } else if (i==3) {
+                        tv4.setText(message[i]);
+                        if (status[i]=="Success") {
+                            iv_success_4.setVisibility(View.VISIBLE);
+                            iv_error_4.setVisibility(View.GONE);
+                        } else {
+                            iv_success_4.setVisibility(View.GONE);
+                            iv_error_4.setVisibility(View.VISIBLE);
+                        }
+                        ll4.setVisibility(View.VISIBLE);
+                    } else if (i==4) {
+                        tv5.setText(message[i]);
+                        if (status[i]=="Success") {
+                            iv_success_5.setVisibility(View.VISIBLE);
+                            iv_error_5.setVisibility(View.GONE);
+                        } else {
+                            iv_success_5.setVisibility(View.GONE);
+                            iv_error_5.setVisibility(View.VISIBLE);
+                        }
+                        ll5.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(false);
+            okBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+            dialog.show();
+        }
+    }
+
+    public static final void showUnifiedValidationDialog(Context context,
+                                                    String message) {
+//        Drawable icon;
+//        int iconColor;
+        if (message != null && message.trim().length() > 0) {
+            Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View dialogView = inflater.inflate(R.layout.error_dialog, null);
+            builder.setView(dialogView);
+            TextView dialogMessage = dialogView.findViewById(R.id.tvMessage);
+            TextView dialogTitle = dialogView.findViewById(R.id.tvTitle);
+            dialogMessage.setText(message);
+            dialogTitle.setText("Validation Error");
+            Button okBtn = dialogView.findViewById(R.id.btnAction);
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(false);
+            okBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+            dialog.show();
+        }
+    }
+
+    public static final void showUnifiedInformationDialog(Context context,
+                                                           String message) {
+//        Drawable icon;
+//        int iconColor;
+        if (message != null && message.trim().length() > 0) {
+            Builder builder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View dialogView = inflater.inflate(R.layout.information_dialog, null);
+            builder.setView(dialogView);
+            TextView dialogMessage = dialogView.findViewById(R.id.tvMessage);
+            dialogMessage.setText(message);
+            Button okBtn = dialogView.findViewById(R.id.btnAction);
+            AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(false);
+            okBtn.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+            dialog.show();
+        }
+    }
+
 
 
     public static boolean validateString(String object) {
@@ -391,11 +630,11 @@ public class Utility {
         return days;
     }
 
-    public static void wakeup(Context context) {
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
-        wl.acquire();
-    }
+//    public static void wakeup(Context context) {
+//        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+//        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+//        wl.acquire();
+//    }
 
     public static void writefile1(String data) {
 //	    	if(Enable){
@@ -686,6 +925,7 @@ public class Utility {
         return result.toString();
     }
 
+
     public static Bitmap getBitmapFromURL(String src) {
         try {
             URL url = new URL(src);
@@ -708,20 +948,22 @@ public class Utility {
     }
 
     public static void showValidationAlertDialog(Activity activity, String message){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        alertDialog.setTitle("Validation ...");
-        alertDialog.setMessage(message);
-        alertDialog.setPositiveButton("OK", null);
-        alertDialog.show();
+//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+//        alertDialog.setTitle("Validation ...");
+//        alertDialog.setMessage(message);
+//        alertDialog.setPositiveButton("OK", null);
+//        alertDialog.show();
+        showUnifiedValidationDialog(activity,message);
     }
 
 
     public static void showSaveOrCancelAlertDialog(Activity activity){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        alertDialog.setTitle("Validation ...");
-        alertDialog.setMessage("Please save or Cancel the changes first");
-        alertDialog.setNegativeButton("Ok",null);
-        alertDialog.show();
+//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+//        alertDialog.setTitle("Validation ...");
+//        alertDialog.setMessage("Please save or Cancel the changes first");
+//        alertDialog.setNegativeButton("Ok",null);
+//        alertDialog.show();
+        showUnifiedValidationDialog(activity,"Please save or Cancel the changes first");
     }
 
 
@@ -808,6 +1050,9 @@ public class Utility {
         return null;
     }
 
+
+
+
     /**
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
@@ -884,5 +1129,7 @@ public class Utility {
         jobScheduler.schedule(builder.build());
         Log.v("ALARM ------------> ", "LocationJobScheduler Scheduled");
     }
+
+
 
 }

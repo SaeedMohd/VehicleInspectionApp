@@ -3,6 +3,8 @@ package com.inspection.fragments
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
@@ -11,11 +13,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.bugfender.sdk.Bugfender
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.Utils.Constants
-import kotlinx.android.synthetic.main.fragment_forms.*
+import com.inspection.databinding.FragmentFormsBinding
+import com.inspection.databinding.FragmentVisitationFormBinding
+//import kotlinx.android.synthetic.main.fragment_forms.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType
@@ -30,7 +38,8 @@ import java.util.concurrent.TimeUnit
 class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
     var formsStringsArray = arrayOf("Visitation Planning", "APP / Ad Hoc Visitation", "My Performance")
-
+    private var _binding: FragmentFormsBinding? = null
+    private val binding get() = _binding!!
     //another added code for frag testing > sherif yousry
    // var fragment2: VehiclesFragmentInScopeOfServicesView? = null
 
@@ -41,34 +50,59 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         (activity as MainActivity).supportActionBar!!.title = "ACE AAR Inspection"
         return inflater.inflate(R.layout.fragment_forms, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        visitationPlanningButton.setOnClickListener {
+        _binding = FragmentFormsBinding.bind(view)
+        binding.visitationPlanningButton.setOnClickListener {
             var service = activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
 
             var enabled = if (Constants.enableLocationTracking) service.isProviderEnabled(LocationManager.GPS_PROVIDER) else true
-
+            FirebaseCrashlytics.getInstance().log("User Selected Visitation Planning Screen")
             if (!enabled) {
-                var alertBuilder = AlertDialog.Builder(activity);
-                alertBuilder.setCancelable(true);
-                alertBuilder.setTitle("GPS Location is required")
-                alertBuilder.setMessage("GPS location is required within this app. ");
-                alertBuilder.setPositiveButton("Agree") { dialog, which ->
+                var alertBuilder = AlertDialog.Builder(requireContext());
+                val inflater = LayoutInflater.from(requireContext())
+                val dialogView = inflater.inflate(R.layout.decision_dialog, null)
+                alertBuilder.setView(dialogView)
+                val dialogMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
+                val dialogTitle = dialogView.findViewById<TextView>(R.id.tvTitle)
+                val btnPositiveAction = dialogView.findViewById<Button>(R.id.btnActionPositive)
+                val btnNegativeAction = dialogView.findViewById<Button>(R.id.btnActionNegative)
+                dialogTitle.setText("GPS Location is required")
+                dialogMessage.setText("GPS location is required within this app. If you disagree the app will be closed")
+                btnPositiveAction.setText("Agree")
+                btnNegativeAction.setText("Disagree")
+                val dialog = alertBuilder.create()
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.setCancelable(false)
+                btnPositiveAction.setOnClickListener(View.OnClickListener { v: View? ->
                     val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(intent);
-                }
-                alertBuilder.setNegativeButton("Disagree") { dialog, which ->
+                    dialog.dismiss()
+                })
+                btnNegativeAction.setOnClickListener(View.OnClickListener { v: View? ->
+                    requireActivity().finish()
+                })
 
-                }
-                val alert = alertBuilder.create();
-                alert.show();
+                dialog.show()
+//                var alertBuilder = AlertDialog.Builder(activity);
+//                alertBuilder.setCancelable(true);
+//                alertBuilder.setTitle("GPS Location is required")
+//                alertBuilder.setMessage("GPS location is required within this app. ");
+//                alertBuilder.setPositiveButton("Agree") { dialog, which ->
+//                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                    startActivity(intent);
+//                }
+//                alertBuilder.setNegativeButton("Disagree") { dialog, which ->
+//
+//                }
+//                val alert = alertBuilder.create();
+//                alert.show();
             } else {
+                Bugfender.i("Screen", "Visitation Planning")
                 (activity as MainActivity).supportActionBar!!.title = "Visitation Planning"
                 var fragment = VisitationPlanningFragment()
                 fragment!!.isVisitationPlanning = true
@@ -80,24 +114,50 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
             }
         }
 
-        adHocVisitationButton.setOnClickListener {
+        binding.adHocVisitationButton.setOnClickListener {
+            Bugfender.i("Screen", "Ad Hoc Visitation")
             var service = activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
             var enabled = if (Constants.enableLocationTracking) service.isProviderEnabled(LocationManager.GPS_PROVIDER) else true
-
+            FirebaseCrashlytics.getInstance().log("User Selected AdHoc Visitations Screen")
             if (!enabled) {
-                var alertBuilder = AlertDialog.Builder(activity);
-                alertBuilder.setCancelable(true);
-                alertBuilder.setTitle("GPS Location is required")
-                alertBuilder.setMessage("GPS location is required within this app. ");
-                alertBuilder.setPositiveButton("Agree") { dialog, which ->
+                var alertBuilder = AlertDialog.Builder(requireContext());
+                val inflater = LayoutInflater.from(requireContext())
+                val dialogView = inflater.inflate(R.layout.decision_dialog, null)
+                alertBuilder.setView(dialogView)
+                val dialogMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
+                val dialogTitle = dialogView.findViewById<TextView>(R.id.tvTitle)
+                val btnPositiveAction = dialogView.findViewById<Button>(R.id.btnActionPositive)
+                val btnNegativeAction = dialogView.findViewById<Button>(R.id.btnActionNegative)
+                dialogTitle.setText("GPS Location is required")
+                dialogMessage.setText("GPS location is required within this app. If you disagree the app will be closed")
+                btnPositiveAction.setText("Agree")
+                btnNegativeAction.setText("Disagree")
+                val dialog = alertBuilder.create()
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//                dialog.setCancelable(false)
+                btnPositiveAction.setOnClickListener(View.OnClickListener { v: View? ->
                     val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(intent);
-                }
-                alertBuilder.setNegativeButton("Disagree") { dialog, which ->
+                    dialog.dismiss()
+                })
+                btnNegativeAction.setOnClickListener(View.OnClickListener { v: View? ->
+                    requireActivity().finish()
+                })
 
-                }
-                val alert = alertBuilder.create();
-                alert.show();
+                dialog.show()
+//                var alertBuilder = AlertDialog.Builder(activity);
+//                alertBuilder.setCancelable(true);
+//                alertBuilder.setTitle("GPS Location is required")
+//                alertBuilder.setMessage("GPS location is required within this app. ");
+//                alertBuilder.setPositiveButton("Agree") { dialog, which ->
+//                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                    startActivity(intent);
+//                }
+//                alertBuilder.setNegativeButton("Disagree") { dialog, which ->
+//
+//                }
+//                val alert = alertBuilder.create();
+//                alert.show();
             } else {
                 (activity as MainActivity).supportActionBar!!.title = "APP / Ad Hoc Visitation"
                 var fragment = AppAdHockVisitationFilterFragment()
@@ -110,24 +170,23 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
             }
         }
 
-        myPerformanceButton.setOnClickListener {
-            val client = OkHttpClient()//.newBuilder().connectTimeout(50, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
-            val request = Request.Builder()
-                    .url("https://api-uat.national.aaa.com/common/oauth2/token?client_id=5d5f4i99gmj45pf5qpcnhuvr07&client_secret=1ifminse1q98jifo5qauk9207r01q2a9gvvku074bot5v560mdjb")
-                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
-//                    .addHeader("Authorization", "Bearer eyJraWQiOiJGMld5M2tKT3BDdDlBa1o2cWdiR1JuVGtIWlM4YldpanhTRkJJWnh1elh3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1ZDVmNGk5OWdtajQ1cGY1cXBjbmh1dnIwNyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoicmVzLWF1dG9tb3RpdmUtdWF0XC9yc3AtcHJveHkiLCJhdXRoX3RpbWUiOjE2ODc4MTIzMTMsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX084dVRUSXQxaCIsImV4cCI6MTY4NzgxNTkxMywiaWF0IjoxNjg3ODEyMzEzLCJ2ZXJzaW9uIjoyLCJqdGkiOiJkNjM4NzJmMi04MDZhLTRjZjItYjRlZS04ODJmZGRhYzdkMjYiLCJjbGllbnRfaWQiOiI1ZDVmNGk5OWdtajQ1cGY1cXBjbmh1dnIwNyJ9.dKlBvu-RP-NGIPE2xljnN30A7IUA1QlSkxuGPN9BfDXin2PjKZ2TZrVP50DMa6Qr1Ze9ysQwjntaM8i8TMQaskA6Ai0347oddbYgRAfOdkJVvnTpPe72aCuCmAfkudWC-1m8sty6ZUYcYTyh1rxFE2lj5xIUcojxlnMxp3MnA557gEb7Nhg_OdhK4Mk8ySnexdbIaV2Sza0KeFlx91Be2nBYrmkxFwVoXdxjTzHmKo43V-7-uZGr0EE7hm2aYL10VnJGv3avTBxseCWtjWmLarm-cJtTmFdo6xCiNBLdoC9MXqE4UBrhQkfw0-ENjnJZImlMLGhMjwfN51l--GoIWQ")
-//                    .addHeader("Cookie", "incap_ses_188_2617556=C6hDZrXul1EMN84seumbAsD4mWQAAAAAY6lz3NR0oS55nCN9yowEGg==; nlbi_2617556_2600297=A8xdU7mGPBquGfyudOi6ugAAAABHABE40aQKY1pavAFmF4Da; nlbi_2617556_2795788=pOd8MYLDDBSKyW+ndOi6ugAAAADF94XM3G007nF3A24IYozk; visid_incap_2400341=L40Sp9/SRKWOyleCzvTfvXJFgmMAAAAAQUIPAAAAAAAO96pQC0Hi7+uSzubCW8Wl; visid_incap_2617556=SbLkk389QqSn5OD9+J8UkuE7dmQAAAAAQUIPAAAAAABn4f3tlNKK0dj6wKeEg2eG; XSRF-TOKEN=fa307f3b-24bf-4bfb-a823-2be0c6e43ea0")
-                    .build()
-            val response = client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    Log.v("TOKEN --> ",e.toString())
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    Log.v("TOKEN --> ",response.toString())
-                }
-            })
-
+        binding.myPerformanceButton.setOnClickListener {
+//            val client = OkHttpClient()//.newBuilder().connectTimeout(50, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
+//            val request = Request.Builder()
+//                    .url("https://api-uat.national.aaa.com/common/oauth2/token?client_id=5d5f4i99gmj45pf5qpcnhuvr07&client_secret=1ifminse1q98jifo5qauk9207r01q2a9gvvku074bot5v560mdjb")
+//                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+////                    .addHeader("Authorization", "Bearer eyJraWQiOiJGMld5M2tKT3BDdDlBa1o2cWdiR1JuVGtIWlM4YldpanhTRkJJWnh1elh3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1ZDVmNGk5OWdtajQ1cGY1cXBjbmh1dnIwNyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoicmVzLWF1dG9tb3RpdmUtdWF0XC9yc3AtcHJveHkiLCJhdXRoX3RpbWUiOjE2ODc4MTIzMTMsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX084dVRUSXQxaCIsImV4cCI6MTY4NzgxNTkxMywiaWF0IjoxNjg3ODEyMzEzLCJ2ZXJzaW9uIjoyLCJqdGkiOiJkNjM4NzJmMi04MDZhLTRjZjItYjRlZS04ODJmZGRhYzdkMjYiLCJjbGllbnRfaWQiOiI1ZDVmNGk5OWdtajQ1cGY1cXBjbmh1dnIwNyJ9.dKlBvu-RP-NGIPE2xljnN30A7IUA1QlSkxuGPN9BfDXin2PjKZ2TZrVP50DMa6Qr1Ze9ysQwjntaM8i8TMQaskA6Ai0347oddbYgRAfOdkJVvnTpPe72aCuCmAfkudWC-1m8sty6ZUYcYTyh1rxFE2lj5xIUcojxlnMxp3MnA557gEb7Nhg_OdhK4Mk8ySnexdbIaV2Sza0KeFlx91Be2nBYrmkxFwVoXdxjTzHmKo43V-7-uZGr0EE7hm2aYL10VnJGv3avTBxseCWtjWmLarm-cJtTmFdo6xCiNBLdoC9MXqE4UBrhQkfw0-ENjnJZImlMLGhMjwfN51l--GoIWQ")
+////                    .addHeader("Cookie", "incap_ses_188_2617556=C6hDZrXul1EMN84seumbAsD4mWQAAAAAY6lz3NR0oS55nCN9yowEGg==; nlbi_2617556_2600297=A8xdU7mGPBquGfyudOi6ugAAAABHABE40aQKY1pavAFmF4Da; nlbi_2617556_2795788=pOd8MYLDDBSKyW+ndOi6ugAAAADF94XM3G007nF3A24IYozk; visid_incap_2400341=L40Sp9/SRKWOyleCzvTfvXJFgmMAAAAAQUIPAAAAAAAO96pQC0Hi7+uSzubCW8Wl; visid_incap_2617556=SbLkk389QqSn5OD9+J8UkuE7dmQAAAAAQUIPAAAAAABn4f3tlNKK0dj6wKeEg2eG; XSRF-TOKEN=fa307f3b-24bf-4bfb-a823-2be0c6e43ea0")
+//                    .build()
+//            val response = client.newCall(request).enqueue(object : Callback {
+//                override fun onFailure(call: Call, e: IOException) {
+//                    Log.v("TOKEN --> ",e.toString())
+//                }
+//
+//                override fun onResponse(call: Call, response: Response) {
+//                    Log.v("TOKEN --> ",response.toString())
+//                }
+//            })
             (activity as MainActivity).supportActionBar!!.title = "My Performance"
 //            var fragment = PDFGenerateFragment()
 //            val fragmentManagerSC = fragmentManager
@@ -136,6 +195,12 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 //            ftSC.addToBackStack("frag")
 //            ftSC.commit()
         }
+
+        binding.applicantButton.setOnClickListener {
+            var intent = Intent(context, com.inspection.ApplicantActivity::class.java)
+            startActivity(intent)
+        }
+
         //button added for fragments testing only > sherif yousry
 //        fragmentTester.setOnClickListener {
 //            fragment2 = VehiclesFragmentInScopeOfServicesView()

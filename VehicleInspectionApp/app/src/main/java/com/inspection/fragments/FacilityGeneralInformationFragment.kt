@@ -28,12 +28,10 @@ import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdatePaymentMethodsData
+import com.inspection.databinding.BillingGroupLayoutBinding
+import com.inspection.databinding.FragmentArravFacilityBinding
+//import com.inspection.databinding.FragmentArravfacilityContinuedBinding
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.app_bar_forms.*
-import kotlinx.android.synthetic.main.facility_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility.*
-import kotlinx.android.synthetic.main.fragment_arrav_programs.*
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,7 +46,8 @@ import java.util.*
  * create an instance of this fragment.
  */
 class FacilityGeneralInformationFragment : Fragment() {
-
+    private var _binding: FragmentArravFacilityBinding? = null
+    private val binding get() = _binding!!
     private var mListener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +86,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentArravFacilityBinding.bind(view)
         refreshButtonsState()
 
         termReasonList = TypeTablesModel.getInstance().TerminationCodeType
@@ -97,7 +97,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         var termReasonAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, termReasonArray)
         termReasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        terminationReason_textviewVal.adapter = termReasonAdapter
+        binding.terminationReasonTextviewVal.adapter = termReasonAdapter
 
         busTypeList = TypeTablesModel.getInstance().BusinessType
         busTypeArray .clear()
@@ -107,7 +107,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         var busTypeAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, busTypeArray)
         busTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        bustype_textviewVal.adapter = busTypeAdapter
+        binding.bustypeTextviewVal.adapter = busTypeAdapter
 
 
         timeZoneList = TypeTablesModel.getInstance().TimezoneType
@@ -118,7 +118,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         var tzdataAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, timeZoneArray)
         tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timeZoneSpinner.adapter = tzdataAdapter
+        binding.timeZoneSpinner.adapter = tzdataAdapter
 
         svcAvailabilityList = TypeTablesModel.getInstance().ServiceAvailabilityType
         svcAvailabilityArray .clear()
@@ -127,7 +127,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         }
         var svcAvldataAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item, svcAvailabilityArray)
         svcAvldataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        availability_textviewVal.adapter = svcAvldataAdapter
+        binding.availabilityTextviewVal.adapter = svcAvldataAdapter
 
         facTypeList = TypeTablesModel.getInstance().FacilityType
         facTypeArray .clear()
@@ -136,7 +136,7 @@ class FacilityGeneralInformationFragment : Fragment() {
         }
         var facilityTypedataAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item, facTypeArray)
         facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        facilitytype_textviewVal.adapter = facilityTypedataAdapter
+        binding.facilitytypeTextviewVal.adapter = facilityTypedataAdapter
 
 
         contractTypeList = TypeTablesModel.getInstance().ContractType
@@ -147,10 +147,12 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         var contractTypesAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item, contractTypeArray )
         contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        contractTypeValueSpinner.adapter = contractTypesAdapter
+        binding.contractTypeValueSpinner.adapter = contractTypesAdapter
 
         IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited = true
-        (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+        requireActivity().findViewById<Button>(R.id.generalInformationButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
 
@@ -162,6 +164,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     private fun setAlertColoring() {
         var InsuranceExpDateStr = ""
+        var toolTipStr = ""
         var ARDExpDateStr = FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY()
         if (FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate.contains('T')) {
             InsuranceExpDateStr = FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
@@ -175,36 +178,53 @@ class FacilityGeneralInformationFragment : Fragment() {
         val InsuranceExpDatedays =  (InsuranceExpDate.getTime() - Date().getTime()) / 1000 / 60 / 60 / 24
         val ARDExpDate = sdf.parse(ARDExpDateStr)
         val ARDExpDatedays =  (ARDExpDate.getTime() - Date().getTime()) / 1000 / 60 / 60 / 24
-        alertRIcon.isVisible = (InsuranceExpDatedays <= 0) || (ARDExpDatedays <= 0)
-        alertYIcon.isVisible = (InsuranceExpDatedays <= 180 || ARDExpDatedays <= 180) && !alertRIcon.isVisible
+        binding.alertRIcon.isVisible = (InsuranceExpDatedays <= 0) || (ARDExpDatedays <= 0)
+        binding.alertYIcon.isVisible = (InsuranceExpDatedays <= 180 || ARDExpDatedays <= 180) && !binding.alertRIcon.isVisible
         val animation: Animation =  AlphaAnimation(1.0f,0.0f)
         animation.duration = 500 //1 second duration for each animation cycle
         animation.interpolator = LinearInterpolator()
         animation.repeatCount = Animation.INFINITE //repeating indefinitely
         animation.repeatMode = Animation.REVERSE //animation will start from end point once ended.
-        alertYIcon.startAnimation(animation) //to start animation
-        alertRIcon.startAnimation(animation) //to start animation
+        binding.alertYIcon.startAnimation(animation) //to start animation
+        binding.alertRIcon.startAnimation(animation) //to start animation
 
         if (ARDExpDatedays<=0){
-            ARDexp_textview.setTextColor(Color.RED)
-            ARDexp_textview.startAnimation(animation) //to start animation
+            toolTipStr = "ARD Expiration Date has passed\n\n"
+            binding.ARDexpTextview.setTextColor(Color.RED)
+            binding.ARDexpTextview.startAnimation(animation) //to start animation
         } else if (ARDExpDatedays<=180) {
-            ARDexp_textview.setTextColor(resources.getColor(R.color.dark_yellow))
-            ARDexp_textview.startAnimation(animation) //to start animation
+            toolTipStr = "ARD Expiration Date is within 180 days\n\n"
+            binding.ARDexpTextview.setTextColor(resources.getColor(R.color.dark_yellow))
+            binding.ARDexpTextview.startAnimation(animation) //to start animation
         } else {
-            ARDexp_textview.setTextColor(Color.BLACK)
-            ARDexp_textview.clearAnimation()
+            toolTipStr = ""
+            binding.ARDexpTextview.setTextColor(Color.BLACK)
+            binding.ARDexpTextview.clearAnimation()
         }
+        if (toolTipStr.equals("")) toolTipStr = "\n\n"
         if (InsuranceExpDatedays<=0){
-            InsuranceExpDate_textview.setTextColor(Color.RED)
-            InsuranceExpDate_textview.startAnimation(animation) //to start animation
+            toolTipStr += "Insurance Expiration Date has passed\n\n"
+            binding.InsuranceExpDateTextview.setTextColor(Color.RED)
+            binding.InsuranceExpDateTextview.startAnimation(animation) //to start animation
         } else if (InsuranceExpDatedays<=180) {
-            InsuranceExpDate_textview.setTextColor(resources.getColor(R.color.dark_yellow))
-            InsuranceExpDate_textview.startAnimation(animation) //to start animation
+            toolTipStr += "Insurance Expiration Date has passed\n\n"
+            binding.InsuranceExpDateTextview.setTextColor(resources.getColor(R.color.dark_yellow))
+            binding.InsuranceExpDateTextview.startAnimation(animation) //to start animation
         } else {
-            InsuranceExpDate_textview.setTextColor(Color.BLACK)
-            InsuranceExpDate_textview.clearAnimation()
+            binding.InsuranceExpDateTextview.setTextColor(Color.BLACK)
+            binding.InsuranceExpDateTextview.clearAnimation()
         }
+
+        binding.alertRIcon.tooltipText = toolTipStr
+        binding.alertYIcon.tooltipText = toolTipStr
+        binding.alertRIcon.isClickable = true
+        binding.alertRIcon.setOnClickListener({
+            Utility.showUnifiedInformationDialog(requireContext(),toolTipStr)
+        })
+        binding.alertYIcon.isClickable = true
+        binding.alertYIcon.setOnClickListener({
+            Utility.showUnifiedInformationDialog(requireContext(),toolTipStr)
+        })
     }
 
     private fun setFieldsValues() {
@@ -217,43 +237,42 @@ class FacilityGeneralInformationFragment : Fragment() {
             } catch (e: Exception) {
 
             }
-            statusCommentEditText.setText(tblFacilities[0].StatusComment)
-            contractStatusTextViewVal.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s -> s.FacilityStatusID == statusID}[0].FacilityStatusName
+            binding.statusCommentEditText.setText(tblFacilities[0].StatusComment)
+            binding.contractStatusTextViewVal.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s -> s.FacilityStatusID == statusID}[0].FacilityStatusName
 //            contractStatusTextViewVal.setTextColor(Color.BLUE)
-
                         for (provider in tblFacilityServiceProvider) {
                             when(provider.SrvProviderId){
                                 "AAR" -> {
-                                    aarCheckBox.isChecked = true
-                                    aarEditText.setText(""+provider.ProviderNum)
+                                    binding.aarCheckBox.isChecked = true
+                                    binding.aarEditText.setText(""+provider.ProviderNum)
                                 }
                                 "AABِ" -> {
-                                    aabCheckBox.isChecked = true
-                                    aabEditText.setText(provider.ProviderNum)
+                                    binding.aabCheckBox.isChecked = true
+                                    binding.aabEditText.setText(provider.ProviderNum)
                                 }
                                 "ِAAG" -> {
-                                    aagCheckBox.isChecked = true
-                                    aagEditText.setText(provider.ProviderNum)
+                                    binding.aagCheckBox.isChecked = true
+                                    binding.aagEditText.setText(provider.ProviderNum)
                                 }
                                 "COG" -> {
-                                    cogCheckBox.isChecked = true
-                                    cogEditText.setText(provider.ProviderNum)
+                                    binding.cogCheckBox.isChecked = true
+                                    binding.cogEditText.setText(provider.ProviderNum)
                                 }
                                 "CCR" -> {
-                                    corCheckBox.isChecked = true
-                                    corEditText.setText(provider.ProviderNum)
+                                    binding.corCheckBox.isChecked = true
+                                    binding.corEditText.setText(provider.ProviderNum)
                                 }
                                 "ERS" -> {
-                                    ersCheckBox.isChecked = true
-                                    ersEditText.setText(provider.ProviderNum)
+                                    binding.ersCheckBox.isChecked = true
+                                    binding.ersEditText.setText(provider.ProviderNum)
                                 }
                                 "MPR" -> {
-                                    mprCheckBox.isChecked = true
-                                    mprEditText.setText(provider.ProviderNum)
+                                    binding.mprCheckBox.isChecked = true
+                                    binding.mprEditText.setText(provider.ProviderNum)
                                 }
                                 "PSP" -> {
-                                    pspCheckBox.isChecked = true
-                                    pspEditText.setText(provider.ProviderNum)
+                                    binding.pspCheckBox.isChecked = true
+                                    binding.pspEditText.setText(provider.ProviderNum)
                                 }
 
                             }
@@ -264,83 +283,83 @@ class FacilityGeneralInformationFragment : Fragment() {
                 for(contractType in tblContractType){
                     for (typeReference in contractTypeArray){
                         if(contractType.ContractTypeName == typeReference){
-                            contractTypeValueSpinner.setSelection(contractTypeArray.indexOf(typeReference))
+                            binding.contractTypeValueSpinner.setSelection(contractTypeArray.indexOf(typeReference))
                         }
                     }
                 }
 
-                contract_number_textviewVal.text = "" + tblFacilities[0].FACNo
+            binding.contractNumberTextviewVal.text = "" + tblFacilities[0].FACNo
 
 
-            office_textviewVal.text = if (tblOfficeType[0].OfficeName.equals("")) "" else tblOfficeType[0].OfficeName
+            binding.officeTextviewVal.text = if (tblOfficeType[0].OfficeName.equals("")) "" else tblOfficeType[0].OfficeName
 
-                assignedto_textviewVal.text = tblFacilities[0].AssignedTo
-                dba_textviewVal.text = tblFacilities[0].BusinessName
-                entity_textviewVal.text = tblFacilities[0].EntityName
+            binding.assignedtoTextviewVal.text = tblFacilities[0].AssignedTo
+            binding.dbaTextviewVal.text = tblFacilities[0].BusinessName
+            binding.entityTextviewVal.text = tblFacilities[0].EntityName
                 if (tblBusinessType.size>0) {
-                    bustype_textviewVal.setSelection(busTypeArray.indexOf(tblFacilities[0].BusTypeID.toString()))
+                    binding.bustypeTextviewVal.setSelection(busTypeArray.indexOf(tblFacilities[0].BusTypeID.toString()))
                 } else {
-                    bustype_textviewVal.setSelection(0)
+                    binding.bustypeTextviewVal.setSelection(0)
                 }
                 if (tblTimezoneType.size>0) {
-                    timeZoneSpinner.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
+                    binding.timeZoneSpinner.setSelection(timeZoneArray.indexOf(tblTimezoneType[0].TimezoneName))
                 } else {
-                    timeZoneSpinner.setSelection(0)
+                    binding.timeZoneSpinner.setSelection(0)
                 }
-                timeZoneSpinner.tag = timeZoneSpinner.selectedItemPosition
-                website_textviewVal.setText(tblFacilities[0].WebSite)
-                wifiAvailableCheckBox.isChecked = tblFacilities[0].InternetAccess
-                taxno_textviewVal.text = tblFacilities[0].TaxIDNumber
-                repairorder_textviewVal.setText("" + tblFacilities[0].FacilityRepairOrderCount)
+            binding.timeZoneSpinner.tag = binding.timeZoneSpinner.selectedItemPosition
+            binding.websiteTextviewVal.setText(tblFacilities[0].WebSite)
+            binding.wifiAvailableCheckBox.isChecked = tblFacilities[0].InternetAccess
+            binding.taxnoTextviewVal.text = tblFacilities[0].TaxIDNumber
+            binding.repairorderTextviewVal.setText("" + tblFacilities[0].FacilityRepairOrderCount)
                 if (TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID==tblFacilities[0].SvcAvailability}.size > 0) {
-                    availability_textviewVal.setSelection(svcAvailabilityArray.indexOf(TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID == tblFacilities[0].SvcAvailability }[0].SrvAvaName))
+                    binding.availabilityTextviewVal.setSelection(svcAvailabilityArray.indexOf(TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaID == tblFacilities[0].SvcAvailability }[0].SrvAvaName))
                 } else {
-                    availability_textviewVal.setSelection(0)
+                    binding.availabilityTextviewVal.setSelection(0)
                 }
-                availability_textviewVal.tag = availability_textviewVal.selectedItemPosition
+            binding.availabilityTextviewVal.tag = binding.availabilityTextviewVal.selectedItemPosition
                 if (tblFacilityType.size>0) {
-                    facilitytype_textviewVal.setSelection(facTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
+                    binding.facilitytypeTextviewVal.setSelection(facTypeArray.indexOf(tblFacilityType[0].FacilityTypeName))
                 } else {
-                    facilitytype_textviewVal.setSelection(0)
+                    binding.facilitytypeTextviewVal.setSelection(0)
                 }
-                facilitytype_textviewVal.tag = facilitytype_textviewVal.selectedItemPosition
-                ARDno_textviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
-                ARDexp_textviewVal.text = tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY()
-                terminationDateButton.text = if (tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY()
+            binding.facilitytypeTextviewVal.tag = binding.facilitytypeTextviewVal.selectedItemPosition
+            binding.ARDnoTextviewVal.setText(tblFacilities[0].AutomotiveRepairNumber)
+            binding.ARDexpTextviewVal.setText(tblFacilities[0].AutomotiveRepairExpDate.apiToAppFormatMMDDYYYY())
+            binding.terminationDateButton.text = if (tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY()
                 //SAEED
-                terminationCommentEditText.setText(""+tblFacilities[0].TerminationComments)
+            binding.terminationCommentEditText.setText(""+tblFacilities[0].TerminationComments)
 
             if (tblFacilities[0].TerminationDate.apiToAppFormatMMDDYYYY().equals("01/01/1900") || tblFacilities[0].TerminationDate.equals("") ){
-                terminationReason_textviewVal.visibility=View.GONE
+                binding.terminationReasonTextviewVal.visibility=View.GONE
             } else {
-                terminationReason_textviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
+                binding.terminationReasonTextviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
             }
 //                if (!tblFacilities[0].TerminationDate.equals("")) {
 //                    terminationReason_textviewVal.setSelection(termReasonArray.indexOf(tblTerminationCodeType[0].TerminationCodeName))
 //                } else {
 //                    terminationReason_textviewVal.visibility=View.GONE
 
-                currcodate_textviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormatMMDDYYYY()
-                initcodate_textviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormatMMDDYYYY()
+                binding.currcodateTextviewVal.text = tblFacilities[0].ContractCurrentDate.apiToAppFormatMMDDYYYY()
+            binding.initcodateTextviewVal.text = tblFacilities[0].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 if (tblFacilities[0].InsuranceExpDate.contains('T')) {
-                    InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
+                    binding.InsuranceExpDateTextviewVal.text = tblFacilities[0].InsuranceExpDate.apiToAppFormatMMDDYYYY()
                 } else {
-                    InsuranceExpDate_textviewVal.text = tblFacilities[0].InsuranceExpDate
+                    binding.InsuranceExpDateTextviewVal.text = tblFacilities[0].InsuranceExpDate
                 }
 
 
-                inspectionCycleTextViewVal.text = if (tblFacilities[0].InspectionCycle.isNullOrEmpty()) "" else tblFacilities[0].InspectionCycle
-                inspectionMonthsTextViewVal.text = tblFacilities[0].FacilityAnnualInspectionMonth.monthNoToName()
+            binding.inspectionCycleTextViewVal.text = if (tblFacilities[0].InspectionCycle.isNullOrEmpty()) "" else tblFacilities[0].InspectionCycle
+            binding.inspectionMonthsTextViewVal.text = tblFacilities[0].FacilityAnnualInspectionMonth.monthNoToName()
                 var FacManagersList = ""
                 var AdminsList = ""
                 for (facMgr in tblFacilityManagers) {
                     if (!facMgr.Manager.isNullOrEmpty()) FacManagersList  += facMgr.Manager+", "
                 }
-                manager_textviewVal.text = FacManagersList.removeSuffix(", ")
+                binding.managerTextviewVal.text = FacManagersList.removeSuffix(", ")
                 for (facAdmin in tblFacilities) {
                     if (!facAdmin.AdminAssistants.isNullOrEmpty())  AdminsList += facAdmin.AdminAssistants+", "
                 }
-                admin_textviewVal.text = AdminsList.removeSuffix(", ")
+            binding.adminTextviewVal.text = AdminsList.removeSuffix(", ")
 
 //                if (tblFacilities[0].FacilityAnnualInspectionMonth>0) {
 //                    if (inspectionMonthsTextViewVal.text==inspectionMonths[0]||inspectionMonthsTextViewVal.text==inspectionMonths[3]||inspectionMonthsTextViewVal.text==inspectionMonths[6]||inspectionMonthsTextViewVal.text==inspectionMonths[9]){
@@ -381,17 +400,21 @@ class FacilityGeneralInformationFragment : Fragment() {
         setPaymentMethods()
 
 
-        saveButton.setOnClickListener {
-            if (validateInputs()) {
-                if (submitPaymentRequired) submitPaymentMethods()
-                if (submitGeneralInfoRequired) submitFacilityGeneralInfo()
-            }   else {
-                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
+        binding.saveButton.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                if (validateInputs()) {
+                    if (submitPaymentRequired) submitPaymentMethods()
+                    if (submitGeneralInfoRequired) submitFacilityGeneralInfo()
+                }   else {
+                    Utility.showValidationAlertDialog(activity,"Please fill all required fields")
+                }
+            } else {
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
             }
         }
 
-        cancelButton.setOnClickListener {
-            cancelButton.hideKeyboard()
+        binding.cancelButton.setOnClickListener {
+            binding.cancelButton.hideKeyboard()
             FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount
             FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName
             FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount
@@ -412,7 +435,8 @@ class FacilityGeneralInformationFragment : Fragment() {
             refreshButtonsState()
             submitGeneralInfoRequired=false
             submitPaymentRequired=false
-            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+//            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+            Utility.showUnifiedConfirmationDialog(activity,  "Changes cancelled successfully")
         }
     }
 
@@ -420,9 +444,9 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
-        if (trackingTableLayout.childCount>1) {
-            for (i in trackingTableLayout.childCount - 1 downTo 1) {
-                trackingTableLayout.removeViewAt(i)
+        if (binding.trackingTableLayout.childCount>1) {
+            for (i in binding.trackingTableLayout.childCount - 1 downTo 1) {
+                binding.trackingTableLayout.removeViewAt(i)
             }
 
         }
@@ -504,9 +528,9 @@ class FacilityGeneralInformationFragment : Fragment() {
                         if (editView2.text.toString().isNullOrEmpty()) {
                             Utility.showValidationAlertDialog(activity, "Please fill  the Affiliate vendor number")
                         } else {
-                            progressBarText.text = "Saving ..."
-                            scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-                            var currentTableRowIndex = trackingTableLayout.indexOfChild(tableRow)
+                            binding.progressBarText.text = "Saving ..."
+                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+                            var currentTableRowIndex = binding.trackingTableLayout.indexOfChild(tableRow)
                             var affVendorTypeID = FacilityDataModel.getInstance().tblAffiliateVendorFacilities.filter { s -> s.AffiliateVendorName.equals(textView1.text.toString()) }[0].AffiliateVendorTypeID
                             var affVendor = editView2.text.toString()
                             var affVendorID = updateButton.tag.toString()
@@ -529,12 +553,12 @@ class FacilityGeneralInformationFragment : Fragment() {
                                                 FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorTypeID = affVendorTypeID
                                                 FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID = FacilityDataModel.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorFacilityID
                                                 fillPortalTrackingTableView()
-                                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                                                 (activity as FormsActivity).saveDone = true
-                                                progressBarText.text = "Loading ..."
+                                                binding.progressBarText.text = "Loading ..."
                                             } else {
-                                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                                                progressBarText.text = "Loading ..."
+                                                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                                binding.progressBarText.text = "Loading ..."
                                                 var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
                                                 Utility.showSubmitAlertDialog(activity, false, "Affiliate Vendor (Error: " + errorMessage + " )")
                                             }
@@ -542,8 +566,8 @@ class FacilityGeneralInformationFragment : Fragment() {
                                         }
                                     }, Response.ErrorListener {
                                 Utility.showSubmitAlertDialog(activity, false, "Affiliate Vendor (Error: " + it.message + " )")
-                                scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                                progressBarText.text = "Loading ..."
+                                    binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                    binding.progressBarText.text = "Loading ..."
                                 (activity as FormsActivity).overrideBackButton = false
                             }))
 //                    }
@@ -562,9 +586,9 @@ class FacilityGeneralInformationFragment : Fragment() {
 
 
                 deleteButton.setOnClickListener {
-                    progressBarText.text = "Saving ..."
-                    scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-                    var currentTableRowIndex = trackingTableLayout.indexOfChild(tableRow)
+                    binding.progressBarText.text = "Saving ..."
+                    binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+                    var currentTableRowIndex = binding.trackingTableLayout.indexOfChild(tableRow)
 //                    var affVendorTypeID = FacilityDataModel.getInstance().tblAffiliateVendorFacilities.filter { s->s.AffiliateVendorName.equals(textView1.text.toString())}[0].AffiliateVendorTypeID
 //                    var affVendor = editView2.text.toString()
                     var affVendorID = updateButton.tag.toString()
@@ -587,11 +611,11 @@ class FacilityGeneralInformationFragment : Fragment() {
                                         FacilityDataModelOrg.getInstance().tblAffiliateVendorFacilities[currentfacilityDataModelIndex].AffiliateVendorName = textView1.text.toString()
                                         fillPortalTrackingTableView()
                                         (activity as FormsActivity).saveDone = true
-                                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                                        progressBarText.text = "Loading ..."
+                                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                        binding.progressBarText.text = "Loading ..."
                                     } else {
-                                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                                        progressBarText.text = "Loading ..."
+                                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                                        binding.progressBarText.text = "Loading ..."
                                         var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                                         Utility.showSubmitAlertDialog(activity, false, "Affiliate Vendor (Error: "+ errorMessage+" )")
                                     }
@@ -599,15 +623,15 @@ class FacilityGeneralInformationFragment : Fragment() {
                                 }
                             }, {
                         Utility.showSubmitAlertDialog(activity, false, "Affiliate Vendor (Error: "+it.message+" )")
-                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                        progressBarText.text = "Loading ..."
+                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            binding.progressBarText.text = "Loading ..."
                         (activity as FormsActivity).overrideBackButton = false
                     }))
 //                    }
                 }
 
 
-                    trackingTableLayout.addView(tableRow)
+                binding.trackingTableLayout.addView(tableRow)
 
             }
 
@@ -616,11 +640,11 @@ class FacilityGeneralInformationFragment : Fragment() {
     }
 
     fun altTableRow(alt_row: Int) {
-        var childViewCount = trackingTableLayout.getChildCount();
+        var childViewCount = binding.trackingTableLayout.getChildCount();
 
 
         for (i in 1..childViewCount - 1) {
-            var row: TableRow = trackingTableLayout.getChildAt(i) as TableRow;
+            var row: TableRow = binding.trackingTableLayout.getChildAt(i) as TableRow;
 
 //            if (i % alt_row != 0) {
                 row.background = getResources().getDrawable(
@@ -637,64 +661,64 @@ class FacilityGeneralInformationFragment : Fragment() {
 
 
     fun ImplementBusinessRules() {
-        activeRadioButton.isClickable = false
-        inActiveRadioButton.isClickable = false
-        activeRadioButton.isEnabled = false
-        inActiveRadioButton.isEnabled = false
-        contractTypeValueSpinner.isEnabled = false
-        aarCheckBox.isClickable = false
-        aarEditText.isEnabled=false
-        aabCheckBox.isClickable = false
-        aabEditText.isEnabled=false
-        aagCheckBox.isClickable = false
-        aagEditText.isEnabled=false
-        cogCheckBox.isClickable = false
-        cogEditText.isEnabled=false
-        corCheckBox.isClickable = false
-        corEditText.isEnabled=false
-        ersCheckBox.isClickable = false
-        ersEditText.isEnabled=false
-        mprCheckBox.isClickable = false
-        mprEditText.isEnabled=false
-        pspCheckBox.isClickable = false
-        pspEditText.isEnabled=false
-        office_textviewVal.isEnabled = false
-        assignedto_textviewVal.isEnabled = false
-        dba_textviewVal.isEnabled = false
-        entity_textviewVal.isEnabled = false
-        bustype_textviewVal.isEnabled = false
-        terminationDateButton.isClickable = false
-        terminationDateButton.isEnabled = false
-        terminationReason_textviewVal.isEnabled=false
-        terminationCommentEditText.isEnabled=false
-        inspectionMonthsTextViewVal.isEnabled = false
-        inspectionCycleTextViewVal.isEnabled=false
-        ARDno_textviewVal.isEnabled=false
-        currcodate_textviewVal.isEnabled=false
-        initcodate_textviewVal.isEnabled=false
-        InsuranceExpDate_textviewVal.isEnabled=true
+        binding.activeRadioButton.isClickable = false
+        binding.inActiveRadioButton.isClickable = false
+        binding.activeRadioButton.isEnabled = false
+        binding.inActiveRadioButton.isEnabled = false
+        binding.contractTypeValueSpinner.isEnabled = false
+        binding.aarCheckBox.isClickable = false
+        binding.aarEditText.isEnabled=false
+        binding.aabCheckBox.isClickable = false
+        binding.aabEditText.isEnabled=false
+        binding.aagCheckBox.isClickable = false
+        binding.aagEditText.isEnabled=false
+        binding.cogCheckBox.isClickable = false
+        binding.cogEditText.isEnabled=false
+        binding.corCheckBox.isClickable = false
+        binding.corEditText.isEnabled=false
+        binding.ersCheckBox.isClickable = false
+        binding.ersEditText.isEnabled=false
+        binding.mprCheckBox.isClickable = false
+        binding.mprEditText.isEnabled=false
+        binding.pspCheckBox.isClickable = false
+        binding.pspEditText.isEnabled=false
+        binding.officeTextviewVal.isEnabled = false
+        binding.assignedtoTextviewVal.isEnabled = false
+        binding.dbaTextviewVal.isEnabled = false
+        binding.entityTextviewVal.isEnabled = false
+        binding.bustypeTextviewVal.isEnabled = false
+        binding.terminationDateButton.isClickable = false
+        binding.terminationDateButton.isEnabled = false
+        binding.terminationReasonTextviewVal.isEnabled=false
+        binding.terminationCommentEditText.isEnabled=false
+        binding.inspectionMonthsTextViewVal.isEnabled = false
+        binding.inspectionCycleTextViewVal.isEnabled=false
+        binding.ARDnoTextviewVal.isEnabled=false
+        binding.currcodateTextviewVal.isEnabled=false
+        binding.initcodateTextviewVal.isEnabled=false
+        binding.InsuranceExpDateTextviewVal.isEnabled=true
     }
 
 
     private fun setFieldsListeners(){
-        ARDexp_textviewVal.setOnClickListener {
+        binding.ARDexpTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!ARDexp_textviewVal.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(ARDexp_textviewVal.text.toString()))
+            if (!binding.ARDexpTextviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.ARDexpTextviewVal.text.toString()))
                 c.setTime(currentDate)
             }
             var year = c.get(Calendar.YEAR)
             var month = c.get(Calendar.MONTH)
             var day = c.get(Calendar.DAY_OF_MONTH)
 
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
-                ARDexp_textviewVal!!.text = sdf.format(c.time)
+                binding.ARDexpTextviewVal!!.setText(sdf.format(c.time))
                 FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate= sdf.format(c.time)
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                 HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
@@ -706,16 +730,16 @@ class FacilityGeneralInformationFragment : Fragment() {
         }
 //
 
-        InsuranceExpDate_textviewVal.setOnClickListener {
+        binding.InsuranceExpDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year, monthOfYear, dayOfMonth)
-                InsuranceExpDate_textviewVal!!.text = sdf.format(c.time)
+                binding.InsuranceExpDateTextviewVal.setText(sdf.format(c.time))
                 FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate = sdf.format(c.time)
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                 HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
@@ -726,13 +750,13 @@ class FacilityGeneralInformationFragment : Fragment() {
             dpd.show()
         }
 
-        timeZoneSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.timeZoneSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!timeZoneSpinner.tag.equals(p2) || timeZoneSpinner.tag.equals("-1")) {
-                    timeZoneSpinner.tag = "-1"
+                if (!binding.timeZoneSpinner.tag.equals(p2) || binding.timeZoneSpinner.tag.equals("-1")) {
+                    binding.timeZoneSpinner.tag = "-1"
                     FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timeZoneArray[p2]
                     if (FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName != FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName) {
                         HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone = true
@@ -748,7 +772,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             }
         }
 
-        website_textviewVal.addTextChangedListener(object : TextWatcher{
+        binding.websiteTextviewVal.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblFacilities[0].WebSite = p0.toString()
                 HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
@@ -791,7 +815,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 //            }
 //        })
 
-        wifiAvailableCheckBox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.wifiAvailableCheckBox.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = b
             HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
             HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
@@ -800,7 +824,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             refreshButtonsState()
         }
 
-        repairorder_textviewVal.addTextChangedListener(object : TextWatcher{
+        binding.repairorderTextviewVal.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 if (p0.toString().length > 0) {
                     FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = p0.toString().toInt()
@@ -817,12 +841,12 @@ class FacilityGeneralInformationFragment : Fragment() {
             }
         })
 
-        availability_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.availabilityTextviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!availability_textviewVal.tag.equals(p2) || availability_textviewVal.tag.equals("-1")) {
-                    availability_textviewVal.tag = "-1"
+                if (!binding.availabilityTextviewVal.tag.equals(p2) || binding.availabilityTextviewVal.tag.equals("-1")) {
+                    binding.availabilityTextviewVal.tag = "-1"
                     FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName == svcAvailabilityArray[p2] }[0].SrvAvaID
                     HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                     HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
@@ -833,12 +857,12 @@ class FacilityGeneralInformationFragment : Fragment() {
             }
         }
 
-        facilitytype_textviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.facilitytypeTextviewVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!facilitytype_textviewVal.tag.equals(p2) || facilitytype_textviewVal.tag.equals("-1")) {
-                    facilitytype_textviewVal.tag = "-1"
+                if (!binding.facilitytypeTextviewVal.tag.equals(p2) || binding.facilitytypeTextviewVal.tag.equals("-1")) {
+                    binding.facilitytypeTextviewVal.tag = "-1"
                     FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facTypeArray[p2]
                     HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType = (FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName != FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName)
                     HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
@@ -853,51 +877,51 @@ class FacilityGeneralInformationFragment : Fragment() {
 
 
         }
-        visa_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.visaCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(1, b)
         }
 
-        mastercard_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.mastercardCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(2, b)
         }
 
-        americanexpress_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.americanexpressCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(3, b)
         }
 
-        discover_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.discoverCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(4, b)
         }
 
-        paypal_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.paypalCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(5, b)
         }
 
-        debit_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.debitCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(6, b)
         }
 
-        cash_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.cashCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(7, b)
         }
 
-        check_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.checkCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(8, b)
         }
 
-        goodyear_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.goodyearCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(9, b)
         }
 
-        apple_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.appleCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(10, b)
         }
 
-        zelle_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.zelleCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(12, b)
         }
 
-        venmo_checkbox.setOnCheckedChangeListener { compoundButton, b ->
+        binding.venmoCheckbox.setOnCheckedChangeListener { compoundButton, b ->
             handlePaymentMethodsSelection(11, b)
         }
 
@@ -909,41 +933,41 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         facValide=true
 
-        timezone_textview.setError(null)
-        repairorder_textviewVal.setError(null)
-        availability_textview.setError(null)
-        facilitytype_textview.setError(null)
-        ARDexp_textviewVal.setError(null)
-        payment_methods_textview.setError(null)
+        binding.timezoneTextview.setError(null)
+        binding.repairorderTextviewVal.setError(null)
+        binding.availabilityTextview.setError(null)
+        binding.facilitytypeTextview.setError(null)
+        binding.ARDnoTextviewVal.setError(null)
+        binding.paymentMethodsTextview.setError(null)
 
 
 
-        if (timeZoneSpinner.selectedItem.toString().isNullOrEmpty()){
-            timezone_textview.setError("reqiured field")
+        if (binding.timeZoneSpinner.selectedItem.toString().isNullOrEmpty()){
+            binding.timezoneTextview.setError("reqiured field")
             facValide=false
 
         }
 
-        if (facilitytype_textviewVal.selectedItem.toString().isNullOrEmpty()){
-            facilitytype_textview.setError("reqiured field")
+        if (binding.facilitytypeTextviewVal.selectedItem.toString().isNullOrEmpty()){
+            binding.facilitytypeTextview .setError("reqiured field")
             facValide=false
         }
-        if (availability_textviewVal.selectedItem.toString().isNullOrEmpty()){
-            availability_textview.setError("reqiured field")
+        if (binding.availabilityTextviewVal.selectedItem.toString().isNullOrEmpty()){
+            binding.availabilityTextview.setError("reqiured field")
             facValide=false
         }
-        if (repairorder_textviewVal.text.toString().isNullOrEmpty()){
-            repairorder_textviewVal.setError("reqiured field")
-            facValide=false
-        }
-
-        if (ARDexp_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
-            ARDexp_textviewVal.setError("Required Field")
+        if (binding.repairorderTextviewVal.text.toString().isNullOrEmpty()){
+            binding.repairorderTextviewVal.setError("reqiured field")
             facValide=false
         }
 
-        if (!americanexpress_checkbox.isChecked && !cash_checkbox.isChecked && !check_checkbox.isChecked && !debit_checkbox.isChecked && !discover_checkbox.isChecked && !goodyear_checkbox.isChecked && !mastercard_checkbox.isChecked && !paypal_checkbox.isChecked && !visa_checkbox.isChecked){
-            payment_methods_textview.setError("Required Field")
+        if (binding.ARDexpTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+            binding.ARDexpTextviewVal.setError("Required Field")
+            facValide=false
+        }
+
+        if (!binding.americanexpressCheckbox.isChecked && !binding.cashCheckbox.isChecked && !binding.checkCheckbox.isChecked && !binding.debitCheckbox.isChecked && !binding.discoverCheckbox.isChecked && !binding.goodyearCheckbox.isChecked && !binding.mastercardCheckbox.isChecked && !binding.paypalCheckbox.isChecked && !binding.visaCheckbox.isChecked){
+            binding.paymentMethodsTextview.setError("Required Field")
             facValide=false
         }
 
@@ -969,18 +993,18 @@ class FacilityGeneralInformationFragment : Fragment() {
 
 
     fun setPaymentMethods() {
-        visa_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==1 }.size>0)
-        mastercard_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==2 }.size>0)
-        americanexpress_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==3 }.size>0)
-        discover_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==4 }.size>0)
-        paypal_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==5 }.size>0)
-        debit_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==6 }.size>0)
-        cash_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==7 }.size>0)
-        check_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==8 }.size>0)
-        goodyear_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==9 }.size>0)
-        apple_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==10 }.size>0)
-        venmo_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==11 }.size>0)
-        zelle_checkbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==12 }.size>0)
+        binding.visaCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==1 }.size>0)
+        binding.mastercardCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==2 }.size>0)
+        binding.americanexpressCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==3 }.size>0)
+        binding.discoverCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==4 }.size>0)
+        binding.paypalCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==5 }.size>0)
+        binding.debitCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==6 }.size>0)
+        binding.cashCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==7 }.size>0)
+        binding.checkCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==8 }.size>0)
+        binding.goodyearCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==9 }.size>0)
+        binding.appleCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==10 }.size>0)
+        binding.venmoCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==11 }.size>0)
+        binding.zelleCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==12 }.size>0)
 
     }
 
@@ -1016,49 +1040,49 @@ class FacilityGeneralInformationFragment : Fragment() {
     }
 
     fun submitFacilityGeneralInfo(){
-        var busName =  if (dba_textviewVal.text.isNullOrEmpty())  "" else dba_textviewVal.text
+        var busName =  if (binding.dbaTextviewVal.text.isNullOrEmpty())  "" else binding.dbaTextviewVal.text
         busName = URLEncoder.encode(busName.toString() , "UTF-8");
 
 //        busName = URLEncoder.encode(busName.toString() , "UTF-8");
-        val busType = TypeTablesModel.getInstance().BusinessType.filter { s -> s.BusTypeName==bustype_textviewVal.selectedItem.toString()}[0].BusTypeID
-        var entityName =  if (entity_textviewVal.text.isNullOrEmpty())  "" else entity_textviewVal.text
+        val busType = TypeTablesModel.getInstance().BusinessType.filter { s -> s.BusTypeName==binding.bustypeTextviewVal.selectedItem.toString()}[0].BusTypeID
+        var entityName =  if (binding.entityTextviewVal.text.isNullOrEmpty())  "" else binding.entityTextviewVal.text
         entityName = URLEncoder.encode(entityName.toString() , "UTF-8");
 //        val assignedTo = if (assignedto_textviewVal.text.isNullOrEmpty())  "" else assignedto_textviewVal.text // get the ID
-        val assignedTo = if (assignedto_textviewVal.text.isNullOrEmpty())  "" else FacilityDataModel.getInstance().tblFacilities[0].assignedToID
-        val officeID = if (office_textviewVal.text.isNullOrEmpty())  "" else FacilityDataModel.getInstance().tblFacilities[0].officeID // get The ID
-        val taxIDNo = if (taxno_textviewVal.text.isNullOrEmpty())  "" else taxno_textviewVal.text
-        val facRepairCnt = if (repairorder_textviewVal.text.isNullOrEmpty())  "" else repairorder_textviewVal.text
+        val assignedTo = if (binding.assignedtoTextviewVal.text.isNullOrEmpty())  "" else FacilityDataModel.getInstance().tblFacilities[0].assignedToID
+        val officeID = if (binding.officeTextviewVal.text.isNullOrEmpty())  "" else FacilityDataModel.getInstance().tblFacilities[0].officeID // get The ID
+        val taxIDNo = if (binding.taxnoTextviewVal.text.isNullOrEmpty())  "" else binding.taxnoTextviewVal.text
+        val facRepairCnt = if (binding.repairorderTextviewVal.text.isNullOrEmpty())  "" else binding.repairorderTextviewVal.text
         val inspectionMonth = (FacilityDataModel.getInstance().tblFacilities[0].FacilityAnnualInspectionMonth).toString()
-        val inspectionCycle = inspectionCycleTextViewVal.text.toString()
-        val timeZoneID = TypeTablesModel.getInstance().TimezoneType.filter { s->s.TimezoneName.equals(timeZoneSpinner.selectedItem.toString()) }[0].TimezoneID
-        val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==availability_textviewVal.selectedItem.toString()}[0].SrvAvaID
-        val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==facilitytype_textviewVal.selectedItem.toString()}[0].FacilityTypeID
-        val automtiveRepairNo = if (ARDno_textviewVal.text.isNullOrEmpty())  "" else ARDno_textviewVal.text
-        val automtiveRepairExpDate = if (ARDexp_textviewVal.text.equals("")) "" else ARDexp_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-        val contractCurrDate = if (currcodate_textviewVal.text.equals("")) "" else currcodate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-        val contractInitDate = if (initcodate_textviewVal.text.equals("")) "" else initcodate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-        val internetAccess = if (wifiAvailableCheckBox.isChecked) "1" else "0"
-        val webSite = if (website_textviewVal.text.isNullOrEmpty())  "" else website_textviewVal.text
-        val terminationDate = if (terminationDateButton.text.equals("")) "" else terminationDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
-        var terminationReasonID = if (terminationReason_textviewVal.isVisible) TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==terminationReason_textviewVal.selectedItem.toString()}[0].TerminationCodeID else 0
-        val terminationComments = if (terminationCommentEditText.text.isNullOrEmpty())  "" else terminationCommentEditText.text
+        val inspectionCycle = binding.inspectionCycleTextViewVal.text.toString()
+        val timeZoneID = TypeTablesModel.getInstance().TimezoneType.filter { s->s.TimezoneName.equals(binding.timeZoneSpinner.selectedItem.toString()) }[0].TimezoneID
+        val svcAvailability= TypeTablesModel.getInstance().ServiceAvailabilityType.filter { s -> s.SrvAvaName==binding.availabilityTextviewVal.selectedItem.toString()}[0].SrvAvaID
+        val facType = TypeTablesModel.getInstance().FacilityType.filter { s -> s.FacilityTypeName==binding.facilitytypeTextviewVal.selectedItem.toString()}[0].FacilityTypeID
+        val automtiveRepairNo = if (binding.ARDnoTextviewVal.text.isNullOrEmpty())  "" else binding.ARDnoTextviewVal.text
+        val automtiveRepairExpDate = if (binding.ARDexpTextviewVal.text.equals("")) "" else binding.ARDexpTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val contractCurrDate = if (binding.currcodateTextviewVal.text.equals("")) "" else binding.currcodateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val contractInitDate = if (binding.initcodateTextviewVal.text.equals("")) "" else binding.initcodateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val internetAccess = if (binding.wifiAvailableCheckBox.isChecked) "1" else "0"
+        val webSite = if (binding.websiteTextviewVal.text.isNullOrEmpty())  "" else binding.websiteTextviewVal.text
+        val terminationDate = if (binding.terminationDateButton.text.equals("")) "" else binding.terminationDateButton.text.toString().appToApiSubmitFormatMMDDYYYY()
+        var terminationReasonID = if (binding.terminationReasonTextviewVal.isVisible) TypeTablesModel.getInstance().TerminationCodeType.filter { s -> s.TerminationCodeName==binding.terminationReasonTextviewVal.selectedItem.toString()}[0].TerminationCodeID else 0
+        val terminationComments = if (binding.terminationCommentEditText.text.isNullOrEmpty())  "" else binding.terminationCommentEditText.text
         val insertDate = Date().toApiSubmitFormat()
         val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val updateDate = Date().toApiSubmitFormat()
         val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val activeVal = "0"
-        val insuranceExpDate = if (InsuranceExpDate_textviewVal.text.equals("")) "" else InsuranceExpDate_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-        val contractType = TypeTablesModel.getInstance().ContractType.filter { s -> s.ContractTypeName==contractTypeValueSpinner.selectedItem.toString()}[0].ContractTypeID
+        val insuranceExpDate = if (binding.InsuranceExpDateTextviewVal.text.equals("")) "" else binding.InsuranceExpDateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+        val contractType = TypeTablesModel.getInstance().ContractType.filter { s -> s.ContractTypeName==binding.contractTypeValueSpinner.selectedItem.toString()}[0].ContractTypeID
         val billingMonth = FacilityDataModel.getInstance().tblFacilities[0].BillingMonth.toString()
         val billingAmount = FacilityDataModel.getInstance().tblFacilities[0].BillingAmount.toString()
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode = FacilityDataModel.getInstance().clubCode
-        val statusComment = statusCommentEditText.text.toString()
+        val statusComment = binding.statusCommentEditText.text.toString()
 //        val napaNumber = affiliateNAPAEditText.text.toString()
 //        val nationalNumber = affiliateNationalEditText.text.toString()
 //        FacilityDataModel.getInstance().tblFacilities[0]
-        progressBarText.text = "Saving ..."
-        scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+        binding.progressBarText.text = "Saving ..."
+        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
         var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=${FacilityDataModel.getInstance().tblFacilities[0].ACTIVE}&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType+"&statusComments="+statusComment
 //
 
@@ -1069,22 +1093,22 @@ class FacilityGeneralInformationFragment : Fragment() {
                         Log.v("RESPONSE",response.toString())
                         if (response.toString().contains("returnCode>0<",false)) {
                             Utility.showSubmitAlertDialog(activity, true, "Facility General Information")
-                            FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = timeZoneSpinner.selectedItem.toString()
+                            FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = binding.timeZoneSpinner.selectedItem.toString()
                             FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
                             FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
                             FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
                             FacilityDataModel.getInstance().tblFacilities[0].WebSite = webSite.toString()
                             FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
                             FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate = insuranceExpDate
-                            FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
-                            FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName = timeZoneSpinner.selectedItem.toString()
+                            FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = binding.facilitytypeTextviewVal.selectedItem.toString()
+                            FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName = binding.timeZoneSpinner.selectedItem.toString()
                             FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
                             FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
                             FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
                             FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite = webSite.toString()
                             FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
                             FacilityDataModelOrg.getInstance().tblFacilities[0].InsuranceExpDate = insuranceExpDate
-                            FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName = facilitytype_textviewVal.selectedItem.toString()
+                            FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName = binding.facilitytypeTextviewVal.selectedItem.toString()
 
                             (activity as FormsActivity).saveRequired = false
                             (activity as FormsActivity).saveDone = true
@@ -1093,19 +1117,19 @@ class FacilityGeneralInformationFragment : Fragment() {
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone=true
                             HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType=true
                             HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                             setAlertColoring()
-                            progressBarText.text = "Loading ..."
+                            binding.progressBarText.text = "Loading ..."
                         } else {
-                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                            progressBarText.text = "Loading ..."
+                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            binding.progressBarText.text = "Loading ..."
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+ errorMessage+" )")
                         }
                     }
                 }, Response.ErrorListener {
-            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-            progressBarText.text = "Loading ..."
+                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                binding.progressBarText.text = "Loading ..."
             Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+it.message+" )")
         }))
     }
@@ -1116,87 +1140,114 @@ class FacilityGeneralInformationFragment : Fragment() {
         var strPrefix = "Payment method(s) ("
         var strAdded = ""
         var strRemoved = ""
-        if (visa_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==1 }.isEmpty()) {
-            strAdded += "VISA - "
-        }
-        if (mastercard_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==2 }.isEmpty()) {
-            strAdded += "Master Card - "
-        }
-        if (americanexpress_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==3 }.isEmpty()) {
-            strAdded += "American Express - "
-        }
-        if (discover_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==4 }.isEmpty()) {
-            strAdded += "Discover - "
-        }
-        if (paypal_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==5 }.isEmpty()) {
-            strAdded += "PayPal - "
-        }
-        if (debit_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==6 }.isEmpty()) {
-            strAdded += "Debit - "
-        }
-        if (cash_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==7 }.isEmpty()) {
-            strAdded += "Cash - "
-        }
-        if (check_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==8 }.isEmpty()) {
-            strAdded += "Check - "
-        }
-        if (goodyear_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==9 }.isEmpty()) {
-            strAdded += "Goodyear Credit Card - "
-        }
-        if (apple_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==10 }.isEmpty()) {
-            strAdded += "Apple Pay - "
-        }
-        if (venmo_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==11 }.isEmpty()) {
-            strAdded += "Venmo - "
-        }
-        if (zelle_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==12 }.isEmpty()) {
-            strAdded += "Zelle - "
-        }
-        if (!strAdded.isNullOrEmpty()) {
-            strChanges += strPrefix + strAdded.removeSuffix(" - ") + ") added"
-        }
-        // REMOVED
-        if (!visa_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==1 }.isNotEmpty()) {
-            strRemoved += "VISA - "
-        }
-        if (!mastercard_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==2 }.isNotEmpty()) {
-            strRemoved += "Master Card - "
-        }
-        if (!americanexpress_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==3 }.isNotEmpty()) {
-            strRemoved += "American Express - "
-        }
-        if (!discover_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==4 }.isNotEmpty()) {
-            strRemoved += "Discover - "
-        }
-        if (!paypal_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==5 }.isNotEmpty()) {
-            strRemoved += "PayPal - "
-        }
-        if (!debit_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==6 }.isNotEmpty()) {
-            strRemoved += "Debit - "
-        }
-        if (!cash_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==7 }.isNotEmpty()) {
-            strRemoved += "Cash - "
-        }
-        if (!check_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==8 }.isNotEmpty()) {
-            strRemoved += "Check - "
-        }
-        if (!goodyear_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==9 }.isNotEmpty()) {
-            strRemoved += "Goodyear Credit Card - "
-        }
-        if (!apple_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==10 }.isEmpty()) {
-            strRemoved += "Apple Pay - "
-        }
-        if (!venmo_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==11 }.isEmpty()) {
-            strRemoved += "Venmo - "
-        }
-        if (!zelle_checkbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==12 }.isEmpty()) {
-            strRemoved += "Zelle - "
-        }
-        if (!strRemoved.isNullOrEmpty()) {
-            if (strAdded.isNotEmpty()) strChanges += " | "
-            strChanges += strPrefix + strRemoved.removeSuffix(" - ") + ") removed"
-        }
+        try {
+            if (binding.visaCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 1 }
+                    .isEmpty()) {
+                strAdded += "VISA - "
+            }
+            if (binding.mastercardCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 2 }
+                    .isEmpty()) {
+                strAdded += "Master Card - "
+            }
+            if (binding.americanexpressCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 3 }
+                    .isEmpty()) {
+                strAdded += "American Express - "
+            }
+            if (binding.discoverCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 4 }
+                    .isEmpty()) {
+                strAdded += "Discover - "
+            }
+            if (binding.paypalCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 5 }
+                    .isEmpty()) {
+                strAdded += "PayPal - "
+            }
+            if (binding.debitCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 6 }
+                    .isEmpty()) {
+                strAdded += "Debit - "
+            }
+            if (binding.cashCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 7 }
+                    .isEmpty()) {
+                strAdded += "Cash - "
+            }
+            if (binding.checkCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 8 }
+                    .isEmpty()) {
+                strAdded += "Check - "
+            }
+            if (binding.goodyearCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 9 }
+                    .isEmpty()) {
+                strAdded += "Goodyear Credit Card - "
+            }
+            if (binding.appleCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 10 }
+                    .isEmpty()) {
+                strAdded += "Apple Pay - "
+            }
+            if (binding.venmoCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 11 }
+                    .isEmpty()) {
+                strAdded += "Venmo - "
+            }
+            if (binding.zelleCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 12 }
+                    .isEmpty()) {
+                strAdded += "Zelle - "
+            }
+            if (!strAdded.isNullOrEmpty()) {
+                strChanges += strPrefix + strAdded.removeSuffix(" - ") + ") added"
+            }
+            // REMOVED
+            if (!binding.visaCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 1 }
+                    .isNotEmpty()) {
+                strRemoved += "VISA - "
+            }
+            if (!binding.mastercardCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 2 }
+                    .isNotEmpty()) {
+                strRemoved += "Master Card - "
+            }
+            if (!binding.americanexpressCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 3 }
+                    .isNotEmpty()) {
+                strRemoved += "American Express - "
+            }
+            if (!binding.discoverCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 4 }
+                    .isNotEmpty()) {
+                strRemoved += "Discover - "
+            }
+            if (!binding.paypalCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 5 }
+                    .isNotEmpty()) {
+                strRemoved += "PayPal - "
+            }
+            if (!binding.debitCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 6 }
+                    .isNotEmpty()) {
+                strRemoved += "Debit - "
+            }
+            if (!binding.cashCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 7 }
+                    .isNotEmpty()) {
+                strRemoved += "Cash - "
+            }
+            if (!binding.checkCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 8 }
+                    .isNotEmpty()) {
+                strRemoved += "Check - "
+            }
+            if (!binding.goodyearCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 9 }
+                    .isNotEmpty()) {
+                strRemoved += "Goodyear Credit Card - "
+            }
+            if (!binding.appleCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 10 }
+                    .isEmpty()) {
+                strRemoved += "Apple Pay - "
+            }
+            if (!binding.venmoCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 11 }
+                    .isEmpty()) {
+                strRemoved += "Venmo - "
+            }
+            if (!binding.zelleCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 12 }
+                    .isEmpty()) {
+                strRemoved += "Zelle - "
+            }
+            if (!strRemoved.isNullOrEmpty()) {
+                if (strAdded.isNotEmpty()) strChanges += " | "
+                strChanges += strPrefix + strRemoved.removeSuffix(" - ") + ") removed"
+            }
+        } catch (e: Exception) {
 
+        }
         return strChanges
     }
 
@@ -1208,23 +1259,23 @@ class FacilityGeneralInformationFragment : Fragment() {
 
                 //  BuildProgramsList()
 
-          val visa : String=   if (visa_checkbox.isChecked == true) "1" else ""
-          val mastercard: String=   if (mastercard_checkbox.isChecked == true) "2" else ""
-          val americanexpress: String=   if (americanexpress_checkbox.isChecked == true) "3" else ""
-          val discover: String=   if (discover_checkbox.isChecked == true) "4" else ""
-          val paypal: String=   if (paypal_checkbox.isChecked == true) "5" else ""
-          val debit: String=   if (debit_checkbox.isChecked == true) "6" else ""
-          val cash: String=   if (cash_checkbox.isChecked == true) "7" else ""
-          val check: String=   if (check_checkbox.isChecked == true) "8" else ""
-          val goodyear: String=   if (goodyear_checkbox.isChecked == true) "9" else ""
-          val applepay: String=   if (apple_checkbox.isChecked == true) "10" else ""
-          val venmo: String=   if (venmo_checkbox.isChecked == true) "11" else ""
-          val zelle: String=   if (zelle_checkbox.isChecked == true) "12" else ""
+          val visa : String=   if (binding.visaCheckbox.isChecked == true) "1" else ""
+          val mastercard: String=   if (binding.mastercardCheckbox.isChecked == true) "2" else ""
+          val americanexpress: String=   if (binding.americanexpressCheckbox.isChecked == true) "3" else ""
+          val discover: String=   if (binding.discoverCheckbox.isChecked == true) "4" else ""
+          val paypal: String=   if (binding.paypalCheckbox.isChecked == true) "5" else ""
+          val debit: String=   if (binding.debitCheckbox.isChecked == true) "6" else ""
+          val cash: String=   if (binding.cashCheckbox.isChecked == true) "7" else ""
+          val check: String=   if (binding.checkCheckbox.isChecked == true) "8" else ""
+          val goodyear: String=   if (binding.goodyearCheckbox.isChecked == true) "9" else ""
+          val applepay: String=   if (binding.appleCheckbox.isChecked == true) "10" else ""
+          val venmo: String=   if (binding.venmoCheckbox.isChecked == true) "11" else ""
+          val zelle: String=   if (binding.zelleCheckbox.isChecked == true) "12" else ""
 
          var paymentMethods= arrayOf(visa,mastercard,americanexpress,discover,paypal,debit,cash,check,goodyear,applepay,venmo,zelle)
         var paymentMethodArray = ArrayList<String>()
-        progressBarText.text = "Saving ..."
-        scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+        binding.progressBarText.text = "Saving ..."
+        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
         var payments : String? =""
 
         for (pm in paymentMethods){
@@ -1258,13 +1309,13 @@ class FacilityGeneralInformationFragment : Fragment() {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+ errorMessage+" )")
                         }
-                        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                        progressBarText.text = "Loading ..."
+                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                        binding.progressBarText.text = "Loading ..."
                     }
                 }, Response.ErrorListener {
         Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+it.message+" )")
-            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-            progressBarText.text = "Loading ..."
+                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                binding.progressBarText.text = "Loading ..."
         }))
 
 
@@ -1296,8 +1347,8 @@ class FacilityGeneralInformationFragment : Fragment() {
 
     fun refreshButtonsState(){
 
-        saveButton.isEnabled = (activity as FormsActivity).saveRequired
-        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.saveButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.cancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }
 
 

@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.inspection.uat",
+  "variantName": "uatDebug",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 121,
+      "versionName": "3.22-uat",
+      "outputFile": "app-uat-debug.apk"
+    }
+  ],
+  "elementType": "File"
+}

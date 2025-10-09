@@ -18,8 +18,10 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 
 import com.inspection.R
+import com.inspection.databinding.FragmentArravScopeOfServiceBinding
+import com.inspection.databinding.FragmentAwardsAndDistinctionsBinding
 import com.inspection.model.FacilityDataModel
-import kotlinx.android.synthetic.main.fragment_awards_and_distinctions.*
+//import kotlinx.android.synthetic.main.fragment_awards_and_distinctions.*
 
 
 /**
@@ -27,7 +29,8 @@ import kotlinx.android.synthetic.main.fragment_awards_and_distinctions.*
  */
 class AwardsAndDistinctionsFragment : Fragment() {
 
-
+    private var _binding: FragmentAwardsAndDistinctionsBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -36,30 +39,31 @@ class AwardsAndDistinctionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAwardsAndDistinctionsBinding.bind(view)
         scopeOfServiceChangesWatcher()
 
-        exitAwardsDialogeBtnId.setOnClickListener({
+        binding.exitAwardsDialogeBtnId.setOnClickListener({
 
-            awardsCard.visibility=View.GONE
-            alphaBackgroundForAwardsAndDistinctionDialogs.visibility = View.GONE
+            binding.awardsCard.visibility=View.GONE
+            binding.alphaBackgroundForAwardsAndDistinctionDialogs.visibility = View.GONE
 
 
         })
 
-        showAwardsCard.setOnClickListener(View.OnClickListener {
+        binding.showAwardsCard.setOnClickListener(View.OnClickListener {
 
-            awardsCard.visibility=View.VISIBLE
-            alphaBackgroundForAwardsAndDistinctionDialogs.visibility = View.VISIBLE
+            binding.awardsCard.visibility=View.VISIBLE
+            binding.alphaBackgroundForAwardsAndDistinctionDialogs.visibility = View.VISIBLE
 
 
         })
 
         fillAwardsTableView()
 
-        submitNewAward.setOnClickListener(View.OnClickListener {
+        binding.submitNewAward.setOnClickListener(View.OnClickListener {
 
-            awardsCard.visibility=View.GONE
-            alphaBackgroundForAwardsAndDistinctionDialogs.visibility = View.GONE
+            binding.awardsCard.visibility=View.GONE
+            binding.alphaBackgroundForAwardsAndDistinctionDialogs.visibility = View.GONE
 
 
         })
@@ -68,9 +72,9 @@ class AwardsAndDistinctionsFragment : Fragment() {
 
     fun fillAwardsTableView() {
 
-        if (mainAwardsTableLayout.childCount>1) {
-            for (i in mainAwardsTableLayout.childCount - 1 downTo 1) {
-                mainAwardsTableLayout.removeViewAt(i)
+        if (binding.mainAwardsTableLayout.childCount>1) {
+            for (i in binding.mainAwardsTableLayout.childCount - 1 downTo 1) {
+                binding.mainAwardsTableLayout.removeViewAt(i)
             }
         }
 
@@ -128,7 +132,7 @@ class AwardsAndDistinctionsFragment : Fragment() {
             tableRow.addView(textView)
 
 
-            mainAwardsTableLayout.addView(tableRow)
+            binding.mainAwardsTableLayout.addView(tableRow)
 
 
         }

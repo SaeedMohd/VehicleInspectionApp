@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import com.inspection.FormsActivity
+import com.inspection.R
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.fragments.FragmentARRAVVehicleServices
 import com.inspection.fragments.VehiclesFragmentInScopeOfServicesView
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TblFacVehicles
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.vehicle_services_item.view.*
+//import kotlinx.android.synthetic.main.vehicle_services_item.view.*
 
 class VehicleListAdapter(internal var context: Context, internal var recource: Int, parentFragment : VehiclesFragmentInScopeOfServicesView , gridType : String, objects: List<TypeTablesModel.vehicleMakes>) : ArrayAdapter<TypeTablesModel.vehicleMakes>(context, recource, objects) {
     internal var namesList: List<TypeTablesModel.vehicleMakes>
@@ -29,16 +31,21 @@ class VehicleListAdapter(internal var context: Context, internal var recource: I
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
 
-        var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(recource, parent, false)
+//        var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+//        val view = inflater.inflate(recource, parent, false)
+        val inflater = LayoutInflater.from(context)
+        val view = convertView ?: inflater.inflate(recource, parent, false)
 //        val textView3 = view.itemTextView
-        val checkBoxItem = view.itemCheckBox
+//        val checkBoxItem = view.itemCheckBox
+        val checkBoxItem = view.findViewById<CheckBox>(R.id.itemCheckBox)
+//        val textView3 = view.itemTextView
+//        val checkBoxItem = view.itemCheckBox
 
 
         checkBoxItem.text = namesList.get(position).MakeName
 //        var vehicleIDRef = TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeName.contains(gridType)}[0].VehiclesTypeID.toInt()
 
-        if (FacilityDataModel.getInstance().tblFacVehicles[0].VehicleID != -1) {
+        if (FacilityDataModel.getInstance().tblFacVehicles.isNotEmpty() && FacilityDataModel.getInstance().tblFacVehicles[0].VehicleID != -1) {
             if (FacilityDataModel.getInstance().tblFacVehicles.filter { s -> s.VehicleID == namesList.get(position).VehicleID }.isNotEmpty()) {
                 checkBoxItem.isChecked = true
                 updateSelectedVehicles(namesList.get(position).VehicleID,1,true)

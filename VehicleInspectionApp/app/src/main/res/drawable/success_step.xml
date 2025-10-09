@@ -1,0 +1,15 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Circle Background -->
+    <item>
+        <shape>
+            <solid android:color="@color/cb_green" />
+            <size android:width="48dp" android:height="48dp" />
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+
+    <!-- Check Mark Icon -->
+
+    <item android:drawable="@drawable/check_step" android:gravity="center" />
+
+</layer-list>

@@ -41,10 +41,11 @@
             />
 
         <Button
-            android:background="@drawable/green_background_button"
+            android:background="@drawable/new_btn_bkg"
             android:textColor="@color/white"
+            app:backgroundTint="@null"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
             android:paddingLeft="15dp"
@@ -179,15 +180,16 @@
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="5dp"
                     android:text="SUBMIT"
                     android:id="@+id/submitNewAffil"
-                    android:textColor="@color/white"
                     android:ems="12"
                     android:layout_column="1"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_gravity="top|right"/>
                 <ImageButton
                     android:layout_marginTop="25dp"
@@ -347,15 +349,16 @@
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="5dp"
                     android:text="SUBMIT"
                     android:id="@+id/edit_submitNewAffil"
-                    android:textColor="@color/white"
                     android:ems="12"
                     android:layout_column="1"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_gravity="top|right"/>
                 <ImageButton
                     android:layout_marginTop="25dp"
@@ -492,7 +495,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsAff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -501,7 +504,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsAff"
             android:layout_centerHorizontal="true"
             android:id="@+id/progressBarText"
             android:text="Loading..."

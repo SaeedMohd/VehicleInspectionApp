@@ -22,11 +22,13 @@ import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityServicesData
 import com.inspection.Utils.Utility.showValidationAlertDialog
+import com.inspection.databinding.FragmentAaravLocationBinding
+import com.inspection.databinding.FragmentArravFacilityServicesBinding
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility_services.progressBarText
-import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
+//import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
+//import kotlinx.android.synthetic.main.fragment_arrav_facility_services.progressBarText
+//import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,7 +45,9 @@ class FragmentARRAVFacilityServices : Fragment() {
     private var mListener: OnFragmentInteractionListener? = null
 
     var servicesArray= ArrayList<String>()
-
+    private var _binding: FragmentArravFacilityServicesBinding? = null
+    private val binding get() = _binding!!
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,114 +60,116 @@ class FragmentARRAVFacilityServices : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentArravFacilityServicesBinding.bind(view)
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited= true
-        (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA"))
+        requireActivity().findViewById<Button>(R.id.facilityServicesButton).setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
-        exitFC_ServicesDialogeBtnId.setOnClickListener {
-            facilityServicesCard.visibility=View.GONE
+        binding.exitFCServicesDialogeBtnId.setOnClickListener {
+            binding.facilityServicesCard.visibility=View.GONE
             (activity as FormsActivity).overrideBackButton = false
-            alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+            binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
         }
 
-        edit_exitFC_ServicesDialogeBtnId.setOnClickListener {
-            editFacilityServicesCard.visibility=View.GONE
+        binding.editExitFCServicesDialogeBtnId.setOnClickListener {
+            binding.editFacilityServicesCard.visibility=View.GONE
             (activity as FormsActivity).overrideBackButton = false
-            alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
+            binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
         }
 
-        showNewserviceDialogueButton.setOnClickListener {
-            comments_editTextVal.setText("")
-            fceffective_date_textviewVal.setText("SELECT DATE")
-            fcexpiration_date_textviewVal.setText("SELECT DATE")
-            fc_services_textviewVal.setSelection(0)
-            comments_editTextVal.setError(null)
-            fceffective_date_textviewVal.setError(null)
+        binding.showNewserviceDialogueButton.setOnClickListener {
+            binding.commentsEditTextVal.setText("")
+            binding.fceffectiveDateTextviewVal.setText("SELECT DATE")
+            binding.fcexpirationDateTextviewVal.setText("SELECT DATE")
+            binding.fcServicesTextviewVal.setSelection(0)
+            binding.commentsEditTextVal.setError(null)
+            binding.fceffectiveDateTextviewVal.setError(null)
             (activity as FormsActivity).overrideBackButton = true
-            facilityServicesCard.visibility=View.VISIBLE
-            alphaBackgroundForFC_ServicesDialogs.visibility = View.VISIBLE
+            binding.facilityServicesCard.visibility=View.VISIBLE
+            binding.alphaBackgroundForFCServicesDialogs.visibility = View.VISIBLE
         }
 
-        fcexpiration_date_textviewVal.setOnClickListener {
+        binding.fcexpirationDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!fcexpiration_date_textviewVal.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(fcexpiration_date_textviewVal.text.toString()))
+            if (!binding.fcexpirationDateTextviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.fcexpirationDateTextviewVal.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                fcexpiration_date_textviewVal!!.text = sdf.format(c.time)
+                binding.fcexpirationDateTextviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
-        fceffective_date_textviewVal.setOnClickListener {
+        binding.fceffectiveDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!fceffective_date_textviewVal.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(fceffective_date_textviewVal.text.toString()))
+            if (!binding.fceffectiveDateTextviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.fceffectiveDateTextviewVal.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                fceffective_date_textviewVal!!.text = sdf.format(c.time)
+                binding.fceffectiveDateTextviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
-        edit_fcexpiration_date_textviewVal.setOnClickListener {
+        binding.editFcexpirationDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!edit_fcexpiration_date_textviewVal.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(edit_fcexpiration_date_textviewVal.text.toString()))
+            if (!binding.editFcexpirationDateTextviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.editFcexpirationDateTextviewVal.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                edit_fcexpiration_date_textviewVal!!.text = sdf.format(c.time)
+                binding.editFcexpirationDateTextviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
-        edit_fceffective_date_textviewVal.setOnClickListener {
+        binding.editFceffectiveDateTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!edit_fceffective_date_textviewVal.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(edit_fceffective_date_textviewVal.text.toString()))
+            if (!binding.editFceffectiveDateTextviewVal.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.editFceffectiveDateTextviewVal.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                edit_fceffective_date_textviewVal!!.text = sdf.format(c.time)
+                binding.editFceffectiveDateTextviewVal!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
@@ -178,61 +184,64 @@ class FragmentARRAVFacilityServices : Fragment() {
 
         var servicesAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, servicesArray)
         servicesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        fc_services_textviewVal.adapter = servicesAdapter
-        edit_fc_services_textviewVal.adapter = servicesAdapter
+        binding.fcServicesTextviewVal.adapter = servicesAdapter
+        binding.editFcServicesTextviewVal.adapter = servicesAdapter
 
-        submitNewserviceButton.setOnClickListener {
+        binding.submitNewserviceButton.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                if (validateInputs()){
+                    binding.progressBarText.text = "Saving ..."
+                    binding.FCLoadingView.visibility = View.VISIBLE
 
-            if (validateInputs()){
-                progressBarText.text = "Saving ..."
-                FC_LoadingView.visibility = View.VISIBLE
 
 
+                    var item = TblFacilityServices()
+                    for (fac in TypeTablesModel.getInstance().ServicesType) {
+                        if (binding.fcServicesTextviewVal.getSelectedItem().toString().equals(fac.ServiceTypeName))
 
-                var item = TblFacilityServices()
-                for (fac in TypeTablesModel.getInstance().ServicesType) {
-                    if (fc_services_textviewVal.getSelectedItem().toString().equals(fac.ServiceTypeName))
-
-                        item.ServiceID =fac.ServiceTypeID
-                }
-                item.effDate = if (fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else fceffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                item.expDate = if (fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else fcexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                item.Comments=comments_editTextVal.text.toString()
-                Log.v("FAC SERVICES ADD --- ",UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getFacServiceChanges(0,0)),
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread {
-                                if (response.toString().contains("returnCode>0<",false)) {
-                                    item.FacilityServicesID= response.toString().substring(response.toString().indexOf("<FacilityServicesID")+20,response.toString().indexOf("</FacilityServicesID"))
-                                    FacilityDataModel.getInstance().tblFacilityServices.add(item)
-                                    FacilityDataModelOrg.getInstance().tblFacilityServices.add(item)
-                                    Utility.showSubmitAlertDialog(activity, true, "Facility Services")
-                                    fillPortalTrackingTableView()
-                                    altFacServiceTableRow(2)
-                                    (activity as FormsActivity).saveDone = true
-                                    HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices=true
-                                    HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
-                                } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
+                            item.ServiceID =fac.ServiceTypeID
+                    }
+                    item.effDate = if (binding.fceffectiveDateTextviewVal.text.equals("SELECT DATE")) "" else binding.fceffectiveDateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                    item.expDate = if (binding.fcexpirationDateTextviewVal.text.equals("SELECT DATE")) "" else binding.fcexpirationDateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                    item.Comments=binding.commentsEditTextVal.text.toString()
+                    Log.v("FAC SERVICES ADD --- ",UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getFacServiceChanges(0,0)),
+                            Response.Listener { response ->
+                                requireActivity().runOnUiThread {
+                                    if (response.toString().contains("returnCode>0<",false)) {
+                                        item.FacilityServicesID= response.toString().substring(response.toString().indexOf("<FacilityServicesID")+20,response.toString().indexOf("</FacilityServicesID"))
+                                        FacilityDataModel.getInstance().tblFacilityServices.add(item)
+                                        FacilityDataModelOrg.getInstance().tblFacilityServices.add(item)
+                                        Utility.showSubmitAlertDialog(activity, true, "Facility Services")
+                                        fillPortalTrackingTableView()
+                                        altFacServiceTableRow(2)
+                                        (activity as FormsActivity).saveDone = true
+                                        HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices=true
+                                        HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
+                                    } else {
+                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                        Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
+                                    }
+                                    binding.facilityServicesCard.visibility = View.GONE
+                                    binding.FCLoadingView.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                    binding.progressBarText.text = "Loading ..."
+                                    binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
                                 }
-                                facilityServicesCard.visibility = View.GONE
-                                FC_LoadingView.visibility = View.GONE
-                                (activity as FormsActivity).overrideBackButton = false
-                                progressBarText.text = "Loading ..."
-                                alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
-                            }
-                        }, Response.ErrorListener {
-                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
-                        facilityServicesCard.visibility = View.GONE
-                        FC_LoadingView.visibility = View.GONE
-                    (activity as FormsActivity).overrideBackButton = false
-                        progressBarText.text = "Loading ..."
-                        alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
-                }))
-            }else {
-                showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
-//                showValidationAlertDialog(activity,"Please fill all the required fields")
+                            }, Response.ErrorListener {
+                        Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
+                            binding.facilityServicesCard.visibility = View.GONE
+                            binding.FCLoadingView.visibility = View.GONE
+                        (activity as FormsActivity).overrideBackButton = false
+                            binding.progressBarText.text = "Loading ..."
+                            binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+                    }))
+                }else {
+                    showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
+    //                showValidationAlertDialog(activity,"Please fill all the required fields")
+                }
+            } else {
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
             }
         }
         fillPortalTrackingTableView();
@@ -241,41 +250,56 @@ class FragmentARRAVFacilityServices : Fragment() {
 
     fun getFacServiceChanges(action : Int, rowId: Int) : String { // 0: Add 1: Edit
         var strChanges = ""
-        if (action==0) {
-            strChanges = "Facility Service added with "
-            strChanges += "Service (" + fc_services_textviewVal.getSelectedItem().toString()+ ") - "
-            strChanges += "Effective Date (" + if (fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else fceffective_date_textviewVal.text.toString() + ") - "
-            strChanges += "Expiration Date (" + if (fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else fcexpiration_date_textviewVal.text.toString() + ") - "
-            strChanges += "Comments (" + comments_editTextVal.text.toString() + ")"
+        try {
+            if (action == 0) {
+                strChanges = "Facility Service added with "
+                strChanges += "Service (" + binding.fcServicesTextviewVal.getSelectedItem()
+                    .toString() + ") - "
+                strChanges += "Effective Date (" + if (binding.fceffectiveDateTextviewVal.text.equals("SELECT DATE")) "" else binding.fceffectiveDateTextviewVal.text.toString() + ") - "
+                strChanges += "Expiration Date (" + if (binding.fcexpirationDateTextviewVal.text.equals("SELECT DATE")) "" else binding.fcexpirationDateTextviewVal.text.toString() + ") - "
+                strChanges += "Comments (" + binding.commentsEditTextVal.text.toString() + ")"
+            }
+            val Comments = binding.editCommentsEditTextVal.text.toString()
+            val effDate =
+                if (binding.editFceffectiveDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editFceffectiveDateTextviewVal.text.toString()
+            val expDate =
+                if (binding.editFcexpirationDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editFcexpirationDateTextviewVal.text.toString()
+            val facilityService = binding.editFcServicesTextviewVal.selectedItem.toString()
+            if (action == 1) {
+                if (Comments != FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].Comments) {
+                    strChanges += "Facility Service comments changed from (" + FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].Comments + ") to (${Comments}) - "
+                }
+                if (effDate != FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].effDate.apiToAppFormatMMDDYYYY()) {
+                    strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].effDate.apiToAppFormatMMDDYYYY() + ") to (" + effDate + ") - "
+                }
+                if (expDate != FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].expDate.apiToAppFormatMMDDYYYY()) {
+                    strChanges += "Expiration Date changed from (" + FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].expDate.apiToAppFormatMMDDYYYY() + ") to (" + expDate + ") - "
+                }
+                if (facilityService != (TypeTablesModel.getInstance().ServicesType.filter { s ->
+                        s.ServiceTypeID.equals(
+                            FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].ServiceID
+                        )
+                    }[0].ServiceTypeName)) {
+                    strChanges += "Service changed from (" + TypeTablesModel.getInstance().ServicesType.filter { s ->
+                        s.ServiceTypeID.equals(
+                            FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].ServiceID
+                        )
+                    }[0].ServiceTypeName + ") to (" + facilityService + ") - "
+                }
+            }
+            strChanges = strChanges.removeSuffix(" - ")
+        } catch (e: Exception) {
+            Log.e("Error", e.message.toString())
         }
-        val Comments = edit_comments_editTextVal.text.toString()
-        val effDate = if (edit_fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_fceffective_date_textviewVal.text.toString()
-        val expDate = if (edit_fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_fcexpiration_date_textviewVal.text.toString()
-        val facilityService = edit_fc_services_textviewVal.selectedItem.toString()
-        if (action==1) {
-            if (Comments != FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].Comments) {
-                strChanges += "Facility Service comments changed from (" + FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].Comments+ ") to (${Comments}) - "
-            }
-            if (effDate != FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].effDate.apiToAppFormatMMDDYYYY()) {
-                strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].effDate.apiToAppFormatMMDDYYYY() + ") to (" + effDate + ") - "
-            }
-            if (expDate != FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].expDate.apiToAppFormatMMDDYYYY()) {
-                strChanges += "Expiration Date changed from (" + FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].expDate.apiToAppFormatMMDDYYYY() + ") to (" + expDate + ") - "
-            }
-            if (facilityService != (TypeTablesModel.getInstance().ServicesType.filter { s->s.ServiceTypeID.equals(FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].ServiceID)}[0].ServiceTypeName)) {
-                strChanges += "Service changed from (" + TypeTablesModel.getInstance().ServicesType.filter { s->s.ServiceTypeID.equals(FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].ServiceID)}[0].ServiceTypeName + ") to (" + facilityService + ") - "
-            }
-        }
-        strChanges = strChanges.removeSuffix(" - ")
         return strChanges
     }
 
     fun fillPortalTrackingTableView() {
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
-        if (aarPortalTrackingTableLayout.childCount > 1) {
-            for (i in aarPortalTrackingTableLayout.childCount - 1 downTo 1) {
-                aarPortalTrackingTableLayout.removeViewAt(i)
+        if (binding.aarPortalTrackingTableLayout.childCount > 1) {
+            for (i in binding.aarPortalTrackingTableLayout.childCount - 1 downTo 1) {
+                binding.aarPortalTrackingTableLayout.removeViewAt(i)
             }
         }
 
@@ -400,74 +424,78 @@ class FragmentARRAVFacilityServices : Fragment() {
                     updateButton.setBackgroundColor(Color.TRANSPARENT)
                     tableRow.addView(updateButton)
 
-                    aarPortalTrackingTableLayout.addView(tableRow)
+                    binding.aarPortalTrackingTableLayout.addView(tableRow)
                     updateButton.setOnClickListener {
-                        var currentTableRowIndex = aarPortalTrackingTableLayout.indexOfChild(tableRow)
+                        var currentTableRowIndex = binding.aarPortalTrackingTableLayout.indexOfChild(tableRow)
                         var currentfacilityDataModelIndex = currentTableRowIndex - 1
-                        edit_comments_editTextVal.setText(FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments)
-                        edit_fceffective_date_textviewVal.setText(if (FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate.equals("")) "SELECT DATE" else FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate.apiToAppFormatMMDDYYYY())
-                        edit_fcexpiration_date_textviewVal.setText(if (FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate.equals("")) "SELECT DATE" else FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate.apiToAppFormatMMDDYYYY())
+                        binding.editCommentsEditTextVal.setText(FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments)
+                        binding.editFceffectiveDateTextviewVal.setText(if (FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate.equals("")) "SELECT DATE" else FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate.apiToAppFormatMMDDYYYY())
+                        binding.editFcexpirationDateTextviewVal.setText(if (FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate.equals("")) "SELECT DATE" else FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate.apiToAppFormatMMDDYYYY())
 
 
                         var i = servicesArray.indexOf(textView1.text)
-                        edit_fc_services_textviewVal.setSelection(i)
+                        binding.editFcServicesTextviewVal.setSelection(i)
                         (activity as FormsActivity).overrideBackButton = true
-                        editFacilityServicesCard.visibility = View.VISIBLE
-                        alphaBackgroundForFC_ServicesDialogs.visibility = View.VISIBLE
-                        edit_submitNewserviceButton.setOnClickListener {
-                            if (edit_validateInputs()) {
-                                progressBarText.text = "Saving ..."
-                                FC_LoadingView.visibility = View.VISIBLE
-                                (activity as FormsActivity).overrideBackButton = false
-                                var item = TblFacilityServices()
-                                for (fac in TypeTablesModel.getInstance().ServicesType) {
-                                    if (edit_fc_services_textviewVal.getSelectedItem().toString().equals(fac.ServiceTypeName))
-                                        item.ServiceID = fac.ServiceTypeID
-                                }
-                                item.effDate = if (edit_fceffective_date_textviewVal.text.equals("SELECT DATE")) "" else edit_fceffective_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                item.expDate = if (edit_fcexpiration_date_textviewVal.text.equals("SELECT DATE")) "" else edit_fcexpiration_date_textviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
-                                item.Comments = edit_comments_editTextVal.text.toString()
-                                item.FacilityServicesID = FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].FacilityServicesID
-                                Log.v("FAC SERVICES EDIT --- ",UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat())
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, getFacServiceChanges(1,currentfacilityDataModelIndex)),
-                                        Response.Listener { response ->
-                                            activity!!.runOnUiThread {
-                                                if (response.toString().contains("returnCode>0<", false)) {
-                                                    Utility.showSubmitAlertDialog(activity, true, "Facility Services")
-                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments = item.Comments
-                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate = item.effDate
-                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate = item.expDate
-                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
-                                                    FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments = item.Comments
-                                                    FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate = item.effDate
-                                                    FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate = item.expDate
-                                                    FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
-                                                    fillPortalTrackingTableView()
-                                                    altFacServiceTableRow(2)
-                                                    (activity as FormsActivity).saveDone = true
-                                                    HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices = true
-                                                    HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
-                                                } else {
-                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
-                                                }
-                                                editFacilityServicesCard.visibility = View.GONE
-                                                FC_LoadingView.visibility = View.GONE
-                                                (activity as FormsActivity).overrideBackButton = false
-                                                progressBarText.text = "Loading ..."
-                                                alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
-                                            }
-                                        }, Response.ErrorListener {
-                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
-                                    editFacilityServicesCard.visibility = View.GONE
-                                    FC_LoadingView.visibility = View.GONE
+                        binding.editFacilityServicesCard.visibility = View.VISIBLE
+                        binding.alphaBackgroundForFCServicesDialogs.visibility = View.VISIBLE
+                        binding.editSubmitNewserviceButton.setOnClickListener {
+                            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                                if (edit_validateInputs()) {
+                                    binding.progressBarText.text = "Saving ..."
+                                    binding.FCLoadingView.visibility = View.VISIBLE
                                     (activity as FormsActivity).overrideBackButton = false
-                                    progressBarText.text = "Loading ..."
-                                    alphaBackgroundForFC_ServicesDialogs.visibility = View.GONE
-                                }))
+                                    var item = TblFacilityServices()
+                                    for (fac in TypeTablesModel.getInstance().ServicesType) {
+                                        if (binding.editFcServicesTextviewVal.getSelectedItem().toString().equals(fac.ServiceTypeName))
+                                            item.ServiceID = fac.ServiceTypeID
+                                    }
+                                    item.effDate = if (binding.editFceffectiveDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editFceffectiveDateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                    item.expDate = if (binding.editFcexpirationDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editFcexpirationDateTextviewVal.text.toString().appToApiSubmitFormatMMDDYYYY()
+                                    item.Comments = binding.editCommentsEditTextVal.text.toString()
+                                    item.FacilityServicesID = FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].FacilityServicesID
+                                    Log.v("FAC SERVICES EDIT --- ",UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat())
+                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, getFacServiceChanges(1,currentfacilityDataModelIndex)),
+                                            Response.Listener { response ->
+                                                requireActivity().runOnUiThread {
+                                                    if (response.toString().contains("returnCode>0<", false)) {
+                                                        Utility.showSubmitAlertDialog(activity, true, "Facility Services")
+                                                        FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments = item.Comments
+                                                        FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate = item.effDate
+                                                        FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate = item.expDate
+                                                        FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
+                                                        FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments = item.Comments
+                                                        FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate = item.effDate
+                                                        FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate = item.expDate
+                                                        FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
+                                                        fillPortalTrackingTableView()
+                                                        altFacServiceTableRow(2)
+                                                        (activity as FormsActivity).saveDone = true
+                                                        HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices = true
+                                                        HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
+                                                    } else {
+                                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                        Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
+                                                    }
+                                                    binding.editFacilityServicesCard.visibility = View.GONE
+                                                    binding.FCLoadingView.visibility = View.GONE
+                                                    (activity as FormsActivity).overrideBackButton = false
+                                                    binding.progressBarText.text = "Loading ..."
+                                                    binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+                                                }
+                                            }, Response.ErrorListener {
+                                        Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
+                                            binding.editFacilityServicesCard.visibility = View.GONE
+                                            binding.FCLoadingView.visibility = View.GONE
+                                        (activity as FormsActivity).overrideBackButton = false
+                                            binding.progressBarText.text = "Loading ..."
+                                        binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+                                    }))
+                                } else {
+    //                                showValidationAlertDialog(activity, "Please fill all the required fields")
+                                    showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
+                                }
                             } else {
-//                                showValidationAlertDialog(activity, "Please fill all the required fields")
-                                showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
+                                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
                             }
                         }
                     }
@@ -478,10 +506,10 @@ class FragmentARRAVFacilityServices : Fragment() {
 
 
     fun altFacServiceTableRow(alt_row : Int) {
-        var childViewCount = aarPortalTrackingTableLayout.getChildCount();
+        var childViewCount = binding.aarPortalTrackingTableLayout.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
+            var row : TableRow= binding.aarPortalTrackingTableLayout.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.setBackground(getResources().getDrawable(
@@ -503,33 +531,33 @@ class FragmentARRAVFacilityServices : Fragment() {
         var facServicesValide= TblFacilityServices().isInputsValid
         facServicesValide = true
 
-        fceffective_date_textviewVal.setError(null)
-        fcServiceSpinner.setError(null)
-        comments_editTextVal.setError(null)
-        if(fceffective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        binding.fceffectiveDateTextviewVal.setError(null)
+        binding.fcServiceSpinner.setError(null)
+        binding.commentsEditTextVal.setError(null)
+        if(binding.fceffectiveDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             facServicesValide = false
-            fceffective_date_textviewVal.setError("Required Field")
+            binding.fceffectiveDateTextviewVal.setError("Required Field")
         }
 
-        if(!fcexpiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(!binding.fcexpirationDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
-            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(fceffective_date_textviewVal!!.text.toString())
-            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(fcexpiration_date_textviewVal!!.text.toString())
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.fceffectiveDateTextviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.fcexpirationDateTextviewVal!!.text.toString())
             if (expDate.before(effDate)) {
                 facServicesValide = false
-                fcexpiration_date_textviewVal.setError("Should be after Effective Date")
+                binding.fcexpirationDateTextviewVal.setError("Should be after Effective Date")
             }
         }
 
 
-        if(fc_services_textviewVal.selectedItemPosition.equals(0)) {
+        if(binding.fcServicesTextviewVal.selectedItemPosition.equals(0)) {
             facServicesValide = false
-            fcServiceSpinner.setError("Required Field")
+            binding.fcServiceSpinner.setError("Required Field")
         }
 
-//        if(comments_editTextVal.text.isNullOrEmpty()) {
+//        if(binding.commentsEditTextVal.text.isNullOrEmpty()) {
 //            facServicesValide = false
-//            comments_editTextVal.setError("Required Field")
+//            binding.commentsEditTextVal.setError("Required Field")
 //        }
 
         return facServicesValide
@@ -540,32 +568,32 @@ class FragmentARRAVFacilityServices : Fragment() {
         var facServicesValide= TblFacilityServices().isInputsValid
         facServicesValide = true
 
-        edit_fceffective_date_textviewVal.setError(null)
-        edit_fcServiceSpinner.setError(null)
-        edit_comments_editTextVal.setError(null)
-        if(edit_fceffective_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        binding.editFceffectiveDateTextviewVal.setError(null)
+        binding.editFcServiceSpinner.setError(null)
+        binding.editCommentsEditTextVal.setError(null)
+        if(binding.editFceffectiveDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             facServicesValide = false
-            edit_fceffective_date_textviewVal.setError("Required Field")
+            binding.editFceffectiveDateTextviewVal.setError("Required Field")
         }
 
-        if(!edit_fcexpiration_date_textviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(!binding.editFcexpirationDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
-            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_fceffective_date_textviewVal!!.text.toString())
-            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(edit_fcexpiration_date_textviewVal!!.text.toString())
+            val effDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.editFceffectiveDateTextviewVal!!.text.toString())
+            val expDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.editFcexpirationDateTextviewVal!!.text.toString())
             if (expDate.before(effDate)) {
                 facServicesValide = false
-                edit_fcexpiration_date_textviewVal.setError("Should be after Effective Date")
+                binding.editFcexpirationDateTextviewVal.setError("Should be after Effective Date")
             }
         }
 
-        if(edit_fc_services_textviewVal.selectedItemPosition.equals(0)) {
+        if(binding.editFcServicesTextviewVal.selectedItemPosition.equals(0)) {
             facServicesValide = false
-            edit_fcServiceSpinner.setError("Required Field")
+            binding.editFcServiceSpinner.setError("Required Field")
         }
 
-//        if(edit_comments_editTextVal.text.isNullOrEmpty()) {
+//        if(edit_binding.commentsEditTextVal.text.isNullOrEmpty()) {
 //            facServicesValide = false
-//            edit_comments_editTextVal.setError("Required Field")
+//            edit_binding.commentsEditTextVal.setError("Required Field")
 //        }
 
         return facServicesValide
@@ -620,4 +648,11 @@ class FragmentARRAVFacilityServices : Fragment() {
             return fragment
         }
     }
+
+    fun updateDialogs() {
+        if (binding.facilityServicesCard != null) binding.facilityServicesCard.visibility = View.GONE
+        if (binding.editFacilityServicesCard != null) binding.editFacilityServicesCard.visibility = View.GONE
+        if (binding.alphaBackgroundForFCServicesDialogs != null) binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+    }
+
 }// Required empty public constructor

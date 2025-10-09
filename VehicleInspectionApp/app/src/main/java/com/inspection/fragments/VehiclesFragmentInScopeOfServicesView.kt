@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
@@ -23,9 +24,9 @@ import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.adapter.VehicleListAdapter
 import com.inspection.adapter.VehicleTypesListAdapter
+import com.inspection.databinding.FragmentAaravPaymentsBinding
+import com.inspection.databinding.FragmentVehiclesFragmentInScopeOfServicesViewBinding
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.fragment_vehicles_fragment_in_scope_of_services_view.*
-import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -80,6 +81,8 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
     private var vehicleTypeList = ArrayList<TypeTablesModel.vehiclesType>()
     private var vehicleTypeArray = ArrayList<String>()
 
+    private var _binding: FragmentVehiclesFragmentInScopeOfServicesViewBinding? = null
+    private val binding get() = _binding!!
 
 
 
@@ -112,7 +115,7 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 //        if (progressbarVehicleServices != null) {
 //            progressbarVehicleServices.visibility = View.VISIBLE
 //        }
-
+        _binding = FragmentVehiclesFragmentInScopeOfServicesViewBinding.bind(view)
         vehicleTypeList = TypeTablesModel.getInstance().VehiclesType
         vehicleTypeArray.clear()
         for (fac in vehicleTypeList) {
@@ -121,14 +124,16 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
         var vehicleTypeAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, vehicleTypeArray)
         vehicleTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        vehicleTypeSpinner.adapter = vehicleTypeAdapter
-        vehicleTypeSpinner.setSelection(vehicleTypeArray.indexOf("Automobile"))
+        binding.vehicleTypeSpinner.adapter = vehicleTypeAdapter
+        binding.vehicleTypeSpinner.setSelection(vehicleTypeArray.indexOf("Automobile"))
 
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited= true
-        (activity as FormsActivity).vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+        requireActivity().findViewById<Button>(R.id.vehiclesButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
-        vehicleTypeSpinner.onItemSelectedListener= object : AdapterView.OnItemSelectedListener{
+        binding.vehicleTypeSpinner.onItemSelectedListener= object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
@@ -139,10 +144,183 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         }
 
         setServices()
+        binding.cngCheckBox.setOnClickListener {
+            if (binding.cngCheckBox.isChecked) {
+                for (i in 0..cngListItems.size-1) {
+                    if (!selectedVehicles.contains(cngListItems[i].VehicleID.toString())) {
+                        selectedVehicles.add(cngListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==cngListItems[i].VehicleID}.isEmpty()) {
+                            var newVehicle = TblFacVehicles()
+                            newVehicle.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            newVehicle.VehicleID = cngListItems[i].VehicleID
+                            FacilityDataModel.getInstance().tblFacVehicles.add(newVehicle)
+                        }
+                    }
+                }
+            } else {
+                for (i in 0..cngListItems.size-1) {
+                    if (selectedVehicles.contains(cngListItems[i].VehicleID.toString())) {
+                        selectedVehicles.remove(cngListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==cngListItems[i].VehicleID}.isNotEmpty()) {
+                            FacilityDataModel.getInstance().tblFacVehicles.removeIf { s->s.VehicleID==cngListItems[i].VehicleID}
+                        }
+                    }
+                }
+            }
+            cngAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", cngListItems)
+            CNGVehiclesListView?.adapter = cngAdapter
+            (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        }
 
-        cancelButton.setOnClickListener {
-            progressBarText.text = "Cancelling ..."
-            scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+        binding.dieselCheckBox.setOnClickListener {
+            if (binding.dieselCheckBox.isChecked) {
+                for (i in 0..dieselListItems.size-1) {
+                    if (!selectedVehicles.contains(dieselListItems[i].VehicleID.toString())) {
+                        selectedVehicles.add(dieselListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==dieselListItems[i].VehicleID}.isEmpty()) {
+                            var newVehicle = TblFacVehicles()
+                            newVehicle.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            newVehicle.VehicleID = dieselListItems[i].VehicleID
+                            FacilityDataModel.getInstance().tblFacVehicles.add(newVehicle)
+                        }
+                    }
+                }
+            } else {
+                for (i in 0..dieselListItems.size-1) {
+                    if (selectedVehicles.contains(dieselListItems[i].VehicleID.toString())) {
+                        selectedVehicles.remove(dieselListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==dieselListItems[i].VehicleID}.isNotEmpty()) {
+                            FacilityDataModel.getInstance().tblFacVehicles.removeIf { s->s.VehicleID==dieselListItems[i].VehicleID}
+                        }
+                    }
+                }
+            }
+            dieselAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", dieselListItems)
+            DieselVehiclesListView?.adapter = dieselAdapter
+            (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        }
+
+        binding.hydrogenCheckBox.setOnClickListener {
+            if (binding.hydrogenCheckBox.isChecked) {
+                for (i in 0..hydrogenListItems.size-1) {
+                    if (!selectedVehicles.contains(hydrogenListItems[i].VehicleID.toString())) {
+                        selectedVehicles.add(hydrogenListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==hydrogenListItems[i].VehicleID}.isEmpty()) {
+                            var newVehicle = TblFacVehicles()
+                            newVehicle.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            newVehicle.VehicleID = hydrogenListItems[i].VehicleID
+                            FacilityDataModel.getInstance().tblFacVehicles.add(newVehicle)
+                        }
+                    }
+                }
+            } else {
+                for (i in 0..hydrogenListItems.size-1) {
+                    if (selectedVehicles.contains(hydrogenListItems[i].VehicleID.toString())) {
+                        selectedVehicles.remove(hydrogenListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==hydrogenListItems[i].VehicleID}.isNotEmpty()) {
+                            FacilityDataModel.getInstance().tblFacVehicles.removeIf { s->s.VehicleID==hydrogenListItems[i].VehicleID}
+                        }
+                    }
+                }
+            }
+            hydrogenAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", hydrogenListItems)
+            HydrogenVehiclesListView?.adapter = hydrogenAdapter
+            (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        }
+
+        binding.gasCheckBox.setOnClickListener {
+            if (binding.gasCheckBox.isChecked) {
+                for (i in 0..gasListItems.size-1) {
+                    if (!selectedVehicles.contains(gasListItems[i].VehicleID.toString())) {
+                        selectedVehicles.add(gasListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==gasListItems[i].VehicleID}.isEmpty()) {
+                            var newVehicle = TblFacVehicles()
+                            newVehicle.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            newVehicle.VehicleID = gasListItems[i].VehicleID
+                            FacilityDataModel.getInstance().tblFacVehicles.add(newVehicle)
+                        }
+                    }
+                }
+            } else {
+                for (i in 0..gasListItems.size-1) {
+                    if (selectedVehicles.contains(gasListItems[i].VehicleID.toString())) {
+                        selectedVehicles.remove(gasListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==gasListItems[i].VehicleID}.isNotEmpty()) {
+                            FacilityDataModel.getInstance().tblFacVehicles.removeIf { s->s.VehicleID==gasListItems[i].VehicleID}
+                        }
+                    }
+                }
+            }
+            gasAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", gasListItems)
+            GasVehiclesListView?.adapter = gasAdapter
+            (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        }
+
+        binding.hybridCheckBox.setOnClickListener {
+            if (binding.hybridCheckBox.isChecked) {
+                for (i in 0..hybridListItems.size-1) {
+                    if (!selectedVehicles.contains(hybridListItems[i].VehicleID.toString())) {
+                        selectedVehicles.add(hybridListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==hybridListItems[i].VehicleID}.isEmpty()) {
+                            var newVehicle = TblFacVehicles()
+                            newVehicle.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            newVehicle.VehicleID = hybridListItems[i].VehicleID
+                            FacilityDataModel.getInstance().tblFacVehicles.add(newVehicle)
+                        }
+                    }
+                }
+            } else {
+                for (i in 0..hybridListItems.size-1) {
+                    if (selectedVehicles.contains(hybridListItems[i].VehicleID.toString())) {
+                        selectedVehicles.remove(hybridListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==hybridListItems[i].VehicleID}.isNotEmpty()) {
+                            FacilityDataModel.getInstance().tblFacVehicles.removeIf { s->s.VehicleID==hybridListItems[i].VehicleID}
+                        }
+                    }
+                }
+            }
+            hybridAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", hybridListItems)
+            HybridVehiclesListView?.adapter = hybridAdapter
+            (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        }
+
+        binding.electricCheckBox.setOnClickListener {
+            if (binding.electricCheckBox.isChecked) {
+                for (i in 0..electricListItems.size-1) {
+                    if (!selectedVehicles.contains(electricListItems[i].VehicleID.toString())) {
+                        selectedVehicles.add(electricListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==electricListItems[i].VehicleID}.isEmpty()) {
+                            var newVehicle = TblFacVehicles()
+                            newVehicle.FACID = FacilityDataModel.getInstance().tblFacilities[0].FACID
+                            newVehicle.VehicleID = electricListItems[i].VehicleID
+                            FacilityDataModel.getInstance().tblFacVehicles.add(newVehicle)
+                        }
+                    }
+                }
+            } else {
+                for (i in 0..electricListItems.size-1) {
+                    if (selectedVehicles.contains(electricListItems[i].VehicleID.toString())) {
+                        selectedVehicles.remove(electricListItems[i].VehicleID.toString())
+                        if (FacilityDataModel.getInstance().tblFacVehicles.filter { s->s.VehicleID==electricListItems[i].VehicleID}.isNotEmpty()) {
+                            FacilityDataModel.getInstance().tblFacVehicles.removeIf { s->s.VehicleID==electricListItems[i].VehicleID}
+                        }
+                    }
+                }
+            }
+            electricAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", electricListItems)
+            ElectricVehiclesListView?.adapter = electricAdapter
+            (activity as FormsActivity).saveRequired = true
+            refreshButtonsState()
+        }
+
+        binding.cancelButton.setOnClickListener {
+            binding.progressBarText.text = "Cancelling ..."
+            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
             FacilityDataModel.getInstance().tblFacVehicles.clear()
             for (i in 0..FacilityDataModelOrg.getInstance().tblFacVehicles.size-1) {
                 var vehicleServiceItem = TblFacVehicles()
@@ -155,18 +333,22 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
                 FacilityDataModel.getInstance().tblFacVehicles.add(vehicleServiceItem)
             }
             (activity as FormsActivity).saveRequired = false
-            vehicleTypeSpinner.setSelection(vehicleTypeArray.indexOf("Automobile"))
+            binding.vehicleTypeSpinner.setSelection(vehicleTypeArray.indexOf("Automobile"))
             setServices()
             refreshButtonsState()
-            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
-            progressBarText.text = "Loading ..."
+//            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+            Utility.showUnifiedConfirmationDialog(activity,  "Changes cancelled successfully")
+            binding.progressBarText.text = "Loading ..."
         }
 
-        saveButton.setOnClickListener {
-            progressBarText.text = "Saving ..."
-            scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-            saveVehicleChanges()
-
+        binding.saveButton.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                binding.progressBarText.text = "Saving ..."
+                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+                saveVehicleChanges()
+            } else {
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
+            }
         }
 
 
@@ -192,34 +374,40 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         }
 
         addedData += "Added Vehicle(s): "
+        var vehcileCount = 0
         for (i in 0 until addedVehicles.size) {
             if (TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==addedVehicles[i].toInt()}.isNotEmpty()) {
-                var item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == addedVehicles[i].toInt() }[0]
-                addedData += "Type (" + TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeID.toInt() == item.VehicleTypeID }[0].VehiclesTypeName + ")"
-                addedData += ", Category (" + TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + ")"
-                addedData += ", Make (" + item.MakeName + ") - "
+                vehcileCount++
+//                var item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == addedVehicles[i].toInt() }[0]
+//                addedData += "Type (" + TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeID.toInt() == item.VehicleTypeID }[0].VehiclesTypeName + ")"
+//                addedData += ", Category (" + TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + ")"
+//                addedData += ", Make (" + item.MakeName + ") - "
             }
         }
+        addedData += "Added Vehicle(s): " + vehcileCount
 
         removedData += "Removed Vehicle(s): "
+        vehcileCount = 0
         for (i in 0 until removedVehicles.size) {
             if (TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==removedVehicles[i].toInt()}.isNotEmpty()) {
-                var item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == removedVehicles[i].toInt() }[0]
-                removedData += "Type (" + TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeID.toInt() == item.VehicleTypeID }[0].VehiclesTypeName + ")"
-                removedData += ", Category (" + TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + ")"
-                removedData += ", Make (" + item.MakeName + ") - "
+                vehcileCount++
+//                var item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == removedVehicles[i].toInt() }[0]
+//                removedData += "Type (" + TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeID.toInt() == item.VehicleTypeID }[0].VehiclesTypeName + ")"
+//                removedData += ", Category (" + TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + ")"
+//                removedData += ", Make (" + item.MakeName + ") - "
             }
         }
-        removedData = removedData.removeSuffix(" - ")
-        addedData = addedData.removeSuffix(" - ")
+        removedData += "Removed Vehicle(s): " + vehcileCount
+//        removedData = removedData.removeSuffix(" - ")
+//        addedData = addedData.removeSuffix(" - ")
         totalDataChanges = addedData + " - " + removedData
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 1, totalDataChanges),
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
-                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                            progressBarText.text = "Loading ..."
+                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            binding.progressBarText.text = "Loading ..."
                             FacilityDataModelOrg.getInstance().tblFacVehicles.clear()
                             for (i in 0..FacilityDataModel.getInstance().tblFacVehicles.size-1) {
                                 var vehicleServiceItem = TblFacVehicles()
@@ -239,13 +427,13 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity, false, "Vehicles (Error: "+ errorMessage+" )")
-                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                            progressBarText.text = "Loading ..."
+                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            binding.progressBarText.text = "Loading ..."
                         }
                     }
                 }, Response.ErrorListener {
-            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-            progressBarText.text = "Loading ..."
+                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                binding.progressBarText.text = "Loading ..."
             Utility.showSubmitAlertDialog(activity,false,"Vehicles (Error: "+it.message+" )")
         }))
     }
@@ -257,8 +445,8 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
 
     fun refreshButtonsState(){
-        saveButton.isEnabled = (activity as FormsActivity).saveRequired
-        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.saveButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.cancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }
 
 
@@ -299,7 +487,7 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         HybridVehiclesListView?.isVisible = false
         HydrogenVehiclesListView?.isVisible = false
 
-        for (model in TypeTablesModel.getInstance().VehicleMakes.filter { S -> S.VehicleTypeID==TypeTablesModel.getInstance().VehiclesType.filter { S->S.VehiclesTypeName.equals(vehicleTypeSpinner.selectedItem.toString())}[0].VehiclesTypeID.toInt()}) {
+        for (model in TypeTablesModel.getInstance().VehicleMakes.filter { S -> S.VehicleTypeID==TypeTablesModel.getInstance().VehiclesType.filter { S->S.VehiclesTypeName.equals(binding.vehicleTypeSpinner.selectedItem.toString())}[0].VehiclesTypeID.toInt()}) {
             if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Domestic")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Domestic")}[0].VehCategoryID.toInt()){
                 domesticListItems.add(model)
             } else if (TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Asian")}.isNotEmpty() && model.VehicleCategoryID==TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { S->S.VehCategoryName.equals("Make - Asian")}[0].VehCategoryID.toInt()){
@@ -327,67 +515,67 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 
 
         if (domesticListItems.count() > 0) {
-            domesticAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", domesticListItems)
+            domesticAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", domesticListItems)
             DomesticVehiclesListView?.adapter = domesticAdapter
             DomesticVehiclesListView?.isExpanded = true
             DomesticVehiclesListView?.isVisible = true
-            domesticContainer.visibility = View.VISIBLE
+            binding.domesticContainer.visibility = View.VISIBLE
         } else {
-            domesticContainer.visibility = View.GONE
+            binding.domesticContainer.visibility = View.GONE
         }
         if (asianListItems.count() > 0) {
-            asianAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", asianListItems)
+            asianAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", asianListItems)
             AsianVehiclesListView?.adapter = asianAdapter
             AsianVehiclesListView?.isExpanded = true
             AsianVehiclesListView?.isVisible = true
-            asianContainer.visibility = View.VISIBLE
+            binding.asianContainer.visibility = View.VISIBLE
         } else {
-            asianContainer.visibility = View.GONE
+            binding.asianContainer.visibility = View.GONE
         }
         if (europeanListItems.count() > 0) {
-            europeanAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", europeanListItems)
+            europeanAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", europeanListItems)
             EuropeanVehiclesListView?.adapter = europeanAdapter
             EuropeanVehiclesListView?.isExpanded = true
             EuropeanVehiclesListView?.isVisible = true
-            europeanContainer.visibility = View.VISIBLE
+            binding.europeanContainer.visibility = View.VISIBLE
         } else {
-            europeanContainer.visibility = View.GONE
+            binding.europeanContainer.visibility = View.GONE
         }
         if (exoticListItems.count() > 0) {
-            exoticAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", exoticListItems)
+            exoticAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", exoticListItems)
             ExoticVehiclesListView?.adapter = exoticAdapter
             ExoticVehiclesListView?.isExpanded = true
             ExoticVehiclesListView?.isVisible = true
-            exoticContainer.visibility = View.VISIBLE
+            binding.exoticContainer.visibility = View.VISIBLE
         } else {
-            exoticContainer.visibility = View.GONE
+            binding.exoticContainer.visibility = View.GONE
         }
         if (otherListItems.count() > 0) {
-            otherAdapter = VehicleListAdapter(context!!, R.layout.vehicle_services_item, this, "", otherListItems)
+            otherAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", otherListItems)
             OtherVehiclesListView?.adapter = otherAdapter
             OtherVehiclesListView?.isExpanded = true
             OtherVehiclesListView?.isVisible = true
-            otherContainer.visibility = View.VISIBLE
+            binding.otherContainer.visibility = View.VISIBLE
         } else {
-            otherContainer.visibility = View.GONE
+            binding.otherContainer.visibility = View.GONE
         }
         if (cngListItems.count() > 0) {
             cngAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", cngListItems)
             CNGVehiclesListView?.adapter = cngAdapter
             CNGVehiclesListView?.isExpanded = true
             CNGVehiclesListView?.isVisible = true
-            CNGContainer.visibility = View.VISIBLE
+            binding.CNGContainer.visibility = View.VISIBLE
         } else {
-            CNGContainer.visibility = View.GONE
+            binding.CNGContainer.visibility = View.GONE
         }
         if (dieselListItems.count() > 0) {
             dieselAdapter = VehicleListAdapter(requireContext(), R.layout.vehicle_services_item, this, "", dieselListItems)
             DieselVehiclesListView?.adapter = dieselAdapter
             DieselVehiclesListView?.isExpanded = true
             DieselVehiclesListView?.isVisible = true
-            DieselContainer.visibility = View.VISIBLE
+            binding.DieselContainer.visibility = View.VISIBLE
         } else {
-            DieselContainer.visibility = View.GONE
+            binding.DieselContainer.visibility = View.GONE
         }
 
         if (electricListItems.count() > 0) {
@@ -395,9 +583,9 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
             ElectricVehiclesListView?.adapter = electricAdapter
             ElectricVehiclesListView?.isExpanded = true
             ElectricVehiclesListView?.isVisible = true
-            ElectricContainer.visibility = View.VISIBLE
+            binding.ElectricContainer.visibility = View.VISIBLE
         } else {
-            ElectricContainer.visibility = View.GONE
+            binding.ElectricContainer.visibility = View.GONE
         }
 
         if (gasListItems.count() > 0) {
@@ -405,9 +593,9 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
             GasVehiclesListView?.adapter = gasAdapter
             GasVehiclesListView?.isExpanded = true
             GasVehiclesListView?.isVisible = true
-            GasContainer.visibility = View.VISIBLE
+            binding.GasContainer.visibility = View.VISIBLE
         } else {
-            GasContainer.visibility = View.GONE
+            binding.GasContainer.visibility = View.GONE
         }
 
         if (hybridListItems.count() > 0) {
@@ -415,9 +603,9 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
             HybridVehiclesListView?.adapter = hybridAdapter
             HybridVehiclesListView?.isExpanded = true
             HybridVehiclesListView?.isVisible = true
-            HybridContainer.visibility = View.VISIBLE
+            binding.HybridContainer.visibility = View.VISIBLE
         } else {
-            HybridContainer.visibility = View.GONE
+            binding.HybridContainer.visibility = View.GONE
         }
 
         if (hydrogenListItems.count() > 0) {
@@ -425,14 +613,14 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
             HydrogenVehiclesListView?.adapter = hydrogenAdapter
             HydrogenVehiclesListView?.isExpanded = true
             HydrogenVehiclesListView?.isVisible = true
-            HydrogenContainer.visibility = View.VISIBLE
+            binding.HydrogenContainer.visibility = View.VISIBLE
         } else {
-            HydrogenContainer.visibility = View.GONE
+            binding.HydrogenContainer.visibility = View.GONE
         }
 
         refreshButtonsState()
-        expandablell.visibility = View.VISIBLE
-        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+        binding.expandablell.visibility = View.VISIBLE
+        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
 //        DomesticVehiclesListView?.adapter = arrayAdapter
 //        DomesticVehiclesListView?.isExpanded=true
 

@@ -36,7 +36,6 @@
                 <RelativeLayout
                     android:id="@+id/mainViewLinearId"
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -76,29 +75,33 @@
                     <Button
                         android:id="@+id/addNewPRGRecordBtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_toLeftOf="@id/addNewPersnRecordBtn"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
                         android:layout_marginBottom="20dp"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:text="Add PRG USER"
-                        android:textColor="@color/white" />
+                        />
                     <Button
                         android:id="@+id/addNewPersnRecordBtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
                         android:layout_marginBottom="20dp"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:text="Add New Personnel"
-                        android:textColor="@color/white" />
+                        />
 
                     <TextView
                         android:id="@+id/primaryMailLbl"
@@ -149,11 +152,21 @@
                                 android:layout_height="wrap_content"
                                 android:background="@color/mainColor"
                                 android:minHeight="30dp">
-
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_column="0"
+                                    android:layout_weight="1"
+                                    android:text="Options"
+                                    android:paddingEnd="15dp"
+                                    android:textAlignment="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
                                     android:layout_marginStart="10dp"
                                     android:layout_weight="1.5"
                                     android:text="Type"
@@ -164,7 +177,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="1"
+                                    android:layout_column="2"
                                     android:layout_marginStart="0dp"
                                     android:layout_weight="1"
                                     android:text="First Name"
@@ -175,7 +188,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="2"
+                                    android:layout_column="3"
                                     android:layout_marginStart="0dp"
                                     android:layout_weight="1"
                                     android:text="Last Name"
@@ -186,7 +199,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="3"
+                                    android:layout_column="4"
                                     android:layout_marginStart="0dp"
                                     android:layout_weight="1"
                                     android:text="RSP User ID"
@@ -197,7 +210,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="4"
+                                    android:layout_column="5"
                                     android:layout_marginStart="0dp"
                                     android:layout_weight="1.5"
                                     android:text="Email Address"
@@ -208,7 +221,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="5"
+                                    android:layout_column="6"
                                     android:layout_marginStart="0dp"
                                     android:layout_weight="1"
                                     android:text="Seniority Date"
@@ -220,7 +233,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="6"
+                                    android:layout_column="7"
                                     android:layout_marginStart="10dp"
                                     android:layout_weight="1"
                                     android:text="Start Date"
@@ -231,7 +244,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="7"
+                                    android:layout_column="8"
                                     android:layout_marginStart="10dp"
                                     android:layout_weight="1"
                                     android:text="End Date"
@@ -242,7 +255,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="8"
+                                    android:layout_column="9"
                                     android:layout_marginLeft="10dp"
                                     android:layout_weight="1"
                                     android:text="Cert ID#"
@@ -253,31 +266,9 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="8"
+                                    android:layout_column="10"
                                     android:layout_weight="1"
                                     android:text="Cert ID_ASE"
-                                    android:textAlignment="center"
-                                    android:textColor="@color/white"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_column="9"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_weight="1"
-                                    android:text="Contract Signer"
-                                    android:textAlignment="center"
-                                    android:textColor="@color/white"
-                                    android:textSize="14sp" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_column="10"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_weight="1"
-                                    android:text="Primary Mail Recipient"
                                     android:textAlignment="center"
                                     android:textColor="@color/white"
                                     android:textSize="14sp" />
@@ -288,7 +279,7 @@
                                     android:layout_column="11"
                                     android:layout_gravity="center_horizontal"
                                     android:layout_weight="1"
-                                    android:text="Report Recipient"
+                                    android:text="Contract Signer"
                                     android:textAlignment="center"
                                     android:textColor="@color/white"
                                     android:textSize="14sp" />
@@ -297,6 +288,28 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_column="12"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:text="Primary Mail Recipient"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="13"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_weight="1"
+                                    android:text="Report Recipient"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="14"
                                     android:layout_gravity="center_horizontal"
                                     android:layout_weight="1"
                                     android:text="Notification Recipient"
@@ -307,7 +320,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="12"
+                                    android:layout_column="15"
                                     android:layout_gravity="center_horizontal"
                                     android:layout_weight="1"
                                     android:text="Complaint Contact"
@@ -318,7 +331,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="12"
+                                    android:layout_column="16"
                                     android:layout_gravity="center_horizontal"
                                     android:layout_weight="1.5"
                                     android:text="Update By"
@@ -328,7 +341,7 @@
                                 <TextView
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_column="12"
+                                    android:layout_column="17"
                                     android:layout_gravity="center_horizontal"
                                     android:layout_weight="1.2"
                                     android:text="Update Date"
@@ -336,16 +349,7 @@
                                     android:textColor="@color/white"
                                     android:textSize="14sp" />
 
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_column="13"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_weight="1"
-                                    android:text="Options"
-                                    android:textAlignment="center"
-                                    android:textColor="@color/white"
-                                    android:textSize="14sp" />
+
                             </TableRow>
                         </TableLayout>
                     </ScrollView>
@@ -455,7 +459,9 @@
                                 android:layout_column="6"
                                 android:layout_weight="2"
                                 android:text="Contract Signer"
-                                android:textAlignment="center" />
+                                android:textAlignment="center"
+                                app:buttonTint="@drawable/checkbox_bkg"
+                                />
 
                         </TableRow>
 
@@ -526,7 +532,8 @@
                                 android:layout_column="6"
                                 android:layout_weight="2"
                                 android:text="Complaint Contact"
-                                android:textAlignment="center" />
+                                android:textAlignment="center"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
                         </TableRow>
 
                         <TableRow
@@ -602,7 +609,8 @@
                                 android:layout_column="6"
                                 android:layout_weight="2"
                                 android:text="Report Recipient"
-                                android:textAlignment="center" />
+                                android:textAlignment="center"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
                         </TableRow>
 
                         <TableRow
@@ -679,7 +687,8 @@
                                 android:layout_column="6"
                                 android:layout_weight="2"
                                 android:text="Primary Mail Recipient"
-                                android:textAlignment="center" />
+                                android:textAlignment="center"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
                         </TableRow>
 
                         <TableRow
@@ -755,7 +764,8 @@
                                 android:layout_column="6"
                                 android:layout_weight="2"
                                 android:text="Notification Recipient"
-                                android:textAlignment="center" />
+                                android:textAlignment="center"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
                         </TableRow>
                     </TableLayout>
 
@@ -794,17 +804,19 @@
                     <Button
                         android:id="@+id/AddNewCertBtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_below="@id/openCertificateGrid"
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:text="Add New Certification"
-                        android:textColor="@color/white" />
+                        />
 
 
                 </RelativeLayout>
@@ -928,14 +940,16 @@
             <Button
                 android:id="@+id/submitNewCertBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_gravity="right"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:text="Submit"
-                android:textColor="@color/white" />
+                />
 
 
             <ImageButton
@@ -1127,9 +1141,19 @@
                     android:background="@drawable/border"
                     android:lines="3"
                     android:textSize="12dp" />
+            <HorizontalScrollView
+                android:id="@+id/horizontalView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dip"
+                android:scrollbars="horizontal">
 
+            <ScrollView
+                android:id="@+id/scrollview2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
                 <TableLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="2000dp"
                     android:layout_height="wrap_content"
                     android:divider="@drawable/border"
                     android:showDividers="middle"
@@ -1137,11 +1161,13 @@
                     android:layout_marginBottom="20dp"
                     android:orientation="vertical"
                     android:padding="10dp"
-                    android:scrollbars="vertical"
+                    android:scrollbars="horizontal"
                     android:stretchColumns="*"
                     >
 
                 </TableLayout>
+            </ScrollView>
+            </HorizontalScrollView>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1202,14 +1228,16 @@
             <Button
                 android:id="@+id/submitNewPersnRecordBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_gravity="right"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:text="Submit"
-                android:textColor="@color/white" />
+                />
 
 
             <ImageButton
@@ -1248,10 +1276,23 @@
                         android:id="@+id/newPersonnelTypeSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
                         android:ems="8"
                         android:entries="@array/contractTypesEntries" />
-
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:id="@+id/roleHint"
+                            android:text="This Personnel Type is not permitted to use RSP\nRSP User ID will not be saved"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textStyle="italic" />
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1288,6 +1329,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
+                            android:maxLength="40"
                             android:layout_weight="1"
                             android:background="@drawable/textview_background"
                              />
@@ -1297,6 +1339,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
+                            android:maxLength="40"
                             android:layout_weight="1"
                             android:background="@drawable/textview_background"
 
@@ -1326,11 +1369,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <EditText
                             android:id="@+id/rspUserId"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="1"
+                            android:enabled="true"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/textview_background"
@@ -1350,6 +1394,7 @@
                             android:layout_column="3"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
+                            android:id="@+id/rspEmailTextId"
                             android:text="Email Address:"
                             android:textStyle="bold" />
 
@@ -1360,13 +1405,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <EditText
                             android:id="@+id/rspEmailId"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="4"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
+                            android:enabled="true"
+                            android:maxLength="100"
                             android:background="@drawable/textview_background" />
                     </LinearLayout>
 
@@ -1485,7 +1532,7 @@
                         android:text="ASE Certification ID:"
                         android:textStyle="bold" />
 
-                    <br.com.sapereaude.maskedEditText.MaskedEditText
+                    <io.github.softmedtanzania.MaskedEditText
                         android:id="@+id/newASECertNoText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1629,6 +1676,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Contract Signer"
+                            app:buttonTint="@drawable/checkbox_bkg"
                             />
 
                         <CheckBox
@@ -1639,6 +1687,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Primary Mail Recipients"
+                            app:buttonTint="@drawable/checkbox_bkg"
                             />
 
                     </LinearLayout>
@@ -1656,6 +1705,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Report Recipient"
+                            app:buttonTint="@drawable/checkbox_bkg"
                             />
 
                         <CheckBox
@@ -1666,6 +1716,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Complaint Contact"
+                            app:buttonTint="@drawable/checkbox_bkg"
                             />
 
                     </LinearLayout>
@@ -1682,6 +1733,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Notification Recipients"
+                            app:buttonTint="@drawable/checkbox_bkg"
                             />
 
                     </LinearLayout>
@@ -1965,14 +2017,16 @@
             <Button
                 android:id="@+id/edit_submitNewPersnRecordBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_gravity="right"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:text="Submit"
-                android:textColor="@color/white" />
+                />
 
 
             <ImageButton
@@ -2014,7 +2068,21 @@
                         android:layout_column="1"
                         android:ems="8"
                         android:entries="@array/contractTypesEntries" />
-
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:id="@+id/editRoleHint"
+                            android:text="This Personnel Type is not permitted to use RSP\nRSP User ID will be deleted"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textStyle="italic" />
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -2092,16 +2160,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <EditText
                             android:id="@+id/edit_rspUserId"
                             android:layout_width="0dp"
+                            android:enabled="true"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/textview_background"
-                            android:textStyle="bold" />
-
-
+                            android:textStyle="bold"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -2132,9 +2199,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:enabled="false"
+                            android:enabled="true"
                             android:layout_weight="1"
                             android:background="@drawable/textview_background" />
+
                     </LinearLayout>
 
 
@@ -2254,7 +2322,7 @@
                         android:text="ASE Certification ID:"
                         android:textStyle="bold" />
 
-                    <br.com.sapereaude.maskedEditText.MaskedEditText
+                    <io.github.softmedtanzania.MaskedEditText
                         android:id="@+id/edit_newASECertNoText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -2399,6 +2467,7 @@
                             android:layout_margin="5dp"
                             android:layout_marginTop="5dp"
                             android:text="Contract Signer"
+                            app:buttonTint="@drawable/checkbox_bkg"
                             />
 
                         <CheckBox
@@ -2619,7 +2688,7 @@
                             android:orientation="horizontal">
 
                             <EditText
-                                android:id="@+id/edit_newPhoneText"
+                                android:id="@+id/edit_newPhoneText2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
@@ -2739,14 +2808,16 @@
             <Button
                 android:id="@+id/editNewCertBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_gravity="right"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:text="Submit"
-                android:textColor="@color/white" />
+                />
 
 
             <ImageButton
@@ -2917,7 +2988,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecords1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -2926,7 +2997,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecords1"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"
@@ -2946,7 +3017,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecords2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -2956,7 +3027,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/personnelLoadingText"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecords2"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"
@@ -2975,7 +3046,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecords3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -2984,7 +3055,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecords3"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"

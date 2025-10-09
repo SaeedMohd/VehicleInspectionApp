@@ -55,6 +55,7 @@ class CsiFacility {
     var aaastate = ""
     var rnum = ""
     var valueadded = ""
+    var specialistemail=""
     var website = ""
     var fax = ""
     var phone1 = ""

@@ -308,7 +308,8 @@
                 android:weightSum="3"
                 android:paddingLeft="20dp"
                 android:visibility="gone"
-                android:id="@+id/loc1addr2branchnamell">
+                >
+<!--                android:id="@+id/loc1addr2branchnamell"-->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -386,7 +387,8 @@
                 android:orientation="horizontal"
                 android:weightSum="3"
                 android:paddingLeft="20dp"
-                android:id="@+id/loc2addr2branchnoll">
+                >
+<!--                android:id="@+id/loc2addr2branchnoll"-->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -411,7 +413,8 @@
                 android:orientation="horizontal"
                 android:weightSum="3"
                 android:paddingLeft="20dp"
-                android:id="@+id/loc1addr2branchnamell">
+                >
+<!--                android:id="@+id/loc1addr2branchnamell"-->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -465,7 +468,8 @@
                 android:weightSum="3"
                 android:visibility="gone"
                 android:paddingLeft="20dp"
-                android:id="@+id/loc2addr2branchnoll">
+                >
+<!--                android:id="@+id/loc2addr2branchnoll"-->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

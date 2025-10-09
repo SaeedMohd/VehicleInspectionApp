@@ -88,7 +88,18 @@ tools:context="com.inspection.fragments.FragmentAARPromotions">
                             android:numColumns="1"
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="2dp" />
-
+                        <TextView
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/noActPromoTxt"
+                            android:layout_gravity="center"
+                            android:text="No Active Promotions"
+                            android:textColor="@color/mainColor"
+                            android:textSize="26sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -111,16 +122,20 @@ tools:context="com.inspection.fragments.FragmentAARPromotions">
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:background="@drawable/grey_background_button"
+                android:layout_height="40dp"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:text="Cancel" />
 
             <Button
                 android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:text="Save" />
         </LinearLayout>
     </RelativeLayout>
@@ -135,7 +150,7 @@ tools:context="com.inspection.fragments.FragmentAARPromotions">
     android:visibility="gone">
 
     <ProgressBar
-        android:id="@+id/progressBarRecords"
+        android:id="@+id/progressBarRecordsPromo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -144,7 +159,7 @@ tools:context="com.inspection.fragments.FragmentAARPromotions">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/progressBarRecords"
+        android:layout_above="@id/progressBarRecordsPromo"
         android:layout_centerHorizontal="true"
         android:id="@+id/progressBarText"
         android:text="Loading..."

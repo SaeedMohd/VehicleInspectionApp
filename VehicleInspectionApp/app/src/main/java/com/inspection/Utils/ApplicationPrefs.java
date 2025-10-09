@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+//import com.inspection.MainActivity;
 import com.inspection.MainActivity;
 import com.inspection.model.AccountDetailModel;
 import com.inspection.model.UserAccountModel;
@@ -716,7 +717,6 @@ public class ApplicationPrefs {
         try {
             SharedPreferences settings = context
                     .getSharedPreferences(PREFS_NAME, 0);
-
             return settings.getString(loggedInUserEmail, "");
         } catch (Exception e) {
             return "E000000";

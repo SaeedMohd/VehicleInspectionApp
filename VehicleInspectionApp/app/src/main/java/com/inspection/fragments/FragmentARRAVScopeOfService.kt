@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.view.get
@@ -26,7 +27,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
-import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
+//import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import org.json.JSONException
 import org.json.JSONObject
 import com.google.gson.GsonBuilder
@@ -37,8 +38,10 @@ import com.inspection.MainActivity.Companion.handler
 import com.inspection.R.id.numberOfLiftsEditText
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateScopeofServiceData
+import com.inspection.databinding.FragmentArravScopeOfServiceBinding
+import com.inspection.databinding.FragmentArrayVehicleServicesBinding
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
+//import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.lang.Exception
 import java.util.*
 import kotlin.jvm.java
@@ -54,7 +57,8 @@ import kotlin.properties.Delegates
  * create an instance of this fragment.
  */
 class FragmentARRAVScopeOfService : Fragment() {
-
+    private var _binding: FragmentArravScopeOfServiceBinding? = null
+    private val binding get() = _binding!!
     var warrantyArray = ArrayList<String>()
     var discountPercentageArray = ArrayList<String>()
 //    var discountPercentArray = ArrayList<String>()
@@ -70,6 +74,7 @@ class FragmentARRAVScopeOfService : Fragment() {
     var testString=""
     var prevDiscountPercentage = ""
     var prevMaxDiscountAmount = ""
+    var isFirstLoading = true
 
 
     private var mListener: OnFragmentInteractionListener? = null
@@ -86,11 +91,11 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = FragmentArravScopeOfServiceBinding.bind(view)
         implementOnAnyFragment=false
         validationProblemFoundForOtherFragments=false
-        cancelButton.setOnClickListener {
-            cancelButton.hideKeyboard()
+        binding.cancelButton.setOnClickListener {
+            binding.cancelButton.hideKeyboard()
             FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate= temp_diagnosticLaborRate
             FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate= temp_fixedLaborRate
             FacilityDataModel.getInstance().tblScopeofService[0].LaborMax= temp_laborRateMatrixMax
@@ -105,7 +110,8 @@ class FragmentARRAVScopeOfService : Fragment() {
             setFields()
             (activity as FormsActivity).saveRequired = false
             refreshButtonsState()
-            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+//            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+            Utility.showUnifiedConfirmationDialog(activity,"Changes cancelled successfully")
         }
 
         for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType){
@@ -113,7 +119,7 @@ class FragmentARRAVScopeOfService : Fragment() {
         }
         var warrantyAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, warrantyArray)
         warrantyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        warrantyPeriodVal.adapter = warrantyAdapter
+        binding.warrantyPeriodVal.adapter = warrantyAdapter
 
 
         for (discountPercentage in TypeTablesModel.getInstance().DiscountAmountType){
@@ -122,27 +128,41 @@ class FragmentARRAVScopeOfService : Fragment() {
 
         var discountPercentageAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, discountPercentageArray )
         discountPercentageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        disountpercentageDropListId.adapter = discountPercentageAdapter
+        binding.disountpercentageDropListId.adapter = discountPercentageAdapter
 
         saveBtnPressed()
         setFields()
         handleRadioButtonsSelection()
         setFieldsListener()
 
-        laborRateRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
+        binding.laborRateRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
             handleRadioButtonsSelection()
         }
 
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited= true
-        (activity as FormsActivity).sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+        requireActivity().findViewById<Button>(R.id.sosgeneralInformationButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
         (activity as FormsActivity).saveRequired = false
         refreshButtonsState()
+//        val timer = Timer()
+//        val timerTask = object : TimerTask() {
+//            override fun run() {
+//                handler.post {
+//                    isFirstLoading = false
+//                    refreshButtonsState()
+//                }
+//            }
+//        }
+//        timer.schedule(timerTask, 0, 1000)
+            isFirstLoading = false
     }
 
     fun refreshButtonsState(){
-        saveBtnId.isEnabled = (activity as FormsActivity).saveRequired
-        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+        if (isFirstLoading) (activity as FormsActivity).saveRequired = false
+        binding.saveBtnId.isEnabled = (activity as FormsActivity).saveRequired
+        binding.cancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }
 
     fun setFieldsListener (){
@@ -157,7 +177,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 FacilityDataModel.getInstance().tblScopeofService[0].LaborMax = s.toString()
                 HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                 HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                (activity as FormsActivity).saveRequired = true
+                if (!isFirstLoading) (activity as FormsActivity).saveRequired = true
                 refreshButtonsState()
             }
 
@@ -177,7 +197,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 FacilityDataModel.getInstance().tblScopeofService[0].LaborMin = s.toString()
                 HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                 HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                (activity as FormsActivity).saveRequired = true
+                if (!isFirstLoading) (activity as FormsActivity).saveRequired = true
                 refreshButtonsState()
             }
 
@@ -202,7 +222,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 FacilityDataModel.getInstance().tblScopeofService[0].FixedLaborRate = s.toString()
                 HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                 HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                (activity as FormsActivity).saveRequired = true
+                if (!isFirstLoading) (activity as FormsActivity).saveRequired = true
                 refreshButtonsState()
             }
 
@@ -224,7 +244,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 FacilityDataModel.getInstance().tblScopeofService[0].DiagnosticsRate = s.toString()
                 HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                 HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                (activity as FormsActivity).saveRequired = true
+                if (!isFirstLoading) (activity as FormsActivity).saveRequired = true
                 refreshButtonsState()
             }
 
@@ -243,7 +263,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 FacilityDataModel.getInstance().tblScopeofService[0].NumOfBays = s.toString()
                 HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                 HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                (activity as FormsActivity).saveRequired = true
+                if (!isFirstLoading) (activity as FormsActivity).saveRequired = true
                 refreshButtonsState()
             }
 
@@ -289,7 +309,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                         FacilityDataModel.getInstance().tblScopeofService[0].DiscountCap = s.toString()
                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                         HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                        (activity as FormsActivity).saveRequired = true
+                        if (!isFirstLoading) (activity as FormsActivity).saveRequired = true
                         refreshButtonsState()
                     }
                     override fun afterTextChanged(s: Editable) {
@@ -305,7 +325,7 @@ class FragmentARRAVScopeOfService : Fragment() {
                 FacilityDataModel.getInstance().tblScopeofService[0].NumOfLifts = s.toString()
                 HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                 HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                (activity as FormsActivity).saveRequired = true
+                if (!isFirstLoading) (activity as FormsActivity).saveRequired = true
                 refreshButtonsState()
             }
 
@@ -316,36 +336,34 @@ class FragmentARRAVScopeOfService : Fragment() {
             }
         }
 
-            laborRateMatrixMaxEditText.addTextChangedListener(laborMaxWatcher)
-            laborRateMatrixMinEditText.addTextChangedListener(laborMinWatcher)
-            fixedLaborRateEditText.addTextChangedListener(fixedLaborWatcher)
-            diagnosticRateEditText.addTextChangedListener(diagnosticWatcher)
-            numberOfBaysEditText.addTextChangedListener(noOfBaysWatcher)
-            numberOfLiftsEditText.addTextChangedListener(noOfLiftsWatcher)
-            maxdDiscountAmountEditText.addTextChangedListener(maxDiscountAmountWatcher)
+                binding.laborRateMatrixMaxEditText.addTextChangedListener(laborMaxWatcher)
+                binding.laborRateMatrixMinEditText.addTextChangedListener(laborMinWatcher)
+                binding.fixedLaborRateEditText.addTextChangedListener(fixedLaborWatcher)
+                binding.diagnosticRateEditText.addTextChangedListener(diagnosticWatcher)
+                binding.numberOfBaysEditText.addTextChangedListener(noOfBaysWatcher)
+                binding.numberOfLiftsEditText.addTextChangedListener(noOfLiftsWatcher)
+                binding.maxdDiscountAmountEditText.addTextChangedListener(maxDiscountAmountWatcher)
 
             }
-
-
         }
 
-        warrantyPeriodVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.warrantyPeriodVal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (!warrantyPeriodVal.tag.equals(position) || warrantyPeriodVal.tag.equals("-1")) {
-                    warrantyPeriodVal.tag = "-1"
+                if (!binding.warrantyPeriodVal.tag.equals(position) || binding.warrantyPeriodVal.tag.equals("-1")) {
+                    binding.warrantyPeriodVal.tag = "-1"
                     FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = warrantyArray[position]
                     HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                     HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                    (activity as FormsActivity).saveRequired = true
+                    if (!isFirstLoading) (activity as FormsActivity).saveRequired = true
                     refreshButtonsState()
                 }
             }
         }
 
-        disountpercentageDropListId.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.disountpercentageDropListId.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
@@ -356,12 +374,12 @@ class FragmentARRAVScopeOfService : Fragment() {
 //                        (activity as FormsActivity).saveRequired = true
 //                }
 //                    refreshButtonsState()
-                    if (!disountpercentageDropListId.tag.equals(position) || disountpercentageDropListId.tag.equals("-1")) {
-                    disountpercentageDropListId.tag = "-1"
-                    FacilityDataModel.getInstance().tblScopeofService[0].DiscountAmount = disountpercentageDropListId.selectedItem.toString().replace("%","")
+                    if (!binding.disountpercentageDropListId.tag.equals(position) || binding.disountpercentageDropListId.tag.equals("-1")) {
+                        binding.disountpercentageDropListId.tag = "-1"
+                    FacilityDataModel.getInstance().tblScopeofService[0].DiscountAmount = binding.disountpercentageDropListId.selectedItem.toString().replace("%","")
                     HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
                     HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                    (activity as FormsActivity).saveRequired = true
+                        if (!isFirstLoading) (activity as FormsActivity).saveRequired = true
                     refreshButtonsState()
                 }
             }
@@ -376,25 +394,36 @@ class FragmentARRAVScopeOfService : Fragment() {
     fun setFields() {
         if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
             FacilityDataModel.getInstance().tblScopeofService[0].apply {
-                fixedLaborRateEditText.setText(if (FixedLaborRate.isNullOrEmpty()) "0" else FixedLaborRate)
-                diagnosticRateEditText.setText(if (DiagnosticsRate.isNullOrEmpty()) "0" else DiagnosticsRate)
-                numberOfBaysEditText.setText(if (NumOfBays.isNullOrEmpty()) "0" else NumOfBays)
-                numberOfLiftsEditText.setText(if (NumOfLifts.isNullOrEmpty()) "0" else NumOfLifts)
-                laborRateMatrixMaxEditText.setText(if (LaborMax.isNullOrEmpty()) "0" else LaborMax)
-                laborRateMatrixMinEditText.setText(if (LaborMin.isNullOrBlank()) "0" else LaborMin)
-                maxdDiscountAmountEditText.setText(DiscountCap)
-                temp_fixedLaborRate = fixedLaborRateEditText.text.toString()
-                temp_diagnosticLaborRate  = diagnosticRateEditText.text.toString()
-                temp_numberOfBaysEditText_ = numberOfBaysEditText.text.toString()
-                temp_numberOfLiftsEditText_ = numberOfLiftsEditText.text.toString()
-                temp_laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
-                temp_laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
+                binding.fixedLaborRateEditText.setText(if (FixedLaborRate.isNullOrEmpty()) "0" else FixedLaborRate)
+                binding.diagnosticRateEditText.setText(if (DiagnosticsRate.isNullOrEmpty()) "0" else DiagnosticsRate)
+                binding.numberOfBaysEditText.setText(if (NumOfBays.isNullOrEmpty()) "0" else NumOfBays)
+                binding.numberOfLiftsEditText.setText(if (NumOfLifts.isNullOrEmpty()) "0" else NumOfLifts)
+                binding.laborRateMatrixMaxEditText.setText(if (LaborMax.isNullOrEmpty()) "0" else LaborMax)
+                binding.laborRateMatrixMinEditText.setText(if (LaborMin.isNullOrBlank()) "0" else LaborMin)
+                binding.maxdDiscountAmountEditText.setText(DiscountCap)
+                temp_fixedLaborRate = binding.fixedLaborRateEditText.text.toString()
+                temp_diagnosticLaborRate  = binding.diagnosticRateEditText.text.toString()
+                temp_numberOfBaysEditText_ = binding.numberOfBaysEditText.text.toString()
+                temp_numberOfLiftsEditText_ = binding.numberOfLiftsEditText.text.toString()
+                temp_laborRateMatrixMax = binding.laborRateMatrixMaxEditText.text.toString()
+                temp_laborRateMatrixMin = binding.laborRateMatrixMinEditText.text.toString()
                 prevDiscountPercentage = DiscountAmount
                 prevMaxDiscountAmount = DiscountCap
-                disountpercentageDropListId.setSelection(0)
-                disountpercentageDropListId.setSelection(discountPercentageArray.indexOf(DiscountAmount+'%'))
-                disountpercentageDropListId.tag = disountpercentageDropListId.selectedItemPosition
-                warrantyPeriodVal.tag=0
+                binding.disountpercentageDropListId.setSelection(0)
+                if (discountPercentageArray.indexOf(DiscountAmount+'%') > -1) {
+                    binding.disountpercentageDropListId.setSelection(
+                        discountPercentageArray.indexOf(
+                            DiscountAmount + '%'
+                        )
+                    )
+                    binding.disountpercentageDropListId.tag =
+                        binding.disountpercentageDropListId.selectedItemPosition
+                } else {
+                    binding.disountpercentageDropListId.setSelection(0)
+                    binding.disountpercentageDropListId.tag = binding.disountpercentageDropListId.selectedItemPosition
+                }
+                binding.warrantyPeriodVal.tag=0
+//                binding.warrantyPeriodVal.setSelection(0)
                 for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
                     for (facWarranty in FacilityDataModel.getInstance().tblScopeofService) {
                         if (facWarranty.WarrantyTypeID == typeWarranty.WarrantyTypeID) {
@@ -402,13 +431,17 @@ class FragmentARRAVScopeOfService : Fragment() {
                             for (warSpinner in warrantyArray) {
                                 if (typeWarranty.WarrantyTypeName == warSpinner) {
                                     var i = warrantyArray.indexOf(warSpinner)
-                                    warrantyPeriodVal.setSelection(i)
-                                    warrantyPeriodVal.tag=i
+                                    binding.warrantyPeriodVal.setSelection(i)
+                                    binding.warrantyPeriodVal.tag=i
                                 }
                             }
+                        } else { // This reset the spinner to the first item if the warranty type is not found
+//                            binding.warrantyPeriodVal.setSelection(0)
+//                            binding.warrantyPeriodVal.tag=0
                         }
                     }
                 }
+
             }
         }
 //        if (PRGDataModel.getInstance().tblPRGRepairDiscountFactors.size > 0) {
@@ -425,15 +458,15 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     fun handleRadioButtonsSelection (){
 
-        if (fixedLaborRadioButton.isChecked) {
-            fixedLaborRateTextView.visibility = View.VISIBLE
-            fixedLaborRateEditText.visibility = View.VISIBLE
+        if (binding.fixedLaborRadioButton.isChecked) {
+            binding.fixedLaborRateTextView.visibility = View.VISIBLE
+            binding.fixedLaborRateEditText.visibility = View.VISIBLE
         } else {
-            fixedLaborRateTextView.visibility = View.GONE
-            fixedLaborRateEditText.visibility = View.GONE
+            binding.fixedLaborRateTextView.visibility = View.GONE
+            binding.fixedLaborRateEditText.visibility = View.GONE
         }
-        laborRateLL.isVisible = !fixedLaborRadioButton.isChecked
-        laborRateView.isVisible = !fixedLaborRadioButton.isChecked
+        binding.laborRateLL.isVisible = !binding.fixedLaborRadioButton.isChecked
+        binding.laborRateView.isVisible = !binding.fixedLaborRadioButton.isChecked
     }
 
 
@@ -442,12 +475,12 @@ class FragmentARRAVScopeOfService : Fragment() {
 
     fun getSoSChanges() : String {
         var strChanges =""
-        val fixedLaborRate = fixedLaborRateEditText.text.toString()
-        val diagnosticLaborRate = diagnosticRateEditText.text.toString()
-        val laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
-        val laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
-        val numberOfBays = numberOfBaysEditText.text.toString()
-        val numberOfLifts = numberOfLiftsEditText.text.toString()
+        val fixedLaborRate = binding.fixedLaborRateEditText.text.toString()
+        val diagnosticLaborRate = binding.diagnosticRateEditText.text.toString()
+        val laborRateMatrixMax = binding.laborRateMatrixMaxEditText.text.toString()
+        val laborRateMatrixMin = binding.laborRateMatrixMinEditText.text.toString()
+        val numberOfBays = binding.numberOfBaysEditText.text.toString()
+        val numberOfLifts = binding.numberOfLiftsEditText.text.toString()
 
         try {
             if (fixedLaborRate != FacilityDataModelOrg.getInstance().tblScopeofService[0].FixedLaborRate) {
@@ -468,8 +501,8 @@ class FragmentARRAVScopeOfService : Fragment() {
             if (numberOfLifts != FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts) {
                 strChanges += "Number of Lifts changed from (" + FacilityDataModelOrg.getInstance().tblScopeofService[0].NumOfLifts + ") to (" + numberOfLifts + ") - "
             }
-            if (warrantyPeriodVal.getSelectedItem().toString() != (TypeTablesModel.getInstance().WarrantyPeriodType.filter { s -> s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) }[0].WarrantyTypeName)) {
-                strChanges += "Warranty Period changed from (" + TypeTablesModel.getInstance().WarrantyPeriodType.filter { s -> s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) }[0].WarrantyTypeName + ") to (" + warrantyPeriodVal.getSelectedItem().toString() + ") - "
+            if (binding.warrantyPeriodVal.getSelectedItem().toString() != (TypeTablesModel.getInstance().WarrantyPeriodType.filter { s -> s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) }[0].WarrantyTypeName)) {
+                strChanges += "Warranty Period changed from (" + TypeTablesModel.getInstance().WarrantyPeriodType.filter { s -> s.WarrantyTypeID.equals(FacilityDataModelOrg.getInstance().tblScopeofService[0].WarrantyTypeID) }[0].WarrantyTypeName + ") to (" + binding.warrantyPeriodVal.getSelectedItem().toString() + ") - "
             }
             strChanges = strChanges.removeSuffix(" - ")
             return strChanges
@@ -485,68 +518,72 @@ class FragmentARRAVScopeOfService : Fragment() {
 
 
     fun saveBtnPressed() {
-        saveBtnId.setOnClickListener {
-            if (validateInputs()) {
-                var fixedLaborRate = fixedLaborRateEditText.text.toString()
-                var diagnosticLaborRate = diagnosticRateEditText.text.toString()
-                var laborRateMatrixMax = laborRateMatrixMaxEditText.text.toString()
-                var laborRateMatrixMin = laborRateMatrixMinEditText.text.toString()
-                var numberOfBaysEditText = numberOfBaysEditText.text.toString()
-                var numberOfLiftsEditText = numberOfLiftsEditText.text.toString()
-                var warrantyTypeId = TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeName.equals(warrantyPeriodVal.selectedItem.toString()) }[0].WarrantyTypeID
-                var discountPercentage = disountpercentageDropListId.selectedItem.toString().replace("%","")
-                var maxdiscountamount = maxdDiscountAmountEditText.text.toString()
+        binding.saveBtnId.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                if (validateInputs()) {
+                    var fixedLaborRate = binding.fixedLaborRateEditText.text.toString()
+                    var diagnosticLaborRate = binding.diagnosticRateEditText.text.toString()
+                    var laborRateMatrixMax = binding.laborRateMatrixMaxEditText.text.toString()
+                    var laborRateMatrixMin = binding.laborRateMatrixMinEditText.text.toString()
+                    var numberOfBaysEditText = binding.numberOfBaysEditText.text.toString()
+                    var numberOfLiftsEditText = binding.numberOfLiftsEditText.text.toString()
+                    var warrantyTypeId = TypeTablesModel.getInstance().WarrantyPeriodType.filter { s->s.WarrantyTypeName.equals(binding.warrantyPeriodVal.selectedItem.toString()) }[0].WarrantyTypeID
+                    var discountPercentage = binding.disountpercentageDropListId.selectedItem.toString().replace("%","")
+                    var maxdiscountamount = binding.maxdDiscountAmountEditText.text.toString()
 
-                progressBarText.text = "Saving ..."
-                scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
-                Log.v("SOS GENERAL --- ",UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&discountPercentage=${discountPercentage}&maxDiscountAmount=${maxdiscountamount}")
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + "&discountPercentage=${discountPercentage}&maxDiscountAmount=${maxdiscountamount}" + Utility.getLoggingParameters(activity, 1, getSoSChanges()),
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread {
-                                if (response.toString().contains("returnCode>0<",false)) {
-                                    scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-                                    progressBarText.text = "Loading ..."
-                                    Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
-                                    (activity as FormsActivity).saveDone = true
-//                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage=discountPercentage
-//                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount=maxdiscountamount
-                                    if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                        FacilityDataModel.getInstance().tblScopeofService[0].apply {
-                                            DiscountCap = maxdiscountamount
-                                            DiscountAmount = discountPercentage
-                                            LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
-                                            LaborMin = if (watcher_LaborMin.isNullOrBlank()) LaborMin else watcher_LaborMin
-                                            FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FixedLaborRate else watcher_FixedLaborRate
-                                            DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank()) DiagnosticsRate else watcher_DiagnosticsRate
-                                            NumOfBays = if (watcher_NumOfBays.isNullOrBlank()) NumOfBays else watcher_NumOfBays
-                                            NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank()) NumOfLifts else watcher_NumOfLifts
-                                            for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
-                                                if (typeWarranty.WarrantyTypeName == warrantyPeriodVal.selectedItem) {
-                                                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
+                    binding.progressBarText.text = "Saving ..."
+                    binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
+                    Log.v("SOS GENERAL --- ",UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&discountPercentage=${discountPercentage}&maxDiscountAmount=${maxdiscountamount}")
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + "&discountPercentage=${discountPercentage}&maxDiscountAmount=${maxdiscountamount}" + Utility.getLoggingParameters(activity, 1, getSoSChanges()),
+                            Response.Listener { response ->
+                                requireActivity().runOnUiThread {
+                                    if (response.toString().contains("returnCode>0<",false)) {
+                                        binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                                        binding.progressBarText.text = "Loading ..."
+                                        Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
+                                        (activity as FormsActivity).saveDone = true
+    //                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage=discountPercentage
+    //                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount=maxdiscountamount
+                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
+                                                DiscountCap = maxdiscountamount
+                                                DiscountAmount = discountPercentage
+                                                LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
+                                                LaborMin = if (watcher_LaborMin.isNullOrBlank()) LaborMin else watcher_LaborMin
+                                                FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FixedLaborRate else watcher_FixedLaborRate
+                                                DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank()) DiagnosticsRate else watcher_DiagnosticsRate
+                                                NumOfBays = if (watcher_NumOfBays.isNullOrBlank()) NumOfBays else watcher_NumOfBays
+                                                NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank()) NumOfLifts else watcher_NumOfLifts
+                                                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
+                                                    if (typeWarranty.WarrantyTypeName == binding.warrantyPeriodVal.selectedItem) {
+                                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
+                                                    }
                                                 }
-                                            }
 
+                                            }
                                         }
+                                        (activity as FormsActivity).saveRequired = false
+                                        refreshButtonsState()
+                                        setFields()
+                                        HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                                        HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                                    } else {
+                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                        Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information (Error: "+ errorMessage+" )")
+                                        binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                                        binding.progressBarText.text = "Loading ..."
                                     }
-                                    (activity as FormsActivity).saveRequired = false
-                                    refreshButtonsState()
-                                    setFields()
-                                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
-                                    HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                                } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                    Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information (Error: "+ errorMessage+" )")
-                                    scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-                                    progressBarText.text = "Loading ..."
                                 }
-                            }
-                        }, Response.ErrorListener {
-                    scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-                    progressBarText.text = "Loading ..."
-                    Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information (Error: "+it.message+" )")
-                }))
+                            }, Response.ErrorListener {
+                            binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                            binding.progressBarText.text = "Loading ..."
+                        Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information (Error: "+it.message+" )")
+                    }))
+                } else {
+                    Utility.showValidationAlertDialog(activity,validateMsg)
+                }
             } else {
-                Utility.showValidationAlertDialog(activity,validateMsg)
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
             }
         }
     }
@@ -554,47 +591,47 @@ class FragmentARRAVScopeOfService : Fragment() {
     fun validateInputs(): Boolean {
         validateMsg = ""
         scopeOfServiceValide = true
-        fixedLaborRateEditText.setError(null)
-        diagnosticRateEditText.setError(null)
-        laborRateMatrixMaxEditText.setError(null)
-        laborRateMatrixMinEditText.setError(null)
-        if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
+        binding.fixedLaborRateEditText.setError(null)
+        binding.diagnosticRateEditText.setError(null)
+        binding.laborRateMatrixMaxEditText.setError(null)
+        binding.laborRateMatrixMinEditText.setError(null)
+        if (binding.fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
-            fixedLaborRateEditText.setError("Required Field")
+            binding.fixedLaborRateEditText.setError("Required Field")
             if (validateMsg.equals("")) validateMsg = "Please fill all the required fields"
         }
 
-        if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
+        if (binding.diagnosticRateEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
-            diagnosticRateEditText.setError("Required Field")
+            binding.diagnosticRateEditText.setError("Required Field")
             if (validateMsg.equals("")) validateMsg = "- Please fill all the required fields"
         }
 
 
-        if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+        if (binding.laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
-            laborRateMatrixMaxEditText.setError("Required Field")
+            binding.laborRateMatrixMaxEditText.setError("Required Field")
             if (validateMsg.equals("")) validateMsg = "- Please fill all the required fields"
         }
 
-        if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
+        if (binding.laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
-            laborRateMatrixMinEditText.setError("Required Field")
+            binding.laborRateMatrixMinEditText.setError("Required Field")
             if (validateMsg.equals("")) validateMsg = "- Please fill all the required fields"
         }
 
-        if (maxdDiscountAmountEditText.text.toString().isNullOrEmpty()) {
+        if (binding.maxdDiscountAmountEditText.text.toString().isNullOrEmpty()) {
             scopeOfServiceValide = false
-            maxdDiscountAmountEditText.setError("Required Field")
+            binding.maxdDiscountAmountEditText.setError("Required Field")
             if (validateMsg.equals("")) validateMsg = "- Please fill all the required fields"
         }
 
-        if (!laborRateMatrixMinEditText.text.toString().isNullOrEmpty() && !laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
-            var minRate =  laborRateMatrixMinEditText.text.toString().toDouble()
-            var maxRate =  laborRateMatrixMaxEditText.text.toString().toDouble()
+        if (!binding.laborRateMatrixMinEditText.text.toString().isNullOrEmpty() && !binding.laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+            var minRate =  binding.laborRateMatrixMinEditText.text.toString().toDouble()
+            var maxRate =  binding.laborRateMatrixMaxEditText.text.toString().toDouble()
             if (minRate>maxRate) {
                 scopeOfServiceValide = false
-                laborRateMatrixMinEditText.setError("Min Labor Rate should be less than Max Labor Rate")
+                binding.laborRateMatrixMinEditText.setError("Min Labor Rate should be less than Max Labor Rate")
                 if (validateMsg.equals(""))
                     validateMsg = "- Min Labor Rate should be less than Max Labor Rate"
                 else

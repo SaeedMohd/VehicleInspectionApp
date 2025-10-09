@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -18,11 +19,13 @@ import com.inspection.FormsActivity
 
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
+import com.inspection.databinding.FragmentAaravBillingBinding
+import com.inspection.databinding.FragmentAaravBillingadjustmentBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.billing_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_billingadjustment.*
+//import kotlinx.android.synthetic.main.billing_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_aarav_billingadjustment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,6 +47,8 @@ class FragmentAARAVBillingAdjustment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var _binding: FragmentAaravBillingadjustmentBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,14 +66,15 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAaravBillingadjustmentBinding.bind(view)
         prepareAdjSpinners()
-        newEffDateBtn.setOnClickListener {
+        binding.newEffDateBtn.setOnClickListener {
 //            if (newEffDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
 //                    if (Calendar.getInstance().get(Calendar.YEAR)> year || Calendar.getInstance().get(Calendar.MONTH) > monthOfYear) {
 //                        newEffDateBtn!!.text == "SELECT DATE"
@@ -80,8 +86,8 @@ class FragmentAARAVBillingAdjustment : Fragment() {
                         val myFormat = "MM/dd/yyyy" // mention the format you need
                         val sdf = SimpleDateFormat(myFormat, Locale.US)
                         c.set(year, monthOfYear, dayOfMonth)
-                        newEffDateBtn!!.text = sdf.format(c.time)
-                        newEffDateBtn!!.setError(null)
+                        binding.newEffDateBtn!!.text = sdf.format(c.time)
+                        binding.newEffDateBtn!!.setError(null)
 //                    }
                 }, year, month, day)
                 dpd.show()
@@ -106,21 +112,22 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 //        }
 
         fillBillAdjTableView ()
-        addNewVenRevBtn.setOnClickListener( {
+        binding.addNewVenRevBtn.setOnClickListener( {
             showAddNewBillAdjDialog()
         })
 
-        billAdjSubmitButton.setOnClickListener({
+        binding.billAdjSubmitButton.setOnClickListener({
             validateBillAdjData()
         })
 
-        exitDialogeBtn.setOnClickListener({
-            addNewBillAdjDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitDialogeBtn.setOnClickListener({
+            binding.addNewBillAdjDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
         })
 
         IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited = true
-        (activity as FormsActivity).billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA"))
+        requireActivity().findViewById<Button>(R.id.billingAdjustmentButton).setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
@@ -129,9 +136,9 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 
     fun fillBillAdjTableView() {
 
-        if (billAdjResultsTbl.childCount>1) {
-            for (i in billAdjResultsTbl.childCount - 1 downTo 1) {
-                billAdjResultsTbl.removeViewAt(i)
+        if (binding.billAdjResultsTbl.childCount>1) {
+            for (i in binding.billAdjResultsTbl.childCount - 1 downTo 1) {
+                binding.billAdjResultsTbl.removeViewAt(i)
             }
         }
 
@@ -256,7 +263,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
                     textView.text = if (get(it).LastUpdateDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).LastUpdateDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
-                    billAdjResultsTbl.addView(tableRow)
+                    binding.billAdjResultsTbl.addView(tableRow)
                 }
             }
         }
@@ -268,31 +275,31 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 
     private fun validateBillAdjData() {
         var isInputsValid = true
-        newAmountText.setError(null)
-        newEffDateBtn.setError(null)
-        newCommentsText.setError(null)
-        if (newAmountText.text.toString().isNullOrEmpty()) {
+        binding.newAmountText.setError(null)
+        binding.newEffDateBtn.setError(null)
+        binding.newCommentsText.setError(null)
+        if (binding.newAmountText.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            newAmountText.setError("Required Field")
-        } else if (newEffDateBtn.text.toString().equals("SELECT DATE")) {
+            binding.newAmountText.setError("Required Field")
+        } else if (binding.newEffDateBtn.text.toString().equals("SELECT DATE")) {
             isInputsValid = false
-            newEffDateBtn.setError("Required Field")
-        } else if (newCommentsText.text.toString().isNullOrEmpty()) {
+            binding.newEffDateBtn.setError("Required Field")
+        } else if (binding.newCommentsText.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            newCommentsText.setError("Required Field")
+            binding.newCommentsText.setError("Required Field")
         } else {
             submitBillAdjData()
         }
     }
 
     private fun submitBillAdjData(){
-        addNewBillAdjDialog.visibility = View.GONE
-        alphaBackgroundForDialogs.visibility = View.GONE
+        binding.addNewBillAdjDialog.visibility = View.GONE
+        binding.alphaBackgroundForDialogs.visibility = View.GONE
     }
 
     private fun showAddNewBillAdjDialog() {
-        alphaBackgroundForDialogs.visibility = View.VISIBLE
-        addNewBillAdjDialog.visibility = View.VISIBLE
+        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+        binding.addNewBillAdjDialog.visibility = View.VISIBLE
     }
 
     fun prepareAdjSpinners() {
@@ -304,7 +311,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
         }
         var descTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, descTypeArray)
         descTypeAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newDescSpinner.adapter = descTypeAdapter
+        binding.newDescSpinner.adapter = descTypeAdapter
     }
     // TODO: Rename method, update argument and hook method into UI event
 

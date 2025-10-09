@@ -4,18 +4,24 @@
     <color name="headerColor">#646464</color>
     <color name="white">#FFFFFF</color>
     <color name="mainColor">#4572ce</color>
+    <color name="alertColor">#FF0000</color>
     <color name="black">#000000</color>
     <color name="dark_gray">#606060</color>
     <color name="gray">#A2A2A2</color>
     <color name="light_gray">#D7D7D7</color>
+    <color name="light_green">#d9ead3</color>
     <color name="table_row_color">#f5f7fc</color>
     <color name="blue">#1FCECB</color>
+    <color name="cb_green">#008080</color>
+    <color name="colorNext">#40ffffff</color>
     <color name="blue_krayola">#1F75FE</color>
     <color name="green">#49C566</color>
     <color name="dark_yellow">#DEBC26</color>
     <color name="contractSignerFieldsAreDisabledColor">#FAFAFA</color>
     <color name="firstRowColor">#f0f8ff</color>
     <color name="secondRowColor">#FAFAFA</color>
+    <color name="darkBlue">#073763</color>
+<!--    #073763-->
 </resources>
 
 

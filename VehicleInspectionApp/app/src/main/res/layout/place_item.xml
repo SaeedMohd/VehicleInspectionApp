@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        tools:cardElevation="5dp"
+        android:id="@+id/listBkg"
+        android:layout_margin="10dp"
+        >
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="5dp"
+            android:stretchColumns="1"
+            >
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/place_name_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@color/mainColor"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_column="0"
+                    android:layout_span="2"
+                    android:layout_margin="5dp"
+                    android:text="test" />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Address:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/address_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_column="1"
+                    android:layout_margin="5dp"
+                    android:text="test" />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Speciality:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/main_cat_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_column="1"
+                    android:layout_margin="5dp"
+                    android:text="test" />
+            </TableRow>
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_margin="5dp"
+                    android:text="Categories:"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/all_cat_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:textAlignment="center"
+                    android:layout_margin="5dp"
+                    android:text="" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status:"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black" />
+                <TextView
+                    android:id="@+id/status_val"
+                    android:layout_width="wrap_content"
+                    android:layout_column="1"
+                    android:layout_margin="5dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="test" />
+
+            </TableRow>
+        </TableLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

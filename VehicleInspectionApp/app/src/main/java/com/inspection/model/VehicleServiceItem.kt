@@ -7,7 +7,8 @@ import android.view.View
 import com.inspection.R
 import com.inspection.interfaces.VehicleServicesListItem
 import com.inspection.adapter.VehicleServicesArrayAdapter.RowType
-import kotlinx.android.synthetic.main.vehicle_services_item.view.*
+import com.inspection.databinding.VehicleServicesItemBinding
+//import kotlinx.android.synthetic.main.vehicle_services_item.view.*
 
 
 /**
@@ -18,26 +19,40 @@ class VehicleServiceItem(val vehicleServiceModel: AAAVehicleServicesModel) : Veh
 
     var isSelected=false
     var view: View? = null
+    private var binding: VehicleServicesItemBinding? = null
+
     override fun getViewType(): Int {
         return RowType.LIST_ITEM.ordinal
     }
 
     override fun getView(inflater: LayoutInflater, convertView: View): View {
 
-        if (convertView == null) {
-            view = inflater.inflate(R.layout.vehicle_services_item, null) as View
-
-            // Do some initialization
+//        if (convertView == null) {
+//            view = inflater.inflate(R.layout.vehicle_services_item, null) as View
+//            // Do some initialization
+//        } else {
+//            view = convertView
+//        }
+//
+//
+////        val text1 = view!!.findViewById(R.id.itemTextView) as TextView
+//        view!!.itemCheckBox.text = vehicleServiceModel.scopeservicename
+//        view!!.itemCheckBox.isChecked = isSelected
+//
+//        return view!!
+        binding = if (convertView == null) {
+            VehicleServicesItemBinding.inflate(inflater)
         } else {
-            view = convertView
+            VehicleServicesItemBinding.bind(convertView)
         }
 
+        // Bind data to views
+        binding?.apply {
+            itemCheckBox.text = vehicleServiceModel.scopeservicename
+            itemCheckBox.isChecked = isSelected
+        }
 
-//        val text1 = view!!.findViewById(R.id.itemTextView) as TextView
-        view!!.itemCheckBox.text = vehicleServiceModel.scopeservicename
-        view!!.itemCheckBox.isChecked = isSelected
-
-        return view!!
+        return binding!!.root
     }
 
     fun setServiceSelected(isSelected : Boolean){

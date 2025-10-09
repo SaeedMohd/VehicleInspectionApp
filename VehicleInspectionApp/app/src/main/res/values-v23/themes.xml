@@ -1,0 +1,20 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <style name="CustomRadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
+    <item name="android:buttonTint">@color/blue</item>
+  </style>
+  <style name="myAppTheme" parent="Base.myAppTheme">
+    <!-- Transparent system bars for edge-to-edge. -->
+    <item name="android:navigationBarColor">@android:color/transparent</item>
+    <item name="android:statusBarColor">@color/mainColor</item>
+    <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+    <item name="colorControlActivated">@color/blue</item> <!-- Checked state color -->
+
+    <item name="radioButtonStyle">@style/CustomRadioButton</item>
+
+
+
+    <item name="colorOnSurface">@color/black</item>       <!-- Unchecked state color -->
+  </style>
+
+
+</resources>

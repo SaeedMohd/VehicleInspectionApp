@@ -19,11 +19,13 @@ import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
 import com.inspection.Utils.monthNoToName
+import com.inspection.databinding.DeficiencyGroupLayoutBinding
+import com.inspection.databinding.FragmentAaravBillingBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.billing_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_billing.*
+//import kotlinx.android.synthetic.main.billing_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_aarav_billing.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,7 +50,8 @@ class FragmentAARAVBilling : Fragment() {
 
     private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
     private var revSourceArray = ArrayList<String>()
-
+    private var _binding: FragmentAaravBillingBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,125 +69,126 @@ class FragmentAARAVBilling : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAaravBillingBinding.bind(view)
         prepareBillingSpinners()
-
-        newBillDueDateBtn.setOnClickListener {
+        binding.newBillDueDateBtn.setOnClickListener {
 //            if (newBillDueDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newBillDueDateBtn!!.text = sdf.format(c.time)
+                    binding.newBillDueDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
-        newSecondDueDateText.setOnClickListener {
+        binding.newSecondDueDateText.setOnClickListener {
 //            if (newSecondDueDateText.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newSecondDueDateText!!.text = sdf.format(c.time)
+                    binding.newSecondDueDateText!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
-        newFinalDueDateText.setOnClickListener {
+        binding.newFinalDueDateText.setOnClickListener {
 //            if (newFinalDueDateText.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newFinalDueDateText!!.text = sdf.format(c.time)
+                    binding.newFinalDueDateText!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
-        newACHDateBtn.setOnClickListener {
+        binding.newACHDateBtn.setOnClickListener {
 //            if (newACHDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newACHDateBtn!!.text = sdf.format(c.time)
+                    binding.newACHDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
-        newPayRecDateBtn.setOnClickListener {
+        binding.newPayRecDateBtn.setOnClickListener {
 //            if (newPayRecDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newPayRecDateBtn!!.text = sdf.format(c.time)
+                    binding.newPayRecDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
-        newCreditAppliedDateBtn.setOnClickListener {
+        binding.newCreditAppliedDateBtn.setOnClickListener {
 //            if (newCreditAppliedDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newCreditAppliedDateBtn!!.text = sdf.format(c.time)
+                    binding.newCreditAppliedDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
-        addNewBillingBtn.setOnClickListener( {
+        binding.addNewBillingBtn.setOnClickListener( {
             showAddNewBillingDialog()
         })
 
-        billingSubmitButton.setOnClickListener({
+        binding.billingSubmitButton.setOnClickListener({
             validateBillingData()
         })
 
-        exitDialogeBtn.setOnClickListener({
-            addNewBillingDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitDialogeBtn.setOnClickListener({
+            binding.addNewBillingDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
         })
 
         IndicatorsDataModel.getInstance().tblBilling[0].BillingVisited = true
-        (activity as FormsActivity).billingButton.setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).findViewById<Button>(R.id.billingButton).setTextColor(Color.parseColor("#26C3AA"))
+        requireActivity().findViewById<Button>(R.id.billingButton).setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
@@ -194,40 +198,40 @@ class FragmentAARAVBilling : Fragment() {
 
     private fun validateBillingData() {
         var isInputsValid = true
-        newBillIDText.setError(null)
-        newBillingAmountText.setError(null)
-        newPayAmountText.setError(null)
-        newBillDueDateBtn.setError(null)
-        newPayRecDateBtn.setError(null)
-        if (newBillIDText.text.toString().isNullOrEmpty()) {
+        binding.newBillIDText.setError(null)
+        binding.newBillingAmountText.setError(null)
+        binding.newPayAmountText.setError(null)
+        binding.newBillDueDateBtn.setError(null)
+        binding.newPayRecDateBtn.setError(null)
+        if (binding.newBillIDText.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            newBillIDText.setError("Required Field")
-        } else if (newBillingAmountText.text.toString().isNullOrEmpty()) {
+            binding.newBillIDText.setError("Required Field")
+        } else if (binding.newBillingAmountText.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            newBillingAmountText.setError("Must be the first Day of the month")
-        } else if (newPayAmountText.text.toString().isNullOrEmpty()) {
+            binding.newBillingAmountText.setError("Must be the first Day of the month")
+        } else if (binding.newPayAmountText.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            newPayAmountText.setError("Must be the first Day of the month")
-        } else if (newBillDueDateBtn.text.toString().equals("SELECT DATE")) {
+            binding.newPayAmountText.setError("Must be the first Day of the month")
+        } else if (binding.newBillDueDateBtn.text.toString().equals("SELECT DATE")) {
             isInputsValid = false
-            newBillDueDateBtn.setError("Required Field")
-        } else if (newPayRecDateBtn.text.toString().equals("SELECT DATE")) {
+            binding.newBillDueDateBtn.setError("Required Field")
+        } else if (binding.newPayRecDateBtn.text.toString().equals("SELECT DATE")) {
             isInputsValid = false
-            newPayRecDateBtn.setError("Required Field")
+            binding.newPayRecDateBtn.setError("Required Field")
         } else {
             submitBillingData()
         }
     }
 
     private fun submitBillingData(){
-        addNewBillingDialog.visibility = View.GONE
-        alphaBackgroundForDialogs.visibility = View.GONE
+        binding.addNewBillingDialog.visibility = View.GONE
+        binding.alphaBackgroundForDialogs.visibility = View.GONE
     }
 
 
     private fun showAddNewBillingDialog() {
-        alphaBackgroundForDialogs.visibility = View.VISIBLE
-        addNewBillingDialog.visibility = View.VISIBLE
+        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+        binding.addNewBillingDialog.visibility = View.VISIBLE
     }
 
     fun prepareBillingSpinners() {
@@ -240,16 +244,16 @@ class FragmentAARAVBilling : Fragment() {
 
         var revSourceAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, revSourceArray)
         revSourceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newRevSourceSpinner.adapter = revSourceAdapter
+        binding.newRevSourceSpinner.adapter = revSourceAdapter
         fillBillingTableView()
     }
 
 
     fun fillBillingTableView() {
 
-        if (billingResultsTbl.childCount>1) {
-            for (i in billingResultsTbl.childCount - 1 downTo 1) {
-                billingResultsTbl.removeViewAt(i)
+        if (binding.billingResultsTbl.childCount>1) {
+            for (i in binding.billingResultsTbl.childCount - 1 downTo 1) {
+                binding.billingResultsTbl.removeViewAt(i)
             }
         }
 
@@ -367,7 +371,7 @@ class FragmentAARAVBilling : Fragment() {
                     textView.text = if (get(it).PaymentDate.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).PaymentDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
-                    billingResultsTbl.addView(tableRow)
+                    binding.billingResultsTbl.addView(tableRow)
                 }
             }
         }

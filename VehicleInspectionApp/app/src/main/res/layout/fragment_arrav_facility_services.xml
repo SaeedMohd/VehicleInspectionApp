@@ -41,10 +41,11 @@
 
 
         <Button
-            android:background="@drawable/green_background_button"
+            android:background="@drawable/new_btn_bkg"
             android:textColor="@color/white"
+            app:backgroundTint="@null"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
             android:paddingLeft="15dp"
@@ -195,7 +196,7 @@
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="5dp"
                     android:layout_gravity="top|right"
@@ -204,8 +205,9 @@
                     android:ems="12"
                     android:layout_column="1"
                     android:id="@+id/submitNewserviceButton"
+                    android:background="@drawable/new_btn_bkg"
                     android:textColor="@color/white"
-                    android:background="@drawable/green_background_button"
+                    app:backgroundTint="@null"
                     />
                 <ImageButton
                     android:layout_marginTop="25dp"
@@ -283,7 +285,7 @@
                 <Button
                     android:id="@+id/fceffective_date_textviewVal"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="0"
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
@@ -295,7 +297,7 @@
                 <Button
                     android:id="@+id/fcexpiration_date_textviewVal"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="1"
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
@@ -357,7 +359,7 @@
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="5dp"
                     android:layout_gravity="top|right"
@@ -366,8 +368,9 @@
                     android:ems="12"
                     android:layout_column="1"
                     android:id="@+id/edit_submitNewserviceButton"
+                    android:background="@drawable/new_btn_bkg"
                     android:textColor="@color/white"
-                    android:background="@drawable/green_background_button"
+                    app:backgroundTint="@null"
                     />
                 <ImageButton
                     android:layout_marginTop="25dp"
@@ -445,7 +448,7 @@
                 <Button
                     android:id="@+id/edit_fceffective_date_textviewVal"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="0"
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
@@ -457,7 +460,7 @@
                 <Button
                     android:id="@+id/edit_fcexpiration_date_textviewVal"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="1"
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
@@ -503,7 +506,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsFacSvc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -512,7 +515,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsFacSvc"
             android:id="@+id/progressBarText"
             android:layout_centerHorizontal="true"
             android:text="Loading..."

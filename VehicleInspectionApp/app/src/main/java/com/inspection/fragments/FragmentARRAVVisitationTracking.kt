@@ -19,7 +19,12 @@ import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TblVisitationTracking
-import kotlinx.android.synthetic.main.fragment_arrav_visitation_tracking.*
+//import kotlinx.android.synthetic.main.fragment_arrav_visitation_tracking.*
+//import kotlinx.android.synthetic.main.fragment_visitation_form.aarSignEditText
+//import kotlinx.android.synthetic.main.fragment_visitation_form.certificateOfApprovalEditText
+//import kotlinx.android.synthetic.main.fragment_visitation_form.memberBenefitsPosterEditText
+//import kotlinx.android.synthetic.main.fragment_visitation_form.qualityControlProcessEditText
+//import kotlinx.android.synthetic.main.fragment_visitation_form.staffTrainingProcessEditText
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,83 +56,83 @@ class FragmentARRAVVisitationTracking : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         scopeOfServiceChangesWatcher()
-        FacilityDataModel.getInstance().tblVisitationTracking[0].apply{
-            //visitationDateButton.text = DatePerformed
-     //       performedByButton.text = performedBy
-            aarSignEditText.setText(AARSigns)
-            certificateOfApprovalEditText.setText(CertificateOfApproval)
-            memberBenefitsPosterEditText.setText(MemberBenefitPoster)
-            qualityControlProcessEditText.setText(QualityControl)
-            staffTrainingProcessEditText.setText(StaffTraining)
-        }
-        performed_date_textviewVal.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                performed_date_textviewVal!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-        recieved_date_textviewVal.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                recieved_date_textviewVal!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-        entered_date_textviewVal.setOnClickListener {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                // Display Selected date in textbox
-                val myFormat = "dd MMM yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                c.set(year, monthOfYear, dayOfMonth)
-                entered_date_textviewVal!!.text = sdf.format(c.time)
-            }, year, month, day)
-            dpd.show()
-        }
-
-        performedBy_dropdown.adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
-        enteredBydropdown.adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
-        newVisitTrackingAddBtn.setOnClickListener({
-            var validProgram = true
-//            for (fac in facilityProgramsList) {
-//                if (fac.programtypename.equals(program_name_textviewVal.getSelectedItem().toString())){
-//                    context!!.toast("Program Name cannot be duplicated")
-//                    validProgram=false
-//                }
+//        FacilityDataModel.getInstance().tblVisitationTracking[0].apply{
+//            //visitationDateButton.text = DatePerformed
+//     //       performedByButton.text = performedBy
+//            aarSignEditText.setText(AARSigns)
+//            certificateOfApprovalEditText.setText(CertificateOfApproval)
+//            memberBenefitsPosterEditText.setText(MemberBenefitPoster)
+//            qualityControlProcessEditText.setText(QualityControl)
+//            staffTrainingProcessEditText.setText(StaffTraining)
+//        }
+//        performed_date_textviewVal.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year, monthOfYear, dayOfMonth)
+//                performed_date_textviewVal!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//        recieved_date_textviewVal.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year, monthOfYear, dayOfMonth)
+//                recieved_date_textviewVal!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//        entered_date_textviewVal.setOnClickListener {
+//            val c = Calendar.getInstance()
+//            val year = c.get(Calendar.YEAR)
+//            val month = c.get(Calendar.MONTH)
+//            val day = c.get(Calendar.DAY_OF_MONTH)
+//            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+//                // Display Selected date in textbox
+//                val myFormat = "dd MMM yyyy" // mention the format you need
+//                val sdf = SimpleDateFormat(myFormat, Locale.US)
+//                c.set(year, monthOfYear, dayOfMonth)
+//                entered_date_textviewVal!!.text = sdf.format(c.time)
+//            }, year, month, day)
+//            dpd.show()
+//        }
+//
+//        performedBy_dropdown.adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
+//        enteredBydropdown.adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, FacilityDataModel.getInstance().tblPersonnel.map { s -> s.FirstName +" " + s.LastName}.distinct())
+//        newVisitTrackingAddBtn.setOnClickListener({
+//            var validProgram = true
+////            for (fac in facilityProgramsList) {
+////                if (fac.programtypename.equals(program_name_textviewVal.getSelectedItem().toString())){
+////                    context!!.toast("Program Name cannot be duplicated")
+////                    validProgram=false
+////                }
+////            }
+//            if (validProgram) {
+//                var item = TblVisitationTracking()
+//                item.performedBy =performedBy_dropdown.selectedItem.toString()
+////                Toast.makeText(context,performedBy_dropdown.selectedItem.toString(),Toast.LENGTH_SHORT).show()
+//                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
+//                item.DatePerformed = if (performed_date_textviewVal.text.equals("SELECT DATE")) "" else performed_date_textviewVal.text.toString()
+////                item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
+////                item.Comments=comments_editTextVal.text.toString()
+//                FacilityDataModel.getInstance().tblVisitationTracking.add(item)
+//                //  BuildProgramsList()
+//
+//                addTheLatestRowOfPortalAdmin()
+//
 //            }
-            if (validProgram) {
-                var item = TblVisitationTracking()
-                item.performedBy =performedBy_dropdown.selectedItem.toString()
-//                Toast.makeText(context,performedBy_dropdown.selectedItem.toString(),Toast.LENGTH_SHORT).show()
-                //    item.programtypename = program_name_textviewVal.getSelectedItem().toString()
-                item.DatePerformed = if (performed_date_textviewVal.text.equals("SELECT DATE")) "" else performed_date_textviewVal.text.toString()
-//                item.expDate = if (expiration_date_textviewVal.text.equals("SELECT DATE")) "" else expiration_date_textviewVal.text.toString()
-//                item.Comments=comments_editTextVal.text.toString()
-                FacilityDataModel.getInstance().tblVisitationTracking.add(item)
-                //  BuildProgramsList()
-
-                addTheLatestRowOfPortalAdmin()
-
-            }
-        })
+//        })
 
         fillPortalTrackingTableView();
 
@@ -218,7 +223,7 @@ class FragmentARRAVVisitationTracking : Fragment() {
                 tableRow.addView(textView)
 
 
-                deficiencyTableLayout.addView(tableRow)
+//                deficiencyTableLayout.addView(tableRow)
             }
         }
     }
@@ -280,7 +285,7 @@ class FragmentARRAVVisitationTracking : Fragment() {
             tableRow.addView(textView)
 
 
-            deficiencyTableLayout.addView(tableRow)
+//            deficiencyTableLayout.addView(tableRow)
 
         }
     }

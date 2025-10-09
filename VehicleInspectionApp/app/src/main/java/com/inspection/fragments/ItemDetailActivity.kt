@@ -8,7 +8,8 @@ import androidx.core.app.NavUtils
 import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import com.inspection.R
-import kotlinx.android.synthetic.main.activity_item_detail.*
+import com.inspection.databinding.ActivityItemDetailBinding
+import com.inspection.databinding.ActivityItemListBinding
 
 /**
  * An activity representing a single Item detail screen. This
@@ -17,13 +18,15 @@ import kotlinx.android.synthetic.main.activity_item_detail.*
  * in a [ItemListActivity].
  */
 class ItemDetailActivity : AppCompatActivity() {
-
+    private lateinit var binding: ActivityItemDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_item_detail)
-        setSupportActionBar(detail_toolbar)
+//        setContentView(R.layout.activity_item_detail)
+        binding = ActivityItemDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.detailToolbar)
 
-        fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
@@ -66,7 +69,7 @@ class ItemDetailActivity : AppCompatActivity() {
                     //
                     // http://developer.android.com/design/patterns/navigation.html#up-vs-back
 
-                    NavUtils.navigateUpTo(this, Intent(this, ItemListActivity::class.java))
+//                    NavUtils.navigateUpTo(this, Intent(this, ItemListActivity::class.java))
                     true
                 }
                 else -> super.onOptionsItemSelected(item)

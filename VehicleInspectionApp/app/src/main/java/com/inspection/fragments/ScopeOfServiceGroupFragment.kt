@@ -15,16 +15,13 @@ import android.widget.Toast
 import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.Utility
+import com.inspection.databinding.ScopeOfServiceGroupLayoutBinding
+import com.inspection.databinding.SurveysGroupLayoutBinding
 import com.inspection.fragmentsNames
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
-import kotlinx.android.synthetic.main.deficiency_group_layout.promotionsButton
-import kotlinx.android.synthetic.main.deficiency_group_layout.promotionsSelectedIndicator
-import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_billing.*
-import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,7 +46,8 @@ class ScopeOfServiceGroupFragment : Fragment() {
 
     private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
     private var revSourceArray = ArrayList<String>()
-
+    private var _binding: ScopeOfServiceGroupLayoutBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,21 +65,21 @@ class ScopeOfServiceGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = ScopeOfServiceGroupLayoutBinding.bind(view)
         var fragment = FragmentARRAVScopeOfService.newInstance("","")
-        fragmentManager!!.beginTransaction()
+        requireFragmentManager().beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
         (activity as FormsActivity).currentFragment= fragmentsNames.SoSGeneralInfo.toString()
         (activity as FormsActivity).saveRequired = false
         updateSelectedIndicator(R.id.generalInformationButton)
 
-        sosgeneralInformationButton.setOnClickListener {
+        binding.sosgeneralInformationButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = FragmentARRAVScopeOfService.newInstance("", "")
-                fragmentManager!!.beginTransaction()
+                requireFragmentManager().beginTransaction()
                         .replace(R.id.facilityGroupDetailsFragment, fragment)
                         .commit()
                 (activity as FormsActivity).currentFragment = fragmentsNames.SoSGeneralInfo.toString()
@@ -90,12 +88,12 @@ class ScopeOfServiceGroupFragment : Fragment() {
             }
         }
 
-        vehicleServicesButton.setOnClickListener {
+        binding.vehicleServicesButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = FragmentARRAVVehicleServices.newInstance("", "")
-                fragmentManager!!.beginTransaction()
+                requireFragmentManager().beginTransaction()
                         .replace(R.id.facilityGroupDetailsFragment, fragment)
                         .commit()
                 (activity as FormsActivity).currentFragment = fragmentsNames.SoSVehicleServices.toString()
@@ -104,13 +102,13 @@ class ScopeOfServiceGroupFragment : Fragment() {
             }
         }
 
-        programsButton.setOnClickListener {
+        binding.programsButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = FragmentARRAVPrograms.newInstance("", "")
-                fragmentManager!!.beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                requireFragmentManager().beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment,"FragmentARRAVPrograms")
                         .commit()
                 (activity as FormsActivity).currentFragment = fragmentsNames.SoSPrograms.toString()
                 (activity as FormsActivity).saveRequired = false
@@ -118,13 +116,13 @@ class ScopeOfServiceGroupFragment : Fragment() {
             }
         }
 
-        facilityServicesButton.setOnClickListener {
+        binding.facilityServicesButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = FragmentARRAVFacilityServices.newInstance("", "")
-                fragmentManager!!.beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                requireFragmentManager().beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment,"FragmentARRAVFacilityServices")
                         .commit()
                 (activity as FormsActivity).currentFragment = fragmentsNames.SoSFacilityServices.toString()
                 (activity as FormsActivity).saveRequired = false
@@ -132,12 +130,12 @@ class ScopeOfServiceGroupFragment : Fragment() {
             }
         }
 
-        vehiclesButton.setOnClickListener {
+        binding.vehiclesButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = VehiclesFragmentInScopeOfServicesView.newInstance("", "")
-                fragmentManager!!.beginTransaction()
+                requireFragmentManager().beginTransaction()
                         .replace(R.id.facilityGroupDetailsFragment, fragment)
                         .commit()
                 (activity as FormsActivity).currentFragment = fragmentsNames.SoSVehicles.toString()
@@ -146,13 +144,13 @@ class ScopeOfServiceGroupFragment : Fragment() {
             }
         }
 
-        AffiliationsButton.setOnClickListener {
+        binding.AffiliationsButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
                 var fragment = FragmentARRAVAffliations.newInstance("", "")
-                fragmentManager!!.beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment)
+                requireFragmentManager().beginTransaction()
+                        .replace(R.id.facilityGroupDetailsFragment, fragment,"FragmentARRAVAffliations")
                         .commit()
                 (activity as FormsActivity).currentFragment = fragmentsNames.SoSAffiliations.toString()
                 (activity as FormsActivity).saveRequired = false
@@ -160,7 +158,7 @@ class ScopeOfServiceGroupFragment : Fragment() {
             }
         }
 
-        PromotionsButton.setOnClickListener {
+        binding.PromotionsButton.setOnClickListener {
             if ((activity as FormsActivity).preventNavigation()) {
                 Utility.showSaveOrCancelAlertDialog(activity)
             } else {
@@ -212,85 +210,85 @@ class ScopeOfServiceGroupFragment : Fragment() {
     fun updateSelectedIndicator(selectedViewId: Int){
         when(selectedViewId){
             R.id.generalInformationButton->{
-                generalInformationSelectedIndicator.visibility = View.VISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-                programsSelectedIndicator.visibility = View.INVISIBLE
-                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.VISIBLE
+                binding.vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.programsSelectedIndicator.visibility = View.INVISIBLE
+                binding.facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehiclesSelectedIndicator.visibility = View.INVISIBLE
+                binding.affiliationsSelectedIndicator.visibility = View.INVISIBLE
+                binding.promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.vehicleServicesButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.VISIBLE
-                programsSelectedIndicator.visibility = View.INVISIBLE
-                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehicleServicesSelectedIndicator.visibility = View.VISIBLE
+                binding.programsSelectedIndicator.visibility = View.INVISIBLE
+                binding.facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehiclesSelectedIndicator.visibility = View.INVISIBLE
+                binding.affiliationsSelectedIndicator.visibility = View.INVISIBLE
+                binding.promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.programsButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-                programsSelectedIndicator.visibility = View.VISIBLE
-                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.programsSelectedIndicator.visibility = View.VISIBLE
+                binding.facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehiclesSelectedIndicator.visibility = View.INVISIBLE
+                binding.affiliationsSelectedIndicator.visibility = View.INVISIBLE
+                binding.promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.facilityServicesButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-                programsSelectedIndicator.visibility = View.INVISIBLE
-                facilityServicesSelectedIndicator.visibility = View.VISIBLE
-                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.programsSelectedIndicator.visibility = View.INVISIBLE
+                binding.facilityServicesSelectedIndicator.visibility = View.VISIBLE
+                binding.vehiclesSelectedIndicator.visibility = View.INVISIBLE
+                binding.affiliationsSelectedIndicator.visibility = View.INVISIBLE
+                binding.promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.vehiclesButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-                programsSelectedIndicator.visibility = View.INVISIBLE
-                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-                vehiclesSelectedIndicator.visibility = View.VISIBLE
-                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.programsSelectedIndicator.visibility = View.INVISIBLE
+                binding.facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehiclesSelectedIndicator.visibility = View.VISIBLE
+                binding.affiliationsSelectedIndicator.visibility = View.INVISIBLE
+                binding.promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.AffiliationsButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-                programsSelectedIndicator.visibility = View.INVISIBLE
-                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-                affiliationsSelectedIndicator.visibility = View.VISIBLE
-                promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.programsSelectedIndicator.visibility = View.INVISIBLE
+                binding.facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehiclesSelectedIndicator.visibility = View.INVISIBLE
+                binding.affiliationsSelectedIndicator.visibility = View.VISIBLE
+                binding.promotionsSelectedSoSIndicator.visibility = View.INVISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
 
             R.id.PromotionsButton->{
-                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
-                programsSelectedIndicator.visibility = View.INVISIBLE
-                facilityServicesSelectedIndicator.visibility = View.INVISIBLE
-                vehiclesSelectedIndicator.visibility = View.INVISIBLE
-                affiliationsSelectedIndicator.visibility = View.INVISIBLE
-                promotionsSelectedSoSIndicator.visibility = View.VISIBLE
+                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehicleServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.programsSelectedIndicator.visibility = View.INVISIBLE
+                binding.facilityServicesSelectedIndicator.visibility = View.INVISIBLE
+                binding.vehiclesSelectedIndicator.visibility = View.INVISIBLE
+                binding.affiliationsSelectedIndicator.visibility = View.INVISIBLE
+                binding.promotionsSelectedSoSIndicator.visibility = View.VISIBLE
 //                awardsAndDistinctionsSelectedIndicator.visibility = View.INVISIBLE
 //                otherSelectedIndicator.visibility = View.INVISIBLE
             }
@@ -325,13 +323,13 @@ class ScopeOfServiceGroupFragment : Fragment() {
     }
 
     fun refreshTabIndicators() {
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited) sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA")) else sosgeneralInformationButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited) facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) programsButton.setTextColor(Color.parseColor("#26C3AA")) else programsButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited) AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited) vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else vehicleServicesButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited) vehiclesButton.setTextColor(Color.parseColor("#26C3AA")) else vehiclesButton.setTextColor(Color.parseColor("#A42600"))
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].PromotionsVisited) PromotionsButton.setTextColor(Color.parseColor("#26C3AA")) else PromotionsButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited) binding.sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA")) else binding.sosgeneralInformationButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited) binding.facilityServicesButton.setTextColor(Color.parseColor("#26C3AA")) else binding.facilityServicesButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited) binding.programsButton.setTextColor(Color.parseColor("#26C3AA")) else binding.programsButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited) binding.AffiliationsButton.setTextColor(Color.parseColor("#26C3AA")) else binding.AffiliationsButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited) binding.vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA")) else binding.vehicleServicesButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited) binding.vehiclesButton.setTextColor(Color.parseColor("#26C3AA")) else binding.vehiclesButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblScopeOfServices[0].PromotionsVisited) binding.PromotionsButton.setTextColor(Color.parseColor("#26C3AA")) else binding.PromotionsButton.setTextColor(Color.parseColor("#A42600"))
 //        promotionsButton.setTextColor(Color.parseColor("#26C3AA"))
 //        awardsAndDistinctionsButton.setTextColor(Color.parseColor("#26C3AA"))
     }
@@ -355,28 +353,28 @@ class ScopeOfServiceGroupFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        try {
-            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = true
-
-
-            if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
-                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
-            }
-
-            if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
-                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
-            }
-
-
-            if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
-                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
-            }
-
-            if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
-                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
-            }
-        } catch (e: Exception) {
-        }
+//        try {
+//            FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = true
+//
+//
+//            if (fixedLaborRateEditText.text.toString().isNullOrEmpty()) {
+//                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+//            }
+//
+//            if (diagnosticRateEditText.text.toString().isNullOrEmpty()) {
+//                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+//            }
+//
+//
+//            if (laborRateMatrixMaxEditText.text.toString().isNullOrEmpty()) {
+//                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+//            }
+//
+//            if (laborRateMatrixMinEditText.text.toString().isNullOrEmpty()) {
+//                FragmentARRAVScopeOfService.scopeOfServiceValideForOtherFragmentToTest = false
+//            }
+//        } catch (e: Exception) {
+//        }
 
 
     }

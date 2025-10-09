@@ -35,7 +35,7 @@
 
 
                 <RelativeLayout
-                    android:id="@+id/mainViewLinearId"
+                    android:id="@+id/mainViewLinearId11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -47,9 +47,34 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Location"
+                        android:id="@+id/locationLbl"
                         android:textColor="@color/mainColor"
                         android:textSize="22sp"
                         android:textStyle="bold" />
+                    <ImageButton
+                        android:id="@+id/alertLocationYIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_toRightOf="@id/locationLbl"
+                        android:background="@android:drawable/ic_dialog_info"
+                        android:backgroundTint="@color/dark_yellow"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/alertLocationRIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_toRightOf="@id/locationLbl"
+                        android:background="@android:drawable/ic_dialog_info"
+                        android:backgroundTint="@android:color/holo_red_dark"
+                        android:visibility="visible" />
 
                 </RelativeLayout>
                 <!--<ScrollView-->
@@ -207,7 +232,7 @@
                 </TableLayout>
 
                 <RelativeLayout
-                    android:id="@+id/mainViewLinearId"
+                    android:id="@+id/mainViewLinearId22"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -514,14 +539,16 @@
                     <Button
                         android:id="@+id/addNewPhoneButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginEnd="15dp"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
-                        android:text="+ add new phone"
-                        android:textColor="@color/white" />
+                        android:text="Add New Phone"
+                        />
 
                 </RelativeLayout>
 
@@ -590,15 +617,17 @@
                     <Button
                         android:id="@+id/addNewEmailButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
-                        android:text="+ add new email"
-                        android:textColor="@color/white" />
+                        android:text="Add New Email"
+                        />
 
                 </RelativeLayout>
 
@@ -999,15 +1028,17 @@
                     <Button
                         android:id="@+id/copyHoursBtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="40dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
                         android:text="   Copy Hours  "
-                        android:textColor="@color/white" />
+                        />
                 </RelativeLayout>
 
                 <TableLayout
@@ -1093,6 +1124,7 @@
                             android:layout_column="0"
                             android:layout_marginTop="5dp"
                             android:text="Night Drop"
+                            app:buttonTint="@drawable/checkbox_bkg"
                             android:textStyle="bold" />
                     </TableRow>
 
@@ -1168,16 +1200,20 @@
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:background="@drawable/grey_background_button"
+                    android:layout_height="40dp"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:text="Cancel" />
 
                 <Button
                     android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:text="Save" />
             </LinearLayout>
         </LinearLayout>
@@ -1533,15 +1569,16 @@
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="right"
                 android:layout_marginRight="50dp"
                 android:layout_marginLeft="50dp"
                 android:text="Submit"
                 android:id="@+id/locationSubmitButton"
+                android:background="@drawable/new_btn_bkg"
                 android:textColor="@color/white"
-                android:background="@drawable/green_background_button"
+                app:backgroundTint="@null"
                 />
 
 
@@ -1639,15 +1676,16 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_gravity="right"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
             android:text="Submit"
             android:id="@+id/phoneSubmitButton"
+            android:background="@drawable/new_btn_bkg"
             android:textColor="@color/white"
-            android:background="@drawable/green_background_button"
+            app:backgroundTint="@null"
             />
 
 
@@ -1717,7 +1755,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Phone Number:*"
+                    android:text="Phone Number:* "
                     android:layout_column="0"
                     android:textStyle="bold"
                     />
@@ -1785,15 +1823,16 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:layout_gravity="right"
         android:layout_marginRight="50dp"
         android:layout_marginLeft="50dp"
         android:text="Copy"
         android:id="@+id/copyButtonCV"
+        android:background="@drawable/new_btn_bkg"
         android:textColor="@color/white"
-        android:background="@drawable/green_background_button"
+        app:backgroundTint="@null"
         />
 
 
@@ -1856,6 +1895,7 @@
                 android:id="@+id/toSunCB"
                 android:layout_column="0"
                 android:textStyle="bold"
+                app:buttonTint="@drawable/checkbox_bkg"
                 />
             <CheckBox
                 android:layout_width="wrap_content"
@@ -1863,6 +1903,7 @@
                 android:layout_marginTop="5dp"
                 android:text="Monday"
                 android:id="@+id/toMonCB"
+                app:buttonTint="@drawable/checkbox_bkg"
                 android:layout_column="1"
                 android:textStyle="bold"
                 />
@@ -1874,6 +1915,7 @@
                 android:id="@+id/toTueCB"
                 android:layout_column="2"
                 android:textStyle="bold"
+                app:buttonTint="@drawable/checkbox_bkg"
                 />
             <CheckBox
                 android:layout_width="wrap_content"
@@ -1883,6 +1925,7 @@
                 android:id="@+id/toWedCB"
                 android:layout_column="3"
                 android:textStyle="bold"
+                app:buttonTint="@drawable/checkbox_bkg"
                 />
             <CheckBox
                 android:layout_width="wrap_content"
@@ -1938,15 +1981,16 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_gravity="right"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
             android:text="Submit"
             android:id="@+id/phoneSaveChangesButton"
+            android:background="@drawable/new_btn_bkg"
             android:textColor="@color/white"
-            android:background="@drawable/green_background_button"
+            app:backgroundTint="@null"
             />
 
 
@@ -1997,7 +2041,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
 
-                    android:text="Phone Number:*"
+                    android:text="Phone Number:* "
                     android:layout_column="0"
                     android:textStyle="bold"
                     />
@@ -2064,15 +2108,16 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_gravity="right"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
             android:text="Submit"
             android:id="@+id/emailSaveChangesButton"
+            android:background="@drawable/new_btn_bkg"
             android:textColor="@color/white"
-            android:background="@drawable/green_background_button"
+            app:backgroundTint="@null"
             />
 
 
@@ -2123,7 +2168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
 
-                    android:text="Email Address:*"
+                    android:text="Email Address:* "
                     android:layout_column="0"
                     android:textStyle="bold"
                     />
@@ -2189,15 +2234,16 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_gravity="right"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
             android:text="Submit"
             android:id="@+id/emailSubmitButton"
+            android:background="@drawable/new_btn_bkg"
             android:textColor="@color/white"
-            android:background="@drawable/green_background_button"
+            app:backgroundTint="@null"
             />
 
 
@@ -2245,8 +2291,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-
-                    android:text="Email Address:*"
+                    android:text="Email Address:* "
                     android:layout_column="0"
                     android:textStyle="bold"
                     />
@@ -2278,7 +2323,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsLoc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -2288,7 +2333,7 @@
             android:layout_width="wrap_content"
             android:id="@+id/contactInfoLoadingText"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsLoc"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"

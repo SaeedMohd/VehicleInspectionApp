@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import com.android.volley.Request
@@ -24,11 +25,13 @@ import com.inspection.Utils.Constants
 import com.inspection.Utils.ExpandableHeightGridView
 import com.inspection.Utils.toast
 import com.inspection.adapter.VehicleServicesArrayAdapter
+import com.inspection.databinding.FragmentArravvehiclesBinding
+//import com.inspection.databinding.FragmentCsiresultBinding
 import com.inspection.interfaces.VehicleServicesListItem
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_arravvehicles.*
-import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_arravvehicles.*
+//import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 
 /**
  * A simple [Fragment] subclass.
@@ -53,12 +56,14 @@ class FragmentARRAVVehicles : Fragment() {
     var vehiclesArrayAdapter: VehicleServicesArrayAdapter? = null
 
     var vehicleMakeListView: ExpandableHeightGridView? = null
+    private var _binding: FragmentArravvehiclesBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            mParam1 = arguments!!.getString(ARG_PARAM1)
-            mParam2 = arguments!!.getString(ARG_PARAM2)
+            mParam1 = requireArguments().getString(ARG_PARAM1)
+            mParam2 = requireArguments().getString(ARG_PARAM2)
         }
     }
 
@@ -73,7 +78,7 @@ class FragmentARRAVVehicles : Fragment() {
 
         prepareView()
 
-        vehicleMakeListView = vehicleMakeList
+        vehicleMakeListView = binding.vehicleMakeList
 
 
 
@@ -91,21 +96,23 @@ class FragmentARRAVVehicles : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = FragmentArravvehiclesBinding.bind(view)
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited = true
-        (activity as FormsActivity).vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+        requireActivity().findViewById<Button>(R.id.vehiclesButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
     }
 
     private fun loadVehicles() {
-        if (progressbarVehicles != null) {
-            progressbarVehicles.visibility = View.VISIBLE
+        if (binding.progressbarVehicles != null) {
+            binding.progressbarVehicles.visibility = View.VISIBLE
         }
         Log.v("Vehicles --- ",Constants.getVehiclesURL+"")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getVehiclesURL,
                 Response.Listener { response ->
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         isVehiclesLoaded = true
                         (activity as FormsActivity).saveDone = true
                         vehiclesList = Gson().fromJson(response.toString(), Array<AAAVehiclesModel>::class.java).toCollection(ArrayList())
@@ -115,8 +122,8 @@ class FragmentARRAVVehicles : Fragment() {
                             vehiclesArrayAdapter = VehicleServicesArrayAdapter(context, vehiclesListItems)
                             vehiclesListView!!.adapter = vehiclesArrayAdapter
                         }
-                        if (progressbarVehicles != null) {
-                            progressbarVehicles.visibility = View.INVISIBLE
+                        if (binding.progressbarVehicles != null) {
+                            binding.progressbarVehicles.visibility = View.INVISIBLE
                         }
                         if (isPreparingView) {
                             prepareView()

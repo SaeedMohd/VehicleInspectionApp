@@ -33,7 +33,6 @@
             android:background="#154c79"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/subTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -89,7 +88,8 @@
                         android:gravity="center_vertical"
                         android:text="Check / Uncheck All"
                         android:textColor="#114DB7"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
                 </RelativeLayout>
                 <com.inspection.Utils.ExpandableHeightGridView
                     android:layout_margin="20dp"
@@ -131,7 +131,8 @@
                         android:gravity="center_vertical"
                         android:text="Check / Uncheck All"
                         android:textColor="#114DB7"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
                 </RelativeLayout>
                 <com.inspection.Utils.ExpandableHeightGridView
                     android:layout_margin="20dp"
@@ -174,7 +175,8 @@
                         android:gravity="center_vertical"
                         android:text="Check / Uncheck All"
                         android:textColor="#114DB7"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
                 </RelativeLayout>
                 <com.inspection.Utils.ExpandableHeightGridView
                     android:layout_margin="20dp"
@@ -217,7 +219,8 @@
                         android:gravity="center_vertical"
                         android:text="Check / Uncheck All"
                         android:textColor="#114DB7"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
                 </RelativeLayout>
                 <com.inspection.Utils.ExpandableHeightGridView
                     android:layout_margin="20dp"
@@ -260,7 +263,8 @@
                         android:gravity="center_vertical"
                         android:text="Check / Uncheck All"
                         android:textColor="#114DB7"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
                 </RelativeLayout>
                 <com.inspection.Utils.ExpandableHeightGridView
                     android:layout_margin="20dp"
@@ -303,7 +307,8 @@
                         android:gravity="center_vertical"
                         android:text="Check / Uncheck All"
                         android:textColor="#114DB7"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
                 </RelativeLayout>
                 <com.inspection.Utils.ExpandableHeightGridView
                     android:layout_margin="20dp"
@@ -359,11 +364,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:id="@+id/autoMobilell"
             android:background="#154c79"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/subTitleTextView"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -376,7 +380,7 @@
                 />
         </LinearLayout>
     <TextView
-            android:id="@+id/subTitleTextView"
+
             android:layout_width="wrap_content"
             android:visibility="gone"
             android:layout_height="wrap_content"
@@ -436,11 +440,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:id="@+id/autoMobilell"
             android:background="#154c79"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/subTitleTextView"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -498,11 +501,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
-                    android:id="@+id/autoMobilell"
                     android:background="#154c79"
                     android:orientation="vertical">
                     <TextView
-                        android:id="@+id/subTitleTextView"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -553,16 +555,20 @@
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:background="@drawable/grey_background_button"
+                    android:layout_height="40dp"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:text="Cancel" />
 
                 <Button
                     android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:text="Save" />
             </LinearLayout>
         </RelativeLayout>
@@ -577,7 +583,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsVS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -586,7 +592,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsVS"
             android:layout_centerHorizontal="true"
             android:id="@+id/progressBarText"
             android:text="Loading..."

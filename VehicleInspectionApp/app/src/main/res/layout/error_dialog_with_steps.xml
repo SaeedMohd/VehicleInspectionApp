@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_margin="10dp"
+    android:layout_marginTop="40dp"
+    android:background="@drawable/dialog_bkg"
+    android:backgroundTint="@color/white"
+    android:elevation="20dp"
+    app:cardCornerRadius="16dp">
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:maxHeight="700dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Icon for No Internet -->
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_bkg"
+            android:padding="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/error_step"
+            app:tint="@color/alertColor" />
+
+        <!-- Title Text -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivIcon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:text="Error!"
+            android:textColor="@color/alertColor"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ll_overall"
+            android:layout_below="@id/tvTitle"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/success_1_ll"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_success_1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/success_step"
+                    android:scaleType="fitXY" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_error_1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/failed_step"
+                    android:scaleType="fitXY" />
+                <TextView
+                    android:id="@+id/tv_success_1_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:text="Please"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/success_2_ll"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_success_2"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/success_step"
+                    android:scaleType="fitXY" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_error_2"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/failed_step"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/tv_success_2_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:text="Please"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/success_3_ll"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_success_3"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/success_step"
+                    android:scaleType="fitXY" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_error_3"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/failed_step"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/tv_success_3_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:text="Please"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/success_4_ll"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_success_4"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/success_step"
+                    android:scaleType="fitXY" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_error_4"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/failed_step"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/tv_success_4_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:text="Please"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/success_5_ll"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_success_5"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/success_step"
+                    android:scaleType="fitXY" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/icon_error_5"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/failed_step"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/tv_success_5_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:text="Please"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+        <!-- Message Text -->
+
+        <!-- Action Button -->
+        <Button
+            android:id="@+id/btnAction"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_overall"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="@color/alertColor"
+            android:text="OK"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+</ScrollView>
+</androidx.cardview.widget.CardView>

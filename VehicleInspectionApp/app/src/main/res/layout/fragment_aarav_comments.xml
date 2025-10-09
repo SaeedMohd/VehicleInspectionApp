@@ -163,21 +163,23 @@ tools:context=".fragments.FragmentAARAVComments">
                 android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/white"
                 android:text="Search" />
             <Button
                 android:id="@+id/clearButton"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:layout_toRightOf="@id/saveButton"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:textColor="@color/white"
                 android:text="Clear" />
             <Button
                 android:id="@+id/addNewCommentBtn"
@@ -186,11 +188,13 @@ tools:context=".fragments.FragmentAARAVComments">
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="+ add Comment"
-                android:textColor="@color/white" />
+                />
 
         </RelativeLayout>
 
@@ -308,10 +312,11 @@ tools:context=".fragments.FragmentAARAVComments">
                     android:layout_marginRight="5dp"
                     android:text="SUBMIT"
                     android:id="@+id/commentSubmitButton"
-                    android:textColor="@color/white"
                     android:ems="12"
                     android:layout_column="1"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_gravity="top|right"/>
 
                 <ImageButton
@@ -399,7 +404,7 @@ tools:context=".fragments.FragmentAARAVComments">
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsComments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -408,7 +413,7 @@ tools:context=".fragments.FragmentAARAVComments">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsComments"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"

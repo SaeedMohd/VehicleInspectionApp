@@ -63,7 +63,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_below="@id/highll"
                 android:id="@+id/expandablell"
                 android:orientation="vertical">
@@ -83,7 +83,6 @@
 
 
                 <TextView
-                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -125,7 +124,6 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/subTitleTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="top"
@@ -175,7 +173,6 @@
 
 
                 <TextView
-                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -224,7 +221,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -274,7 +270,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/subTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -300,239 +295,313 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/CNGContainer"
-                    android:layout_margin="15dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/CNGContainer"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/firstRowColor"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                    android:text="Fuel Type - CNG/LNG"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp"
+                    android:layout_centerVertical="true"
+                    android:paddingStart="10dp"
 
-                        <TextView
-                            android:id="@+id/subTitleTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Fuel Type - CNG/LNG"
-                            android:textStyle="bold"
-                            android:textColor="@color/mainColor"
-                            android:textSize="22sp"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="5dp"
 
-                            />
-
-                        <com.inspection.Utils.ExpandableHeightGridView
-                            android:id="@+id/cngTypesVehiclesListView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:horizontalSpacing="2dp"
-                            android:isScrollContainer="false"
-                            android:numColumns="4"
-                            android:stretchMode="columnWidth"
-                            android:verticalSpacing="20dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/DieselContainer"
-                    android:layout_margin="15dp"
-                    android:layout_width="match_parent"
+                    />
+                <CheckBox
+                    android:id="@+id/cngCheckBox"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/firstRowColor"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/subTitleTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Fuel Type - Diesel"
-                            android:textStyle="bold"
-                            android:textColor="@color/mainColor"
-                            android:textSize="22sp"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="5dp"
-
-                            />
-
-                        <com.inspection.Utils.ExpandableHeightGridView
-                            android:id="@+id/dieselTypesVehiclesListView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:horizontalSpacing="2dp"
-                            android:isScrollContainer="false"
-                            android:numColumns="4"
-                            android:stretchMode="columnWidth"
-                            android:verticalSpacing="20dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ElectricContainer"
-                    android:layout_margin="15dp"
-                    android:layout_width="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true"
+                    android:text="Check / Uncheck All"
+                    android:textColor="#114DB7"
+                    android:textSize="16sp"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
+                </RelativeLayout>
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/cngTypesVehiclesListView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/firstRowColor"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-                        <TextView
-                            android:id="@+id/subTitleTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Fuel Type - Electric"
-                            android:textStyle="bold"
-                            android:textColor="@color/mainColor"
-                            android:textSize="22sp"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="5dp"
-
-                            />
-
-                        <com.inspection.Utils.ExpandableHeightGridView
-                            android:id="@+id/electricTypesVehiclesListView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:horizontalSpacing="2dp"
-                            android:isScrollContainer="false"
-                            android:numColumns="4"
-                            android:stretchMode="columnWidth"
-                            android:verticalSpacing="20dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/GasContainer"
-                    android:layout_margin="15dp"
-                    android:layout_width="match_parent"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/DieselContainer"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/firstRowColor"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/subTitleTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Fuel Type - Gasoline"
-                            android:textStyle="bold"
-                            android:textColor="@color/mainColor"
-                            android:textSize="22sp"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="5dp"
-
-                            />
-
-                        <com.inspection.Utils.ExpandableHeightGridView
-                            android:id="@+id/gasolineTypesVehiclesListView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:horizontalSpacing="2dp"
-                            android:isScrollContainer="false"
-                            android:numColumns="4"
-                            android:stretchMode="columnWidth"
-                            android:verticalSpacing="20dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/HybridContainer"
-                    android:layout_margin="15dp"
-                    android:layout_width="match_parent"
+                    android:layout_centerVertical="true"
+                    android:text="Fuel Type - Diesel"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    />
+                <CheckBox
+                    android:id="@+id/dieselCheckBox"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/firstRowColor"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/subTitleTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Fuel Type - Hybrid"
-                            android:textStyle="bold"
-                            android:textColor="@color/mainColor"
-                            android:textSize="22sp"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="5dp"
-
-                            />
-
-                        <com.inspection.Utils.ExpandableHeightGridView
-                            android:id="@+id/hybridTypesVehiclesListView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:horizontalSpacing="2dp"
-                            android:isScrollContainer="false"
-                            android:numColumns="4"
-                            android:stretchMode="columnWidth"
-                            android:verticalSpacing="20dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/HydrogenContainer"
-                    android:layout_margin="15dp"
-                    android:layout_width="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerVertical="true"
+                    android:text="Check / Uncheck All"
+                    android:textColor="#114DB7"
+                    android:textSize="16sp"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
+                </RelativeLayout>
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/dieselTypesVehiclesListView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/firstRowColor"
-                    >
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/ElectricContainer"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Fuel Type - Electric"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    />
+                    <CheckBox
+                        android:id="@+id/electricCheckBox"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_centerVertical="true"
+                        android:text="Check / Uncheck All"
+                        android:textColor="#114DB7"
+                        android:textSize="16sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
+                </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/subTitleTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Fuel Type - Hydrogen"
-                            android:textStyle="bold"
-                            android:textColor="@color/mainColor"
-                            android:textSize="22sp"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="5dp"
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/electricTypesVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-                            />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/GasContainer"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Fuel Type - Gasoline"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    />
+                    <CheckBox
+                        android:id="@+id/gasCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_centerVertical="true"
+                        android:text="Check / Uncheck All"
+                        android:textColor="#114DB7"
+                        android:textSize="16sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
+                </RelativeLayout>
 
-                        <com.inspection.Utils.ExpandableHeightGridView
-                            android:id="@+id/hydrogenTypesVehiclesListView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:horizontalSpacing="2dp"
-                            android:isScrollContainer="false"
-                            android:numColumns="4"
-                            android:stretchMode="columnWidth"
-                            android:verticalSpacing="20dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/gasolineTypesVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/HybridContainer"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Fuel Type - Hybrid"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    />
+                    <CheckBox
+                        android:id="@+id/hybridCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_centerVertical="true"
+                        android:text="Check / Uncheck All"
+                        android:textColor="#114DB7"
+                        android:textSize="16sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
+                </RelativeLayout>
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/hybridTypesVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/HydrogenContainer"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/firstRowColor"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Fuel Type - Hydrogen"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/mainColor"
+                    android:textSize="18sp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    />
+                    <CheckBox
+                        android:id="@+id/hydrogenCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_centerVertical="true"
+                        android:text="Check / Uncheck All"
+                        android:textColor="#114DB7"
+                        android:textSize="16sp"
+                        app:buttonTint="@drawable/checkbox_bkg"/>
+                </RelativeLayout>
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/hydrogenTypesVehiclesListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
         <!--<View-->
             <!--android:layout_below="@+id/ninethLevel"-->
             <!--android:id="@+id/tenthLevel"-->
@@ -574,16 +643,20 @@
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:background="@drawable/grey_background_button"
+                    android:layout_height="40dp"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:text="Cancel" />
 
                 <Button
                     android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:text="Save" />
             </LinearLayout>
         </RelativeLayout>
@@ -598,7 +671,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsInScope"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -607,7 +680,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsInScope"
             android:layout_centerHorizontal="true"
             android:id="@+id/progressBarText"
             android:text="Loading..."

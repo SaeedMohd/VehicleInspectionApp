@@ -12,9 +12,11 @@ import android.widget.*
 import com.inspection.R
 
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
+import com.inspection.databinding.FragmentAaravBillingplansBinding
+import com.inspection.databinding.FragmentAaravCommentsBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.fragment_aarav_comments.*
+//import kotlinx.android.synthetic.main.fragment_aarav_comments.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,6 +38,8 @@ class FragmentAARAVComments : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var _binding: FragmentAaravCommentsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,52 +57,53 @@ class FragmentAARAVComments : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAaravCommentsBinding.bind(view)
         fillFieldsIntoVariablesAndCheckDataChangedForScopeOfService()
         scopeOfServiceChangesWatcher()
         prepareCommentsSpinners()
 
 
-        startDateBtn.setOnClickListener {
+        binding.startDateBtn.setOnClickListener {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    startDateBtn!!.text = sdf.format(c.time)
+                    binding.startDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
         }
 
-        endDateBtn.setOnClickListener {
+        binding.endDateBtn.setOnClickListener {
 //            if (endDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    endDateBtn!!.text = sdf.format(c.time)
+                    binding.endDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
-        exitDialogeBtn.setOnClickListener({
-            addNewCommentsDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitDialogeBtn.setOnClickListener({
+            binding.addNewCommentsDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
         })
 
-        addNewCommentBtn.setOnClickListener( {
+        binding.addNewCommentBtn.setOnClickListener( {
             showAddNewCommentsDialog()
         })
 
-        commentSubmitButton.setOnClickListener({
+        binding.commentSubmitButton.setOnClickListener({
             validateCommentsData()
         })
         fillCommentsTableView()
@@ -107,8 +112,8 @@ class FragmentAARAVComments : Fragment() {
 
     private fun validateCommentsData() {
         var isInputsValid = true
-        if (newCommentsText.text.toString().isNullOrEmpty()) {
-            newCommentsText.setError("Required Field")
+        if (binding.newCommentsText.text.toString().isNullOrEmpty()) {
+            binding.newCommentsText.setError("Required Field")
         } else {
             submitCommentsData()
 
@@ -119,20 +124,20 @@ class FragmentAARAVComments : Fragment() {
 
 
     private fun submitCommentsData(){
-        addNewCommentsDialog.visibility = View.GONE
-        alphaBackgroundForDialogs.visibility = View.GONE
+        binding.addNewCommentsDialog.visibility = View.GONE
+        binding.alphaBackgroundForDialogs.visibility = View.GONE
     }
 
     private fun showAddNewCommentsDialog() {
-        alphaBackgroundForDialogs.visibility = View.VISIBLE
-        addNewCommentsDialog.visibility = View.VISIBLE
+        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+        binding.addNewCommentsDialog.visibility = View.VISIBLE
     }
 
     fun fillCommentsTableView() {
 
-        if (commentsResultsTbl.childCount > 1) {
-            for (i in commentsResultsTbl.childCount - 1 downTo 1) {
-                commentsResultsTbl.removeViewAt(i)
+        if (binding.commentsResultsTbl.childCount > 1) {
+            for (i in binding.commentsResultsTbl.childCount - 1 downTo 1) {
+                binding.commentsResultsTbl.removeViewAt(i)
             }
         }
 
@@ -195,7 +200,7 @@ class FragmentAARAVComments : Fragment() {
                     tableRow.addView(textView)
 
 
-                    commentsResultsTbl.addView(tableRow)
+                    binding.commentsResultsTbl.addView(tableRow)
                 }
             }
         }
@@ -385,7 +390,7 @@ class FragmentAARAVComments : Fragment() {
         }
         var commentsTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, commentsTypeArray)
         commentsTypeAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        catSpinner.adapter = commentsTypeAdapter
+        binding.catSpinner.adapter = commentsTypeAdapter
     }
 
     // TODO: Rename method, update argument and hook method into UI event

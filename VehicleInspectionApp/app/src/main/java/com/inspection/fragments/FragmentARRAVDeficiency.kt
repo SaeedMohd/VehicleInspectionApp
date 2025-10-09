@@ -25,12 +25,14 @@ import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateDeficiencyData
-import com.inspection.adapter.MultipartRequest
+//import com.inspection.adapter.MultipartRequest
+import com.inspection.databinding.FragmentAaravComplaintsBinding
+import com.inspection.databinding.FragmentArravDeficiencyBinding
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.fragment_aarav_personnel.PersonnelResultsTbl
-import kotlinx.android.synthetic.main.fragment_aarav_personnel.certTextViewVal
-import kotlinx.android.synthetic.main.fragment_aarav_personnel.certificationsTable
-import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
+//import kotlinx.android.synthetic.main.fragment_aarav_personnel.PersonnelResultsTbl
+//import kotlinx.android.synthetic.main.fragment_aarav_personnel.certTextViewVal
+//import kotlinx.android.synthetic.main.fragment_aarav_personnel.certificationsTable
+//import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -53,6 +55,8 @@ class FragmentARRAVDeficiency : Fragment() {
     }
     var selectedSignature: requestedSignature? = null
 
+    private var _binding: FragmentArravDeficiencyBinding? = null
+    private val binding get() = _binding!!
 
     override fun onStart() {
         super.onStart()
@@ -70,23 +74,23 @@ class FragmentARRAVDeficiency : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentArravDeficiencyBinding.bind(view)
         prepareDefSpinners()
         fillDeffTableView()
-//        IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited = FacilityDataModel.getInstance().tblDefici
-//        ency.filter { s->s.ClearedDate.isNullOrEmpty() }.isEmpty()
-        deffTitle.setTextColor(Color.parseColor("#26C3AA"))
+        IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited = FacilityDataModel.getInstance().tblDeficiency.filter { s->s.ClearedDate.isNullOrEmpty() }.isEmpty()
+        binding.deffTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
-        exitDeffeciencyDialogeBtnId.setOnClickListener {
-            defeciencyCard.visibility=View.GONE
+        binding.exitDeffeciencyDialogeBtnId.setOnClickListener {
+            binding.defeciencyCard.visibility=View.GONE
             (activity as FormsActivity).overrideBackButton = false
-            visitationFormAlphaBackground.visibility = View.GONE
+            binding.visitationFormAlphaBackground.visibility = View.GONE
         }
 
-        exitDeffeciencyDialogeBtnIdEdit.setOnClickListener {
-            defeciencyCardEdit.visibility=View.GONE
+        binding.exitDeffeciencyDialogeBtnIdEdit.setOnClickListener {
+            binding.defeciencyCardEdit.visibility=View.GONE
             (activity as FormsActivity).overrideBackButton = false
-            visitationFormAlphaBackground.visibility = View.GONE
+            binding.visitationFormAlphaBackground.visibility = View.GONE
         }
 
 //        signatureConfirmButton.setOnClickListener {
@@ -122,9 +126,9 @@ class FragmentARRAVDeficiency : Fragment() {
 //            (activity as FormsActivity).overrideBackButton = false
 //        }f
 
-        showNewDeffDialogueBtn.setOnClickListener {
+        binding.showNewDeffDialogueBtn.setOnClickListener {
             isEditing = false
-            comments_editTextVal.setText("")
+            binding.commentsEditTextVal.setText("")
 //            newVisitationDateBtn.setText("SELECT DATE")
 
             val myFormat = "MM/dd/yyyy" // mention the format you need
@@ -132,20 +136,20 @@ class FragmentARRAVDeficiency : Fragment() {
             val currentDate = sdf.format(Date())
 //            newVisitationDateBtnEdit.setText(currentDate)
 //            newVisitationDateBtnEdit.isEnabled = false
-            newVisitationDateBtn.setText(currentDate)
-            newVisitationDateBtn.isEnabled = false
+            binding.newVisitationDateBtn.setText(currentDate)
+            binding.newVisitationDateBtn.isEnabled = false
 
 
 //            signatureDateBtn.setText("SELECT DATE")
 //            facilityRepresentativeDeficienciesSignatureButton.setText("ADD SIGNATURE")
 //            facilityRepresentativeDeficienciesSignatureImageView.setImageBitmap(null)
 
-            newVisitationDateBtn.setError(null)
+            binding.newVisitationDateBtn.setError(null)
 //            signatureDateBtn.setError(null)
 //            facilityRepresentativeDeficienciesSignatureButton.setError(null)
-            defeciencyCard.visibility=View.VISIBLE
+            binding.defeciencyCard.visibility=View.VISIBLE
             (activity as FormsActivity).overrideBackButton = true
-            visitationFormAlphaBackground.visibility = View.VISIBLE
+            binding.visitationFormAlphaBackground.visibility = View.VISIBLE
 
 
 //            facilityRepresentativeDeficienciesSignatureButton.setOnClickListener {
@@ -196,49 +200,49 @@ class FragmentARRAVDeficiency : Fragment() {
 
         }
 
-        loadDefButton.setOnClickListener {
+        binding.loadDefButton.setOnClickListener {
             fillDeffTableView()
         }
 
 
-        newClearedDateBtn.setOnClickListener {
+        binding.newClearedDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!newClearedDateBtn.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(newClearedDateBtn.text.toString()))
+            if (!binding.newClearedDateBtn.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.newClearedDateBtn.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                newClearedDateBtn!!.text = sdf.format(c.time)
+                binding.newClearedDateBtn!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
 
-        newClearedDateBtnEdit.setOnClickListener {
+        binding.newClearedDateBtnEdit.setOnClickListener {
             val c = Calendar.getInstance()
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
-            if (!newClearedDateBtnEdit.text.toString().equals("SELECT DATE")) {
-                var currentDate = (sdf.parse(newClearedDateBtnEdit.text.toString()))
+            if (!binding.newClearedDateBtnEdit.text.toString().equals("SELECT DATE")) {
+                var currentDate = (sdf.parse(binding.newClearedDateBtnEdit.text.toString()))
                 c.setTime(currentDate)
             }
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 // Display Selected date in textbox
                 val myFormat = "MM/dd/yyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                newClearedDateBtnEdit!!.text = sdf.format(c.time)
+                binding.newClearedDateBtnEdit!!.text = sdf.format(c.time)
             }, year, month, day)
             dpd.show()
         }
@@ -310,65 +314,69 @@ class FragmentARRAVDeficiency : Fragment() {
 //        }
 
 
-        submitNewDeffNewBtn.setOnClickListener {
-            if (validateInputs()){
-                progressBarText.text = "Saving ..."
-                DeffLoadingView.visibility = View.VISIBLE
-                var item = TblDeficiency()
-                for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
-                    if (newDefSpinner.getSelectedItem().toString().equals(fac.DeficiencyName))
-                        item.DefTypeID =fac.DeficiencyTypeID
-                }
-                item.VisitationDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                item.EnteredDate = if (newVisitationDateBtn.text.equals("SELECT DATE")) "" else newVisitationDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                item.ClearedDate = if (newClearedDateBtn.text.equals("SELECT DATE")) "" else newClearedDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
-                item.Comments = if (comments_editTextVal.text.isNullOrEmpty())  "" else comments_editTextVal.text.toString()
-                Log.v("Deficiency--- ",UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
-                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
-                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+Utility.getLoggingParameters(activity, 0, "Add New Deficiency ..."),
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread {
-                                if (response.toString().contains("returnCode>0<",false)) {
-                                    Utility.showSubmitAlertDialog(activity, true, "Deficiency")
-                                    item.DefID = response.toString().substring(response.toString().indexOf("<DefID")+7,response.toString().indexOf("</DefID"))
-//                                    Utility.showMessageDialog(activity,"DEF ID",item.DefID)
-                                    FacilityDataModel.getInstance().tblDeficiency.add(item)
-                                    fillDeffTableView()
-                                    (activity as FormsActivity).saveDone = true
-                                    HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
-                                    HasChangedModel.getInstance().changeDoneForDeficiencyDef()
-                                } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                    Utility.showSubmitAlertDialog(activity, false, "Deficiency (Error: "+errorMessage+" )")
+        binding.submitNewDeffNewBtn.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                if (validateInputs()){
+                    binding.progressBarText.text = "Saving ..."
+                    binding.DeffLoadingView.visibility = View.VISIBLE
+                    var item = TblDeficiency()
+                    for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
+                        if (binding.newDefSpinner.getSelectedItem().toString().equals(fac.DeficiencyName))
+                            item.DefTypeID =fac.DeficiencyTypeID
+                    }
+                    item.VisitationDate = if (binding.newVisitationDateBtn.text.equals("SELECT DATE")) "" else binding.newVisitationDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                    item.EnteredDate = if (binding.newVisitationDateBtn.text.equals("SELECT DATE")) "" else binding.newVisitationDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                    item.ClearedDate = if (binding.newClearedDateBtn.text.equals("SELECT DATE")) "" else binding.newClearedDateBtn.text.toString().appToApiSubmitFormatMMDDYYYY()
+                    item.Comments = if (binding.commentsEditTextVal.text.isNullOrEmpty())  "" else binding.commentsEditTextVal.text.toString()
+                    Log.v("Deficiency--- ",UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
+                            "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
+                            "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+Utility.getLoggingParameters(activity, 0, "Add New Deficiency ..."),
+                            Response.Listener { response ->
+                                requireActivity().runOnUiThread {
+                                    if (response.toString().contains("returnCode>0<",false)) {
+                                        Utility.showSubmitAlertDialog(activity, true, "Deficiency")
+                                        item.DefID = response.toString().substring(response.toString().indexOf("<DefID")+7,response.toString().indexOf("</DefID"))
+    //                                    Utility.showMessageDialog(activity,"DEF ID",item.DefID)
+                                        FacilityDataModel.getInstance().tblDeficiency.add(item)
+                                        fillDeffTableView()
+                                        (activity as FormsActivity).saveDone = true
+                                        HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
+                                        HasChangedModel.getInstance().changeDoneForDeficiencyDef()
+                                    } else {
+                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                        Utility.showSubmitAlertDialog(activity, false, "Deficiency (Error: "+errorMessage+" )")
+                                    }
+                                    binding.DeffLoadingView.visibility = View.GONE
+                                    binding.progressBarText.text = "Loading ..."
+                                    binding.defeciencyCard.visibility=View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                    binding.visitationFormAlphaBackground.visibility = View.GONE
                                 }
-                                DeffLoadingView.visibility = View.GONE
-                                progressBarText.text = "Loading ..."
-                                defeciencyCard.visibility=View.GONE
-                                (activity as FormsActivity).overrideBackButton = false
-                                visitationFormAlphaBackground.visibility = View.GONE
-                            }
-                        }, Response.ErrorListener {
-                    Utility.showSubmitAlertDialog(activity, false, "Deficiency")
-                    DeffLoadingView.visibility = View.GONE
-                    progressBarText.text = "Loading ..."
-                    defeciencyCard.visibility=View.GONE
-                    (activity as FormsActivity).overrideBackButton = false
-                    visitationFormAlphaBackground.visibility = View.GONE
-                }))
+                            }, Response.ErrorListener {
+                        Utility.showSubmitAlertDialog(activity, false, "Deficiency")
+                            binding.DeffLoadingView.visibility = View.GONE
+                            binding.progressBarText.text = "Loading ..."
+                            binding.defeciencyCard.visibility=View.GONE
+                        (activity as FormsActivity).overrideBackButton = false
+                            binding.visitationFormAlphaBackground.visibility = View.GONE
+                    }))
 
+                } else {
+                    Utility.showValidationAlertDialog(activity,"Please fill all required fields")
+                }
             } else {
-                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
             }
         }
         altDeffTableRow(2)
     }
 
     fun altDeffTableRow(alt_row : Int) {
-        var childViewCount = DeffResultsTbl.getChildCount();
+        var childViewCount = binding.DeffResultsTbl.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= DeffResultsTbl.getChildAt(i) as TableRow;
+            var row : TableRow= binding.DeffResultsTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.background = getResources().getDrawable(
@@ -380,10 +388,10 @@ class FragmentARRAVDeficiency : Fragment() {
     }
 
     fun altDeffActoinsTableRow(alt_row : Int) {
-        var childViewCount = actionsTable.getChildCount();
+        var childViewCount = binding.actionsTable.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= actionsTable.getChildAt(i) as TableRow;
+            var row : TableRow= binding.actionsTable.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.background = getResources().getDrawable(
@@ -412,11 +420,11 @@ class FragmentARRAVDeficiency : Fragment() {
 
         var defTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, defTypeArray)
         defTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newDefSpinner.adapter = defTypeAdapter
+        binding.newDefSpinner.adapter = defTypeAdapter
 
         var defTypeAdapterEdit = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, defTypeArray)
         defTypeAdapterEdit.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newDefSpinnerEdit.adapter = defTypeAdapterEdit
+        binding.newDefSpinnerEdit.adapter = defTypeAdapterEdit
 
         commentesTypeList = TypeTablesModel.getInstance().WarrantyPeriodType
         commentesTypeArray.clear()
@@ -437,13 +445,13 @@ class FragmentARRAVDeficiency : Fragment() {
 
     fun fillDeffTableView() {
 
-        DeffLoadingView.visibility = View.VISIBLE
+        binding.DeffLoadingView.visibility = View.VISIBLE
 
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
-        if (DeffResultsTbl.childCount>1) {
-            for (i in DeffResultsTbl.childCount - 1 downTo 1) {
-                DeffResultsTbl.removeViewAt(i)
+        if (binding.DeffResultsTbl.childCount>1) {
+            for (i in binding.DeffResultsTbl.childCount - 1 downTo 1) {
+                binding.DeffResultsTbl.removeViewAt(i)
             }
 
         }
@@ -504,7 +512,7 @@ class FragmentARRAVDeficiency : Fragment() {
         FacilityDataModel.getInstance().tblDeficiency.apply {
             (0 until size).forEach {
                 if (!get(it).DefTypeID.equals("-1")) {
-                    if ((filteredDefRadioButton.isChecked && get(it).ClearedDate.isNullOrEmpty()) || (filteredDefRadioButton.isChecked && get(it).ClearedDate.equals("1900-01-01T00:00:00-08:00")) || allDefRadioButton.isChecked) {
+                    if ((binding.filteredDefRadioButton.isChecked && get(it).ClearedDate.isNullOrEmpty()) || (binding.filteredDefRadioButton.isChecked && get(it).ClearedDate.equals("1900-01-01T00:00:00-08:00")) || binding.allDefRadioButton.isChecked) {
                         var tableRow = TableRow(context)
                         tableRow.layoutParams = rowLayoutParamRow
                         tableRow.minimumHeight = 30
@@ -608,30 +616,30 @@ class FragmentARRAVDeficiency : Fragment() {
                         updateButton.setBackgroundColor(Color.TRANSPARENT)
                         tableRow.addView(updateButton)
 
-                        DeffResultsTbl.addView(tableRow)
+                        binding.DeffResultsTbl.addView(tableRow)
 
                         updateButton.setOnClickListener {
                             isEditing = true
-                            rowIndex = DeffResultsTbl.indexOfChild(tableRow)
-                            comments_editTextValEdit.setText(textView4.text)
-                            comments_editTextValEdit.isEnabled = true
-                            newVisitationDateBtnEdit.setText(textView1.text)
-                            newVisitationDateBtnEdit.isEnabled = false
-                            newClearedDateBtnEdit.setText(if (textView3.text.toString().equals("")) "SELECT DATE" else textView3.text)
-                            newClearedDateBtnEdit.isEnabled = true
-                            newClearedDateBtnEdit.setError(null)
+                            rowIndex = binding.DeffResultsTbl.indexOfChild(tableRow)
+                            binding.commentsEditTextValEdit.setText(textView4.text)
+                            binding.commentsEditTextValEdit.isEnabled = true
+                            binding.newVisitationDateBtnEdit.setText(textView1.text)
+                            binding.newVisitationDateBtnEdit.isEnabled = false
+                            binding.newClearedDateBtnEdit.setText(if (textView3.text.toString().equals("")) "SELECT DATE" else textView3.text)
+                            binding.newClearedDateBtnEdit.isEnabled = true
+                            binding.newClearedDateBtnEdit.setError(null)
 //                            signatureDateBtnEdit.setText("SELECT DATE")
 //                            facilityRepresentativeDeficienciesSignatureBitmap = null
 //                            facilityRepresentativeDeficienciesSignatureButtonEdit.setText("ADD SIGNATURE")
 //                            facilityRepresentativeDeficienciesSignatureImageViewEdit.setImageBitmap(null)
-                            newDefSpinnerEdit.setSelection(defTypeArray.indexOf(textView.text.toString()))
-                            newDefSpinnerEdit.isEnabled = false
-                            newVisitationDateBtnEdit.setError(null)
+                            binding.newDefSpinnerEdit.setSelection(defTypeArray.indexOf(textView.text.toString()))
+                            binding.newDefSpinnerEdit.isEnabled = false
+                            binding.newVisitationDateBtnEdit.setError(null)
 //                            signatureDateBtnEdit.setError(null)
 //                            facilityRepresentativeDeficienciesSignatureButtonEdit.setError(null)
-                            defeciencyCardEdit.visibility = View.VISIBLE
+                            binding.defeciencyCardEdit.visibility = View.VISIBLE
                             (activity as FormsActivity).overrideBackButton = true
-                            visitationFormAlphaBackground.visibility = View.VISIBLE
+                            binding.visitationFormAlphaBackground.visibility = View.VISIBLE
 
 
 //                            facilityRepresentativeDeficienciesSignatureButtonEdit.setOnClickListener {
@@ -677,69 +685,73 @@ class FragmentARRAVDeficiency : Fragment() {
 //                                (activity as FormsActivity).overrideBackButton = false
 //                            }
                             (activity as FormsActivity).overrideBackButton = true
-                            var childViewCount = DeffResultsTbl.getChildCount();
+                            var childViewCount = binding.DeffResultsTbl.getChildCount();
 
                             // From here
-                        submitNewDeffNewBtnEdit.setOnClickListener {
-                            if (validateInputsEdit()){
-//                                var currentfacilityDataModelIndex = rowIndex - 1
-//                                var currentfacilityDataModelIndex = FacilityDataModel.getInstance().tblDeficiency.filter {  }
-                                progressBarText.text = "Saving ..."
-                                DeffLoadingView.visibility = View.VISIBLE
-                                var item = TblDeficiency()
-                                for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
-                                    if (newDefSpinnerEdit.getSelectedItem().toString().equals(fac.DeficiencyName))
-                                        item.DefTypeID =fac.DeficiencyTypeID
-                                }
-                                item.VisitationDate = newVisitationDateBtnEdit.text.toString()
-                                item.EnteredDate = newVisitationDateBtnEdit.text.toString()
-                                item.ClearedDate = newClearedDateBtnEdit.text.toString()
-                                item.Comments = comments_editTextValEdit.text.toString()
-                                item.DefID = updateButton.tag.toString()
-                                // Complete from here --------
-                                Log.v("Deficiency--- ",UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=${item.DefID}&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
-                                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=${item.DefID}&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
-                                        "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+Utility.getLoggingParameters(activity, 0, "Edit Deficiency ..."),
-                                        Response.Listener { response ->
-                                            activity!!.runOnUiThread {
-                                                if (response.toString().contains("returnCode>0<",false)) {
-                                                    Utility.showSubmitAlertDialog(activity, true, "Deficiency")
-//                                                    item.DefID = response.toString().substring(response.toString().indexOf("<DefID")+7,response.toString().indexOf("</DefID"))
-                                                    FacilityDataModel.getInstance().tblDeficiency.filter { s->s.DefID.equals(item.DefID)}[0].apply {
-                                                        Comments = item.Comments
-                                                        VisitationDate = item.VisitationDate
-                                                        EnteredDate = item.EnteredDate
-                                                        DueDate = item.DueDate
-                                                        DefTypeID = item.DefTypeID
-                                                        ClearedDate = item.ClearedDate
+                            binding.submitNewDeffNewBtnEdit.setOnClickListener {
+                                if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                                    if (validateInputsEdit()){
+        //                                var currentfacilityDataModelIndex = rowIndex - 1
+        //                                var currentfacilityDataModelIndex = FacilityDataModel.getInstance().tblDeficiency.filter {  }
+                                        binding.progressBarText.text = "Saving ..."
+                                        binding.DeffLoadingView.visibility = View.VISIBLE
+                                        var item = TblDeficiency()
+                                        for (fac in TypeTablesModel.getInstance().AARDeficiencyType) {
+                                            if (binding.newDefSpinnerEdit.getSelectedItem().toString().equals(fac.DeficiencyName))
+                                                item.DefTypeID =fac.DeficiencyTypeID
+                                        }
+                                        item.VisitationDate = binding.newVisitationDateBtnEdit.text.toString()
+                                        item.EnteredDate = binding.newVisitationDateBtnEdit.text.toString()
+                                        item.ClearedDate = binding.newClearedDateBtnEdit.text.toString()
+                                        item.Comments = binding.commentsEditTextValEdit.text.toString()
+                                        item.DefID = updateButton.tag.toString()
+                                        // Complete from here --------
+                                        Log.v("Deficiency--- ",UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=${item.DefID}&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
+                                                "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
+                                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateDeficiencyData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&defId=${item.DefID}&defTypeId=${item.DefTypeID.toString()}&visitationDate=${item.VisitationDate}" +
+                                                "&enteredDate=${item.EnteredDate}&clearedDate=${item.ClearedDate}&comments=${item.Comments}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+Utility.getLoggingParameters(activity, 0, "Edit Deficiency ..."),
+                                                Response.Listener { response ->
+                                                    requireActivity().runOnUiThread {
+                                                        if (response.toString().contains("returnCode>0<",false)) {
+                                                            Utility.showSubmitAlertDialog(activity, true, "Deficiency")
+        //                                                    item.DefID = response.toString().substring(response.toString().indexOf("<DefID")+7,response.toString().indexOf("</DefID"))
+                                                            FacilityDataModel.getInstance().tblDeficiency.filter { s->s.DefID.equals(item.DefID)}[0].apply {
+                                                                Comments = item.Comments
+                                                                VisitationDate = item.VisitationDate
+                                                                EnteredDate = item.EnteredDate
+                                                                DueDate = item.DueDate
+                                                                DefTypeID = item.DefTypeID
+                                                                ClearedDate = item.ClearedDate
+                                                            }
+                                                            fillDeffTableView()
+                                                            (activity as FormsActivity).saveDone = true
+                                                            HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
+                                                            HasChangedModel.getInstance().changeDoneForDeficiencyDef()
+                                                        } else {
+                                                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                            Utility.showSubmitAlertDialog(activity, false, "Deficiency (Error: "+errorMessage+" )")
+                                                        }
+                                                        binding.DeffLoadingView.visibility = View.GONE
+                                                        binding.progressBarText.text = "Loading ..."
+                                                        binding.defeciencyCardEdit.visibility=View.GONE
+                                                        (activity as FormsActivity).overrideBackButton = false
+                                                        binding.visitationFormAlphaBackground.visibility = View.GONE
                                                     }
-                                                    fillDeffTableView()
-                                                    (activity as FormsActivity).saveDone = true
-                                                    HasChangedModel.getInstance().groupDeficiencyDef[0].DeficiencyDef= true
-                                                    HasChangedModel.getInstance().changeDoneForDeficiencyDef()
-                                                } else {
-                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                    Utility.showSubmitAlertDialog(activity, false, "Deficiency (Error: "+errorMessage+" )")
-                                                }
-                                                DeffLoadingView.visibility = View.GONE
-                                                progressBarText.text = "Loading ..."
-                                                defeciencyCardEdit.visibility=View.GONE
+                                                }, Response.ErrorListener {
+                                            Utility.showSubmitAlertDialog(activity, false, "Deficiency")
+                                                binding.DeffLoadingView.visibility = View.GONE
+                                                binding.progressBarText.text = "Loading ..."
+                                                binding.defeciencyCard.visibility=View.GONE
                                                 (activity as FormsActivity).overrideBackButton = false
-                                                visitationFormAlphaBackground.visibility = View.GONE
-                                            }
-                                        }, Response.ErrorListener {
-                                    Utility.showSubmitAlertDialog(activity, false, "Deficiency")
-                                    DeffLoadingView.visibility = View.GONE
-                                    progressBarText.text = "Loading ..."
-                                    defeciencyCard.visibility=View.GONE
-                                    (activity as FormsActivity).overrideBackButton = false
-                                    visitationFormAlphaBackground.visibility = View.GONE
-                                }))
+                                                binding.visitationFormAlphaBackground.visibility = View.GONE
+                                        }))
 
-                            } else {
-                                Utility.showValidationAlertDialog(activity,"Please fill all required fields")
-                            }
+                                    } else {
+                                        Utility.showValidationAlertDialog(activity,"Please fill all required fields")
+                                    }
+                                } else {
+                                    Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
+                                }
                         }
 
 
@@ -750,18 +762,18 @@ class FragmentARRAVDeficiency : Fragment() {
         }
 
         altDefTableRow(2)
-        DeffLoadingView.visibility = View.GONE
+        binding.DeffLoadingView.visibility = View.GONE
     }
 
     fun fillDeffAccTableView(DefId: String) {
 
-        DeffLoadingView.visibility = View.VISIBLE
+        binding.DeffLoadingView.visibility = View.VISIBLE
 
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
-        if (actionsTable.childCount>1) {
-            for (i in actionsTable.childCount - 1 downTo 1) {
-                actionsTable.removeViewAt(i)
+        if (binding.actionsTable.childCount>1) {
+            for (i in binding.actionsTable.childCount - 1 downTo 1) {
+                binding.actionsTable.removeViewAt(i)
             }
 
         }
@@ -843,20 +855,20 @@ class FragmentARRAVDeficiency : Fragment() {
 
                         }
                         tableRow.addView(textView2)
-                        actionsTable.addView(tableRow)
+                    binding.actionsTable.addView(tableRow)
                 }
             }
         }
 
         altDeffActoinsTableRow(2)
-        DeffLoadingView.visibility = View.GONE
+        binding.DeffLoadingView.visibility = View.GONE
     }
 
     fun altDefTableRow(alt_row : Int) {
-        var childViewCount = DeffResultsTbl.getChildCount();
+        var childViewCount = binding.DeffResultsTbl.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= DeffResultsTbl.getChildAt(i) as TableRow;
+            var row : TableRow= binding.DeffResultsTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.background = getResources().getDrawable(
@@ -903,14 +915,14 @@ class FragmentARRAVDeficiency : Fragment() {
         var defValide= TblDeficiency().isInputsValid
         defValide = true
 
-        newVisitationDateBtn.setError(null)
+        binding.newVisitationDateBtn.setError(null)
 //        signatureDateBtn.setError(null)
 //        facilityRepresentativeDeficienciesSignatureButton.setError(null)
 
 
-        if(newVisitationDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(binding.newVisitationDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
             defValide = false
-            newVisitationDateBtn.setError("Required Field")
+            binding.newVisitationDateBtn.setError("Required Field")
         }
 
         for (fac in FacilityDataModel.getInstance().tblDeficiency) {
@@ -937,6 +949,12 @@ class FragmentARRAVDeficiency : Fragment() {
 
     }
 
+    fun updateDialogs() {
+        if (binding.defeciencyCard != null) binding.defeciencyCard.visibility = View.GONE
+        if (binding.defeciencyCardEdit != null) binding.defeciencyCardEdit.visibility = View.GONE
+        if (binding.visitationFormAlphaBackground != null) binding.visitationFormAlphaBackground.visibility = View.GONE
+    }
+
     fun validateInputsEdit() : Boolean {
 
         var defValide= TblDeficiency().isInputsValid
@@ -952,9 +970,9 @@ class FragmentARRAVDeficiency : Fragment() {
 //            signatureDateBtnEdit.setError("Required Field")
 //        }
 
-        if (newClearedDateBtnEdit.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (binding.newClearedDateBtnEdit.text.toString().toUpperCase().equals("SELECT DATE")) {
             defValide = false
-            newClearedDateBtnEdit.setError("Required Field")
+            binding.newClearedDateBtnEdit.setError("Required Field")
         }
 
 

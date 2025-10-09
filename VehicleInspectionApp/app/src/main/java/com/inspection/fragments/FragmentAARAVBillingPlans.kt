@@ -22,13 +22,15 @@ import com.inspection.R
 import com.inspection.Utils.MarkChangeWasDone
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
+import com.inspection.databinding.FragmentAaravBillinghistoryBinding
+import com.inspection.databinding.FragmentAaravBillingplansBinding
 import com.inspection.imageloader.Utils
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.FacilityDataModelOrg
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.billing_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_billingplans.*
+//import kotlinx.android.synthetic.main.billing_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_aarav_billingplans.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -58,6 +60,8 @@ class FragmentAARAVBillingPlans : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var _binding: FragmentAaravBillingplansBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -74,30 +78,31 @@ class FragmentAARAVBillingPlans : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAaravBillingplansBinding.bind(view)
         prepareBillingPlanSpinners()
 
-        newEffDateBtn.setOnClickListener {
+        binding.newEffDateBtn.setOnClickListener {
 //            if (newEffDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     view.setMinDate(System.currentTimeMillis() - 1000);
 
                     if (dayOfMonth!=1){
-                        newEffDateBtn!!.text == "SELECT DATE"
-                        newEffDateBtn!!.setError("Error")
+                        binding.newEffDateBtn!!.text == "SELECT DATE"
+                        binding.newEffDateBtn!!.setError("Error")
                     } else if (Calendar.getInstance().get(Calendar.YEAR)> year || Calendar.getInstance().get(Calendar.MONTH)+1 > monthOfYear) {
-                        newEffDateBtn!!.text == "SELECT DATE"
-                        newEffDateBtn!!.setError("Error")
+                        binding.newEffDateBtn!!.text == "SELECT DATE"
+                        binding.newEffDateBtn!!.setError("Error")
                     } else {
                         val myFormat = "MM/dd/yyyy" // mention the format you need
                         val sdf = SimpleDateFormat(myFormat, Locale.US)
                         c.set(year, monthOfYear, dayOfMonth)
-                        newEffDateBtn!!.text = sdf.format(c.time)
-                        newEffDateBtn!!.setError(null)
+                        binding.newEffDateBtn!!.text = sdf.format(c.time)
+                        binding.newEffDateBtn!!.setError(null)
                     }
                 }, year, month, day)
                 dpd.show()
@@ -106,33 +111,34 @@ class FragmentAARAVBillingPlans : Fragment() {
 
 
 
-        addNewPlanBtn.setOnClickListener( {
+        binding.addNewPlanBtn.setOnClickListener( {
             showAddNewPlanDialog()
         })
 
-        planSubmitButton.setOnClickListener({
+        binding.planSubmitButton.setOnClickListener({
             validateBillinPlanData()
         })
 
         fillBillinPlanTableView()
 
-        exitDialogeBtn.setOnClickListener({
-            addNewPlanDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitDialogeBtn.setOnClickListener({
+            binding.addNewPlanDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
         })
 
-        saveButton.setOnClickListener({
+        binding.saveButton.setOnClickListener({
             MarkChangeWasDone()
         })
 
         IndicatorsDataModel.getInstance().tblBilling[0].BillingPlanVisited = true
-        (activity as FormsActivity).billingPlanButton.setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).billingPlanButton.setTextColor(Color.parseColor("#26C3AA"))
+        requireActivity().findViewById<Button>(R.id.billingPlanButton).setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
 
     private fun setFieldsListeners() {
-        achCheck.setOnCheckedChangeListener { compoundButton, b ->
+        binding.achCheck.setOnCheckedChangeListener { compoundButton, b ->
 //            FacilityDataModel.getInstance().tblBi[0].emailVisitationPdfToFacility = b
         }
 
@@ -147,13 +153,13 @@ class FragmentAARAVBillingPlans : Fragment() {
 ////        phyloc1addr2longitude.setError(null)
 //        phyloc1addr1longitude.setError(null)
 //
-        Log.v("DATE ---- ",newEffDateBtn.text.toString().substring(0,2))
-        if (newEffDateBtn.text.toString().equals("SELECT DATE")) {
+        Log.v("DATE ---- ",binding.newEffDateBtn.text.toString().substring(0,2))
+        if (binding.newEffDateBtn.text.toString().equals("SELECT DATE")) {
             isInputsValid = false
-            newEffDateBtn.setError("Required Field")
-        } else if (!newEffDateBtn.text.toString().substring(0,2).equals("01")) {
+            binding.newEffDateBtn.setError("Required Field")
+        } else if (!binding.newEffDateBtn.text.toString().substring(0,2).equals("01")) {
             isInputsValid = false
-            newEffDateBtn.setError("Must be the first Day of the month")
+            binding.newEffDateBtn.setError("Must be the first Day of the month")
         } else {
             submitBillingPlanData()
         }
@@ -162,21 +168,21 @@ class FragmentAARAVBillingPlans : Fragment() {
 
 
     private fun submitBillingPlanData(){
-        addNewPlanDialog.visibility = View.GONE
-        alphaBackgroundForDialogs.visibility = View.GONE
+        binding.addNewPlanDialog.visibility = View.GONE
+        binding.alphaBackgroundForDialogs.visibility = View.GONE
     }
 
     private fun showAddNewPlanDialog() {
-        alphaBackgroundForDialogs.visibility = View.VISIBLE
-        addNewPlanDialog.visibility = View.VISIBLE
+        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+        binding.addNewPlanDialog.visibility = View.VISIBLE
     }
 
 
     fun fillBillinPlanTableView() {
 
-        if (billingPlansResultsTbl.childCount>1) {
-            for (i in billingPlansResultsTbl.childCount - 1 downTo 1) {
-                billingPlansResultsTbl.removeViewAt(i)
+        if (binding.billingPlansResultsTbl.childCount>1) {
+            for (i in binding.billingPlansResultsTbl.childCount - 1 downTo 1) {
+                binding.billingPlansResultsTbl.removeViewAt(i)
             }
         }
 
@@ -301,7 +307,7 @@ class FragmentAARAVBillingPlans : Fragment() {
                             textView.text = get(it).updateDate.apiToAppFormatMMDDYYYY()
                             tableRow.addView(textView)
 
-                            billingPlansResultsTbl.addView(tableRow)
+                            binding.billingPlansResultsTbl.addView(tableRow)
                         }
                     }
                 }
@@ -318,7 +324,7 @@ class FragmentAARAVBillingPlans : Fragment() {
 
         var catTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, categoryTypeArray)
         catTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newCatSpinner.adapter = catTypeAdapter
+        binding.newCatSpinner.adapter = catTypeAdapter
 
         planTypeList = TypeTablesModel.getInstance().BillingPlanType
         planTypeArrayCat1.clear()
@@ -331,25 +337,25 @@ class FragmentAARAVBillingPlans : Fragment() {
         }
         var planTypeAdapterCat1 = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, planTypeArrayCat1)
         planTypeAdapterCat1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newTypeSpinnerCat1.adapter = planTypeAdapterCat1
+        binding.newTypeSpinnerCat1.adapter = planTypeAdapterCat1
         var planTypeAdapterCat2 = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, planTypeArrayCat2)
         planTypeAdapterCat1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newTypeSpinnerCat2.adapter = planTypeAdapterCat2
-        newTypeSpinnerCat1.visibility = View.VISIBLE
-        newTypeSpinnerCat2.visibility = View.GONE
+        binding.newTypeSpinnerCat2.adapter = planTypeAdapterCat2
+        binding.newTypeSpinnerCat1.visibility = View.VISIBLE
+        binding.newTypeSpinnerCat2.visibility = View.GONE
 
-        newCatSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.newCatSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (newCatSpinner.selectedItemPosition==0) {
-                    newTypeSpinnerCat1.visibility = View.VISIBLE
-                    newTypeSpinnerCat2.visibility = View.GONE
+                if (binding.newCatSpinner.selectedItemPosition==0) {
+                    binding.newTypeSpinnerCat1.visibility = View.VISIBLE
+                    binding.newTypeSpinnerCat2.visibility = View.GONE
                 } else {
-                    newTypeSpinnerCat1.visibility = View.GONE
-                    newTypeSpinnerCat2.visibility = View.VISIBLE
+                    binding.newTypeSpinnerCat1.visibility = View.GONE
+                    binding.newTypeSpinnerCat2.visibility = View.VISIBLE
                 }
             }
 
@@ -363,7 +369,7 @@ class FragmentAARAVBillingPlans : Fragment() {
         }
         var freqTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, freqTypeArray)
         freqTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newFreqSpinner.adapter = freqTypeAdapter
+        binding.newFreqSpinner.adapter = freqTypeAdapter
     }
 
     companion object {

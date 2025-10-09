@@ -147,6 +147,17 @@
 <!--        <item>Prepare Facility Data</item>-->
     </string-array>
 
+    <string-array name="visitation_steps_array">
+        <item>Collect Data</item>
+        <item>Save Signatures</item>
+        <item>Create Visitation</item>
+        <item>Update Visitation Details</item>
+        <item>Generate PDF</item>
+        <item>Upload PDF</item>
+        <item>Upload to AWS</item>
+        <item>Add APP Link</item>
+    </string-array>
+
 
     <string-array name="discount_percentage">
         <item>0%</item>

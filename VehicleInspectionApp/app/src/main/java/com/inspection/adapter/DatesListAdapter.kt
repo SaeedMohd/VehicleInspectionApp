@@ -9,8 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.TextView
 import com.inspection.FormsActivity
+import com.inspection.R
 import com.inspection.R.id.itemCheckBox
 import com.inspection.adapter.LanguageListAdapter.Companion.langArray
 import com.inspection.fragments.FragmentARRAVFacilityServices
@@ -18,7 +20,7 @@ import com.inspection.fragments.FragmentARRAVVehicleServices
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TblVehicleServices
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.vehicle_services_item.view.*
+//import kotlinx.android.synthetic.main.vehicle_services_item.view.*
 
 import java.util.ArrayList
 
@@ -40,11 +42,13 @@ class DatesListAdapter(internal var context: Context, internal var recource: Int
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
 
-       var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(recource, parent, false)
+//       var inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+//        val view = inflater.inflate(recource, parent, false)
+        val inflater = LayoutInflater.from(context)
+        val view = convertView ?: inflater.inflate(recource, parent, false)
 //        val textView3 = view.itemTextView
-        val checkBoxItem = view.itemCheckBox
-
+//        val checkBoxItem = view.itemCheckBox
+        val checkBoxItem = view.findViewById<CheckBox>(R.id.itemCheckBox)
 
         checkBoxItem.text = namesList.get(position).ScopeServiceName
         var vehicleIDRef = TypeTablesModel.getInstance().VehiclesType.filter { s->s.VehiclesTypeName.contains(gridType)}[0].VehiclesTypeID.toInt()

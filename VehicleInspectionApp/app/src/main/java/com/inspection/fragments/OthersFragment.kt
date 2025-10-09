@@ -18,8 +18,9 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 
 import com.inspection.R
+import com.inspection.databinding.FragmentOthersBinding
+import com.inspection.databinding.FragmentPdfgenerateBinding
 import com.inspection.model.FacilityDataModel
-import kotlinx.android.synthetic.main.fragment_others.*
 
 
 /**
@@ -27,7 +28,8 @@ import kotlinx.android.synthetic.main.fragment_others.*
  */
 class OthersFragment : Fragment() {
 
-
+    private var _binding: FragmentOthersBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -36,30 +38,30 @@ class OthersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = FragmentOthersBinding.bind(view)
         scopeOfServiceChangesWatcher()
-        exitOthersDialogeBtnId.setOnClickListener({
+        binding.exitOthersDialogeBtnId.setOnClickListener({
 
-            othersCard.visibility=View.GONE
-            alphaBackgroundForOthersDialogs.visibility = View.GONE
+            binding.othersCard.visibility=View.GONE
+            binding.alphaBackgroundForOthersDialogs.visibility = View.GONE
 
 
         })
 
-        showOthersCard.setOnClickListener(View.OnClickListener {
+        binding.showOthersCard.setOnClickListener(View.OnClickListener {
 
-            othersCard.visibility=View.VISIBLE
-            alphaBackgroundForOthersDialogs.visibility = View.VISIBLE
+            binding.othersCard.visibility=View.VISIBLE
+            binding.alphaBackgroundForOthersDialogs.visibility = View.VISIBLE
 
 
         })
 
         fillOthersTableView()
 
-        submitOtherService.setOnClickListener(View.OnClickListener {
+        binding.submitOtherService.setOnClickListener(View.OnClickListener {
 
-            othersCard.visibility=View.GONE
-            alphaBackgroundForOthersDialogs.visibility = View.GONE
+            binding.othersCard.visibility=View.GONE
+            binding.alphaBackgroundForOthersDialogs.visibility = View.GONE
 
 
         })
@@ -68,9 +70,9 @@ class OthersFragment : Fragment() {
 
     fun fillOthersTableView() {
 
-        if (mainOthersTableLayout.childCount>1) {
-            for (i in mainOthersTableLayout.childCount - 1 downTo 1) {
-                mainOthersTableLayout.removeViewAt(i)
+        if (binding.mainOthersTableLayout.childCount>1) {
+            for (i in binding.mainOthersTableLayout.childCount - 1 downTo 1) {
+                binding.mainOthersTableLayout.removeViewAt(i)
             }
         }
 
@@ -154,7 +156,7 @@ class OthersFragment : Fragment() {
             tableRow.addView(textView)
 
 
-            mainOthersTableLayout.addView(tableRow)
+            binding.mainOthersTableLayout.addView(tableRow)
 
 
         }

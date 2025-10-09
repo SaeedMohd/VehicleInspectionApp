@@ -1,0 +1,22 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="CustomRadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
+        <item name="android:buttonTint">@color/blue</item>
+    </style>
+    <style name="Base.myAppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="radioButtonStyle">@style/CustomRadioButton</item>
+    </style>
+
+    <style name="myAppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlActivated">@color/blue</item>
+        <item name="buttonTint">@color/blue</item> <!-- Checked state color -->
+    </style>
+
+    <style name="myAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+<!--    <style name="myAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
+
+<!--      <style name="myAppTheme" parent="Base.myAppTheme" />-->
+</resources>

@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -22,14 +23,16 @@ import com.inspection.Utils.*
 import com.inspection.adapter.DatesListAdapter
 import com.inspection.adapter.FuelListAdapter
 import com.inspection.adapter.VehicleServicesArrayAdapter
+import com.inspection.databinding.FragmentArravvehiclesBinding
+import com.inspection.databinding.FragmentArrayVehicleServicesBinding
 import com.inspection.model.*
 import com.inspection.singletons.AnnualVisitationSingleton
-import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
-import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
+//import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.util.*
 
-import kotlinx.android.synthetic.main.*
-import kotlinx.android.synthetic.main.fragment_vehicles_fragment_in_scope_of_services_view.hydrogenTypesVehiclesListView
+//import kotlinx.android.synthetic.main.*
+//import kotlinx.android.synthetic.main.fragment_vehicles_fragment_in_scope_of_services_view.hydrogenTypesVehiclesListView
 import kotlin.collections.ArrayList
 
 /**
@@ -105,7 +108,8 @@ class FragmentARRAVVehicleServices : Fragment() {
     var electricVehicleType = "9"
     var hydrogenVehicleType = "10"
     var cngVehicleType = "11"
-
+    private var _binding: FragmentArrayVehicleServicesBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -133,14 +137,14 @@ class FragmentARRAVVehicleServices : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = FragmentArrayVehicleServicesBinding.bind(view)
         setServices()
 
         refreshButtonsState()
 
-        cancelButton.setOnClickListener {
-            progressBarText.text = "Cancelling ..."
-            scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+        binding.cancelButton.setOnClickListener {
+            binding.progressBarText.text = "Cancelling ..."
+            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
             FacilityDataModel.getInstance().tblVehicleServices.clear()
             for (i in 0..FacilityDataModelOrg.getInstance().tblVehicleServices.size-1) {
                 var vehicleServiceItem = TblVehicleServices()
@@ -157,23 +161,30 @@ class FragmentARRAVVehicleServices : Fragment() {
 
             setServices()
             refreshButtonsState()
-            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
-            progressBarText.text = "Loading ..."
+//            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+            Utility.showUnifiedConfirmationDialog(activity,  "Changes cancelled successfully")
+            binding.progressBarText.text = "Loading ..."
 
         }
-        saveButton.setOnClickListener {
-            progressBarText.text = "Saving ..."
-            scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
-            if (selectedVehicleServicesChanged) saveVehicleServiceChanges("0")
-            if (selectedAutoBodyServicesChanged) saveVehicleServiceChanges("1")
-            if (selectedMarineServicesChanged) saveVehicleServiceChanges("2")
-            if (selectedRecreationServicesChanged) saveVehicleServiceChanges("3")
-            if (selectedAutoGlassServicesChanged) saveVehicleServiceChanges("4")
-            if (selectedOthersServicesChanged) saveVehicleServiceChanges("5")
+        binding.saveButton.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                binding.progressBarText.text = "Saving ..."
+                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
+                if (selectedVehicleServicesChanged) saveVehicleServiceChanges("0")
+                if (selectedAutoBodyServicesChanged) saveVehicleServiceChanges("1")
+                if (selectedMarineServicesChanged) saveVehicleServiceChanges("2")
+                if (selectedRecreationServicesChanged) saveVehicleServiceChanges("3")
+                if (selectedAutoGlassServicesChanged) saveVehicleServiceChanges("4")
+                if (selectedOthersServicesChanged) saveVehicleServiceChanges("5")
+            } else {
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
+            }
         }
 
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehicleServicesVisited= true
-        (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+        requireActivity().findViewById<Button>(R.id.vehicleServicesButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).vehicleServicesButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
 //        autoMobileCNGTextView.setOnClickListener({
@@ -273,10 +284,10 @@ class FragmentARRAVVehicleServices : Fragment() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}" + Utility.getLoggingParameters(activity, 0, dataChanges),
                 Response.Listener { response ->
                     Log.v("Vehcile Services --- ","ad")
-                    activity!!.runOnUiThread {
+                    requireActivity().runOnUiThread {
                         if (response.toString().contains("returnCode>0<",false)) {
-                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                            progressBarText.text = "Loading ..."
+                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            binding.progressBarText.text = "Loading ..."
                             FacilityDataModelOrg.getInstance().tblVehicleServices.clear()
                             for (i in 0..FacilityDataModel.getInstance().tblVehicleServices.size-1) {
                                 var vehicleServiceItem = TblVehicleServices()
@@ -298,19 +309,19 @@ class FragmentARRAVVehicleServices : Fragment() {
                         } else {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity, false, "Vehicle Services ${saveMessage} (Error: "+ errorMessage+" )")
-                            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                            progressBarText.text = "Loading ..."
+                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                            binding.progressBarText.text = "Loading ..."
                         }
                     }
                 }, Response.ErrorListener {
-            scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-            progressBarText.text = "Loading ..."
+                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                binding.progressBarText.text = "Loading ..."
             Utility.showSubmitAlertDialog(activity,false,"Vehicle Services ${saveMessage} (Error: "+it.message+" )")
         }))
     }
     fun refreshButtonsState(){
-        saveButton.isEnabled = (activity as FormsActivity).saveRequired
-        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.saveButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.cancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }
 
     private fun setServices() {
@@ -342,7 +353,7 @@ class FragmentARRAVVehicleServices : Fragment() {
             }
         })
 
-        hybridll?.setOnClickListener({
+        binding.hybridll?.setOnClickListener({
             if (hybridServicesListView?.visibility==View.GONE){
                 hybridServicesListView?.visibility=View.VISIBLE
             }else{
@@ -350,7 +361,7 @@ class FragmentARRAVVehicleServices : Fragment() {
             }
         })
 
-        hydrogenll?.setOnClickListener({
+        binding.hydrogenll?.setOnClickListener({
             if (hydrogenServicesListView?.visibility==View.GONE){
                 hydrogenServicesListView?.visibility=View.VISIBLE
             }else{
@@ -358,7 +369,7 @@ class FragmentARRAVVehicleServices : Fragment() {
             }
         })
 
-        electricll?.setOnClickListener({
+        binding.electricll?.setOnClickListener({
             if (electricServicesListView?.visibility==View.GONE){
                 electricServicesListView?.visibility=View.VISIBLE
             }else{
@@ -366,7 +377,7 @@ class FragmentARRAVVehicleServices : Fragment() {
             }
         })
 
-        cngll?.setOnClickListener({
+        binding.cngll?.setOnClickListener({
             if (cngServicesListView?.visibility==View.GONE){
                 cngServicesListView?.visibility=View.VISIBLE
             }else{
@@ -374,7 +385,7 @@ class FragmentARRAVVehicleServices : Fragment() {
             }
         })
 
-        dieselll?.setOnClickListener({
+        binding.dieselll?.setOnClickListener({
             if (dieselServicesListView?.visibility==View.GONE){
                 dieselServicesListView?.visibility=View.VISIBLE
             }else{
@@ -416,8 +427,8 @@ class FragmentARRAVVehicleServices : Fragment() {
 
             }
 
-        gasCheckBox.setOnClickListener({
-            if (gasCheckBox.isChecked) {
+        binding.gasCheckBox.setOnClickListener({
+            if (binding.gasCheckBox.isChecked) {
                 vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(gasolineVehicleType) }.apply {
                     forEach {
                         if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
@@ -448,8 +459,8 @@ class FragmentARRAVVehicleServices : Fragment() {
             (context as FormsActivity).saveRequired = true
             refreshButtonsState()
         })
-        hybridCheckBox.setOnClickListener({
-            if (hybridCheckBox.isChecked) {
+        binding.hybridCheckBox.setOnClickListener({
+            if (binding.hybridCheckBox.isChecked) {
                 vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hybridVehicleType) }.apply {
                     forEach {
                         if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
@@ -481,8 +492,8 @@ class FragmentARRAVVehicleServices : Fragment() {
             refreshButtonsState()
         })
 
-        dieselCheckBox.setOnClickListener({
-            if (dieselCheckBox.isChecked) {
+        binding.dieselCheckBox.setOnClickListener({
+            if (binding.dieselCheckBox.isChecked) {
                 vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(dieselVehicleType) }.apply {
                     forEach {
                         if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
@@ -514,8 +525,8 @@ class FragmentARRAVVehicleServices : Fragment() {
             refreshButtonsState()
         })
 
-        electricCheckBox.setOnClickListener({
-            if (electricCheckBox.isChecked) {
+        binding.electricCheckBox.setOnClickListener({
+            if (binding.electricCheckBox.isChecked) {
                 vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(electricVehicleType) }.apply {
                     forEach {
                         if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
@@ -547,8 +558,8 @@ class FragmentARRAVVehicleServices : Fragment() {
             refreshButtonsState()
         })
 
-        hydrogenCheckBox.setOnClickListener({
-            if (hydrogenCheckBox.isChecked) {
+        binding.hydrogenCheckBox.setOnClickListener({
+            if (binding.hydrogenCheckBox.isChecked) {
                 vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hydrogenVehicleType) }.apply {
                     forEach {
                         if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
@@ -580,8 +591,8 @@ class FragmentARRAVVehicleServices : Fragment() {
             refreshButtonsState()
         })
 
-        cngCheckBox.setOnClickListener({
-            if (cngCheckBox.isChecked) {
+        binding.cngCheckBox.setOnClickListener({
+            if (binding.cngCheckBox.isChecked) {
                 vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(cngVehicleType) }.apply {
                     forEach {
                         if (!selectedVehicleServices.contains(it.ServiceID.toString())) selectedVehicleServices.add(it.ServiceID)
@@ -614,61 +625,61 @@ class FragmentARRAVVehicleServices : Fragment() {
         })
 
 
-        arrayAdapter = DatesListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems)
+        arrayAdapter = DatesListAdapter(requireContext(), R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems)
         vehicleServicesListView?.adapter = arrayAdapter
         vehicleServicesListView?.isExpanded=true
 
-        arrayGasAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(gasolineVehicleType) }, categoryID = gasolineVehicleType)
+        arrayGasAdapter = FuelListAdapter(requireContext(), R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(gasolineVehicleType) }, categoryID = gasolineVehicleType)
         gasolineServicesListView?.adapter = arrayGasAdapter
         gasolineServicesListView?.isExpanded=true
 
 
-        arrayHybridAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hybridVehicleType) }, categoryID = hybridVehicleType)
+        arrayHybridAdapter = FuelListAdapter(requireContext(), R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hybridVehicleType) }, categoryID = hybridVehicleType)
         hybridServicesListView?.adapter = arrayHybridAdapter
         hybridServicesListView?.isExpanded=true
 
-        arrayDieselAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(dieselVehicleType) }, categoryID = dieselVehicleType)
+        arrayDieselAdapter = FuelListAdapter(requireContext(), R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(dieselVehicleType) }, categoryID = dieselVehicleType)
         dieselServicesListView?.adapter = arrayDieselAdapter
         dieselServicesListView?.isExpanded=true
 
-        arrayElectricAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(electricVehicleType) }, categoryID = electricVehicleType)
+        arrayElectricAdapter = FuelListAdapter(requireContext(), R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(electricVehicleType) }, categoryID = electricVehicleType)
         electricServicesListView?.adapter = arrayElectricAdapter
         electricServicesListView?.isExpanded=true
 
-        arrayHydrogenAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hydrogenVehicleType) }, categoryID = hydrogenVehicleType)
+        arrayHydrogenAdapter = FuelListAdapter(requireContext(), R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(hydrogenVehicleType) }, categoryID = hydrogenVehicleType)
         hydrogenServicesListView?.adapter = arrayHydrogenAdapter
         hydrogenServicesListView?.isExpanded=true
 
-        arrayCNGAdapter = FuelListAdapter(context!!, R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(cngVehicleType) }, categoryID = cngVehicleType)
+        arrayCNGAdapter = FuelListAdapter(requireContext(), R.layout.vehicle_services_item,this,"Autom", vehicleServicesListItems.filter { s->s.VehicleCategoryID.equals(cngVehicleType) }, categoryID = cngVehicleType)
         cngServicesListView?.adapter = arrayCNGAdapter
         cngServicesListView?.isExpanded=true
 
         vehicleServicesListView?.adapter = arrayAdapter
         vehicleServicesListView?.isExpanded=true
 
-        arrayAdapter2 = DatesListAdapter(context!!, R.layout.vehicle_services_item, this,"Body",autoBodyServicesListItems)
+        arrayAdapter2 = DatesListAdapter(requireContext(), R.layout.vehicle_services_item, this,"Body",autoBodyServicesListItems)
 
         autoBodyServicesListView?.adapter = arrayAdapter2
         autoBodyServicesListView?.isExpanded=true
 
 
-        arrayAdapter3 = DatesListAdapter(context!!, R.layout.vehicle_services_item,this, "Marin",marineServicesListItems)
+        arrayAdapter3 = DatesListAdapter(requireContext(), R.layout.vehicle_services_item,this, "Marin",marineServicesListItems)
 
         MarineServicesListView?.adapter = arrayAdapter3
         MarineServicesListView?.isExpanded=true
 
 
-        arrayAdapter4 = DatesListAdapter(context!!, R.layout.vehicle_services_item,this, "RV",recreationalServicesListItems)
+        arrayAdapter4 = DatesListAdapter(requireContext(), R.layout.vehicle_services_item,this, "RV",recreationalServicesListItems)
 
         RecreationalServicesListView?.adapter = arrayAdapter4
         RecreationalServicesListView?.isExpanded=true
 
-        arrayAdapter5 = DatesListAdapter(context!!, R.layout.vehicle_services_item,this,"Auto Glass", autoGlassServicesListItems)
+        arrayAdapter5 = DatesListAdapter(requireContext(), R.layout.vehicle_services_item,this,"Auto Glass", autoGlassServicesListItems)
 
         AutoGlassServicesListView?.adapter = arrayAdapter5
         AutoGlassServicesListView?.isExpanded=true
 
-        arrayAdapter6 = DatesListAdapter(context!!, R.layout.vehicle_services_item, this,"Other",otherServicesListItems)
+        arrayAdapter6 = DatesListAdapter(requireContext(), R.layout.vehicle_services_item, this,"Other",otherServicesListItems)
 
         OtherServicesListView?.adapter = arrayAdapter6
         OtherServicesListView?.isExpanded=true
@@ -699,7 +710,7 @@ class FragmentARRAVVehicleServices : Fragment() {
 //            progressbarVehicleServices.visibility = View.INVISIBLE
 //        }
 
-        scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
     }
 
     fun scopeOfServiceChangesWatcher(){

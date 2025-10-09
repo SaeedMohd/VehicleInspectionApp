@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:orientation="vertical"
+    android:background="@color/transparent"
+    android:padding="2dp">
+    <!-- Circle for Step Number -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="40dp"
+            android:id="@+id/failed_icon"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:src="@drawable/failed_step"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="40dp"
+            android:id="@+id/success_icon"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:src="@drawable/success_step"
+            />
+        <TextView
+            android:id="@+id/step_circle_text"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:visibility="visible"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/step_circle_in_progress"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/darkBlue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <ProgressBar
+            android:id="@+id/step_progress"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:indeterminateTint="@color/cb_green"
+            android:indeterminate="true"
+            style="?android:attr/progressBarStyle"
+        />
+        <!-- Title and Status -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/transparent"
+            android:paddingStart="16dp"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:id="@+id/step_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Step 1:"
+                android:textColor="@color/cb_green"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/step_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Step Status"
+                android:textColor="@color/darkBlue"
+                android:textIsSelectable="true"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="2dp"
+        android:id="@+id/step_line"
+        android:background="@color/light_gray" />
+</LinearLayout>

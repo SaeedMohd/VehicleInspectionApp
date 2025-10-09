@@ -76,7 +76,7 @@ class FacilityDataModelOrg  {
     var tblGeocodes = ArrayList<TblGeocodes>()
     var tblAffiliateVendorFacilities = ArrayList<AffiliateVendorFacilities>()
     var tblPromotions = ArrayList<TblPromotions>()
-
+    var FacilityPhotos = ArrayList<FacilityPhotos>()
 //    class TblFacilities {
 //        var isInputsValid = false
 //        var FACID = 0

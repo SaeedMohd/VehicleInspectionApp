@@ -377,6 +377,22 @@ class TblFacilityPhotos {
     var ApprovedDate = ""
 }
 
+
+class FacilityPhotos {
+    var PhotoId = 0
+    var ApprovalRequested = ""
+    var Approved = ""
+    var FileName = ""
+    var SeqNum = 0
+    var FileDescription = ""
+    var LastUpdateDate = ""
+    var ApprovedBy = ""
+    var ApprovedDate = ""
+    var LastUpdateBy = ""
+    var DownstreamAppId = ""
+    var imageUrl = ""
+}
+
 class TblBilling {
     var FACID = 0
     var BillingID = 0
@@ -437,8 +453,10 @@ class TblInvoiceInfo {
     var InvoiceAmount = 0.0
     var CreditAmount = 0.0
     var BillingDueDate = ""
+    var BillBalanceDue = ""
     var InvoicePrintDate = ""
     var InvoiceStatusId = 0
+    var InvoiceStatusName = ""
     var ACHParticipant = false
     var InvoiceFileName = ""
     var insertBy = ""
@@ -625,6 +643,7 @@ class TblPromotions {
     var Disclaimer = ""
     var ParticipantUpdateBy = ""
     var ParticipantUpdateDate = ""
+    var ContestFlag = false
 }
 
 
@@ -771,7 +790,7 @@ class PRGAppVersion {
     var version = ""
     var message = ""
     var enabled = 0
-    var duplicateCheckEnabled = 0
+    var duplicateCheckEnabled = 1
     var useNewPDFFormat = false
 }
 

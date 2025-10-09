@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +7,7 @@
     android:background="@drawable/login_background_image_dark">
     <View
         android:layout_width="match_parent"
+        android:id="@+id/loginContentView"
         android:layout_height="match_parent"
         android:background="@color/mainColor"
         android:alpha="0.92"
@@ -17,7 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,9 +96,10 @@
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/black_background_button"
-                android:layout_marginTop="20dp"
+                android:background="@drawable/green_background_button"
                 android:textColor="@color/white"
+                app:backgroundTint="@null"
+                android:layout_marginTop="20dp"
                 android:text="LOGIN"
                 android:gravity="center"
                 />
@@ -113,8 +115,9 @@
             <Button
                 android:id="@+id/forgotPasswordButton"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="50dp"
                 android:background="@color/transparent"
+                android:backgroundTint="@null"
                 android:layout_marginTop="15dp"
                 android:text="FORGOT PASSWORD"
                 android:textColor="@color/white"
@@ -152,7 +155,7 @@
         <RelativeLayout
             android:id="@+id/recordsProgressView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="500dp"
             android:alpha="0.8"
             android:clickable="true"
             android:background="@color/mainColor"
@@ -270,13 +273,14 @@
                     <TableRow android:layout_marginTop="20dp">
                         <Button
                             android:layout_width="0dp"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:text="Change Password"
                             android:id="@+id/chgPasswordButtoninDialog"
-                            android:textColor="@color/white"
                             android:layout_column="0"
                             android:layout_weight="2"
-                            android:background="@drawable/green_background_button"
+                            android:background="@drawable/new_btn_bkg"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@null"
                             android:layout_gravity="center"/>
                     </TableRow>
                 </TableLayout>
@@ -284,4 +288,31 @@
         </ScrollView>
     </RelativeLayout>
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        android:background="@color/transparent"
+        android:padding="16dp">
+        <TextView
+            android:id="@+id/snackbar_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/snackbar_icon"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:src="@drawable/no_signal"
+            app:tint="@color/white"
+            android:layout_marginEnd="16dp"/>
+    </LinearLayout>
+</RelativeLayout>

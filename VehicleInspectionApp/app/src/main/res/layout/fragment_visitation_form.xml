@@ -36,17 +36,68 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/visitationTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="Visitation"
+                            android:gravity="center"
+                            android:textColor="@color/mainColor"
+                            android:textSize="22sp"
+                            />
+                        <ImageButton
+                            android:id="@+id/alertVisitationYIcon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="50dp"
+                            android:layout_toRightOf="@id/personelLbl"
+                            android:background="@android:drawable/ic_dialog_info"
+                            android:backgroundTint="@color/dark_yellow"
+                            android:visibility="gone" />
+
+                        <ImageButton
+                            android:id="@+id/alertVisitationRIcon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="50dp"
+                            android:layout_toRightOf="@id/personelLbl"
+                            android:background="@android:drawable/ic_dialog_info"
+                            android:backgroundTint="@android:color/holo_red_dark"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/visitationTitle"
+                        android:id="@+id/billingAlertText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="10dp"
-                        android:text="Visitation"
+                        android:layout_marginBottom="10dp"
+                        android:text="Unpaid Invoice. Please visit Billing Tab for more information."
                         android:gravity="center"
-                        android:textColor="@color/mainColor"
-                        android:textSize="22sp"
+                        android:visibility="visible"
+                        android:textColor="@android:color/holo_red_dark"
+                        android:textSize="16sp"
                         />
+                </LinearLayout>
+
                     <!--<View-->
                         <!--android:layout_width="match_parent"-->
                         <!--android:layout_height="1dp"-->
@@ -79,25 +130,29 @@
                                 android:id="@+id/annualVisitationType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Annual" />
+                                android:text="Annual"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/quarterlyVisitationType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Quarterly/Other" />
+                                android:text="Quarterly/Other"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/adhocVisitationType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Ad Hoc" />
+                                android:text="Ad Hoc"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
 
                             <CheckBox
                                 android:id="@+id/defVisitationType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Deficiency" />
+                                android:text="Deficiency"
+                                app:buttonTint="@drawable/checkbox_bkg"/>
                         </RadioGroup>
 
                     </RelativeLayout>
@@ -126,15 +181,15 @@
                         <Button
                             android:id="@+id/dateOfVisitationButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_height="50dp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:background="@drawable/blue_background_button"
                             android:clickable="false"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
+                            android:background="@color/transparent"
                             android:text="SELECT DATE"
-                            android:textColor="@color/white"
+                            android:textColor="@color/cb_green"
                             android:textSize="12dp" />
 
                     </RelativeLayout>
@@ -401,14 +456,16 @@
                         <Button
                             android:id="@+id/facilityRepresentativeSignatureButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:background="@drawable/blue_background_button"
                             android:paddingLeft="15dp"
+                            android:enabled="false"
                             android:paddingRight="15dp"
                             android:text="Add Signature"
+                            android:background="@drawable/new_btn_bkg"
                             android:textColor="@color/white"
+                            app:backgroundTint="@null"
                             android:textSize="12dp" />
 
                         <ImageView
@@ -436,7 +493,8 @@
                             android:layout_column="0"
                             android:layout_gravity="center_vertical"
                             android:text="Email Visitation PDF to Facility"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                     </RelativeLayout>
 
@@ -486,6 +544,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/automotiveSpecialistTextView"
                             android:layout_centerVertical="true"
                             android:text="Automotive Specialist"
                             android:textSize="15sp"
@@ -523,14 +582,15 @@
                         <Button
                             android:id="@+id/automotiveSpecialistSignatureButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:background="@drawable/blue_background_button"
+                            android:background="@drawable/new_btn_bkg"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@null"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
                             android:text="Add Signature"
-                            android:textColor="@color/white"
                             android:textSize="12dp" />
 
                         <ImageView
@@ -714,14 +774,15 @@
                         <Button
                             android:id="@+id/facilityRepresentativeDeficienciesSignatureButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:background="@drawable/blue_background_button"
+                            android:background="@drawable/new_btn_bkg"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@null"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
                             android:text="Add Signature"
-                            android:textColor="@color/white"
                             android:textSize="12dp" />
 
                         <ImageView
@@ -928,7 +989,8 @@
                             android:layout_column="0"
                             android:text="Waive Visitation?"
                             android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg"/>
 
                     </RelativeLayout>
 
@@ -983,14 +1045,15 @@
                         <Button
                             android:id="@+id/waiversSignatureButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:background="@drawable/blue_background_button"
+                            android:background="@drawable/new_btn_bkg"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@null"
                             android:paddingLeft="15dp"
                             android:paddingRight="15dp"
                             android:text="Add Signature"
-                            android:textColor="@color/white"
                             android:textSize="12dp" />
 
                         <ImageView
@@ -1013,6 +1076,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/vcomments_tv"
                             android:text="Visitation Comments"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -1020,8 +1084,10 @@
                         <EditText
                             android:id="@+id/visitationCommentsEditText"
                             android:layout_width="wrap_content"
+                            android:layout_toEndOf="@id/vcomments_tv"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_alignParentEnd="true"
                             android:background="@drawable/textview_background"
                             android:ems="40"
                             android:lines="6"
@@ -1054,27 +1120,33 @@
                     <Button
                         android:id="@+id/cancelButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
+                        android:layout_height="40dp"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/grey_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:text="Cancel"
                         />
 
                     <Button
                         android:id="@+id/saveButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
+                        android:layout_height="40dp"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:text="Save"
-                        android:textColor="@color/white" />
+                        />
 
                     <Button
                         android:id="@+id/completeButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
+                        android:layout_height="40dp"
                         android:enabled="false"
-                        android:background="@drawable/green_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:text="COMPLETE"
                         />
 
@@ -1083,6 +1155,8 @@
 
 
             </androidx.cardview.widget.CardView>
+
+
         </LinearLayout>
     </ScrollView>
 
@@ -1115,55 +1189,77 @@
         <Button
             android:id="@+id/signatureConfirmButton"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_below="@id/signatureInkView"
             android:layout_marginBottom="5dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/green_background_button"
+            android:background="@drawable/new_btn_bkg"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="Confirm"
-            android:textColor="@color/white" />
+            />
 
         <Button
             android:id="@+id/signatureCancelButton"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
             android:layout_below="@id/signatureInkView"
             android:layout_marginBottom="5dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@id/signatureConfirmButton"
-            android:background="@drawable/green_background_button"
+            android:background="@drawable/new_btn_bkg"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="Cancel"
-            android:textColor="@color/white" />
+            />
 
         <Button
             android:id="@+id/signatureClearButton"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/signatureInkView"
             android:layout_marginBottom="5dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/green_background_button"
+            android:background="@drawable/new_btn_bkg"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="CLEAR"
-            android:textColor="@color/white" />
+            />
+        <Button
+            android:id="@+id/signatureLoadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/signatureInkView"
+            android:layout_toEndOf="@id/signatureClearButton"
+            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/new_btn_bkg"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="LOAD RECENT"
+            />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/dialogueLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.8"
+        android:alpha="1"
         android:clickable="true"
-        android:background="@color/mainColor"
+        android:background="@color/transparent"
         android:visibility="gone">
 
         <ProgressBar
@@ -1184,7 +1280,97 @@
             android:textSize="26sp"
             android:textStyle="bold" />
 
-
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="match_parent"
+            android:id="@+id/visitation_stepview"
+            android:layout_centerInParent="true"
+            android:elevation="20dp"
+            android:visibility="gone"
+            android:background="@drawable/diagonal_gradient"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:background="@drawable/diagonal_gradient"
+                android:orientation="vertical"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/darkBlue"
+                        android:textSize="22sp"
+                        android:text="Complete Visitation Progress"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_toStartOf="@id/visitationStatusBtn"
+                        android:id="@+id/netwrokStatusText"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/cb_green"
+                        android:textSize="16sp"
+                        android:text="Internet Status:"
+                        />
+                    <Button
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:enabled="false"
+                        android:text="CLOSE"
+                        android:id="@+id/visitationStatusBtn"
+                        />
+                </RelativeLayout>
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+                    <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:background="@color/transparent"
+                    android:orientation="vertical">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/stepsRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:clipToPadding="false"
+                            android:background="@color/transparent"
+                            android:backgroundTint="@color/transparent"
+                            android:scrollbars="vertical" />
+                </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
 </RelativeLayout>

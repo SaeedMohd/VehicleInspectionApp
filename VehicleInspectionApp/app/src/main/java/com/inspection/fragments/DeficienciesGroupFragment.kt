@@ -10,12 +10,14 @@ import android.view.ViewGroup
 import com.inspection.FormsActivity
 
 import com.inspection.R
+import com.inspection.databinding.AppAdhocVisitationFilterFragmentBinding
+import com.inspection.databinding.DeficiencyGroupLayoutBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
-import kotlinx.android.synthetic.main.facility_group_layout.*
-import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
+//import kotlinx.android.synthetic.main.facility_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -39,7 +41,8 @@ class DeficienciesGroupFragment : Fragment() {
 
     private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
     private var revSourceArray = ArrayList<String>()
-
+    private var _binding: DeficiencyGroupLayoutBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,32 +60,32 @@ class DeficienciesGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        _binding = DeficiencyGroupLayoutBinding.bind(view)
         var fragment = FacilityGeneralInformationFragment.newInstance(false)
-        fragmentManager!!.beginTransaction()
+        requireFragmentManager().beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
 
-        generalInformationButton.setOnClickListener {
+        binding.generalInformationButton.setOnClickListener {
             var fragment = FacilityGeneralInformationFragment.newInstance(false)
-            fragmentManager!!.beginTransaction()
+            requireFragmentManager().beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
         }
 
-        rspButton.setOnClickListener {
-            var fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("", "")
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-        }
-
-        personnelButton.setOnClickListener {
-            var fragment = FragmentARRAVPersonnel.newInstance(false)
-            fragmentManager!!.beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-        }
+//        binding.rspButton.setOnClickListener {
+//            var fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("", "")
+//            requireFragmentManager().beginTransaction()
+//                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+//                    .commit()
+//        }
+//
+//        binding.personnelButton.setOnClickListener {
+//            var fragment = FragmentARRAVPersonnel.newInstance(false)
+//            fragmentManager!!.beginTransaction()
+//                    .replace(R.id.facilityGroupDetailsFragment, fragment)
+//                    .commit()
+//        }
 
         refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
@@ -90,7 +93,7 @@ class DeficienciesGroupFragment : Fragment() {
 
 
     fun refreshTabIndicators() {
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited) deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
+//        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited) binding.deffTitle.setTextColor(Color.parseColor("#26C3AA")) else deffTitle.setTextColor(Color.parseColor("#A42600"))
     }
 
 

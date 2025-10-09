@@ -8,13 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import com.inspection.FormsActivity
+import com.inspection.R
 import com.inspection.fragments.FragmentARRAVLocation
 
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.TblLanguage
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.lang_checkbox_item.view.*
+//import kotlinx.android.synthetic.main.lang_checkbox_item.view.*
 import java.util.ArrayList
 
 class LanguageListAdapter(internal var context: Context, internal var recource: Int,parentFragment : FragmentARRAVLocation , objects: List<TypeTablesModel.languageType>) : ArrayAdapter<TypeTablesModel.languageType>(context, recource, objects) {
@@ -28,9 +30,14 @@ class LanguageListAdapter(internal var context: Context, internal var recource: 
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(recource, parent, false)
-        val checkBoxItem = view.itemCheckBox
+//        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+//        val view = inflater.inflate(recource, parent, false)
+        val inflater = LayoutInflater.from(context)
+        val view = convertView ?: inflater.inflate(recource, parent, false)
+//        val textView3 = view.itemTextView
+//        val checkBoxItem = view.itemCheckBox
+        val checkBoxItem = view.findViewById<CheckBox>(R.id.itemCheckBox)
+//        val checkBoxItem = view.itemCheckBox
         checkBoxItem.text = namesList.get(position).LangTypeName
         for (model in TypeTablesModel.getInstance().LanguageType) {
             for (model2 in FacilityDataModel.getInstance().tblLanguage) {

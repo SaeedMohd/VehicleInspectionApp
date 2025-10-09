@@ -25,7 +25,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/mainViewLinearId"
+            android:id="@+id/programsViewLinearId"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="10dp">
 
@@ -41,15 +41,17 @@
             <Button
                 android:id="@+id/showNewProgramDialogueButton"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text=" ADD New Program"
-                android:textColor="@color/white" />
+                />
 
         </RelativeLayout>
 
@@ -186,15 +188,16 @@
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="5dp"
                     android:text="SUBMIT"
                     android:id="@+id/submitNewProgramButton"
-                    android:textColor="@color/white"
                     android:ems="12"
                     android:layout_column="1"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_gravity="top|right"/>
                 <ImageButton
                     android:layout_marginTop="25dp"
@@ -270,7 +273,7 @@
                 <Button
                     android:id="@+id/effective_date_textviewVal"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="0"
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
@@ -282,7 +285,7 @@
                 <Button
                     android:id="@+id/expiration_date_textviewVal"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="1"
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
@@ -351,15 +354,16 @@
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="5dp"
                     android:text="SUBMIT"
                     android:id="@+id/edit_submitNewProgramButton"
-                    android:textColor="@color/white"
                     android:ems="12"
                     android:layout_column="1"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_gravity="top|right"/>
                 <ImageButton
                     android:layout_marginTop="25dp"
@@ -435,7 +439,7 @@
                 <Button
                     android:id="@+id/edit_effective_date_textviewVal"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="0"
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
@@ -447,7 +451,7 @@
                 <Button
                     android:id="@+id/edit_expiration_date_textviewVal"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="1"
                     android:layout_marginLeft="10dp"
                     android:background="@color/transparent"
@@ -494,7 +498,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsPrograms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -503,7 +507,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsPrograms"
             android:id="@+id/progressBarTextVal"
             android:layout_centerHorizontal="true"
             android:text="Loading..."

@@ -7,145 +7,209 @@
     android:background="@color/light_gray"
     tools:context=".fragments.FragmentAARAVPhotos">
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp"
-    android:paddingBottom="10dp"
-    android:layout_margin="10dp"
-    android:paddingTop="5dp"
-    android:background="@color/light_gray"
-    android:orientation="vertical">
-
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:elevation="10dp"
-        >
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:id="@+id/mainScroll"
+        android:paddingBottom="10dp"
+        android:layout_margin="10dp"
+        android:paddingTop="5dp"
+        android:background="@color/light_gray"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="5dp"
-            android:background="@color/white"
             android:elevation="10dp"
             >
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Photos"
-                android:id="@+id/photosTitle"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:gravity="center"
-                android:textColor="@color/mainColor"
-                />
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:background="@color/white"
+                android:elevation="10dp"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Photos"
+                        android:id="@+id/photosTitle"
+                        android:textStyle="bold"
+                        android:textSize="22sp"
+                        android:gravity="center"
+                        android:textColor="@color/mainColor"
+                        />
 
-            <Button
-                android:background="@drawable/green_background_button"
-                android:textColor="@color/white"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="Add New Photo"
-                android:id="@+id/addNewPhoto"
-                />
-            </RelativeLayout>
+                    <Button
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="20dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="Add New Photo"
+                        android:id="@+id/addNewPhoto"
+                        />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Available in APP"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:background="@color/light_green"
+                        android:textColor="@color/black"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Not Uploaded To App"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:background="@color/firstRowColor"
+                        android:textColor="@color/black"
+                        />
+                </LinearLayout>
+                <Button
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:text="Reload Photos"
+                    android:id="@+id/reloadPhoto"
+                    />
 
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:layout_below="@id/mainScroll"
+        android:layout_height="wrap_content">
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:id="@+id/headerScroll"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:scrollbars="none">
             <TableLayout
-                android:id="@+id/photosTableLayout"
-                android:layout_width="match_parent"
+                android:layout_width="2130dp"
                 android:layout_height="wrap_content"
+                android:id="@+id/headerTable"
                 android:showDividers="middle|beginning|end"
                 android:divider="@drawable/divider_table_layout"
-                android:layout_marginBottom="20dp"
-                android:stretchColumns="*"
+                android:scrollbarAlwaysDrawHorizontalTrack="true"
+                android:scrollbars="horizontal"
                 >
                 <TableRow
                     android:background="@color/mainColor"
                     android:layout_gravity="center_vertical"
                     android:minHeight="30dp"
+                    android:layout_width="wrap_content"
                     >
-
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="240dp"
                         android:layout_height="50dp"
                         android:text="Thumbnail"
                         android:textStyle="bold"
                         android:layout_column="0"
-                        android:layout_marginLeft="5dp"
-                        android:layout_weight="1"
+                        android:layout_marginLeft="0dp"
                         android:textSize="14sp"
                         android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="280dp"
                         android:layout_height="50dp"
                         android:text="File Name"
                         android:textStyle="bold"
                         android:layout_column="1"
-                        android:layout_weight="1"
                         android:textSize="14sp"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
+                        android:layout_marginLeft="0dp"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="280dp"
                         android:layout_height="50dp"
                         android:text="File Description"
                         android:textStyle="bold"
                         android:layout_column="2"
                         android:textSize="14sp"
-                        android:layout_weight="1.5"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:textSize="14sp"
                         android:text="Update By"
                         android:textStyle="bold"
                         android:layout_column="3"
-                        android:layout_weight="1"
                         android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:text="Update Date"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         android:layout_column="4"
-                        android:layout_weight="1"
                         android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:text="Approval Requested"
                         android:textStyle="bold"
                         android:layout_column="5"
-                        android:layout_weight="0.8"
+                        android:layout_weight="0"
                         android:gravity="center"
                         android:textSize="14sp"
                         android:textColor="@color/white"
@@ -153,77 +217,85 @@
 
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:text="Approved"
                         android:textStyle="bold"
                         android:layout_column="6"
-                        android:layout_weight="0.8"
                         android:gravity="center"
                         android:textSize="14sp"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:text="Approved By"
                         android:textStyle="bold"
                         android:layout_column="7"
-                        android:layout_weight="1"
                         android:gravity="center"
                         android:textSize="14sp"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:text="Approved Date"
                         android:textStyle="bold"
                         android:layout_column="8"
-                        android:layout_weight="1"
                         android:textSize="14sp"
                         android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="280dp"
                         android:layout_height="50dp"
                         android:text="Downstream Apps"
                         android:textStyle="bold"
                         android:layout_column="9"
                         android:textSize="14sp"
-                        android:layout_weight="1.5"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="210dp"
                         android:layout_height="50dp"
                         android:text="Options"
                         android:textStyle="bold"
                         android:layout_column="10"
-                        android:layout_weight="0.8"
                         android:textSize="14sp"
                         android:gravity="center"
                         android:textColor="@color/white"
                         />
                 </TableRow>
             </TableLayout>
-
-
+        </HorizontalScrollView>
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/detailScroll"
+            android:scrollbars="horizontal">
+            <ScrollView
+                android:id="@+id/scrollview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TableLayout
+                    android:id="@+id/photosTableLayout"
+                    android:layout_width="2130dp"
+                    android:layout_height="wrap_content"
+                    android:showDividers="middle|beginning|end"
+                    android:divider="@drawable/divider_table_layout"
+                    android:layout_marginBottom="10dp"
+                    android:scrollbarAlwaysDrawHorizontalTrack="true"
+                    android:scrollbars="horizontal"
+                    >
+                </TableLayout>
+            </ScrollView>
+        </HorizontalScrollView>
     </LinearLayout>
-
-
-
-</LinearLayout>
-
-
-</ScrollView>
-
     <View
         android:id="@+id/photosLoadingView"
         android:alpha="0.8"
@@ -241,50 +313,52 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:visibility="gone">
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/addNewPhotoDialog"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="10dp">
-        <TextView
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|left"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:text="Add New Photo"
-            android:textSize="18dp" />
+            app:cardCornerRadius="5dp"
+            app:cardElevation="10dp">
+            <!--        android:id="@+id/addNewPhotoDialog"-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="Add New Photo"
+                android:textSize="18dp" />
 
 
-        <Button
-            android:id="@+id/addNewPhotoConfirmButton"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="right"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/green_background_button"
-            android:text="Submit"
-            android:textColor="@color/white" />
+            <Button
+                android:id="@+id/addNewPhotoConfirmButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
+                android:text="Submit"
+                />
 
 
-        <ImageButton
-            android:id="@+id/addNewPhotoCancelButton"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="top|right"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/close" />
+            <ImageButton
+                android:id="@+id/addNewPhotoCancelButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/close" />
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:id="@+id/btnsLL"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<Button-->
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:id="@+id/btnsLL"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<Button-->
             <!--android:id="@+id/addNewPhotoConfirmButton"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="30dp"-->
@@ -296,7 +370,7 @@
             <!--android:paddingLeft="15dp"-->
             <!--/>-->
 
-        <!--<Button-->
+            <!--<Button-->
             <!--android:id="@+id/addNewPhotoCapturePhotoButton"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="30dp"-->
@@ -310,7 +384,7 @@
             <!--android:layout_alignParentLeft="true"-->
             <!--/>-->
 
-        <!--<Button-->
+            <!--<Button-->
             <!--android:id="@+id/addNewPhotoPickPhotoButton"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_marginTop="15dp"-->
@@ -324,7 +398,7 @@
             <!--android:layout_toRightOf="@id/addNewPhotoCapturePhotoButton"-->
             <!--android:layout_marginLeft="10dp"-->
             <!--/>-->
-        <!--<ImageView-->
+            <!--<ImageView-->
             <!--android:layout_width="120dp"-->
             <!--android:layout_height="120dp"-->
             <!--android:layout_alignParentRight="true"-->
@@ -334,218 +408,234 @@
             <!--android:layout_marginRight="50dp"-->
             <!--android:background="@drawable/black_border"-->
             <!--/>-->
-        <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
-        <TableLayout
-            android:id="@+id/newPhotoInputFieldsTableLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:padding="40dp">
-        >
-            <TableRow>
-                <Button
-                    android:id="@+id/addNewPhotoCapturePhotoButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:background="@drawable/green_background_button"
-                    android:layout_column="0"
-                    android:textColor="@color/white"
-                    android:text="Capture Photo"
-                    android:paddingRight="15dp"
-                    android:paddingLeft="15dp"
-                />
+            <TableLayout
+                android:id="@+id/newPhotoInputFieldsTableLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="40dp">
+                >
+                <TableRow android:layout_marginTop="20dp">
+                    <Button
+                        android:id="@+id/addNewPhotoCapturePhotoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
+                        android:layout_column="0"
+                        android:text="Capture Photo"
+                        android:paddingRight="15dp"
+                        android:paddingLeft="15dp"
+                        />
 
-                <Button
-                    android:id="@+id/addNewPhotoPickPhotoButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:background="@drawable/green_background_button"
-                    android:textColor="@color/white"
-                    android:layout_column="1"
-                    android:text="     Pick Photo   "
-                    android:paddingRight="15dp"
-                    android:paddingLeft="15dp"
-                    android:layout_marginLeft="10dp"
-                />
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:id="@+id/loadedImage"
-                    android:layout_column="4"
-                    android:layout_span="2"
-                    android:scaleType="fitXY"
-                    android:background="@drawable/black_border"
-                />
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="File Name:"
-                    android:textStyle="bold"
-                    android:layout_column="0"
-                    android:layout_margin="5dp"
-                    />
-                <EditText
-                    android:id="@+id/fileNameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
-                    android:layout_column="1"
-                    android:maxLength="10"
-                    android:enabled="false"
-                    android:layout_span="2"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:id="@+id/fileNameTitle"
-                    android:textStyle="bold"
-                    android:layout_column="3"
-                    android:layout_span="2"
-                    android:layout_margin="5dp"
-                    />
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/approvalReqCheck"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:enabled="false"
-                    android:text="Approval Requested"
-                    android:textStyle="bold"
-                    android:layout_column="5"
-                    />
+                    <Button
+                        android:id="@+id/addNewPhotoPickPhotoButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
+                        android:layout_column="1"
+                        android:text="     Pick Photo   "
+                        android:paddingRight="15dp"
+                        android:paddingLeft="15dp"
+                        android:layout_marginLeft="10dp"
+                        />
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="150dp"
+                        android:id="@+id/loadedImage"
+                        android:layout_column="4"
+                        android:layout_span="3"
+                        android:scaleType="fitXY"
+                        android:background="@drawable/black_border"
+                        />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="File Name:"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        />
+                    <EditText
+                        android:id="@+id/fileNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890_-."
+                        android:layout_column="1"
+                        android:enabled="false"
+                        android:layout_span="5"
+                        android:background="@drawable/textview_background"
+                        />
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/approvalReqCheck"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:enabled="false"
+                        android:text="Approval Requested"
+                        android:textStyle="bold"
+                        android:layout_column="5"
+                        app:buttonTint="@drawable/checkbox_bkg"
+                        />
 
-            </TableRow>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Saved As:"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        android:layout_margin="5dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:id="@+id/fileNameTitle"
+                        android:textStyle="italic|bold"
+                        android:layout_column="1"
+                        android:textColor="@color/mainColor"
+                        android:layout_span="6"
+                        />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="File Description:"
+                        android:textStyle="bold"
+                        android:layout_column="0"
+                        />
+                    <EditText
+                        android:id="@+id/fileDescText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:enabled="false"
+                        android:maxLength="200"
+                        android:layout_span="2"
+                        android:layout_column="1"
+                        android:background="@drawable/textview_background"
+                        android:textStyle="bold"
+                        />
 
-
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="File Description:"
-                    android:textStyle="bold"
-                    android:layout_column="0"
-                    />
-                <EditText
-                    android:id="@+id/fileDescText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:enabled="false"
-                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
-                    android:maxLength="200"
-                    android:layout_span="2"
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Downstream\nApps:"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/clubCHeck"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:enabled="false"
-                    android:text="Club Hub/MRM"
-                    android:textStyle="bold"
-                    android:layout_column="1"
-                    />
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/commCheck"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:enabled="false"
-                    android:text="eComm"
-                    android:textStyle="bold"
-                    android:layout_column="2"
-                    />
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/envCheck"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:enabled="false"
-                    android:layout_margin="5dp"
-                    android:text="Envision"
-                    android:textStyle="bold"
-                    android:layout_column="3"
-                    />
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/modCheck"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="MOD"
-                    android:enabled="false"
-                    android:textStyle="bold"
-                    android:layout_column="4"
-                    />
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/irasCheck"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="IRAS"
-                    android:enabled="false"
-                    android:textStyle="bold"
-                    android:layout_column="5"
-                    />
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/rspCheck"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="RSP"
-                    android:textStyle="bold"
-                    android:enabled="false"
-                    android:layout_column="6"
-                    />
-            </TableRow>
-            <TableRow>
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:id="@+id/clubCHeck"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:enabled="true"
-                    android:text="Set as Shop Profile Image"
-                    android:textStyle="bold"
-                    android:layout_column="1"
-                    />
-            </TableRow>
-        </TableLayout>
-    </androidx.cardview.widget.CardView>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Downstream\nApps:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/clubCHeck"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:enabled="false"
+                        android:text="Club Hub/MRM"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        app:buttonTint="@drawable/checkbox_bkg"
+                        />
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/commCheck"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:enabled="false"
+                        android:text="eComm"
+                        android:textStyle="bold"
+                        android:layout_column="2"
+                        app:buttonTint="@drawable/checkbox_bkg"
+                        />
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/envCheck"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:enabled="false"
+                        android:layout_margin="5dp"
+                        android:text="Envision"
+                        android:textStyle="bold"
+                        android:layout_column="3"
+                        app:buttonTint="@drawable/checkbox_bkg"
+                        />
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/modCheck"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="MOD"
+                        android:enabled="false"
+                        android:textStyle="bold"
+                        android:layout_column="4"
+                        app:buttonTint="@drawable/checkbox_bkg"
+                        />
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/irasCheck"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="IRAS"
+                        android:enabled="false"
+                        android:textStyle="bold"
+                        android:layout_column="5"
+                        app:buttonTint="@drawable/checkbox_bkg"
+                        />
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/rspCheck"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="RSP"
+                        android:textStyle="bold"
+                        android:enabled="false"
+                        android:layout_column="6"
+                        app:buttonTint="@drawable/checkbox_bkg"
+                        />
+                </TableRow>
+                <TableRow>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:id="@+id/profileCheck"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:enabled="true"
+                        android:text="Set as Shop Profile Image"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        app:buttonTint="@drawable/checkbox_bkg"
+                        />
+                </TableRow>
+            </TableLayout>
+        </androidx.cardview.widget.CardView>
     </ScrollView>
 
 
@@ -562,9 +652,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/addNewPhotoDialog"
             app:cardCornerRadius="5dp"
             app:cardElevation="10dp">
+            <!--            android:id="@+id/addNewPhotoDialog"-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -579,14 +669,16 @@
             <Button
                 android:id="@+id/editPhotoConfirmButton"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_gravity="right"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:text="Submit"
-                android:textColor="@color/white" />
+                />
 
 
             <ImageButton
@@ -622,34 +714,37 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text=""
+                        android:textSize="14sp"
                         android:enabled="false"
-                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
-                        android:maxLength="10"
+                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890_-."
                         android:layout_column="1"
-                        android:layout_span="2"
+                        android:layout_span="5"
                         android:background="@drawable/textview_background"
-                        android:textStyle="bold"
+                        android:textStyle="italic"
+                        android:textColor="@color/mainColor"
                         />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:id="@+id/editFileNameTitle"
-                        android:textStyle="bold"
-                        android:layout_column="3"
-                        android:layout_span="2"
-                        android:layout_margin="5dp"
-                        />
+                    <!--                    <TextView-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginTop="5dp"-->
+                    <!--                        android:text=""-->
+                    <!--                        android:id="@+id/editFileNameTitle"-->
+                    <!--                        android:textStyle="bold"-->
+                    <!--                        android:layout_column="3"-->
+                    <!--                        android:layout_span="2"-->
+                    <!--                        android:layout_margin="5dp"-->
+                    <!--                        />-->
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:id="@+id/editApprovalReqCheck"
                         android:layout_height="wrap_content"
+                        android:visibility="visible"
                         android:layout_marginTop="5dp"
                         android:layout_margin="5dp"
                         android:text="Approval Requested"
                         android:textStyle="bold"
-                        android:layout_column="5"
+                        android:layout_column="6"
+                        app:buttonTint="@drawable/checkbox_bkg"
                         />
 
                 </TableRow>
@@ -660,8 +755,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="File Description:"
                         android:textStyle="bold"
+                        android:text="File Description:"
                         android:layout_column="0"
                         />
                     <EditText
@@ -670,12 +765,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text=""
-                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
+                        android:textSize="14sp"
                         android:maxLength="200"
-                        android:layout_span="2"
+                        android:layout_span="6"
                         android:layout_column="1"
                         android:background="@drawable/textview_background"
-                        android:textStyle="bold"
                         />
 
                 </TableRow>
@@ -698,6 +792,7 @@
                         android:text="Club Hub/MRM"
                         android:textStyle="bold"
                         android:layout_column="1"
+                        app:buttonTint="@drawable/checkbox_bkg"
                         />
                     <CheckBox
                         android:layout_width="wrap_content"
@@ -708,6 +803,7 @@
                         android:text="eComm"
                         android:textStyle="bold"
                         android:layout_column="2"
+                        app:buttonTint="@drawable/checkbox_bkg"
                         />
                     <CheckBox
                         android:layout_width="wrap_content"
@@ -718,6 +814,7 @@
                         android:text="Envision"
                         android:textStyle="bold"
                         android:layout_column="3"
+                        app:buttonTint="@drawable/checkbox_bkg"
                         />
                     <CheckBox
                         android:layout_width="wrap_content"
@@ -727,6 +824,7 @@
                         android:layout_margin="5dp"
                         android:text="MOD"
                         android:textStyle="bold"
+                        app:buttonTint="@drawable/checkbox_bkg"
                         android:layout_column="4"
                         />
                     <CheckBox
@@ -738,6 +836,7 @@
                         android:text="IRAS"
                         android:textStyle="bold"
                         android:layout_column="5"
+                        app:buttonTint="@drawable/checkbox_bkg"
                         />
                     <CheckBox
                         android:layout_width="wrap_content"
@@ -748,6 +847,7 @@
                         android:text="RSP"
                         android:textStyle="bold"
                         android:layout_column="6"
+                        app:buttonTint="@drawable/checkbox_bkg"
                         />
                 </TableRow>
             </TableLayout>
@@ -776,12 +876,13 @@
         <Button
             android:id="@+id/photosPreviewDialogCloseButton"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/green_background_button"
+            android:background="@drawable/new_btn_bkg"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
             android:paddingRight="15dp"
             android:paddingLeft="15dp"
-            android:textColor="@color/white"
             android:layout_marginTop="10dp"
             android:text="Close"
             android:layout_below="@id/photosPreviewImageView"
@@ -836,7 +937,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsPhotos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -845,7 +946,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsPhotos"
             android:layout_centerHorizontal="true"
             android:id="@+id/progressBarText"
             android:text="Loading..."

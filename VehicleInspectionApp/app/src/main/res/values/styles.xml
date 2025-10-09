@@ -4,14 +4,27 @@
     <!-- ActionBar styles -->
 
 
-    <style name="myAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-            
+    <style name="myAppThemeCompat" parent="Theme.AppCompat.Light.NoActionBar">
+
         <item name="colorPrimary">@color/mainColor</item>
-            
         <item name="colorPrimaryDark">@color/headerColor</item>
-            
+
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="colorButtonNormal">#26C3AA</item>
+        <item name="colorControlActivated">@color/mainColor</item> <!-- Checked state color -->
+        <item name="buttonTint">@color/mainColor</item> <!-- Checked state color -->
+        <item name="colorOnSurface">@color/black</item>
+        <item name="colorSurface">@color/gray</item>
+        <item name="android:datePickerDialogTheme">@color/mainColor</item>
+        <item name="android:statusBarColor">@color/mainColor</item>
+        <item name="android:windowLightStatusBar">true</item> <!-- For dark text/icons -->
+
+        <!--        <item name="colorPrimary">@color/your_primary_color</item>-->
+        <item name="colorPrimaryVariant">@color/mainColor</item>
+<!--        <item name="colorOnPrimary">@color/your_on_primary_color</item>-->
+<!--        <item name="colorSecondary">@color/your_secondary_color</item>-->
+<!--        <item name="colorOnSecondary">@color/your_on_secondary_color</item>&lt;!&ndash; Unchecked state color &ndash;&gt;-->
         <!--<item name="android:colorActivatedHighlight">#691A40</item>-->
         <!--<item name="android:colorPressedHighlight">#691A40</item>-->
         <!--<item name="android:colorLongPressedHighlight">#691A40</item>-->
@@ -29,10 +42,26 @@
         <item name="color">@android:color/white</item>
     </style>
 
-    <style name="myAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+<!--    <style name="myAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
 
     <style name="myAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="CustomDatePickerStyle" parent="Widget.MaterialComponents.MaterialCalendar">
+<!--        <item name="android:background">@color/white</item>-->
+        <item name="android:textColorPrimary">@color/mainColor</item>
+        <item name="colorPrimaryDark">@color/mainColor</item>
+        <item name="android:calendarTextColor">@color/mainColor</item>
+        <item name="android:headerBackground">@color/cb_green</item>
+
+        <item name="android:datePickerMode">calendar</item> <!-- For dates in calendar view -->
+    </style>
+    <style name="CustomDatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+<!--        <item name="android:background">@color/white</item> &lt;!&ndash; Set desired background color &ndash;&gt;-->
+<!--        <item name="android:datePickerDialogTheme">@color/mainColor</item> &lt;!&ndash; Optional customizations &ndash;&gt;-->
+        <item name="colorPrimary">@color/white</item> <!-- Sets header background color -->
+        <item name="colorOnPrimary">@color/cb_green</item>
+        <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item> <!-- Optional customizations -->
+    </style>
 
 
 </resources>

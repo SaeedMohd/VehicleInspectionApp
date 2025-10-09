@@ -39,6 +39,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
             android:layout_margin="5dp"
             android:enabled="false"
             android:textSize="18sp"
+            app:buttonTint="@drawable/checkbox_bkg"
             android:text="ACH"
             android:textStyle="bold"
             />
@@ -69,16 +70,18 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
             <Button
                 android:id="@+id/addNewPlanBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:visibility="gone"
                 android:text="+ ADD BILLING PLAN"
-                android:textColor="@color/white" />
+                />
 
         </RelativeLayout>
 
@@ -175,29 +178,31 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
             <Button
                 android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/green_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:visibility="gone"
-                android:textColor="@color/white"
                 android:text="Save" />
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_toLeftOf="@id/saveButton"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/grey_background_button"
+                android:background="@drawable/new_btn_bkg"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:enabled="false"
                 android:visibility="gone"
-                android:textColor="@color/white"
                 android:text="Cancel" />
         </RelativeLayout>
     </LinearLayout>
@@ -246,15 +251,16 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="5dp"
                     android:text="SUBMIT"
                     android:id="@+id/planSubmitButton"
-                    android:textColor="@color/white"
                     android:ems="12"
                     android:layout_column="1"
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_gravity="top|right"/>
                 <ImageButton
                     android:layout_marginTop="25dp"
@@ -298,7 +304,7 @@ tools:context=".fragments.FragmentAARAVBillingPlans">
                 <Button
                     android:id="@+id/newEffDateBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_column="0"
                     android:layout_gravity="center_vertical"
                     android:background="@color/transparent"

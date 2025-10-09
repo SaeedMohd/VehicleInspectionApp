@@ -23,6 +23,10 @@ class FacilityDataModel {
         INSTANCE = null
     }
 
+    fun exportPDFData(){
+        INSTANCE
+    }
+
     //Visitation Fragment Related fields
     var annualVisitationId = -1
     var clubCode = ""
@@ -77,6 +81,7 @@ class FacilityDataModel {
     var tblGeocodes = ArrayList<TblGeocodes>()
     var tblAffiliateVendorFacilities = ArrayList<AffiliateVendorFacilities>()
     var tblPromotions = ArrayList<TblPromotions>()
+    var FacilityPhotos = ArrayList<FacilityPhotos>()
 //    class TblFacilities {
 //            var isInputsValid = false
 //        var FACID = 0

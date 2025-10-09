@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -19,11 +20,13 @@ import com.inspection.FormsActivity
 import com.inspection.R
 import com.inspection.Utils.apiToAppFormat
 import com.inspection.Utils.apiToAppFormatMMDDYYYY
+import com.inspection.databinding.FragmentAaravSoftwareBinding
+import com.inspection.databinding.FragmentAaravVendorrevenueBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
-import kotlinx.android.synthetic.main.billing_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_vendorrevenue.*
+//import kotlinx.android.synthetic.main.billing_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_aarav_vendorrevenue.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +48,8 @@ class FragmentAARAVVendorRevenue : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    private var _binding: FragmentAaravVendorrevenueBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,66 +67,69 @@ class FragmentAARAVVendorRevenue : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAaravVendorrevenueBinding.bind(view)
         prepareVendorRevSpinners()
-        newReceiptDateBtn.setOnClickListener {
+        binding.newReceiptDateBtn.setOnClickListener {
 //            if (newReceiptDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newReceiptDateBtn!!.text = sdf.format(c.time)
+                    binding.newReceiptDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
-        newCheckDateBtn.setOnClickListener {
+        binding.newCheckDateBtn.setOnClickListener {
 //            if (newCheckDateBtn.text.equals("SELECT DATE")) {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                val dpd = DatePickerDialog(requireActivity(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                     // Display Selected date in textbox
                     val myFormat = "MM/dd/yyyy" // mention the format you need
                     val sdf = SimpleDateFormat(myFormat, Locale.US)
                     c.set(year, monthOfYear, dayOfMonth)
-                    newCheckDateBtn!!.text = sdf.format(c.time)
+                    binding.newCheckDateBtn!!.text = sdf.format(c.time)
                 }, year, month, day)
                 dpd.show()
 //            }
         }
 
         fillVenRevPlanTableView ()
-        addNewVenRevBtn.setOnClickListener( {
+        binding.addNewVenRevBtn.setOnClickListener( {
             showAddNewVenRevDialog()
         })
 
-        venRevSubmitButton.setOnClickListener({
+        binding.venRevSubmitButton.setOnClickListener({
             validateVenRevData()
         })
 
-        exitDialogeBtn.setOnClickListener({
-            addNewVenRevDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitDialogeBtn.setOnClickListener({
+            binding.addNewVenRevDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
         })
 
         IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenueVisited = true
-        (activity as FormsActivity).vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+        requireActivity().findViewById<Button>(R.id.vendorRevenueButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
     private fun validateVenRevData() {
         var isInputsValid = true
 
-        if (newReceiptDateBtn.text.toString().equals("SELECT DATE")) {
+        if (binding.newReceiptDateBtn.text.toString().equals("SELECT DATE")) {
             isInputsValid = false
-            newReceiptDateBtn.setError("Required Field")
+            binding.newReceiptDateBtn.setError("Required Field")
         } else {
             submitVenRevData()
         }
@@ -130,9 +137,9 @@ class FragmentAARAVVendorRevenue : Fragment() {
 
     fun fillVenRevPlanTableView() {
 
-        if (venRevResultsTbl.childCount>1) {
-            for (i in venRevResultsTbl.childCount - 1 downTo 1) {
-                venRevResultsTbl.removeViewAt(i)
+        if (binding.venRevResultsTbl.childCount>1) {
+            for (i in binding.venRevResultsTbl.childCount - 1 downTo 1) {
+                binding.venRevResultsTbl.removeViewAt(i)
             }
         }
 
@@ -244,7 +251,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
                     textView.text = get(it).ReceiptNumber
                     tableRow.addView(textView)
 
-                    venRevResultsTbl.addView(tableRow)
+                    binding.venRevResultsTbl.addView(tableRow)
                 }
             }
         }
@@ -255,13 +262,13 @@ class FragmentAARAVVendorRevenue : Fragment() {
     }
 
     private fun submitVenRevData(){
-        addNewVenRevDialog.visibility = View.GONE
-        alphaBackgroundForDialogs.visibility = View.GONE
+        binding.addNewVenRevDialog.visibility = View.GONE
+        binding.alphaBackgroundForDialogs.visibility = View.GONE
     }
 
     private fun showAddNewVenRevDialog() {
-        alphaBackgroundForDialogs.visibility = View.VISIBLE
-        addNewVenRevDialog.visibility = View.VISIBLE
+        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+        binding.addNewVenRevDialog.visibility = View.VISIBLE
     }
 
     private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
@@ -277,7 +284,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
         }
         var revSourceAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, revSourceArray)
         revSourceAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newRevSourceSpinner.adapter = revSourceAdapter
+        binding.newRevSourceSpinner.adapter = revSourceAdapter
     }
 
 

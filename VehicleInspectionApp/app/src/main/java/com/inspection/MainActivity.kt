@@ -2,79 +2,66 @@ package com.inspection
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import java.text.SimpleDateFormat
-
-import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.graphics.Color
-import androidx.core.app.ActivityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.app.*
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
-
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.*
+import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.net.Uri
 import android.os.*
 import android.provider.Settings
-import android.provider.Settings.Secure
-import androidx.drawerlayout.widget.DrawerLayout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-
-import com.google.android.gms.plus.Plus
-import com.inspection.GCM.GcmBroadcastReceiver
-import com.inspection.GCM.GcmRegistration
-
-import com.inspection.imageloader.ImageLoader
-import com.inspection.model.AAAFacilityComplete
-
-import androidx.viewpager.widget.ViewPager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.viewpager.widget.ViewPager
 import com.android.volley.*
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
+import com.bugfender.sdk.Bugfender
+import com.google.android.gms.plus.Plus
+import com.google.android.material.snackbar.Snackbar
+import com.inspection.GCM.GcmBroadcastReceiver
+import com.inspection.GCM.GcmRegistration
 import com.inspection.Utils.*
-import com.inspection.adapter.MultipartRequest
+import com.inspection.Utils.Constants.IDLE_TIMEOUT
+import com.inspection.Utils.Constants.clearExpiredImages
+//import com.inspection.adapter.MultipartRequest
+import com.inspection.databinding.ActivityMain1Binding
 import com.inspection.fragments.*
+import com.inspection.imageloader.ImageLoader
 import com.inspection.interfaces.*
-import com.inspection.model.AnnualVisitationInspectionFormData
-import com.inspection.model.FacilityDataModel
-import kotlinx.android.synthetic.main.activity_main1.*
-import kotlinx.android.synthetic.main.app_bar_forms.*
-import kotlinx.android.synthetic.main.fragment_visitation_form.*
-import okio.Utf8
+import com.inspection.model.AAAFacilityComplete
+//import kotlinx.android.synthetic.main.app_bar_forms.*
+//import kotlinx.android.synthetic.main.fragment_visitation_form.*
+import org.w3c.dom.Text
 import java.io.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainActivity : AppCompatActivity(), LocationListener {
+class MainActivity : AppCompatActivity(), LocationListener, NetworkSpeedDetector.NetworkSpeedListener {
     var FacilityName = ""
     var FacilityNumber = ""
     var isLoadNewDetailsRequired = false
@@ -82,8 +69,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
     var visitationID : String? = ""
     lateinit var facilitySelected: AAAFacilityComplete
     internal var sdf: SimpleDateFormat? = null
+    private lateinit var networkSpeedDetector: NetworkSpeedDetector
     var fragment: FragmentForms? = null
-
+    private lateinit var binding: ActivityMain1Binding
     private var changePasswordDialog: AlertDialog? = null
 
     internal lateinit var drawerNavigationListAdapter: DrawerNavigationListAdapter
@@ -100,17 +88,23 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_main1)
-
+        binding = ActivityMain1Binding.inflate(layoutInflater)
+//        setContentView(R.layout.activity_main1)
+        setContentView(binding.root)
+        clearExpiredImages(this)
         mContext = this
-
+        Bugfender.enableCrashReporting();
+//        Bugfender.enableUIEventLogging(application);
 
 //        val locationUpdatesIntent = Intent(this,LocationUpdatesService::class.java)
 //        startService(locationUpdatesIntent)
 //        scheduleAlarm()
 
 //        Utility.scheduleJob(applicationContext)
+
+        networkSpeedDetector = NetworkSpeedDetector(this);
+        networkSpeedDetector.setNetworkSpeedListener(this);
+        networkSpeedDetector.startMonitoring();
 
         var urlString = ApplicationPrefs.getInstance(activity).sessionID
         urlString += "&userId=" + ApplicationPrefs.getInstance(activity).loggedInUserID
@@ -120,20 +114,43 @@ class MainActivity : AppCompatActivity(), LocationListener {
         bundle.putString("urlString", urlString);
 
         if (Constants.enableLocationTracking) {
-            val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
-
-            val jobInfo = JobInfo.Builder(12, ComponentName(this@MainActivity, LocationLogService::class.java))
-                    // only add if network access is required
-                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                    .setMinimumLatency(1000 * 60)
-                    .setOverrideDeadline(1000 * 60 * 2)
-                    .setPersisted(true)
-                    .setExtras(bundle)
-                    .build()
-
-            jobScheduler.schedule(jobInfo)
+//            val jobScheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+//
+//            val jobInfo = JobInfo.Builder(12, ComponentName(this@MainActivity, LocationLogService::class.java))
+//                    // only add if network access is required
+//                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+//                    .setMinimumLatency(1000 * 60 * 15)
+//                    .setOverrideDeadline(1000 * 60 * 25)
+//                    .setPersisted(true)
+//                    .setExtras(bundle)
+//                    .build()
+//
+//            jobScheduler.schedule(jobInfo)
         }
     }
+
+    override fun onSlowNetworkDetected(message: String) {
+        val sb = Snackbar.make(findViewById(android.R.id.content), "", Snackbar.LENGTH_LONG)
+        val customView = layoutInflater.inflate(R.layout.custom_snack_no_signal, null)
+        val messageTextView : TextView = customView.findViewById<TextView>(R.id.snackbar_message)
+        messageTextView.setText(message)
+        // Set Snackbar's background to transparent to only show custom layout
+        sb.view.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        // Add the custom layout to Snackbar
+        val snackbarLayout = sb.view as ViewGroup
+        snackbarLayout.addView(customView, 0)
+        sb.show()
+    }
+
+    override fun onNetworkSpeedRestored() {
+//        val sb = Snackbar.make(findViewById(android.R.id.content), "", Snackbar.LENGTH_LONG)
+//        val customView = layoutInflater.inflate(R.layout.custom_snack_connected, null)
+//        sb.view.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+//        val snackbarLayout = sb.view as ViewGroup
+//        snackbarLayout.addView(customView, 0)
+//        sb.show()
+    }
+
 
     public fun scheduleAlarm() {
         val intent = Intent(getApplicationContext(), LocationAlarmManager::class.java);
@@ -164,10 +181,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         initView()
         if (Constants.enableLocationTracking) enableLocation()
 
-        if (toolbar != null) {
-            setSupportActionBar(toolbar)
-            toolbar!!.setTitleTextColor(Color.WHITE)
-
+        if (binding.am1Toolbar.toolbar != null) {
+            setSupportActionBar(binding.am1Toolbar.toolbar)
+            binding.am1Toolbar.toolbar!!.setTitleTextColor(Color.WHITE)
         }
 
         ApplicationPrefs.getInstance(mContext).clearVehicleProfilePrefs()
@@ -212,18 +228,44 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         if (!enabled) {
             var alertBuilder = AlertDialog.Builder(this);
-            alertBuilder.setCancelable(true);
-            alertBuilder.setTitle("GPS Location is required")
-            alertBuilder.setMessage("GPS location is required within this app. If you disagree the app will be closed");
-            alertBuilder.setPositiveButton("Agree") { dialog, which ->
+            val inflater = LayoutInflater.from(this)
+            val dialogView = inflater.inflate(R.layout.decision_dialog, null)
+            alertBuilder.setView(dialogView)
+            val dialogMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
+            val dialogTitle = dialogView.findViewById<TextView>(R.id.tvTitle)
+            val btnPositiveAction = dialogView.findViewById<Button>(R.id.btnActionPositive)
+            val btnNegativeAction = dialogView.findViewById<Button>(R.id.btnActionNegative)
+            dialogTitle.setText("GPS Location is required")
+            dialogMessage.setText("GPS location is required within this app. If you disagree the app will be closed")
+            btnPositiveAction.setText("Agree")
+            btnNegativeAction.setText("Disagree")
+            val dialog = alertBuilder.create()
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCancelable(false)
+            btnPositiveAction.setOnClickListener(View.OnClickListener { v: View? ->
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
-            }
-            alertBuilder.setNegativeButton("Disagree") { dialog, which ->
+                dialog.dismiss()
+            })
+            btnNegativeAction.setOnClickListener(View.OnClickListener { v: View? ->
                 this.finish()
-            }
-            val alert = alertBuilder.create();
-            alert.show();
+            })
+
+            dialog.show()
+
+//            var alertBuilder = AlertDialog.Builder(this);
+//            alertBuilder.setCancelable(true);
+//            alertBuilder.setTitle("GPS Location is required")
+//            alertBuilder.setMessage("GPS location is required within this app. If you disagree the app will be closed");
+//            alertBuilder.setPositiveButton("Agree") { dialog, which ->
+//                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                startActivity(intent);
+//            }
+//            alertBuilder.setNegativeButton("Disagree") { dialog, which ->
+//                this.finish()
+//            }
+//            val alert = alertBuilder.create();
+//            alert.show();
         }
     }
 
@@ -305,6 +347,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     override fun onPause() {
         // TODO Auto-generated method stub
         //Log.e("", "onPause");
+        lastActiveTime = System.currentTimeMillis()
 
         isAppInForeground = false
 
@@ -331,7 +374,15 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         mNotificationManager.cancel(110)
 
-
+//        super.onResume()
+        val now = System.currentTimeMillis()
+        if (now - lastActiveTime > IDLE_TIMEOUT) {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        }
+        lastActiveTime = now
 
         super.onResume()
     }
@@ -426,17 +477,18 @@ class MainActivity : AppCompatActivity(), LocationListener {
             if (result != null) {
                 if (result.contains("Successfully")) {
                     changePasswordDialog!!.dismiss()
-                    val confirmationDialog = AlertDialog.Builder(this@MainActivity)
-                    confirmationDialog.setMessage("Password has been changed successfully.")
-                    confirmationDialog.setPositiveButton("OK", null)
-                    confirmationDialog.show()
+//                    val confirmationDialog = AlertDialog.Builder(this@MainActivity)
+//                    confirmationDialog.setMessage("Password has been changed successfully.")
+//                    confirmationDialog.setPositiveButton("OK", null)
+//                    confirmationDialog.show()
+                    Utility.showUnifiedConfirmationDialog(this@MainActivity, "Password has been changed successfully.")
                 } else {
-                    val confirmationDialog = AlertDialog.Builder(this@MainActivity)
-                    confirmationDialog.setMessage("Old password is not correct.")
-                    confirmationDialog.setPositiveButton("OK", null)
-                    confirmationDialog.show()
+                    Utility.showUnifiedValidationDialog(this@MainActivity, "Old password is not correct.")
+//                    val confirmationDialog = AlertDialog.Builder(this@MainActivity)
+//                    confirmationDialog.setMessage("Old password is not correct.")
+//                    confirmationDialog.setPositiveButton("OK", null)
+//                    confirmationDialog.show()
                     changePasswordDialog!!.dismiss()
-
                 }
             } else {
                 val confirmationDialog = AlertDialog.Builder(this@MainActivity)
@@ -664,24 +716,24 @@ class MainActivity : AppCompatActivity(), LocationListener {
 //        }
     }
 
-    fun uploadPDF(file: File,type: String) {
-//        val multipartRequest = MultipartRequest(Constants.uploadFile+ApplicationPrefs.getInstance(activity).loggedInUserEmail, null, file, Response.Listener { response ->
-        val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
-            try {
-//                println("Networkonse " + String(response.data, Utf8)
-            } catch (e: UnsupportedEncodingException) {
-                e.printStackTrace()
-            }
-
-            //                Toast.makeText(context, "Upload successfully!", Toast.LENGTH_SHORT).show();
-        }, Response.ErrorListener {
-            //                Toast.makeText(context, "Upload failed!\r\n" + error.toString(), Toast.LENGTH_SHORT).show();
-        })
-        val socketTimeout = 30000//30 seconds - change to what you want
-        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-        multipartRequest.retryPolicy = policy
-        Volley.newRequestQueue(applicationContext).add(multipartRequest)
-    }
+//    fun uploadPDF(file: File,type: String) {
+////        val multipartRequest = MultipartRequest(Constants.uploadFile+ApplicationPrefs.getInstance(activity).loggedInUserEmail, null, file, Response.Listener { response ->
+//        val multipartRequest = MultipartRequest(Constants.uploadFile+"saeed@pacificresearchgroup.com&type=${type}", null, file, Response.Listener { response ->
+//            try {
+////                println("Networkonse " + String(response.data, Utf8)
+//            } catch (e: UnsupportedEncodingException) {
+//                e.printStackTrace()
+//            }
+//
+//            //                Toast.makeText(context, "Upload successfully!", Toast.LENGTH_SHORT).show();
+//        }, Response.ErrorListener {
+//            //                Toast.makeText(context, "Upload failed!\r\n" + error.toString(), Toast.LENGTH_SHORT).show();
+//        })
+//        val socketTimeout = 30000//30 seconds - change to what you want
+//        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+//        multipartRequest.retryPolicy = policy
+//        Volley.newRequestQueue(applicationContext).add(multipartRequest)
+//    }
 
 
 
@@ -691,29 +743,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             if (grantResults.size > 0) {
-                // We can now safely use the API we requested access to
-                //                if (fragmentRequestingPermission.equals("VehicleFacility_ALL")) { //Location Permission
-                //                    Log.v("RequetPermissionResult:","  VehicleFacility_ALL");
-                //                    FragmentVehicleFacility fragment= (FragmentVehicleFacility) getFragmentManager().findFragmentById(R.id.fragment);
-                //                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                ////                        fragment.handleMap();
-                //                    if (grantResults[1] == PackageManager.PERMISSION_GRANTED)
-                //                    fragment.handlebanner();
-                //                } else if (fragmentRequestingPermission.equals("VehicleFacility_LOCATION") && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Location Permission
-                //                    Log.v("RequetPermissionResult:","  VehicleFacility_LOCATION");
-                //                    FragmentVehicleFacility fragment= (FragmentVehicleFacility) getFragmentManager().findFragmentById(R.id.fragment);
-                ////                    fragment.handleMap();
-                //                } else if (fragmentRequestingPermission.equals("VehicleFacility_STORAGE") && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Location Permission
-                //                    Log.v("RequetPermissionResult:","  VehicleFacility_STORAGE");
-                //                    FragmentVehicleFacility fragment= (FragmentVehicleFacility) getFragmentManager().findFragmentById(R.id.fragment);
-                //                    fragment.handlebanner();
                 if (fragmentRequestingPermission == "FragmentSafetyCheckItems" && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Storage & Camera Permission
                     Log.v("RequetPermissionResult:", "  FragmentSafetyCheckItems")
-                    val fragment = supportFragmentManager.findFragmentById(R.id.fragment) as FragmentSafetyCheckItems
-                    fragment.dispatchTakePictureIntent()
+//                    val fragment = supportFragmentManager.findFragmentById(R.id.fragment) as FragmentSafetyCheckItems
+//                    fragment.dispatchTakePictureIntent()
                 } else if (fragmentRequestingPermission == "MainActivitySafetyCheckMenuItem" && grantResults[0] == PackageManager.PERMISSION_GRANTED) { //Storage Permission
                     Log.v("RequetPermissionResult:", "  MainActivitySafetyCheckMenuItem")
-                    openSafetyCheckFragment()
+//                    openSafetyCheckFragment()
                 }
                 return
             }
@@ -743,16 +779,16 @@ class MainActivity : AppCompatActivity(), LocationListener {
             folder.mkdirs()
         }
         val fragment: Fragment
-        if (ApplicationPrefs.getInstance(this).userProfilePref.isShop) {
-            fragment = FragmentSafetyCheckInitial()
-        } else {
-            fragment = FragmentSafetyCheckReports()
-        }
-        val fragmentManagerSC = supportFragmentManager
-        val ftSC = fragmentManagerSC.beginTransaction()
-        ftSC.replace(R.id.fragment, fragment)
-        ftSC.addToBackStack("")
-        ftSC.commit()
+//        if (ApplicationPrefs.getInstance(this).userProfilePref.isShop) {
+//            fragment = FragmentSafetyCheckInitial()
+//        } else {
+//            fragment = FragmentSafetyCheckReports()
+//        }
+//        val fragmentManagerSC = supportFragmentManager
+//        val ftSC = fragmentManagerSC.beginTransaction()
+//        ftSC.replace(R.id.fragment, fragment)
+//        ftSC.addToBackStack("")
+//        ftSC.commit()
     }
 
 
@@ -768,7 +804,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
         private val CONTENT = arrayOf("Connect", "Bluetooth", "Vehicle Profile", "Setting", "Profile")
         var devString: String? = null
         var fragmentRequestingPermission = ""
-
+        var lastActiveTime: Long = System.currentTimeMillis()
+//        const val IDLE_TIMEOUT = 1 * 60 * 1000L // 5 minutes
         internal var Upload_period: String? = null
         var Enable: Boolean? = false
         var uploadtask: Boolean? = false

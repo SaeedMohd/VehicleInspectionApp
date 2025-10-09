@@ -13,13 +13,12 @@ import android.widget.ArrayAdapter
 import com.inspection.FormsActivity
 
 import com.inspection.R
+import com.inspection.databinding.FragmentVehiclesFragmentInScopeOfServicesViewBinding
+import com.inspection.databinding.SurveysGroupLayoutBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
 import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
-import kotlinx.android.synthetic.main.facility_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_billing.*
-import kotlinx.android.synthetic.main.surveys_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,7 +43,8 @@ class SurveysGroupFragment : Fragment() {
 
     private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
     private var revSourceArray = ArrayList<String>()
-
+    private var _binding: SurveysGroupLayoutBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,18 +62,19 @@ class SurveysGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        csiResultsButton.setTextColor(Color.parseColor("#26C3AA"))
-        softwareButton.setTextColor(Color.parseColor("#26C3AA"))
-        softwareButton.visibility = View.GONE
-        var fragment = FragmentCSIResult.newInstance("","")
-        fragmentManager!!.beginTransaction()
+        _binding = SurveysGroupLayoutBinding.bind(view)
+        binding.csiResultsButton.setTextColor(Color.parseColor("#26C3AA"))
+        binding.softwareButton.setTextColor(Color.parseColor("#26C3AA"))
+        binding.softwareButton.visibility = View.GONE
+        var fragment = FragmentCSIResult()
+        requireFragmentManager().beginTransaction()
                 .replace(R.id.facilityGroupDetailsFragment, fragment)
                 .commit()
         updateSelectedIndicator(R.id.csiResultsButton)
 
-        csiResultsButton.setOnClickListener {
-            var fragment = FragmentCSIResult.newInstance("","")
-            fragmentManager!!.beginTransaction()
+        binding.csiResultsButton.setOnClickListener {
+            var fragment = FragmentCSIResult()
+            requireFragmentManager().beginTransaction()
                     .replace(R.id.facilityGroupDetailsFragment, fragment)
                     .commit()
             updateSelectedIndicator(R.id.csiResultsButton)
@@ -107,7 +108,7 @@ class SurveysGroupFragment : Fragment() {
 
 
     fun refreshTabIndicators() {
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblComplaints[0].visited) csiResultsButton.setTextColor(Color.parseColor("#26C3AA")) else csiResultsButton.setTextColor(Color.parseColor("#A42600"))
+        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblComplaints[0].visited) binding.csiResultsButton.setTextColor(Color.parseColor("#26C3AA")) else binding.csiResultsButton.setTextColor(Color.parseColor("#A42600"))
     }
 
 

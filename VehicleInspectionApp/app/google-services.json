@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "638105991186",
     "project_id": "inspectiontabletapp",
-    "storage_bucket": "inspectiontabletapp.appspot.com"
+    "storage_bucket": "inspectiontabletapp.firebasestorage.app"
   },
   "client": [
     {

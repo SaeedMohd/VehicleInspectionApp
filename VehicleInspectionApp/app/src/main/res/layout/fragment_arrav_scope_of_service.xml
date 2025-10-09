@@ -29,7 +29,6 @@
             android:background="@color/white"
             android:padding="5dp">
             <TextView
-                android:id="@+id/subTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -59,8 +58,8 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:layout_gravity="center"
-                android:id="@+id/connumberll">
-
+                >
+<!--                android:id="@+id/connumberll"-->
                 <RadioGroup
                     android:id="@+id/laborRateRadioGroup"
                     android:layout_width="wrap_content"
@@ -105,7 +104,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
-                android:id="@+id/connumberll">
+                >
+<!--                android:id="@+id/connumberll"-->
                 <TextView
                     android:id="@+id/fixedLaborRateTextView"
                     android:layout_width="0dp"
@@ -302,7 +302,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
-                android:id="@+id/AssignedToll">
+                >
+<!--                android:id="@+id/AssignedToll"-->
                 <TextView
                     android:id="@+id/numberOfBaysTextView"
                     android:layout_width="0dp"
@@ -432,7 +433,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
-                android:id="@+id/AssignedToll">
+                >
+<!--                android:id="@+id/AssignedToll"-->
                 <TextView
                     android:id="@+id/comments_textview"
                     android:layout_width="0dp"
@@ -492,9 +494,11 @@
                     <Button
                         android:id="@+id/cancelButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
+                        android:layout_height="40dp"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/grey_background_button"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:text="Cancel"
                         />
 
@@ -502,8 +506,10 @@
                     <Button
                         android:id="@+id/saveBtnId"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:background="@drawable/green_background_button"
+                        android:layout_height="40dp"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
                         android:text="Save"
                         android:layout_marginLeft="15dp"
                         />
@@ -530,7 +536,7 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsSoS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -539,7 +545,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsSoS"
             android:layout_centerHorizontal="true"
             android:id="@+id/progressBarText"
             android:text="Loading..."

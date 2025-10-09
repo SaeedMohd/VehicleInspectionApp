@@ -97,8 +97,10 @@ class LocationLogService : JobService() {
         val jobInfo = JobInfo.Builder(12, ComponentName(applicationContext, LocationLogService::class.java))
                 // only add if network access is required
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setMinimumLatency(1000*60)
-                .setOverrideDeadline(1000*60*3)
+//            .setMinimumLatency(1000*60)
+//            .setOverrideDeadline(1000*60*3)
+                .setMinimumLatency(1000*60*15)
+                .setOverrideDeadline(1000*60*25)
                 .setPersisted(true)
                 .setExtras(parameters!!.extras)
                 .build()

@@ -1,44 +1,65 @@
 package com.inspection
 
+//import android.support.design.widget.Snackbar
+//import com.inspection.adapter.MultipartRequest
+//import kotlinx.android.synthetic.main.activity_forms.*
+//import kotlinx.android.synthetic.main.app_bar_forms.*
+//import kotlinx.android.synthetic.main.fragment_aarav_location.*
+//import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
+//import kotlinx.android.synthetic.main.fragment_aarav_photos.*
+//import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
+//import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
+//import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
+//import kotlinx.android.synthetic.main.fragment_arrav_programs.*
+//import org.jetbrains.anko.runOnUiThread
 import android.Manifest.permission.*
-import android.app.Activity
-import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
-//import android.support.design.widget.Snackbar
-import com.google.android.material.navigation.NavigationView
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.drawerlayout.widget.DrawerLayout
-import com.android.volley.DefaultRetryPolicy
+import androidx.core.view.GravityCompat
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
+import com.bugfender.sdk.Bugfender
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
+
 import com.inspection.MainActivity.Companion.activity
-import com.inspection.R.id.drawer_layout
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Constants
+import com.inspection.Utils.Constants.IDLE_TIMEOUT
 import com.inspection.Utils.Utility
 import com.inspection.Utils.createPDF
-import com.inspection.adapter.MultipartRequest
+import com.inspection.Utils.toast
+import com.inspection.databinding.ActivityFormsBinding
 import com.inspection.fragments.*
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.typeIdCompare
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.validationProblemFoundForOtherFragments
@@ -49,19 +70,7 @@ import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_La
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfBays
 import com.inspection.fragments.FragmentARRAVScopeOfService.Companion.watcher_NumOfLifts
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.activity_forms.*
-import kotlinx.android.synthetic.main.app_bar_forms.*
-import kotlinx.android.synthetic.main.fragment_aarav_location.*
-import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
-import kotlinx.android.synthetic.main.fragment_aarav_photos.*
-import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
-import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
-import kotlinx.android.synthetic.main.fragment_arrav_programs.*
-import org.jetbrains.anko.runOnUiThread
 import java.io.File
-import java.io.UnsupportedEncodingException
-import java.util.ArrayList
 
 enum class fragmentsNames {
     FacilityGeneralInfo, FacilityContactInfo,FacilityRSP,FacilityPersonnel,FacilityAmedndmentsOrderTracking,
@@ -75,7 +84,7 @@ enum class fragmentsNames {
     Photos
 }
 
-class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,NetworkSpeedDetector.NetworkSpeedListener {
 
     var currentFragment = ""
     var saveRequired = false
@@ -86,15 +95,23 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     var imageDefSignature : Bitmap? = null
     var imageWaiveSignature : Bitmap? = null
     var visitationID : String? = ""
+    var networkStatus : String? = ""
+    var networkStatusErrorMsg : String? = ""
+    var isNetworkAvailable : Boolean = true
     var saveDone : Boolean = false
+    val animation: Animation = AlphaAnimation(1.0f, 0.0f)
+    lateinit var binding: ActivityFormsBinding
+    private lateinit var networkSpeedDetector: NetworkSpeedDetector
 
     //    var toolbar = findViewById<Toolbar>(R.id.toolbar)
 //    var drawer_layout = findViewById<DrawerLayout>(R.id.drawer_layout)
 //    var nav_view = findViewById<NavigationView>(R.id.nav_view)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forms)
-        setSupportActionBar(toolbar)
+        binding = ActivityFormsBinding.inflate(layoutInflater)
+//        setContentView(R.layout.activity_forms)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appBarForms.toolbar)
         val theIntent = getIntent(); // gets the previously created intent
         val createNewVisitation = theIntent.getBooleanExtra("createNewVisitation",true)
 
@@ -109,19 +126,20 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         typeIdCompare = ""
 
         val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
+                this, binding.drawerLayout, binding.appBarForms.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        nav_view.setNavigationItemSelectedListener(this)
+        binding.navView.setNavigationItemSelectedListener(this)
 //        toggle.onDrawerStateChanged() {
 //            Toast.makeText(this,"TEST",Toast.LENGTH_LONG)
 //        })
+        Bugfender.enableCrashReporting();
+//        Bugfender.enableUIEventLogging(application);
+        binding.drawerLayout.openDrawer(GravityCompat.START)
 
-        drawer_layout.openDrawer(GravityCompat.START)
 
-
-        val navigationMenu = nav_view.menu
+        val navigationMenu = binding.navView.menu
 
         refreshMenuIndicatorsForVisitedScreens()
 //        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) {
@@ -136,40 +154,154 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             currentFragment = fragmentsNames.Visitation.toString()
             this.onNavigationItemSelected(navigationMenu.findItem(R.id.visitation))
         }
+
+        networkSpeedDetector = NetworkSpeedDetector(this);
+        networkSpeedDetector.setNetworkSpeedListener(this);
+        networkSpeedDetector.startMonitoring();
+        animation.duration = 500 //1 second duration for each animation cycle
+        animation.interpolator = LinearInterpolator()
+        animation.repeatCount = Animation.INFINITE //repeating indefinitely
+        animation.repeatMode = Animation.REVERSE //animation will start from end point once ended.
+    }
+
+    override fun onSlowNetworkDetected(message: String) {
+        val sb = Snackbar.make(findViewById(android.R.id.content), "", Snackbar.LENGTH_LONG)
+        val customView = layoutInflater.inflate(R.layout.custom_snack_no_signal, null)
+        val messageTextView : TextView = customView.findViewById<TextView>(R.id.snackbar_message)
+        messageTextView.setText(message)
+        networkStatus = message
+        isNetworkAvailable = false
+        // Set Snackbar's background to transparent to only show custom layout
+        sb.view.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        // Add the custom layout to Snackbar
+        val snackbarLayout = sb.view as ViewGroup
+        snackbarLayout.addView(customView, 0)
+        sb.show()
+        runOnUiThread {
+            if (message.contains("Slow Internet")) {
+                networkStatusErrorMsg = "Slow Internet Connection"
+                binding.appBarForms.internetIndicator.visibility = View.GONE
+                binding.appBarForms.slowInternetIndicator.visibility = View.VISIBLE
+                binding.appBarForms.slowInternetIndicator.startAnimation(animation)
+                binding.appBarForms.slowInternetIndicator.tooltipText = message
+                binding.appBarForms.slowInternetIndicator.setOnClickListener {
+//                    Utility.showMessageDialog(this, "Warning", message)
+                    Utility.showUnifiedErrorDialog(this,message)
+                }
+                binding.appBarForms.noInternetIndicator.visibility = View.GONE
+                binding.appBarForms.slowInternetIndicator.clearAnimation()
+                binding.appBarForms.noInternetIndicator.tooltipText = ""
+            } else {
+                networkStatusErrorMsg = "No Internet Connection"
+                binding.appBarForms.internetIndicator.visibility = View.GONE
+                binding.appBarForms.slowInternetIndicator.visibility = View.GONE
+                binding.appBarForms.slowInternetIndicator.clearAnimation()
+                binding.appBarForms.slowInternetIndicator.tooltipText = ""
+                binding.appBarForms.noInternetIndicator.visibility = View.VISIBLE
+                binding.appBarForms.noInternetIndicator.startAnimation(animation)
+                binding.appBarForms.noInternetIndicator.tooltipText = message
+                binding.appBarForms.noInternetIndicator.setOnClickListener {
+//                    Utility.showMessageDialog(this, "Warning", message)
+                    Utility.showUnifiedErrorDialog(this,message)
+                }
+            }
+
+        }
+    }
+
+    override fun onNetworkSpeedRestored() {
+//        val sb = Snackbar.make(findViewById(android.R.id.content), "", Snackbar.LENGTH_LONG)
+//        val customView = layoutInflater.inflate(R.layout.custom_snack_connected, null)
+//        sb.view.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+//        val snackbarLayout = sb.view as ViewGroup
+        networkStatus = "Connection - Speed Restored"
+        isNetworkAvailable = true
+//        snackbarLayout.addView(customView, 0)
+//        sb.show()
+        runOnUiThread {
+            binding.appBarForms.internetIndicator.visibility = View.VISIBLE
+            binding.appBarForms.slowInternetIndicator.visibility = View.GONE
+            binding.appBarForms.slowInternetIndicator.clearAnimation()
+            binding.appBarForms.slowInternetIndicator.tooltipText = ""
+            binding.appBarForms.noInternetIndicator.visibility = View.GONE
+            binding.appBarForms.noInternetIndicator.clearAnimation()
+            binding.appBarForms.noInternetIndicator.tooltipText = ""
+        }
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else if (overrideBackButton) {
-            if (editEmailDialog != null) editEmailDialog.visibility = View.GONE
-            if (addNewPhoneDialog != null) addNewPhoneDialog.visibility = View.GONE
-            if (editLocationDialog != null) editLocationDialog.visibility = View.GONE
-            if (editPhoneDialog != null) editPhoneDialog.visibility = View.GONE
-            if (addNewEmailDialog != null) addNewEmailDialog.visibility = View.GONE
-            if (addNewPersonnelDialogue != null) addNewPersonnelDialogue.visibility = View.GONE
-            if (addNewCertificateDialogue != null) addNewCertificateDialogue.visibility = View.GONE
-            if (alphaBackgroundForPersonnelDialogs != null) alphaBackgroundForPersonnelDialogs.visibility = View.GONE
-            if (alphaBackgroundForDialogs != null) alphaBackgroundForDialogs.visibility = View.GONE
-            if (alphaBackgroundForAffilliationsDialogs != null) alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-            if (defeciencyCard != null) defeciencyCard.visibility = View.GONE
-            if (defeciencyCardEdit != null) defeciencyCardEdit.visibility = View.GONE
+
+            if (supportFragmentManager.findFragmentByTag("FragmentARRAVLocation") != null) {
+                val fragmentLocation =
+                    supportFragmentManager.findFragmentByTag("FragmentARRAVLocation") as FragmentARRAVLocation
+                fragmentLocation.updateDialogs()
+            }
+//            if (editEmailDialog != null) editEmailDialog.visibility = View.GONE
+//            if (addNewPhoneDialog != null) addNewPhoneDialog.visibility = View.GONE
+//            if (editLocationDialog != null) editLocationDialog.visibility = View.GONE
+//            if (editPhoneDialog != null) editPhoneDialog.visibility = View.GONE
+//            if (addNewEmailDialog != null) addNewEmailDialog.visibility = View.GONE
+//            if (alphaBackgroundForDialogs != null) alphaBackgroundForDialogs.visibility = View.GONE
+//            if (copyHoursDialog != null) copyHoursDialog.visibility = View.GONE
+            if (supportFragmentManager.findFragmentByTag("FragmentARRAVPersonnel") != null) {
+                val fragmentPersonnel =
+                    supportFragmentManager.findFragmentByTag("FragmentARRAVPersonnel") as FragmentARRAVPersonnel
+                fragmentPersonnel.updateDialogs()
+            }
+//            if (addNewPersonnelDialogue != null) addNewPersonnelDialogue.visibility = View.GONE
+//            if (addNewCertificateDialogue != null) addNewCertificateDialogue.visibility = View.GONE
+//            if (alphaBackgroundForPersonnelDialogs != null) alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+//            if (addNewPersonnelDialogue != null) addNewPersonnelDialogue.visibility = View.GONE
+//            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
+//            if (personnelLoadingView != null) personnelLoadingView.visibility = View.GONE
+            if (supportFragmentManager.findFragmentByTag("FragmentARRAVDeficiency") != null) {
+                val fragmentDeficiency =
+                    supportFragmentManager.findFragmentByTag("FragmentARRAVDeficiency") as FragmentARRAVDeficiency
+                fragmentDeficiency.updateDialogs()
+            }
+//            if (defeciencyCard != null) defeciencyCard.visibility = View.GONE
+//            if (defeciencyCardEdit != null) defeciencyCardEdit.visibility = View.GONE
 //            if (signatureDialog != null) signatureDialog.visibility = View.GONE
-            if (affiliationsCard != null) affiliationsCard.visibility = View.GONE
-            if (edit_affiliationsCard != null) edit_affiliationsCard.visibility = View.GONE
-            if (facilityServicesCard != null) facilityServicesCard.visibility = View.GONE
-            if (editFacilityServicesCard != null) editFacilityServicesCard.visibility = View.GONE
-            if (programCard != null) programCard.visibility = View.GONE
-            if (edit_programCard != null) edit_programCard.visibility = View.GONE
-            if (addNewPersonnelDialogue != null) addNewPersonnelDialogue.visibility = View.GONE
-            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
-            if (personnelLoadingView != null) personnelLoadingView.visibility = View.GONE
-            if (photoLoadingView != null) photoLoadingView.visibility = View.GONE
-            if (addNewPhotoDialog != null) addNewPhotoDialog.visibility = View.GONE
-            if (photosPreviewDialog != null) photosPreviewDialog.visibility = View.GONE
-            if (editPhotoDialog != null) editPhotoDialog.visibility = View.GONE
-            if (copyHoursDialog != null) copyHoursDialog.visibility = View.GONE
-            if (editPhoneDialog != null) editPhotoDialog.visibility = View.GONE
+            if (supportFragmentManager.findFragmentByTag("FragmentARRAVAffliations") != null) {
+                val fragmentAffiliations =
+                    supportFragmentManager.findFragmentByTag("FragmentARRAVAffliations") as FragmentARRAVAffliations
+                fragmentAffiliations.updateDialogs()
+            }
+//            if (alphaBackgroundForAffilliationsDialogs != null) alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+//            if (affiliationsCard != null) affiliationsCard.visibility = View.GONE
+//            if (edit_affiliationsCard != null) edit_affiliationsCard.visibility = View.GONE
+            if (supportFragmentManager.findFragmentByTag("FragmentARRAVFacilityServices") != null) {
+                val fragmentFacilitServices =
+                    supportFragmentManager.findFragmentByTag("FragmentARRAVFacilityServices") as FragmentARRAVFacilityServices
+                fragmentFacilitServices.updateDialogs()
+            }
+
+//            if (facilityServicesCard != null) facilityServicesCard.visibility = View.GONE
+//            if (editFacilityServicesCard != null) editFacilityServicesCard.visibility = View.GONE
+            if (supportFragmentManager.findFragmentByTag("FragmentARRAVPrograms") != null) {
+                val fragmentFacilityPrograms =
+                    supportFragmentManager.findFragmentByTag("FragmentARRAVPrograms") as FragmentARRAVPrograms
+                fragmentFacilityPrograms.updateDialogs()
+            }
+
+//            if (programCard != null) programCard.visibility = View.GONE
+//            if (edit_programCard != null) edit_programCard.visibility = View.GONE
+            if (supportFragmentManager.findFragmentByTag("FragmentAARAVPhotos") != null) {
+                val fragmentFacilityPhotos =
+                    supportFragmentManager.findFragmentByTag("FragmentAARAVPhotos") as FragmentAARAVPhotos
+                fragmentFacilityPhotos.updateDialogs()
+            }
+
+
+//            if (photoLoadingView != null) photoLoadingView.visibility = View.GONE
+//            if (addNewPhotoDialog != null) addNewPhotoDialog.visibility = View.GONE
+//            if (photosPreviewDialog != null) photosPreviewDialog.visibility = View.GONE
+//            if (editPhotoDialog != null) editPhotoDialog.visibility = View.GONE
+//            if (editPhotoDialog != null) editPhotoDialog.visibility = View.GONE
+
 //            if (complaintsCard != null) complaintsCard.visibility = View.GONE
 
 //            if (edit_addNewPersonnelDialogue != null) edit_addNewPersonnelDialogue.visibility = View.GONE
@@ -180,21 +312,41 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         } else if ((saveVisitedScreensRequired && !FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) ) {
             var cancelProgress = false
             var alertBuilder = AlertDialog.Builder(this);
-            alertBuilder.setCancelable(true);
-            alertBuilder.setTitle("Permission Required")
-            alertBuilder.setMessage("Do you want to save the visited screens ?");
-            alertBuilder.setPositiveButton("YES") { dialog, which ->
+            val inflater = LayoutInflater.from(this)
+            val dialogView = inflater.inflate(R.layout.decision_dialog, null)
+            alertBuilder.setView(dialogView)
+            val dialogMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
+            val dialogTitle = dialogView.findViewById<TextView>(R.id.tvTitle)
+            val btnPositiveAction = dialogView.findViewById<Button>(R.id.btnActionPositive)
+            val btnNegativeAction = dialogView.findViewById<Button>(R.id.btnActionNegative)
+            dialogTitle.setText("Permission Required")
+            dialogMessage.setText("Do you want to save the visited screens ?")
+            btnPositiveAction.setText("YES")
+            btnNegativeAction.setText("NO")
+            val dialog = alertBuilder.create()
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCancelable(false)
+            btnPositiveAction.setOnClickListener(View.OnClickListener { v: View? ->
                 updateVisitationProgress(false)
-            }
-            alertBuilder.setNegativeButton("NO") { dialog, which ->
+            })
+            btnNegativeAction.setOnClickListener(View.OnClickListener { v: View? ->
                 updateVisitationProgress(true)
-            }
-            val alert = alertBuilder.create();
-            alert.show();
+            })
+            dialog.show()
+//            alertBuilder.setMessage("Do you want to save the visited screens ?");
+//            alertBuilder.setPositiveButton("YES") { dialog, which ->
+//                updateVisitationProgress(false)
+//            }
+//            alertBuilder.setNegativeButton("NO") { dialog, which ->
+//                updateVisitationProgress(true)
+//            }
+//            val alert = alertBuilder.create();
+//            alert.show();
             overrideBackButton = false
         } else if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType!!.equals(VisitationTypes.AdHoc)) {
             updateVisitationProgress(true)
         } else {
+            setResult(100)
             super.onBackPressed()
         }
     }
@@ -213,7 +365,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     public fun refreshMenuIndicators() { // Method used to validate that business rules was fulfilled for each screen
-        var navigationMenu = nav_view.menu
+        var navigationMenu = binding.navView.menu
         var indicatorImage: ImageView;
         var isAllValid = true
         indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
@@ -286,7 +438,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             isAllValid = false
         }
 
-        indicatorImage = nav_view.getHeaderView(0).findViewById<ImageView>(R.id.mainIndicatorImg)
+        indicatorImage = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.mainIndicatorImg)
         indicatorImage.visibility = View.GONE
         if (isAllValid)
             indicatorImage.setBackgroundResource(R.drawable.green_background_button)
@@ -297,7 +449,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     public fun refreshMenuIndicatorsForVisitedScreens() { // Method used to validate all screens were visited
-        var navigationMenu = nav_view.menu
+        var navigationMenu = binding.navView.menu
         var indicatorImage: ImageView;
 //        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency) {
 //            indicatorImage = (navigationMenu.findItem(R.id.scopeOfService).actionView as FrameLayout).findViewById(R.id.menu_item_indicator_img) as ImageView
@@ -410,7 +562,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             indicatorImage.setBackgroundResource(R.drawable.red_button_background)
         }
 
-        indicatorImage = nav_view.getHeaderView(0).findViewById<ImageView>(R.id.mainIndicatorImg)
+        indicatorImage = binding.navView.getHeaderView(0).findViewById<ImageView>(R.id.mainIndicatorImg)
         indicatorImage.visibility = View.GONE
 
     }
@@ -433,6 +585,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
 
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
@@ -440,12 +593,13 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
-                    toolbar.title = "Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    binding.appBarForms.toolbar.title = "Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Visitation - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     saveVisitedScreensRequired = true
                     currentFragment = fragmentsNames.Visitation.toString()
                     var fragment = FragmentVisitation()
+
                     supportFragmentManager
                             .beginTransaction()
                             .replace(R.id.fragment, fragment)
@@ -457,7 +611,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
-                    toolbar.title = "Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    binding.appBarForms.toolbar.title = "Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Facility - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     saveVisitedScreensRequired = true
@@ -477,7 +631,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
                     saveVisitedScreensRequired = true
-                    toolbar.title = "Scope of Services- " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    binding.appBarForms.toolbar.title = "Scope of Services- " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Scope of Services- " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     currentFragment = fragmentsNames.SoSGeneralInfo.toString()
@@ -494,14 +648,14 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
-                    toolbar.title = "Deficiency - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    binding.appBarForms.toolbar.title = "Deficiency - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Deficiency - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     currentFragment = fragmentsNames.Deficiency.toString()
                     var fragment = FragmentARRAVDeficiency()
                     supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.fragment, fragment)
+                            .replace(R.id.fragment, fragment,"FragmentARRAVDeficiency")
                             .commit()
                 }
             }
@@ -511,7 +665,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
-                    toolbar.title = "Complaints - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    binding.appBarForms.toolbar.title = "Complaints - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Complaints - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     currentFragment = fragmentsNames.Complaints.toString()
@@ -528,7 +682,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
-                    toolbar.title = "Billing - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    binding.appBarForms.toolbar.title = "Billing - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Billing - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     currentFragment = fragmentsNames.Billing.toString()
@@ -544,7 +698,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
-                    toolbar.title = "Surveys - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    binding.appBarForms.toolbar.title = "Surveys - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Surveys - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     currentFragment = fragmentsNames.Surveys.toString()
@@ -560,7 +714,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
-                    toolbar.title = "Comments - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    binding.appBarForms.toolbar.title = "Comments - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Comments - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     currentFragment = fragmentsNames.Comments.toString()
@@ -576,39 +730,39 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 if (preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(this)
                 } else {
-                    toolbar.title = "Photos - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                    binding.appBarForms.toolbar.title = "Photos - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo
                     setTitle("Photos - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName + " - " + FacilityDataModel.getInstance().tblFacilities[0].FACNo)
                     saveRequired = false
                     currentFragment = fragmentsNames.Photos.toString()
                     var fragment = FragmentAARAVPhotos()
                     supportFragmentManager
                             .beginTransaction()
-                            .replace(R.id.fragment, fragment)
+                            .replace(R.id.fragment, fragment,"FragmentAARAVPhotos")
                             .commit()
                 }
             }
         }
 
-        drawer_layout.closeDrawer(GravityCompat.START)
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    fun uploadPhoto(file: File, fileName: String) {
-        val multipartRequest = MultipartRequest(Constants.uploadPhoto + fileName, null, file, Response.Listener { response ->
-            try {
-
-            } catch (e: UnsupportedEncodingException) {
-                e.printStackTrace()
-            }
-        }, Response.ErrorListener {
-            Utility.showMessageDialog(this, "Uploading File", "Uploading File Failed with error (" + it.message + ")")
-            Log.v("Upload Photo Error : ", it.message.toString())
-        })
-        val socketTimeout = 30000//30 seconds - change to what you want
-        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-        multipartRequest.retryPolicy = policy
-        Volley.newRequestQueue(applicationContext).add(multipartRequest)
-    }
+//    fun uploadPhoto(file: File, fileName: String) {
+//        val multipartRequest = MultipartRequest(Constants.uploadPhoto + fileName, null, file, Response.Listener { response ->
+//            try {
+//
+//            } catch (e: UnsupportedEncodingException) {
+//                e.printStackTrace()
+//            }
+//        }, Response.ErrorListener {
+//            Utility.showMessageDialog(this, "Uploading File", "Uploading File Failed with error (" + it.message + ")")
+//            Log.v("Upload Photo Error : ", it.message.toString())
+//        })
+//        val socketTimeout = 30000//30 seconds - change to what you want
+//        val policy = DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+//        multipartRequest.retryPolicy = policy
+//        Volley.newRequestQueue(applicationContext).add(multipartRequest)
+//    }
 
     fun preventNavigation(): Boolean {
         if (saveRequired) return true
@@ -648,7 +802,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     fun generateAndOpenPDF() {
-        var act = this
+//        var act = this
 //        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(this).loggedInUserID,
 //                Response.Listener { response ->
 //                    activity!!.runOnUiThread {
@@ -671,12 +825,32 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 ////                            launchNextAction(isCompleted)
 //            it.printStackTrace()
 //        }))
+//            visitation_sv.done(true)
+//            visitation_sv.go(4,true)
+
             createPDF(this)
                 //        val file = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForSpecialist.pdf")
                 //        val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "_VisitationDetails_ForShop.pdf")
                         val file = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForSpecialist.pdf")
                         val fileShop = File(Environment.getExternalStorageDirectory().path + "/" + Constants.visitationIDForPDF + "_VisitationDetails_ForShop.pdf")
 
+    }
+
+    private fun showPermissionSettingsDialog() {
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("Permission Required")
+        builder.setMessage("Some permissions are permanently denied. You need to enable them from settings.")
+        builder.setPositiveButton("Go to Settings") { _, _ ->
+            // Redirect to app settings
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", packageName, null)
+            }
+            startActivity(intent)
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -687,8 +861,90 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             } else {
                 generateAndOpenPDF()
             }
+        } else if (requestCode == 123) {
+            var allGranted = true
+            var permanentlyDenied = false
+
+            for (i in permissions.indices) {
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    allGranted = false
+
+                    // Check if "Don't Ask Again" was selected
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
+                        permanentlyDenied = true
+                    }
+                }
+            }
+
+            when {
+                allGranted -> {
+                    // All permissions are granted
+                    val intent = Intent()
+                    intent.type = "image/*"
+                    intent.action = Intent.ACTION_GET_CONTENT
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), 234)
+                }
+                permanentlyDenied -> {
+                    // Some permissions are permanently denied
+                    showPermissionSettingsDialog()
+                }
+                else -> {
+                    // Permissions are denied but not permanently
+                    toast("Permissions denied. Please allow them to continue.")
+                }
+            }
+        } else if (requestCode == 1001) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                // All requested permissions are granted, proceed to pick photos
+                pickPhotos()
+            } else {
+                // Permissions denied, show a message or fallback behavior
+                println("Permissions denied")
+            }
+        } else if (requestCode == 2001) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                // Permissions granted, proceed to capture image
+//                captureImage()
+            } else {
+                // Permission denied
+                Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
+    override fun onPause() {
+        lastActiveTime = System.currentTimeMillis()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        val now = System.currentTimeMillis()
+        if (now - lastActiveTime > IDLE_TIMEOUT) {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        }
+        lastActiveTime = now
+        super.onResume()
+    }
+
+    fun pickPhotos(){
+        val intent: Intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Intent(Intent.ACTION_PICK).apply {
+                type = "image/*" // We want to pick images only
+//                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // Allow multiple selections
+            }
+        } else {
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
+                type = "image/*"
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            }
+        }
+//        pickImagesLauncher.launch(intent)
+    }
+    companion object {
+        var lastActiveTime: Long = System.currentTimeMillis()
+    }
 }
 

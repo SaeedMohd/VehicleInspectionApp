@@ -159,6 +159,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:textStyle="bold"
                     android:layout_column="0"
                     android:layout_margin="5dp"
+                    app:buttonTint="@drawable/checkbox_bkg"
                     />
                 <RadioGroup
                     android:layout_height="wrap_content"
@@ -204,6 +205,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:textStyle="bold"
                     android:layout_column="0"
                     android:layout_margin="5dp"
+                    app:buttonTint="@drawable/checkbox_bkg"
                     />
                 <RadioGroup
                     android:layout_height="wrap_content"
@@ -248,6 +250,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:textStyle="bold"
                     android:layout_column="0"
                     android:layout_margin="5dp"
+                    app:buttonTint="@drawable/checkbox_bkg"
                     />
                 <RadioGroup
                     android:layout_height="wrap_content"

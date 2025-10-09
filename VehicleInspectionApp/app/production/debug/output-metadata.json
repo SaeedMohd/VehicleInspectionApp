@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.inspection",
+  "variantName": "productionDebug",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 121,
+      "versionName": "3.22-prod",
+      "outputFile": "app-production-debug.apk"
+    }
+  ],
+  "elementType": "File"
+}

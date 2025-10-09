@@ -99,7 +99,7 @@ tools:context=".fragments.FragmentAARAVBillingHistory">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Invoice Amount"
+                    android:text="Billing Due Amount"
                     android:layout_column="4"
                     android:layout_weight="1"
                     android:textColor="@color/white"
@@ -110,7 +110,7 @@ tools:context=".fragments.FragmentAARAVBillingHistory">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Payment Amount"
+                    android:text="Invoice Amount"
                     android:layout_column="5"
                     android:layout_weight="1"
                     android:textColor="@color/white"
@@ -121,8 +121,19 @@ tools:context=".fragments.FragmentAARAVBillingHistory">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Payment Received Date"
+                    android:text="Payment Amount"
                     android:layout_column="6"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Payment Received Date"
+                    android:layout_column="7"
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="14sp"

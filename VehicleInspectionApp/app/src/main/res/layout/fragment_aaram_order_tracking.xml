@@ -38,10 +38,11 @@
                     />
 
                 <Button
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
                     android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginRight="20dp"
                     android:layout_alignParentRight="true"
                     android:paddingLeft="15dp"
@@ -119,10 +120,11 @@
                     />
 
                 <Button
-                    android:background="@drawable/green_background_button"
+                    android:background="@drawable/new_btn_bkg"
                     android:textColor="@color/white"
+                    app:backgroundTint="@null"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginRight="20dp"
                     android:layout_alignParentRight="true"
                     android:paddingLeft="15dp"
@@ -181,7 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/aarPortalTrackingTableLayout"
-                android:id="@+id/btnslayout"
+                android:id="@+id/btnslayout2"
                 android:weightSum="2"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
@@ -223,15 +225,16 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_gravity="right"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
             android:text="Submit"
             android:id="@+id/submitNewAOTButton"
+            android:background="@drawable/new_btn_bkg"
             android:textColor="@color/white"
-            android:background="@drawable/green_background_button"
+            app:backgroundTint="@null"
             />
 
 
@@ -320,15 +323,16 @@
 
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_gravity="right"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
             android:text="Submit"
             android:id="@+id/submitNewEventButton"
+            android:background="@drawable/new_btn_bkg"
             android:textColor="@color/white"
-            android:background="@drawable/green_background_button"
+            app:backgroundTint="@null"
             />
 
 
@@ -364,8 +368,6 @@
                     />
                 <Button
                     android:id="@+id/event_date_textviewVal"
-
-                    android:layout_below="@id/connumberll"
                     android:layout_width="0dp"
                     android:text="select date"
                     android:textColor="@color/blue_krayola"
@@ -411,8 +413,9 @@
         android:visibility="gone"
         android:focusable="true">
 
+
         <ProgressBar
-            android:id="@+id/progressBarRecords"
+            android:id="@+id/progressBarRecordsOT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -421,7 +424,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/progressBarRecords"
+            android:layout_above="@id/progressBarRecordsOT"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"

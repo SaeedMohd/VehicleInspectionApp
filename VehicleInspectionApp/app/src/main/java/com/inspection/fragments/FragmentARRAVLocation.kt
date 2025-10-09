@@ -11,10 +11,15 @@ import android.os.Bundle
 import android.telephony.PhoneNumberUtils
 import android.text.*
 import android.util.Log
+import android.util.Patterns
 import android.view.*
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.Response
@@ -32,14 +37,19 @@ import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.Utils.Constants.UpdateFacilityLanguageData
 import com.inspection.adapter.LanguageListAdapter
+import com.inspection.databinding.FragmentAaravLocationBinding
+import com.inspection.databinding.FragmentArravDeficiencyBinding
+import com.inspection.databinding.FragmentArravlocationBinding
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.facility_group_layout.*
-import kotlinx.android.synthetic.main.fragment_aarav_location.*
-import kotlinx.android.synthetic.main.fragment_aarav_location.mainViewLinearId
-import kotlinx.android.synthetic.main.fragment_aarav_location.mainViewLinearId2
-import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
-import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
-import kotlinx.android.synthetic.main.fragment_arravlocation.*
+//import kotlinx.android.synthetic.main.facility_group_layout.*
+//import kotlinx.android.synthetic.main.fragment_aarav_location.*
+//import kotlinx.android.synthetic.main.fragment_aarav_location.mainViewLinearId2
+//import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
+//import kotlinx.android.synthetic.main.fragment_arravfacility_continued.*
+//import kotlinx.android.synthetic.main.fragment_arravlocation.*
+//import kotlinx.android.synthetic.main.fragment_visitation_form.alertVisitationRIcon
+//import kotlinx.android.synthetic.main.fragment_visitation_form.alertVisitationYIcon
+//import kotlinx.android.synthetic.main.fragment_visitation_form.emailEditText
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
@@ -67,10 +77,12 @@ class FragmentARRAVLocation : Fragment() {
     var saveGeoCodesRequired = false
     private var fusedLocationProviderClient : FusedLocationProviderClient? = null
     private var btnToBeUpdated = 0
-
+    var emailValid = true
     var languagesGridView: ExpandableHeightGridView? = null
     internal var arrayAdapter: LanguageListAdapter? = null
     var langListItems=ArrayList<TypeTablesModel.languageType>()
+    private var _binding: FragmentAaravLocationBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -83,23 +95,24 @@ class FragmentARRAVLocation : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAaravLocationBinding.bind(view)
 //      ArrayAdapter<String> adapterJazyky = new ArrayAdapter<String>(this,
 //              R.layout.spinner_text_layout.xml, {"one","two","etc...."});
         val officeTimes = resources.getStringArray(R.array.officeTimes)
-        sunCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        sunOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        monCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        monOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        tueCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        tueOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        wedCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        wedOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        thuCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        thuOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        friCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        friOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        satCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
-        satOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.sunCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.sunOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.monCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.monOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.tueCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.tueOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.wedCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.wedOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.thuCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.thuOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.friCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.friOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.satCloseSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
+        binding.satOpenSpinner.adapter = ArrayAdapter.createFromResource(requireActivity(),R.array.officeTimes,R.layout.spinner_time_item)
 
 
         FacilityDataModel.getInstance().tblHours[0].apply {
@@ -144,87 +157,88 @@ class FragmentARRAVLocation : Fragment() {
         fillOpenHoursTableView()
         fillClosedHoursTableView()
         fillEmailTableView()
-        copyHoursBtn.setOnClickListener {
-            alphaBackgroundForDialogs.visibility = View.VISIBLE
-            copyHoursDialog.visibility = View.VISIBLE
+        setAlertColoring()
+        binding.copyHoursBtn.setOnClickListener {
+            binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+            binding.copyHoursDialog.visibility = View.VISIBLE
             (activity as FormsActivity).overrideBackButton = true
 
-            copyButtonCV.setOnClickListener {
+            binding.copyButtonCV.setOnClickListener {
                 var openValue = 0
                 var closeValue = 0
-                when (fromDaySpinner.selectedItemPosition) {
+                when (binding.fromDaySpinner.selectedItemPosition) {
                     0 -> {
-                        openValue = sunOpenSpinner.selectedItemPosition
-                        closeValue = sunCloseSpinner.selectedItemPosition
+                        openValue = binding.sunOpenSpinner.selectedItemPosition
+                        closeValue = binding.sunCloseSpinner.selectedItemPosition
                     }
                     1 -> {
-                        openValue = monOpenSpinner.selectedItemPosition
-                        closeValue = monCloseSpinner.selectedItemPosition
+                        openValue = binding.monOpenSpinner.selectedItemPosition
+                        closeValue = binding.monCloseSpinner.selectedItemPosition
                     }
                     2 -> {
-                        openValue = tueOpenSpinner.selectedItemPosition
-                        closeValue = tueCloseSpinner.selectedItemPosition
+                        openValue = binding.tueOpenSpinner.selectedItemPosition
+                        closeValue = binding.tueCloseSpinner.selectedItemPosition
                     }
                     3 -> {
-                        openValue = wedOpenSpinner.selectedItemPosition
-                        closeValue = wedCloseSpinner.selectedItemPosition
+                        openValue = binding.wedOpenSpinner.selectedItemPosition
+                        closeValue = binding.wedCloseSpinner.selectedItemPosition
                     }
                     4 -> {
-                        openValue = thuOpenSpinner.selectedItemPosition
-                        closeValue = thuCloseSpinner.selectedItemPosition
+                        openValue = binding.thuOpenSpinner.selectedItemPosition
+                        closeValue = binding.thuCloseSpinner.selectedItemPosition
                     }
                     5 -> {
-                        openValue = friOpenSpinner.selectedItemPosition
-                        closeValue = friCloseSpinner.selectedItemPosition
+                        openValue = binding.friOpenSpinner.selectedItemPosition
+                        closeValue = binding.friCloseSpinner.selectedItemPosition
                     }
                     6 -> {
-                        openValue = satOpenSpinner.selectedItemPosition
-                        closeValue = satCloseSpinner.selectedItemPosition
+                        openValue = binding.satOpenSpinner.selectedItemPosition
+                        closeValue = binding.satCloseSpinner.selectedItemPosition
                     }
                 }
-                if (toSunCB.isChecked) {
-                    sunOpenSpinner.setSelection(openValue)
-                    sunCloseSpinner.setSelection(closeValue)
+                if (binding.toSunCB.isChecked) {
+                    binding.sunOpenSpinner.setSelection(openValue)
+                    binding.sunCloseSpinner.setSelection(closeValue)
                 }
-                if (toMonCB.isChecked) {
-                    monOpenSpinner.setSelection(openValue)
-                    monCloseSpinner.setSelection(closeValue)
+                if (binding.toMonCB.isChecked) {
+                    binding.monOpenSpinner.setSelection(openValue)
+                    binding.monCloseSpinner.setSelection(closeValue)
                 }
-                if (toTueCB.isChecked) {
-                    tueOpenSpinner.setSelection(openValue)
-                    tueCloseSpinner.setSelection(closeValue)
+                if (binding.toTueCB.isChecked) {
+                    binding.tueOpenSpinner.setSelection(openValue)
+                    binding.tueCloseSpinner.setSelection(closeValue)
                 }
-                if (toWedCB.isChecked) {
-                    wedOpenSpinner.setSelection(openValue)
-                    wedCloseSpinner.setSelection(closeValue)
+                if (binding.toWedCB.isChecked) {
+                    binding.wedOpenSpinner.setSelection(openValue)
+                    binding.wedCloseSpinner.setSelection(closeValue)
                 }
-                if (toThuCB.isChecked) {
-                    thuOpenSpinner.setSelection(openValue)
-                    thuCloseSpinner.setSelection(closeValue)
+                if (binding.toThuCB.isChecked) {
+                    binding.thuOpenSpinner.setSelection(openValue)
+                    binding.thuCloseSpinner.setSelection(closeValue)
                 }
-                if (toFriCB.isChecked) {
-                    friOpenSpinner.setSelection(openValue)
-                    friCloseSpinner.setSelection(closeValue)
+                if (binding.toFriCB.isChecked) {
+                    binding.friOpenSpinner.setSelection(openValue)
+                    binding.friCloseSpinner.setSelection(closeValue)
                 }
-                if (toSatCB.isChecked) {
-                    satOpenSpinner.setSelection(openValue)
-                    satCloseSpinner.setSelection(closeValue)
+                if (binding.toSatCB.isChecked) {
+                    binding.satOpenSpinner.setSelection(openValue)
+                    binding.satCloseSpinner.setSelection(closeValue)
                 }
                 saveHoursRequired = true
-                exitCopyDialogeBtnId.callOnClick()
+                binding.exitCopyDialogeBtnId.callOnClick()
             }
-            fromDaySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            binding.fromDaySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onNothingSelected(parent: AdapterView<*>?) {
 
                 }
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    toSunCB.isEnabled = (position!=0)
-                    toMonCB.isEnabled = (position!=1)
-                    toTueCB.isEnabled = (position!=2)
-                    toWedCB.isEnabled = (position!=3)
-                    toThuCB.isEnabled = (position!=4)
-                    toFriCB.isEnabled = (position!=5)
-                    toSatCB.isEnabled = (position!=6)
+                    binding.toSunCB.isEnabled = (position!=0)
+                    binding.toMonCB.isEnabled = (position!=1)
+                    binding.toTueCB.isEnabled = (position!=2)
+                    binding.toWedCB.isEnabled = (position!=3)
+                    binding.toThuCB.isEnabled = (position!=4)
+                    binding.toFriCB.isEnabled = (position!=5)
+                    binding.toSatCB.isEnabled = (position!=6)
                 }
             }
 
@@ -232,7 +246,9 @@ class FragmentARRAVLocation : Fragment() {
 
 
         IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited = true
-        (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+        requireActivity().findViewById<Button>(R.id.contactInfoButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
         setServices()
         setFieldsListeners()
@@ -242,8 +258,8 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun refreshButtonsState(){
-        saveButton.isEnabled = (activity as FormsActivity).saveRequired
-        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.saveButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.cancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }
 
 
@@ -252,55 +268,27 @@ class FragmentARRAVLocation : Fragment() {
     fun setFieldsListeners(){
 
 //        editGeo1Long.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(3, 6))
-        editGeo1Long.inputFilterDecimal(
+        binding.editGeo1Long.inputFilterDecimal(
                 // this values must be positive (0+) unless it throw exception
                 maxDigitsIncludingPoint = 5,
                 maxDecimalPlaces = 6,
                 signed = true
         )
-        editGeo1Long.addTextChangedListener(object : TextWatcher{
+        binding.editGeo1Long.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 try {
                     val s=p0.toString().toFloat()
                     if (s>0 || s<=-181) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
                     } else {
-                        FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LONGITUDE = p0.toString()
-                        (activity as FormsActivity).saveRequired = true
-                        saveGeoCodesRequired = true
-                        refreshButtonsState()
-                    }
-                } catch(e: java.lang.Exception) {
-
-                }
-            }
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-        })
-
-        editGeo2Long.inputFilterDecimal(
-                // this values must be positive (0+) unless it throw exception
-                maxDigitsIncludingPoint = 5,
-                maxDecimalPlaces = 6,
-                signed = true
-        )
-        editGeo2Long.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(p0: Editable?) {
-                try {
-                    val s=p0.toString().toFloat()
-                    if (s>0 || s<=-181) {
-                        Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
-                    } else {
-                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }.isNullOrEmpty()) {
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps") }.isNullOrEmpty()) {
                             var item = TblGeocodes()
-                            item.GeoCodeTypeID = 3
-                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeoCodeTypes.filter { s->s.GeocodeTypeID==3 }[0].GeocodeTypeName
+                            item.GeoCodeTypeID = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Maps")}[0].GeocodeTypeID
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Maps")}[0].GeocodeTypeName
                             item.LONGITUDE = p0.toString()
                             FacilityDataModel.getInstance().tblGeocodes.add(item)
                         } else {
-                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == 3 }[0].LONGITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeocodeTypeName.contains("Maps") }[0].LONGITUDE = p0.toString()
                         }
                         (activity as FormsActivity).saveRequired = true
                         saveGeoCodesRequired = true
@@ -316,24 +304,60 @@ class FragmentARRAVLocation : Fragment() {
             }
         })
 
-        editGeo3Long.inputFilterDecimal(
+        binding.editGeo2Long.inputFilterDecimal(
+                // this values must be positive (0+) unless it throw exception
+                maxDigitsIncludingPoint = 5,
+                maxDecimalPlaces = 6,
+                signed = true
+        )
+        binding.editGeo2Long.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                try {//HERE
+                    val s=p0.toString().toFloat()
+                    if (s>0 || s<=-181) {
+                        Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
+                    } else {
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow") }.isNullOrEmpty()) {
+                            var item = TblGeocodes()
+                            item.GeoCodeTypeID = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Tow")}[0].GeocodeTypeID
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Tow")}[0].GeocodeTypeName
+                            item.LONGITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.add(item)
+                        } else {
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeocodeTypeName.contains("Tow") }[0].LONGITUDE = p0.toString()
+                        }
+                        (activity as FormsActivity).saveRequired = true
+                        saveGeoCodesRequired = true
+                        refreshButtonsState()
+                    }
+                } catch(e: java.lang.Exception) {
+
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+        binding.editGeo3Long.inputFilterDecimal(
                 maxDigitsIncludingPoint = 5, maxDecimalPlaces = 6, signed = true
         )
-        editGeo3Long.addTextChangedListener(object : TextWatcher{
+        binding.editGeo3Long.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 try {
                     val s=p0.toString().toFloat()
                     if (s>0 || s<=-181) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and -180")
                     } else {
-                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2 }.isNullOrEmpty()) {
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust") }.isNullOrEmpty()) {
                             var item = TblGeocodes()
-                            item.GeoCodeTypeID = 2
-                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeoCodeTypes.filter { s->s.GeocodeTypeID==2 }[0].GeocodeTypeName
+                            item.GeoCodeTypeID = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Cust")}[0].GeocodeTypeID
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Cust")}[0].GeocodeTypeName
                             item.LONGITUDE = p0.toString()
                             FacilityDataModel.getInstance().tblGeocodes.add(item)
                         } else {
-                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == 2 }[0].LONGITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeocodeTypeName.contains("Cust")}[0].LONGITUDE = p0.toString()
                         }
                         (activity as FormsActivity).saveRequired = true
                         saveGeoCodesRequired = true
@@ -349,15 +373,23 @@ class FragmentARRAVLocation : Fragment() {
             }
         })
 
-        editGeo1Lat.inputFilterDecimal(maxDigitsIncludingPoint = 3, maxDecimalPlaces = 6, signed = false)
-        editGeo1Lat.addTextChangedListener(object : TextWatcher{
+        binding.editGeo1Lat.inputFilterDecimal(maxDigitsIncludingPoint = 3, maxDecimalPlaces = 6, signed = false)
+        binding.editGeo1Lat.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
-                try {
+                try {//HERE2
                     val s=p0.toString().toFloat()
                     if (s<0 || s>90) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and 90")
                     } else {
-                        FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LATITUDE = p0.toString()
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}.isNullOrEmpty()) {
+                            var item = TblGeocodes()
+                            item.GeoCodeTypeID = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Maps")}[0].GeocodeTypeID
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Maps")}[0].GeocodeTypeName
+                            item.LATITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.add(item)
+                        } else {
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeocodeTypeName.contains("Maps")}[0].LATITUDE = p0.toString()
+                        }
                         (activity as FormsActivity).saveRequired = true
                         saveGeoCodesRequired = true
                         refreshButtonsState()
@@ -372,8 +404,8 @@ class FragmentARRAVLocation : Fragment() {
             }
         })
 
-        editGeo2Lat.inputFilterDecimal(maxDigitsIncludingPoint = 3, maxDecimalPlaces = 6, signed = false)
-        editGeo2Lat.addTextChangedListener(object : TextWatcher{
+        binding.editGeo2Lat.inputFilterDecimal(maxDigitsIncludingPoint = 3, maxDecimalPlaces = 6, signed = false)
+        binding.editGeo2Lat.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 try {
                     val s=p0.toString().toFloat()
@@ -382,12 +414,12 @@ class FragmentARRAVLocation : Fragment() {
                     } else {
                         if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==1 }.isNullOrEmpty()) {
                             var item = TblGeocodes()
-                            item.GeoCodeTypeID = 1
-                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeoCodeTypes.filter { s->s.GeocodeTypeID==1 }[0].GeocodeTypeName
+                            item.GeoCodeTypeID = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Tow")}[0].GeocodeTypeID
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Tow")}[0].GeocodeTypeName
                             item.LATITUDE = p0.toString()
                             FacilityDataModel.getInstance().tblGeocodes.add(item)
                         } else {
-                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == 1 }[0].LATITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeocodeTypeName.contains("Tow")}[0].LATITUDE = p0.toString()
                         }
                         (activity as FormsActivity).saveRequired = true
                         saveGeoCodesRequired = true
@@ -403,22 +435,22 @@ class FragmentARRAVLocation : Fragment() {
             }
         })
 
-        editGeo3Lat.inputFilterDecimal(maxDigitsIncludingPoint = 3, maxDecimalPlaces = 6, signed = false)
-        editGeo3Lat.addTextChangedListener(object : TextWatcher{
+        binding.editGeo3Lat.inputFilterDecimal(maxDigitsIncludingPoint = 3, maxDecimalPlaces = 6, signed = false)
+        binding.editGeo3Lat.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 try {
                     val s=p0.toString().toFloat()
                     if (s<0 || s>90) {
                         Utility.showValidationAlertDialog(activity,"Please enter value between 0 and 90")
                     } else {
-                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2 }.isNullOrEmpty()) {
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}.isNullOrEmpty()) {
                             var item = TblGeocodes()
-                            item.GeoCodeTypeID = 2
-                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeoCodeTypes.filter { s->s.GeocodeTypeID==2 }[0].GeocodeTypeName
+                            item.GeoCodeTypeID = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Cust") }[0].GeocodeTypeID
+                            item.GeocodeTypeName = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Cust") }[0].GeocodeTypeName
                             item.LATITUDE = p0.toString()
                             FacilityDataModel.getInstance().tblGeocodes.add(item)
                         } else {
-                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == 2 }[0].LATITUDE = p0.toString()
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeocodeTypeName.contains("Cust")}[0].LATITUDE = p0.toString()
                         }
                         (activity as FormsActivity).saveRequired = true
                         saveGeoCodesRequired = true
@@ -434,8 +466,8 @@ class FragmentARRAVLocation : Fragment() {
             }
         })
 
-        cancelButton.setOnClickListener {
-            cancelButton.hideKeyboard()
+        binding.cancelButton.setOnClickListener {
+            binding.cancelButton.hideKeyboard()
             FacilityDataModel.getInstance().tblHours[0].SunClose = FacilityDataModelOrg.getInstance().tblHours[0].SunClose
             FacilityDataModel.getInstance().tblHours[0].SunOpen = FacilityDataModelOrg.getInstance().tblHours[0].SunOpen
             FacilityDataModel.getInstance().tblHours[0].SatClose = FacilityDataModelOrg.getInstance().tblHours[0].SatClose
@@ -484,17 +516,18 @@ class FragmentARRAVLocation : Fragment() {
             saveLangRequired = false
             saveGeoCodesRequired = false
             refreshButtonsState()
-            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully")
+//            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully")
+            Utility.showUnifiedConfirmationDialog(activity,  "Changes cancelled successfully")
         }
 
 
-        sunOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.sunOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!sunOpenSpinner.tag.equals(p2) || sunOpenSpinner.tag.equals("-1")) {
-                    sunOpenSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].SunOpen = sunOpenSpinner.getItemAtPosition(p2).toString()
+                if (!binding.sunOpenSpinner.tag.equals(p2) || binding.sunOpenSpinner.tag.equals("-1")) {
+                    binding.sunOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].SunOpen = binding.sunOpenSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -503,13 +536,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        sunCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.sunCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!sunCloseSpinner.tag.equals(p2) || sunCloseSpinner.tag.equals("-1")) {
-                    sunCloseSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].SunClose = sunCloseSpinner.getItemAtPosition(p2).toString()
+                if (!binding.sunCloseSpinner.tag.equals(p2) || binding.sunCloseSpinner.tag.equals("-1")) {
+                    binding.sunCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].SunClose = binding.sunCloseSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -518,13 +551,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        monCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.monCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!monCloseSpinner.tag.equals(p2) || monCloseSpinner.tag.equals("-1")) {
-                    monCloseSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].MonClose = monCloseSpinner.getItemAtPosition(p2).toString()
+                if (!binding.monCloseSpinner.tag.equals(p2) || binding.monCloseSpinner.tag.equals("-1")) {
+                    binding.monCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].MonClose = binding.monCloseSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -533,13 +566,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        monOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.monOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!monOpenSpinner.tag.equals(p2) || monOpenSpinner.tag.equals("-1")) {
-                    monOpenSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].MonOpen = monOpenSpinner.getItemAtPosition(p2).toString()
+                if (!binding.monOpenSpinner.tag.equals(p2) || binding.monOpenSpinner.tag.equals("-1")) {
+                    binding.monOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].MonOpen = binding.monOpenSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -548,13 +581,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        tueCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.tueCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!tueCloseSpinner.tag.equals(p2) || tueCloseSpinner.tag.equals("-1")) {
-                    tueCloseSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].TueClose = tueCloseSpinner.getItemAtPosition(p2).toString()
+                if (!binding.tueCloseSpinner.tag.equals(p2) || binding.tueCloseSpinner.tag.equals("-1")) {
+                    binding.tueCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].TueClose = binding.tueCloseSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -563,13 +596,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        tueOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.tueOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!tueOpenSpinner.tag.equals(p2) || tueOpenSpinner.tag.equals("-1")) {
-                    tueOpenSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].TueOpen = tueOpenSpinner.getItemAtPosition(p2).toString()
+                if (!binding.tueOpenSpinner.tag.equals(p2) || binding.tueOpenSpinner.tag.equals("-1")) {
+                    binding.tueOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].TueOpen = binding.tueOpenSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -578,13 +611,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        wedOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.wedOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!wedOpenSpinner.tag.equals(p2) || wedOpenSpinner.tag.equals("-1")) {
-                    wedOpenSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].WedOpen = wedOpenSpinner.getItemAtPosition(p2).toString()
+                if (!binding.wedOpenSpinner.tag.equals(p2) || binding.wedOpenSpinner.tag.equals("-1")) {
+                    binding.wedOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].WedOpen = binding.wedOpenSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -593,13 +626,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        wedCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.wedCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!wedCloseSpinner.tag.equals(p2) || wedCloseSpinner.tag.equals("-1")) {
-                    wedCloseSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].WedClose = wedCloseSpinner.getItemAtPosition(p2).toString()
+                if (!binding.wedCloseSpinner.tag.equals(p2) || binding.wedCloseSpinner.tag.equals("-1")) {
+                    binding.wedCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].WedClose = binding.wedCloseSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -608,13 +641,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        thuCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.thuCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!thuCloseSpinner.tag.equals(p2) || thuCloseSpinner.tag.equals("-1")) {
-                    thuCloseSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].ThuClose = thuCloseSpinner.getItemAtPosition(p2).toString()
+                if (!binding.thuCloseSpinner.tag.equals(p2) || binding.thuCloseSpinner.tag.equals("-1")) {
+                    binding.thuCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].ThuClose = binding.thuCloseSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -623,13 +656,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        thuOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.thuOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!thuOpenSpinner.tag.equals(p2) || thuOpenSpinner.tag.equals("-1")) {
-                    thuOpenSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].ThuOpen = thuOpenSpinner.getItemAtPosition(p2).toString()
+                if (!binding.thuOpenSpinner.tag.equals(p2) || binding.thuOpenSpinner.tag.equals("-1")) {
+                    binding.thuOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].ThuOpen = binding.thuOpenSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -638,13 +671,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        friOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.friOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!friOpenSpinner.tag.equals(p2) || friOpenSpinner.tag.equals("-1")) {
-                    friOpenSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].FriOpen = friOpenSpinner.getItemAtPosition(p2).toString()
+                if (!binding.friOpenSpinner.tag.equals(p2) || binding.friOpenSpinner.tag.equals("-1")) {
+                    binding.friOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].FriOpen = binding.friOpenSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -653,13 +686,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        friCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.friCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!friCloseSpinner.tag.equals(p2) || friCloseSpinner.tag.equals("-1")) {
-                    friCloseSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].FriClose = friCloseSpinner.getItemAtPosition(p2).toString()
+                if (!binding.friCloseSpinner.tag.equals(p2) || binding.friCloseSpinner.tag.equals("-1")) {
+                    binding.friCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].FriClose = binding.friCloseSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -668,13 +701,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        satCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.satCloseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!satCloseSpinner.tag.equals(p2) || satCloseSpinner.tag.equals("-1")) {
-                    satCloseSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].SatClose = satCloseSpinner.getItemAtPosition(p2).toString()
+                if (!binding.satCloseSpinner.tag.equals(p2) || binding.satCloseSpinner.tag.equals("-1")) {
+                    binding.satCloseSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].SatClose = binding.satCloseSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -683,13 +716,13 @@ class FragmentARRAVLocation : Fragment() {
                 }
             }
         }
-        satOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.satOpenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if (!satOpenSpinner.tag.equals(p2) || satOpenSpinner.tag.equals("-1")) {
-                    satOpenSpinner.tag = "-1"
-                    FacilityDataModel.getInstance().tblHours[0].SatOpen = satOpenSpinner.getItemAtPosition(p2).toString()
+                if (!binding.satOpenSpinner.tag.equals(p2) || binding.satOpenSpinner.tag.equals("-1")) {
+                    binding.satOpenSpinner.tag = "-1"
+                    FacilityDataModel.getInstance().tblHours[0].SatOpen = binding.satOpenSpinner.getItemAtPosition(p2).toString()
                     HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                     HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
                     (activity as FormsActivity).saveRequired = true
@@ -700,55 +733,55 @@ class FragmentARRAVLocation : Fragment() {
         }
 
 
-        facilityIsOpenEffDateBtn.setOnClickListener {
+        binding.facilityIsOpenEffDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireContext(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                facilityIsOpenEffDateBtn!!.text = sdf.format(c.time)
+                binding.facilityIsOpenEffDateBtn!!.text = sdf.format(c.time)
                 HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                 HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
             }, year, month, day)
             dpd.show()
         }
-        facilityIsOpenExpDateBtn.setOnClickListener {
+        binding.facilityIsOpenExpDateBtn.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
-            val dpd = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(requireContext(),R.style.CustomDatePickerDialogTheme, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 val myFormat = "MM/dd/yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
                 c.set(year,monthOfYear,dayOfMonth)
-                facilityIsOpenExpDateBtn!!.text = sdf.format(c.time)
+                binding.facilityIsOpenExpDateBtn!!.text = sdf.format(c.time)
                 HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
                 HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
             }, year, month, day)
             dpd.show()
         }
 
-        exitAddEmailDialogeBtnId.setOnClickListener({
-            addNewEmailDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitAddEmailDialogeBtnId.setOnClickListener({
+            binding.addNewEmailDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
 //            enableAllAddButnsAndDialog()
             (activity as FormsActivity).overrideBackButton = false
         })
 
-        exitCopyDialogeBtnId.setOnClickListener({
-            copyHoursDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitCopyDialogeBtnId.setOnClickListener({
+            binding.copyHoursDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
 //            enableAllAddButnsAndDialog()
             (activity as FormsActivity).overrideBackButton = false
         })
 
 
-        exitUpdateEmailDialogeBtnId.setOnClickListener({
-            editEmailDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitUpdateEmailDialogeBtnId.setOnClickListener({
+            binding.editEmailDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
             (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
         })
@@ -759,21 +792,21 @@ class FragmentARRAVLocation : Fragment() {
 //            enableAllAddButnsAndDialog()
 //        })
 
-        exitEditLocationDialogeBtnId.setOnClickListener({
-            editLocationDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitEditLocationDialogeBtnId.setOnClickListener({
+            binding.editLocationDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
             (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
         })
-        exitUpdatePhoneDialogeBtnId.setOnClickListener({
-            alphaBackgroundForDialogs.visibility = View.GONE
-            editPhoneDialog.visibility = View.GONE
+        binding.exitUpdatePhoneDialogeBtnId.setOnClickListener({
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
+            binding.editPhoneDialog.visibility = View.GONE
             (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
         })
-        exitAddPhoneDialogeBtnId.setOnClickListener({
-            addNewPhoneDialog.visibility = View.GONE
-            alphaBackgroundForDialogs.visibility = View.GONE
+        binding.exitAddPhoneDialogeBtnId.setOnClickListener({
+            binding.addNewPhoneDialog.visibility = View.GONE
+            binding.alphaBackgroundForDialogs.visibility = View.GONE
             (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
         })
@@ -784,13 +817,13 @@ class FragmentARRAVLocation : Fragment() {
 //            showLocationDialog()
 //        })
 
-        addNewPhoneButton.setOnClickListener({
+        binding.addNewPhoneButton.setOnClickListener({
 //            disableAllAddButnsAndDialog()
             (activity as FormsActivity).overrideBackButton = true
             showPhoneDialog()
         })
 
-        addNewEmailButton.setOnClickListener {
+        binding.addNewEmailButton.setOnClickListener {
 //            disableAllAddButnsAndDialog()
             (activity as FormsActivity).overrideBackButton = true
             showEmailDialog()
@@ -800,7 +833,7 @@ class FragmentARRAVLocation : Fragment() {
 
 
 
-        locationSubmitButton.setOnClickListener({
+        binding.locationSubmitButton.setOnClickListener({
             // missing validation for states when the lookup is ready
 
             var location =TblAddress().locIsInputsValid
@@ -862,58 +895,67 @@ class FragmentARRAVLocation : Fragment() {
         })
 
 
-        phoneSubmitButton.setOnClickListener({
-
-            var phoneValide=TblPhone().phoneIsInputsValid
-            if (newPhoneNoText.text.isNullOrEmpty()) {
-                newPhoneNoText.setError("please enter phone number")
-                phoneValide=false
+        binding.phoneSubmitButton.setOnClickListener({
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                var phoneValide=TblPhone().phoneIsInputsValid
+                if (binding.newPhoneNoText.text.isNullOrEmpty()) {
+                    binding.newPhoneNoText.setError("please enter phone number")
+                    phoneValide=false
+                } else {
+                    phoneValide=true
+                    submitFacilityPhone()
+    //                enableAllAddButnsAndDialog()
+                }
             } else {
-                phoneValide=true
-                submitFacilityPhone()
-//                enableAllAddButnsAndDialog()
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
             }
         })
 
-        emailSubmitButton.setOnClickListener({
-
-            var emailValid=TblFacilityEmail().emailIsInputsValid
-            if (newEmailAddrText.text.isNullOrEmpty()) {
-                emailValid=false
-                newEmailAddrText.setError("Required Field")
-            } else if (!Utility.isEmailValid(newEmailAddrText.text.toString())) {
-                Utility.showValidationAlertDialog(activity,"Please enter a valid Email address")
-            }else {
-                emailValid=true
-                submitFacilityEmail()
-//                enableAllAddButnsAndDialog()
+        binding.emailSubmitButton.setOnClickListener({
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                var emailValid=TblFacilityEmail().emailIsInputsValid
+                if (binding.newEmailAddrText.text.isNullOrEmpty()) {
+                    emailValid=false
+                    binding.newEmailAddrText.setError("Required Field")
+                } else if (!Utility.isEmailValid(binding.newEmailAddrText.text.toString())) {
+                    Utility.showValidationAlertDialog(activity,"Please enter a valid Email address")
+                }else {
+                    emailValid=true
+                    submitFacilityEmail()
+    //                enableAllAddButnsAndDialog()
+                }
+            } else {
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
             }
         })
 
-        saveButton.setOnClickListener(View.OnClickListener {
+        binding.saveButton.setOnClickListener(View.OnClickListener {
 //            contactInfoLoadingText.text = "Saving ..."
 //            contactInfoLoadingView.visibility = View.VISIBLE
-            if (saveGeoCodesRequired) {
-                var msg = validateGeoCodesInputs()
-             if (!msg.equals("")) {
-                 Utility.showValidationAlertDialog(activity,msg)
-             } else {
-                 contactInfoLoadingText.text = "Saving ..."
-                 contactInfoLoadingView.visibility = View.VISIBLE
-                 submitGeoCodes()
-                 if (saveHoursRequired) submitHours()
-                 if (saveLangRequired) submitLanguages()
-             }
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                if (saveGeoCodesRequired) {
+                    var msg = validateGeoCodesInputs()
+                 if (!msg.equals("")) {
+                     Utility.showValidationAlertDialog(activity,msg)
+                 } else {
+                     binding.contactInfoLoadingText.text = "Saving ..."
+                     binding.contactInfoLoadingView.visibility = View.VISIBLE
+                     submitGeoCodes()
+                     if (saveHoursRequired) submitHours()
+                     if (saveLangRequired) submitLanguages()
+                 }
+                } else {
+                    binding.contactInfoLoadingText.text = "Saving ..."
+                    binding.contactInfoLoadingView.visibility = View.VISIBLE
+                    if (saveHoursRequired) submitHours()
+                    if (saveLangRequired) submitLanguages()
+                }
             } else {
-                contactInfoLoadingText.text = "Saving ..."
-                contactInfoLoadingView.visibility = View.VISIBLE
-                if (saveHoursRequired) submitHours()
-                if (saveLangRequired) submitLanguages()
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
             }
-
         })
 
-        nightDropCheck.setOnCheckedChangeListener { compoundButton, b ->
+        binding.nightDropCheck.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblHours[0].NightDrop = b
             HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
@@ -922,7 +964,7 @@ class FragmentARRAVLocation : Fragment() {
             refreshButtonsState()
         }
 
-        nightDropInstText.addTextChangedListener(object : TextWatcher{
+        binding.nightDropInstText.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
                 FacilityDataModel.getInstance().tblHours[0].NightDropInstr = p0.toString()
                 HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
@@ -942,122 +984,168 @@ class FragmentARRAVLocation : Fragment() {
 
     }
 
-    fun enableAllAddButnsAndDialog(){
-
-        for (i in 0 until mainViewLinearId.childCount) {
-            val child = mainViewLinearId.getChildAt(i)
-            child.isEnabled = true
-        }
-        for (i in 0 until mainViewLinearId2.childCount) {
-            val child = mainViewLinearId2.getChildAt(i)
-            child.isEnabled = true
-        }
-        for (i in 0 until mainViewLinearId3.childCount) {
-            val child = mainViewLinearId3.getChildAt(i)
-            child.isEnabled = true
-        }
-        var childViewCount = phoneTbl.getChildCount();
-        for ( i in 1..childViewCount-1) {
-            var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
-            for (j in 0..row.getChildCount()-1) {
-                var tv : TextView= row.getChildAt(j) as TextView
-                tv.isEnabled=true
-
+    private fun setAlertColoring() {
+        var toolTipStr = ""
+        binding.alertLocationYIcon.tooltipText = toolTipStr
+        binding.alertLocationRIcon.tooltipText = toolTipStr
+        FacilityDataModel.getInstance().tblFacilityEmail.apply {
+            (0 until size).forEach {
+                if (!get(it).emailID.equals("-1")) {
+                    if (!emailFormatValidation(get(it).email)) {
+                        binding.alertLocationRIcon.isVisible = true
+                        binding.alertLocationYIcon.isVisible = false
+                        binding.alertLocationRIcon.isClickable = true
+                        toolTipStr = "${get(it).email} Format is incorrect"
+                        binding.alertLocationRIcon.setOnClickListener({
+//                            Utility.showMessageDialog(requireContext(), "Notification", toolTipStr)
+                            Utility.showUnifiedInformationDialog(activity,toolTipStr)
+                        })
+                    } else {
+                        binding.alertLocationRIcon.isVisible = false
+                        binding.alertLocationYIcon.isVisible = false
+                    }
+                }
             }
-
-        }
-        var locationChildViewCount = locationTbl.getChildCount();
-
-        for ( i in 1..locationChildViewCount-1) {
-            var row : TableRow= locationTbl.getChildAt(i) as TableRow;
-
-            for (j in 0..row.getChildCount()-1) {
-
-                var tv : TextView= row.getChildAt(j) as TextView
-                tv.isEnabled=true
-
-            }
-
-        }
-        var emailChildViewCount = emailTbl.getChildCount();
-
-        for ( i in 1..emailChildViewCount-1) {
-            var row : TableRow= emailTbl.getChildAt(i) as TableRow;
-
-            for (j in 0..row.getChildCount()-1) {
-
-                var tv : TextView= row.getChildAt(j) as TextView
-                tv.isEnabled=true
-
-            }
-
         }
 
 
+
+        val animation: Animation = AlphaAnimation(1.0f, 0.0f)
+        animation.duration = 500 //1 second duration for each animation cycle
+        animation.interpolator = LinearInterpolator()
+        animation.repeatCount = Animation.INFINITE //repeating indefinitely
+        animation.repeatMode = Animation.REVERSE //animation will start from end point once ended.
+        binding.alertLocationRIcon.startAnimation(animation) //to start animation
+        binding.alertLocationYIcon.startAnimation(animation) //to start animation
 
     }
-    fun disableAllAddButnsAndDialog(){
-
-        for (i in 0 until mainViewLinearId.childCount) {
-            val child = mainViewLinearId.getChildAt(i)
-            child.isEnabled = false
-        }
-
-        for (i in 0 until mainViewLinearId2.childCount) {
-            val child = mainViewLinearId2.getChildAt(i)
-            child.isEnabled = false
-        }
-
-        for (i in 0 until mainViewLinearId3.childCount) {
-            val child = mainViewLinearId3.getChildAt(i)
-            child.isEnabled = false
-        }
 
 
+    fun emailFormatValidation(target: CharSequence): Boolean {
 
-        var childViewCount = phoneTbl.getChildCount();
-
-        for ( i in 1..childViewCount-1) {
-            var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
-
-            for (j in 0..row.getChildCount()-1) {
-
-                var tv : TextView= row.getChildAt(j) as TextView
-                tv.isEnabled=false
-
-            }
-
-        }
-        var locationChildViewCount = locationTbl.getChildCount();
-
-        for ( i in 1..locationChildViewCount-1) {
-            var row : TableRow= locationTbl.getChildAt(i) as TableRow;
-
-            for (j in 0..row.getChildCount()-1) {
-
-                var tv : TextView= row.getChildAt(j) as TextView
-                tv.isEnabled=false
-
-            }
-
-        }
-        var emailChildViewCount = emailTbl.getChildCount();
-
-        for ( i in 1..emailChildViewCount-1) {
-            var row : TableRow= emailTbl.getChildAt(i) as TableRow;
-
-            for (j in 0..row.getChildCount()-1) {
-
-                var tv : TextView= row.getChildAt(j) as TextView
-                tv.isEnabled=false
-
-            }
-
-        }
+        if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
+            emailValid = true else emailValid = false
 
 
-
+        return emailValid
     }
+
+//    fun enableAllAddButnsAndDialog(){
+//
+//        for (i in 0 until mainViewLinearId.childCount) {
+//            val child = mainViewLinearId.getChildAt(i)
+//            child.isEnabled = true
+//        }
+//        for (i in 0 until mainViewLinearId2.childCount) {
+//            val child = mainViewLinearId2.getChildAt(i)
+//            child.isEnabled = true
+//        }
+//        for (i in 0 until mainViewLinearId3.childCount) {
+//            val child = mainViewLinearId3.getChildAt(i)
+//            child.isEnabled = true
+//        }
+//        var childViewCount = phoneTbl.getChildCount();
+//        for ( i in 1..childViewCount-1) {
+//            var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
+//            for (j in 0..row.getChildCount()-1) {
+//                var tv : TextView= row.getChildAt(j) as TextView
+//                tv.isEnabled=true
+//
+//            }
+//
+//        }
+//        var locationChildViewCount = locationTbl.getChildCount();
+//
+//        for ( i in 1..locationChildViewCount-1) {
+//            var row : TableRow= locationTbl.getChildAt(i) as TableRow;
+//
+//            for (j in 0..row.getChildCount()-1) {
+//
+//                var tv : TextView= row.getChildAt(j) as TextView
+//                tv.isEnabled=true
+//
+//            }
+//
+//        }
+//        var emailChildViewCount = emailTbl.getChildCount();
+//
+//        for ( i in 1..emailChildViewCount-1) {
+//            var row : TableRow= emailTbl.getChildAt(i) as TableRow;
+//
+//            for (j in 0..row.getChildCount()-1) {
+//
+//                var tv : TextView= row.getChildAt(j) as TextView
+//                tv.isEnabled=true
+//
+//            }
+//
+//        }
+//
+//
+//
+//    }
+//    fun disableAllAddButnsAndDialog(){
+//
+//        for (i in 0 until mainViewLinearId.childCount) {
+//            val child = mainViewLinearId.getChildAt(i)
+//            child.isEnabled = false
+//        }
+//
+//        for (i in 0 until mainViewLinearId2.childCount) {
+//            val child = mainViewLinearId2.getChildAt(i)
+//            child.isEnabled = false
+//        }
+//
+//        for (i in 0 until mainViewLinearId3.childCount) {
+//            val child = mainViewLinearId3.getChildAt(i)
+//            child.isEnabled = false
+//        }
+//
+//
+//
+//        var childViewCount = phoneTbl.getChildCount();
+//
+//        for ( i in 1..childViewCount-1) {
+//            var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
+//
+//            for (j in 0..row.getChildCount()-1) {
+//
+//                var tv : TextView= row.getChildAt(j) as TextView
+//                tv.isEnabled=false
+//
+//            }
+//
+//        }
+//        var locationChildViewCount = locationTbl.getChildCount();
+//
+//        for ( i in 1..locationChildViewCount-1) {
+//            var row : TableRow= locationTbl.getChildAt(i) as TableRow;
+//
+//            for (j in 0..row.getChildCount()-1) {
+//
+//                var tv : TextView= row.getChildAt(j) as TextView
+//                tv.isEnabled=false
+//
+//            }
+//
+//        }
+//        var emailChildViewCount = emailTbl.getChildCount();
+//
+//        for ( i in 1..emailChildViewCount-1) {
+//            var row : TableRow= emailTbl.getChildAt(i) as TableRow;
+//
+//            for (j in 0..row.getChildCount()-1) {
+//
+//                var tv : TextView= row.getChildAt(j) as TextView
+//                tv.isEnabled=false
+//
+//            }
+//
+//        }
+//
+//
+//
+//    }
 
 //    fun languageGridViewCLick(v : View){
 //        (activity as FormsActivity).saveRequired = true
@@ -1119,119 +1207,144 @@ class FragmentARRAVLocation : Fragment() {
 
     fun getAddressChanges() : String {
         var strChanges = ""
-        if (newLocLatText.text.toString() != FacilityDataModelOrg.getInstance().tblAddress[0].LATITUDE) {
-            strChanges += "Lattitude changed from (" + FacilityDataModelOrg.getInstance().tblAddress[0].LATITUDE + ") to ("+newLocLatText.text.toString()+") - "
+        try {
+            if (binding.newLocLatText.text.toString() != FacilityDataModelOrg.getInstance().tblAddress[0].LATITUDE) {
+                strChanges += "Lattitude changed from (" + FacilityDataModelOrg.getInstance().tblAddress[0].LATITUDE + ") to (" + binding.newLocLatText.text.toString() + ") - "
+            }
+            if (binding.newLocLongText.text.toString() != FacilityDataModelOrg.getInstance().tblAddress[0].LONGITUDE) {
+                strChanges += "Longitude changed from (" + FacilityDataModelOrg.getInstance().tblAddress[0].LONGITUDE + ") to (" + binding.newLocLongText.text.toString() + ") - "
+            }
+            strChanges = strChanges.removeSuffix(" - ")
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        if (newLocLongText.text.toString() != FacilityDataModelOrg.getInstance().tblAddress[0].LONGITUDE) {
-            strChanges += "Longitude changed from (" + FacilityDataModelOrg.getInstance().tblAddress[0].LONGITUDE + ") to ("+newLocLongText.text.toString()+") - "
-        }
-        strChanges = strChanges.removeSuffix(" - ")
         return strChanges
     }
 
 
     fun getEmailChanges(action : Int,rowId: Int) : String {
         var strChanges = ""
+        try {
         if (action==0) {
-            strChanges += "New entry added as Email (" + newEmailAddrText.text.toString() + ") and type (" + newEmailTypeSpinner.selectedItem.toString() + ")"
+            strChanges += "New entry added as Email (" + binding.newEmailAddrText.text.toString() + ") and type (" + binding.newEmailTypeSpinner.selectedItem.toString() + ")"
         } else {
-            if (newChangesEmailText.text.toString() != FacilityDataModelOrg.getInstance().tblFacilityEmail[rowId].email) {
-                strChanges += "Email changed from (" + FacilityDataModelOrg.getInstance().tblFacilityEmail[rowId].email + ") to (" + newChangesEmailText.text.toString() + ") - "
+            if (binding.newChangesEmailText.text.toString() != FacilityDataModelOrg.getInstance().tblFacilityEmail[rowId].email) {
+                strChanges += "Email changed from (" + FacilityDataModelOrg.getInstance().tblFacilityEmail[rowId].email + ") to (" + binding.newChangesEmailText.text.toString() + ") - "
             }
         }
         strChanges = strChanges.removeSuffix(" - ")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         return strChanges
     }
 
 
     fun getHoursChanges() : String {
         var strChanges = ""
-        val sunClose = sunCloseSpinner.selectedItem.toString()
-        val monClose = monCloseSpinner.selectedItem.toString()
-        val tueClose = tueCloseSpinner.selectedItem.toString()
-        val wedClose = wedCloseSpinner.selectedItem.toString()
-        val thuClose = thuCloseSpinner.selectedItem.toString()
-        val friClose = friCloseSpinner.selectedItem.toString()
-        val satClose = satCloseSpinner.selectedItem.toString()
-        val sunOpen = sunOpenSpinner.selectedItem.toString()
-        val monOpen = monOpenSpinner.selectedItem.toString()
-        val tueOpen = tueOpenSpinner.selectedItem.toString()
-        val wedOpen = wedOpenSpinner.selectedItem.toString()
-        val thuOpen = thuOpenSpinner.selectedItem.toString()
-        val friOpen = friOpenSpinner.selectedItem.toString()
-        val satOpen = satOpenSpinner.selectedItem.toString()
-        // HAVE TO HANDLE CLOSED AND OR 00:00:01
-        if (sunClose != FacilityDataModelOrg.getInstance().tblHours[0].SunClose) {
-            strChanges += "Sunday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SunClose + ") to (" + sunClose + ") - "
-        }
-        if (monClose != FacilityDataModelOrg.getInstance().tblHours[0].MonClose) {
-            strChanges += "Monday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].MonClose + ") to (" + monClose + ") - "
-        }
-        if (tueClose != FacilityDataModelOrg.getInstance().tblHours[0].TueClose) {
-            strChanges += "Tuesday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].TueClose + ") to (" + tueClose + ") - "
-        }
-        if (wedClose != FacilityDataModelOrg.getInstance().tblHours[0].WedClose) {
-            strChanges += "Wednesday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].WedClose+ ") to (" + wedClose + ") - "
-        }
-        if (thuClose != FacilityDataModelOrg.getInstance().tblHours[0].ThuClose) {
-            strChanges += "Thursday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].ThuClose + ") to (" + thuClose + ") - "
-        }
-        if (friClose != FacilityDataModelOrg.getInstance().tblHours[0].FriClose) {
-            strChanges += "Friday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].FriClose + ") to (" + friClose + ") - "
-        }
-        if (satClose != FacilityDataModelOrg.getInstance().tblHours[0].SatClose) {
-            strChanges += "Saturday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SatClose + ") to (" + satClose + ") - "
-        }
+        try {
+            val sunClose = binding.sunCloseSpinner.selectedItem.toString()
+            val monClose = binding.monCloseSpinner.selectedItem.toString()
+            val tueClose = binding.tueCloseSpinner.selectedItem.toString()
+            val wedClose = binding.wedCloseSpinner.selectedItem.toString()
+            val thuClose = binding.thuCloseSpinner.selectedItem.toString()
+            val friClose = binding.friCloseSpinner.selectedItem.toString()
+            val satClose = binding.satCloseSpinner.selectedItem.toString()
+            val sunOpen = binding.sunOpenSpinner.selectedItem.toString()
+            val monOpen = binding.monOpenSpinner.selectedItem.toString()
+            val tueOpen = binding.tueOpenSpinner.selectedItem.toString()
+            val wedOpen = binding.wedOpenSpinner.selectedItem.toString()
+            val thuOpen = binding.thuOpenSpinner.selectedItem.toString()
+            val friOpen = binding.friOpenSpinner.selectedItem.toString()
+            val satOpen = binding.satOpenSpinner.selectedItem.toString()
+            // HAVE TO HANDLE CLOSED AND OR 00:00:01
 
-        if (sunOpen != FacilityDataModelOrg.getInstance().tblHours[0].SunOpen) {
-            strChanges += "Sunday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SunOpen + ") to (" + sunOpen + ") - "
+            if (sunClose != FacilityDataModelOrg.getInstance().tblHours[0].SunClose) {
+                strChanges += "Sunday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SunClose + ") to (" + sunClose + ") - "
+            }
+            if (monClose != FacilityDataModelOrg.getInstance().tblHours[0].MonClose) {
+                strChanges += "Monday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].MonClose + ") to (" + monClose + ") - "
+            }
+            if (tueClose != FacilityDataModelOrg.getInstance().tblHours[0].TueClose) {
+                strChanges += "Tuesday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].TueClose + ") to (" + tueClose + ") - "
+            }
+            if (wedClose != FacilityDataModelOrg.getInstance().tblHours[0].WedClose) {
+                strChanges += "Wednesday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].WedClose + ") to (" + wedClose + ") - "
+            }
+            if (thuClose != FacilityDataModelOrg.getInstance().tblHours[0].ThuClose) {
+                strChanges += "Thursday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].ThuClose + ") to (" + thuClose + ") - "
+            }
+            if (friClose != FacilityDataModelOrg.getInstance().tblHours[0].FriClose) {
+                strChanges += "Friday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].FriClose + ") to (" + friClose + ") - "
+            }
+            if (satClose != FacilityDataModelOrg.getInstance().tblHours[0].SatClose) {
+                strChanges += "Saturday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SatClose + ") to (" + satClose + ") - "
+            }
+
+            if (sunOpen != FacilityDataModelOrg.getInstance().tblHours[0].SunOpen) {
+                strChanges += "Sunday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SunOpen + ") to (" + sunOpen + ") - "
+            }
+            if (monOpen != FacilityDataModelOrg.getInstance().tblHours[0].MonOpen) {
+                strChanges += "Monday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].MonOpen + ") to (" + monOpen + ") - "
+            }
+            if (tueOpen != FacilityDataModelOrg.getInstance().tblHours[0].TueOpen) {
+                strChanges += "Tuesday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].TueOpen + ") to (" + tueOpen + ") - "
+            }
+            if (wedOpen != FacilityDataModelOrg.getInstance().tblHours[0].WedOpen) {
+                strChanges += "Wednesday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].WedOpen + ") to (" + wedOpen + ") - "
+            }
+            if (thuOpen != FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen) {
+                strChanges += "Thursday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen + ") to (" + thuOpen + ") - "
+            }
+            if (friOpen != FacilityDataModelOrg.getInstance().tblHours[0].FriOpen) {
+                strChanges += "Friday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].FriOpen + ") to (" + friOpen + ") - "
+            }
+            if (satOpen != FacilityDataModelOrg.getInstance().tblHours[0].SatOpen) {
+                strChanges += "Saturday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SatOpen + ") to (" + satOpen + ") - "
+            }
+            if (binding.nightDropCheck.isChecked != FacilityDataModelOrg.getInstance().tblHours[0].NightDrop) {
+                strChanges += "Night Drop availability changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].NightDrop + ") to (" + binding.nightDropCheck.isChecked + ") - "
+            }
+            if (binding.nightDropInstText.text.toString() != FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr) {
+                strChanges += "Night Drop instructions changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr + ") to (" + binding.nightDropInstText.text.toString() + ") - "
+            }
+            strChanges = strChanges.removeSuffix(" - ")
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        if (monOpen != FacilityDataModelOrg.getInstance().tblHours[0].MonOpen) {
-            strChanges += "Monday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].MonOpen + ") to (" + monOpen + ") - "
-        }
-        if (tueOpen != FacilityDataModelOrg.getInstance().tblHours[0].TueOpen) {
-            strChanges += "Tuesday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].TueOpen + ") to (" + tueOpen + ") - "
-        }
-        if (wedOpen != FacilityDataModelOrg.getInstance().tblHours[0].WedOpen) {
-            strChanges += "Wednesday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].WedOpen + ") to (" + wedOpen + ") - "
-        }
-        if (thuOpen != FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen) {
-            strChanges += "Thursday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen + ") to (" + thuOpen + ") - "
-        }
-        if (friOpen != FacilityDataModelOrg.getInstance().tblHours[0].FriOpen) {
-            strChanges += "Friday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].FriOpen + ") to (" + friOpen + ") - "
-        }
-        if (satOpen != FacilityDataModelOrg.getInstance().tblHours[0].SatOpen) {
-            strChanges += "Saturday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SatOpen + ") to (" + satOpen + ") - "
-        }
-        if (nightDropCheck.isChecked != FacilityDataModelOrg.getInstance().tblHours[0].NightDrop) {
-            strChanges += "Night Drop availability changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].NightDrop + ") to (" + nightDropCheck.isChecked + ") - "
-        }
-        if (nightDropInstText.text.toString() != FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr) {
-            strChanges += "Night Drop instructions changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr + ") to (" + nightDropInstText.text.toString() + ") - "
-        }
-        strChanges = strChanges.removeSuffix(" - ")
         return strChanges
     }
 
     fun getLanguageChanges() : String {
         var strChanges = ""
-        if (FacilityDataModel.getInstance().tblLanguage.size != FacilityDataModelOrg.getInstance().tblLanguage.size) {
-            strChanges += "Facility Languages changed from ("
-            FacilityDataModelOrg.getInstance().tblLanguage.apply {
-                (0 until size).forEach {
-                    strChanges += TypeTablesModel.getInstance().LanguageType.filter { s->s.LangTypeID.equals(get(it).LangTypeID)}[0].LangTypeName + " - "
+        try {
+            if (FacilityDataModel.getInstance().tblLanguage.size != FacilityDataModelOrg.getInstance().tblLanguage.size) {
+                strChanges += "Facility Languages changed from ("
+                FacilityDataModelOrg.getInstance().tblLanguage.apply {
+                    (0 until size).forEach {
+                        strChanges += TypeTablesModel.getInstance().LanguageType.filter { s ->
+                            s.LangTypeID.equals(
+                                get(it).LangTypeID
+                            )
+                        }[0].LangTypeName + " - "
+                    }
                 }
-            }
-            strChanges = strChanges.removeSuffix(" - ")
-            strChanges += ") to ("
-            FacilityDataModel.getInstance().tblLanguage.apply {
-                (0 until size).forEach {
-                    strChanges += TypeTablesModel.getInstance().LanguageType.filter { s->s.LangTypeID.equals(get(it).LangTypeID)}[0].LangTypeName + " - "
+                strChanges = strChanges.removeSuffix(" - ")
+                strChanges += ") to ("
+                FacilityDataModel.getInstance().tblLanguage.apply {
+                    (0 until size).forEach {
+                        strChanges += TypeTablesModel.getInstance().LanguageType.filter { s ->
+                            s.LangTypeID.equals(
+                                get(it).LangTypeID
+                            )
+                        }[0].LangTypeName + " - "
+                    }
                 }
+                strChanges = strChanges.removeSuffix(" - ")
+                strChanges += ")"
             }
-            strChanges = strChanges.removeSuffix(" - ")
-            strChanges += ")"
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         return strChanges
     }
@@ -1240,14 +1353,18 @@ class FragmentARRAVLocation : Fragment() {
 
     fun getPhoneChanges(action : Int,rowId: Int) : String {
         var strChanges = ""
-        if (action==0) {
-            strChanges += "New entry added as Phone Number (" + newPhoneNoText.text.toString() + ") and type (" + newPhoneTypeSpinner.selectedItem.toString() + ")"
-        } else {
-            if (newChangesPhoneNoText.text.toString() != FacilityDataModelOrg.getInstance().tblPhone[rowId].PhoneNumber) {
-                strChanges += "Phone Number  changed from (" + FacilityDataModelOrg.getInstance().tblPhone[rowId].PhoneNumber + ") to (" + newChangesPhoneNoText.text.toString() + ") - "
+        try {
+            if (action == 0) {
+                strChanges += "New entry added as Phone Number (" + binding.newPhoneNoText.text.toString() + ") and type (" + binding.newPhoneTypeSpinner.selectedItem.toString() + ")"
+            } else {
+                if (binding.newChangesPhoneNoText.text.toString() != FacilityDataModelOrg.getInstance().tblPhone[rowId].PhoneNumber) {
+                    strChanges += "Phone Number  changed from (" + FacilityDataModelOrg.getInstance().tblPhone[rowId].PhoneNumber + ") to (" + binding.newChangesPhoneNoText.text.toString() + ") - "
+                }
             }
+            strChanges = strChanges.removeSuffix(" - ")
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        strChanges = strChanges.removeSuffix(" - ")
         return strChanges
     }
 
@@ -1256,25 +1373,26 @@ class FragmentARRAVLocation : Fragment() {
 
 
     private fun showLocationDialog(index: Int) {
-        alphaBackgroundForDialogs.visibility = View.VISIBLE
-        editLocationDialog.visibility = View.VISIBLE
+        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+        binding.editLocationDialog.visibility = View.VISIBLE
         (activity as FormsActivity).overrideBackButton = true
 
-        newLocLatText.setText(FacilityDataModel.getInstance().tblAddress[index].LATITUDE)
-        newLocLongText.setText(FacilityDataModel.getInstance().tblAddress[index].LONGITUDE)
+        binding.newLocLatText.setText(FacilityDataModel.getInstance().tblAddress[index].LATITUDE)
+        binding.newLocLongText.setText(FacilityDataModel.getInstance().tblAddress[index].LONGITUDE)
 
-        locationSubmitButton.setOnClickListener {
-            if (getAddressChanges().isNullOrEmpty()) {
-                contactInfoLoadingView.visibility = View.GONE
-                editLocationDialog.visibility = View.GONE
-                alphaBackgroundForDialogs.visibility = View.GONE
-                contactInfoLoadingText.text = "Loading ..."
+        binding.locationSubmitButton.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                if (getAddressChanges().isNullOrEmpty()) {
+                binding.contactInfoLoadingView.visibility = View.GONE
+                binding.editLocationDialog.visibility = View.GONE
+                binding.alphaBackgroundForDialogs.visibility = View.GONE
+                binding.contactInfoLoadingText.text = "Loading ..."
                 (activity as FormsActivity).overrideBackButton = false
             } else {
-                contactInfoLoadingText.text = "Saving ..."
-                contactInfoLoadingView.visibility = View.VISIBLE
-                editLocationDialog.visibility = View.GONE
-                alphaBackgroundForDialogs.visibility = View.GONE
+                binding.contactInfoLoadingText.text = "Saving ..."
+                binding.contactInfoLoadingView.visibility = View.VISIBLE
+                binding.editLocationDialog.visibility = View.GONE
+                binding.alphaBackgroundForDialogs.visibility = View.GONE
                 (activity as FormsActivity).overrideBackButton = false
 //            enableAllAddButnsAndDialog()
 //            var rowIndex=phoneTbl.indexOfChild(tableRow)
@@ -1296,8 +1414,8 @@ class FragmentARRAVLocation : Fragment() {
                 var facBranchName = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchName
                 facBranchName = URLEncoder.encode(facBranchName.toString() , "UTF-8");
                 val facBranchNo = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchNumber
-                val Latitude = newLocLatText.text.toString()
-                val Longitude = newLocLongText.text.toString()
+                val Latitude = binding.newLocLatText.text.toString()
+                val Longitude = binding.newLocLongText.text.toString()
 
                 val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
 
@@ -1309,12 +1427,12 @@ class FragmentARRAVLocation : Fragment() {
                             requireActivity().runOnUiThread {
                                 if (response.toString().contains("returnCode>0<", false)) {
                                     Utility.showSubmitAlertDialog(activity, true, "Facility Location")
-                                    FacilityDataModel.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
-                                    FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
-                                    FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LATITUDE = newLocLatText.text.toString()
-                                    FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LONGITUDE = newLocLongText.text.toString()
-                                    FacilityDataModelOrg.getInstance().tblAddress[index].LATITUDE = newLocLatText.text.toString()
-                                    FacilityDataModelOrg.getInstance().tblAddress[index].LONGITUDE = newLocLongText.text.toString()
+                                    FacilityDataModel.getInstance().tblAddress[index].LATITUDE = binding.newLocLatText.text.toString()
+                                    FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = binding.newLocLongText.text.toString()
+                                    FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LATITUDE = binding.newLocLatText.text.toString()
+                                    FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LONGITUDE = binding.newLocLongText.text.toString()
+                                    FacilityDataModelOrg.getInstance().tblAddress[index].LATITUDE = binding.newLocLatText.text.toString()
+                                    FacilityDataModelOrg.getInstance().tblAddress[index].LONGITUDE = binding.newLocLongText.text.toString()
                                     fillLocationTableView()
                                     fillGeoCodesTable()
                                     (activity as FormsActivity).saveDone = true
@@ -1324,20 +1442,24 @@ class FragmentARRAVLocation : Fragment() {
                                     var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
                                     Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: " + errorMessage + " )")
                                 }
-                                contactInfoLoadingView.visibility = View.GONE
-                                contactInfoLoadingText.text = "Loading ..."
+                                binding.contactInfoLoadingView.visibility = View.GONE
+                                binding.contactInfoLoadingText.text = "Loading ..."
                                 //                            enableAllAddButnsAndDialog()
                             }
                         }, Response.ErrorListener {
 
                     Utility.showSubmitAlertDialog(activity, true, "Facility Location (Error: " + it.message + " )")
-                    contactInfoLoadingView.visibility = View.GONE
-                    contactInfoLoadingText.text = "Loading ..."
+                        binding.contactInfoLoadingView.visibility = View.GONE
+                        binding.contactInfoLoadingText.text = "Loading ..."
 //                        enableAllAddButnsAndDialog()
                     Log.v("error while submitting", "LOCATION Details")
                 }))
             }
+            } else {
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
+            }
         }
+
     }
 
 
@@ -1360,14 +1482,14 @@ class FragmentARRAVLocation : Fragment() {
         var Latitude = ""
         var Longitude = ""
         if (geoCodeTypeID==3) {
-            Latitude = editGeo1Lat.text.toString()
-            Longitude = editGeo1Long.text.toString()
+            Latitude = binding.editGeo1Lat.text.toString()
+            Longitude = binding.editGeo1Long.text.toString()
         } else if (geoCodeTypeID==1) {
-            Latitude = editGeo2Lat.text.toString()
-            Longitude = editGeo2Long.text.toString()
+            Latitude = binding.editGeo2Lat.text.toString()
+            Longitude = binding.editGeo2Long.text.toString()
         } else {
-            Latitude = editGeo3Lat.text.toString()
-            Longitude = editGeo3Long.text.toString()
+            Latitude = binding.editGeo3Lat.text.toString()
+            Longitude = binding.editGeo3Long.text.toString()
         }
 
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
@@ -1399,15 +1521,15 @@ class FragmentARRAVLocation : Fragment() {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: " + errorMessage + " )")
                         }
-                        contactInfoLoadingView.visibility = View.GONE
-                        contactInfoLoadingText.text = "Loading ..."
+                        binding.contactInfoLoadingView.visibility = View.GONE
+                        binding.contactInfoLoadingText.text = "Loading ..."
                         //                            enableAllAddButnsAndDialog()
                     }
                 }, Response.ErrorListener {
 
             Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes (Error: " + it.message + " )")
-            contactInfoLoadingView.visibility = View.GONE
-            contactInfoLoadingText.text = "Loading ..."
+                binding.contactInfoLoadingView.visibility = View.GONE
+                binding.contactInfoLoadingText.text = "Loading ..."
 //                        enableAllAddButnsAndDialog()
             Log.v("error while submitting", "GeoCode Details")
         }))
@@ -1443,8 +1565,8 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     private fun showPhoneDialog() {
-        alphaBackgroundForDialogs.visibility = View.VISIBLE
-        addNewPhoneDialog.visibility = View.VISIBLE
+        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+        binding.addNewPhoneDialog.visibility = View.VISIBLE
 
         phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
         phoneTypeArray.clear()
@@ -1454,12 +1576,12 @@ class FragmentARRAVLocation : Fragment() {
 
         var phoneTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, phoneTypeArray)
         phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newPhoneTypeSpinner.adapter = phoneTypeAdapter
+        binding.newPhoneTypeSpinner.adapter = phoneTypeAdapter
     }
 
     private fun showEmailDialog() {
-        alphaBackgroundForDialogs.visibility = View.VISIBLE
-        addNewEmailDialog.visibility = View.VISIBLE
+        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+        binding.addNewEmailDialog.visibility = View.VISIBLE
         emailTypeList = TypeTablesModel.getInstance().EmailType
         emailTypeArray.clear()
         for (fac in emailTypeList) {
@@ -1468,7 +1590,7 @@ class FragmentARRAVLocation : Fragment() {
 
         var emailTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, emailTypeArray)
         emailTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newEmailTypeSpinner.adapter = emailTypeAdapter
+        binding.newEmailTypeSpinner.adapter = emailTypeAdapter
     }
 
     fun prepareLocationPage(){
@@ -1506,25 +1628,35 @@ class FragmentARRAVLocation : Fragment() {
 //        progressbarLocation.visibility = View.INVISIBLE
     }
 
+    fun updateDialogs() {
+        if (binding.editEmailDialog != null) binding.editEmailDialog.visibility = View.GONE
+        if (binding.addNewPhoneDialog != null) binding.addNewPhoneDialog.visibility = View.GONE
+        if (binding.editLocationDialog != null) binding.editLocationDialog.visibility = View.GONE
+        if (binding.editPhoneDialog != null) binding.editPhoneDialog.visibility = View.GONE
+        if (binding.addNewEmailDialog != null) binding.addNewEmailDialog.visibility = View.GONE
+        if (binding.alphaBackgroundForDialogs != null) binding.alphaBackgroundForDialogs.visibility = View.GONE
+        if (binding.copyHoursDialog != null) binding.copyHoursDialog.visibility = View.GONE
+    }
+
 
     fun validateInputs(): Boolean {
         var isInputsValid = true
 
-        phyloc1addr1latitude.setError(null)
+//        binding.phyloc1addr1latitude.setError(null)
 //        phyloc1addr2latitude.setError(null)
 //        phyloc1addr2longitude.setError(null)
-        phyloc1addr1longitude.setError(null)
+//        binding.phyloc1addr1longitude.setError(null)
 //        stateTextView.setError(null)
 
 
-        if (phyloc1addr1latitude.text.toString().isNullOrEmpty()) {
-            isInputsValid = false
-            phyloc1addr1latitude.setError("Required Field")
-        }
+//        if (binding.phyloc1addr1latitude.text.toString().isNullOrEmpty()) {
+//            isInputsValid = false
+//            binding.phyloc1addr1latitude.setError("Required Field")
+//        }
 
-        if (nightDropCheck.isChecked && nightDropInstText.text.isNullOrEmpty()){
+        if (binding.nightDropCheck.isChecked && binding.nightDropInstText.text.isNullOrEmpty()){
             isInputsValid = false
-            nightDropInstText.setError("Required Field")
+            binding.nightDropInstText.setError("Required Field")
         }
 
 //        if (newStateSpinner.selectedItem.toString().contains("select")){
@@ -1540,10 +1672,10 @@ class FragmentARRAVLocation : Fragment() {
 //            loc1addr2latitude.setError("Required Field")
 //        }
 
-        if (phyloc1addr1longitude.text.toString().isNullOrEmpty()) {
-            isInputsValid = false
-            phyloc1addr1longitude.setError("Required Field")
-        }
+//        if (binding.phyloc1addr1longitude.text.toString().isNullOrEmpty()) {
+//            isInputsValid = false
+//            binding.phyloc1addr1longitude.setError("Required Field")
+//        }
 
 //        if(loc1addr2longitude.text.toString().isNullOrEmpty()) {
 //            isInputsValid=false
@@ -1557,21 +1689,21 @@ class FragmentARRAVLocation : Fragment() {
     fun validateGeoCodesInputs(): String {
         var isInputsValid = true
         var returnMsg = ""
-        editGeo1Lat.setError(null)
-        editGeo2Lat.setError(null)
-        editGeo3Lat.setError(null)
-        editGeo1Long.setError(null)
-        editGeo2Long.setError(null)
-        editGeo3Long.setError(null)
-        if (editGeo1Lat.text.toString().isNullOrEmpty()) {
+        binding.editGeo1Lat.setError(null)
+        binding.editGeo2Lat.setError(null)
+        binding.editGeo3Lat.setError(null)
+        binding.editGeo1Long.setError(null)
+        binding.editGeo2Long.setError(null)
+        binding.editGeo3Long.setError(null)
+        if (binding.editGeo1Lat.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            editGeo1Lat.setError("Required Field")
+            binding.editGeo1Lat.setError("Required Field")
             returnMsg = "Map & Driving Directions Latitude is required"
         }
 
-        if (editGeo1Long.text.toString().isNullOrEmpty()) {
+        if (binding.editGeo1Long.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            editGeo1Long.setError("Required Field")
+            binding.editGeo1Long.setError("Required Field")
             if (returnMsg.equals("")) {
                 returnMsg = "Map & Driving Directions Longitude is required"
             } else {
@@ -1579,9 +1711,9 @@ class FragmentARRAVLocation : Fragment() {
             }
         }
 
-        if (editGeo2Lat.text.toString().isNullOrEmpty() && !editGeo2Long.text.toString().isNullOrEmpty()) {
+        if (binding.editGeo2Lat.text.toString().isNullOrEmpty() && !binding.editGeo2Long.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            editGeo2Lat.setError("Required Field")
+            binding.editGeo2Lat.setError("Required Field")
             if (returnMsg.equals("")) {
                 returnMsg = "Tow Truck Drop-Off Latitude is required"
             } else {
@@ -1589,9 +1721,9 @@ class FragmentARRAVLocation : Fragment() {
             }
         }
 
-        if (!editGeo2Lat.text.toString().isNullOrEmpty() && editGeo2Long.text.toString().isNullOrEmpty()) {
+        if (!binding.editGeo2Lat.text.toString().isNullOrEmpty() && binding.editGeo2Long.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            editGeo2Long.setError("Required Field")
+            binding.editGeo2Long.setError("Required Field")
             if (returnMsg.equals("")) {
                 returnMsg = "Tow Truck Drop-Off Longitude is required"
             } else {
@@ -1599,9 +1731,9 @@ class FragmentARRAVLocation : Fragment() {
             }
         }
 
-        if (editGeo3Lat.text.toString().isNullOrEmpty() && !editGeo3Long.text.toString().isNullOrEmpty()) {
+        if (binding.editGeo3Lat.text.toString().isNullOrEmpty() && !binding.editGeo3Long.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            editGeo3Lat.setError("Required Field")
+            binding.editGeo3Lat.setError("Required Field")
             if (returnMsg.equals("")) {
                 returnMsg = "Customer Waiting Area Latitude is required"
             } else {
@@ -1609,9 +1741,9 @@ class FragmentARRAVLocation : Fragment() {
             }
         }
 
-        if (!editGeo3Lat.text.toString().isNullOrEmpty() && editGeo3Long.text.toString().isNullOrEmpty()) {
+        if (!binding.editGeo3Lat.text.toString().isNullOrEmpty() && binding.editGeo3Long.text.toString().isNullOrEmpty()) {
             isInputsValid = false
-            editGeo3Long.setError("Required Field")
+            binding.editGeo3Long.setError("Required Field")
             if (returnMsg.equals("")) {
                 returnMsg = "Customer Waiting Area Longitude is required"
             } else {
@@ -1627,9 +1759,9 @@ class FragmentARRAVLocation : Fragment() {
 //        rowLayoutParam.column = 0
 //      //  rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
-        if (phoneTbl.childCount>1) {
-            for (i in phoneTbl.childCount - 1 downTo 1) {
-                phoneTbl.removeViewAt(i)
+        if (binding.phoneTbl.childCount>1) {
+            for (i in binding.phoneTbl.childCount - 1 downTo 1) {
+                binding.phoneTbl.removeViewAt(i)
             }
         }
 
@@ -1696,81 +1828,84 @@ class FragmentARRAVLocation : Fragment() {
                     tableRow.addView(editPhoneBtn)
 
                     editPhoneBtn.setOnClickListener {
-                        var rowIndex = phoneTbl.indexOfChild(tableRow)
-                        var phoneFacilityChangedIndex = rowIndex - 1
-                        newChangesPhoneNoText.text.clear()
-                        alphaBackgroundForDialogs.visibility = View.VISIBLE
-                        editPhoneDialog.visibility = View.VISIBLE
-                        (activity as FormsActivity).overrideBackButton = true
-                        phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
-                        phoneTypeArray.clear()
-                        for (fac in phoneTypeList) {
-                            phoneTypeArray.add(fac.LocPhoneName)
-                        }
-
-
-                        var phoneTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, phoneTypeArray)
-                        phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        newPhoneTypeSpinner.adapter = phoneTypeAdapter
-
-                        newChangesPhoneNoText.setText(FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber)
-
-                        phoneSaveChangesButton.setOnClickListener {
-                            var phoneTypeID = ""
-                            if (newChangesPhoneNoText.text.isNullOrEmpty()) {
-                                newChangesPhoneNoText.setError("please enter required field")
-                            } else {
-                                val phoneNo = newChangesPhoneNoText.text.toString()
-                                for (phoneTypeTableId in TypeTablesModel.getInstance().LocationPhoneType) {
-                                    if (phoneTypeTableId.LocPhoneName == textView.text.toString()) {
-                                        phoneTypeID = phoneTypeTableId.LocPhoneID.toString()
-                                    }
-                                }
-                                val insertDate = Date().toApiSubmitFormat()
-                                val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
-                                val updateDate = Date().toApiSubmitFormat()
-                                val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
-                                val activeVal = "0"
-                                val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
-                                val clubCode = FacilityDataModel.getInstance().clubCode
-                                var urlString = facilityNo + "&clubCode=" + clubCode + "&phoneTypeId=" + phoneTypeID + "&phoneNumber=" + phoneNo + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&phoneId=${FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneID}&active=1"
-                                Log.v("Data To Submit", urlString)
-                                contactInfoLoadingText.text = "Saving ..."
-                                contactInfoLoadingView.visibility = View.VISIBLE
-                                editPhoneDialog.visibility = View.GONE
-                                alphaBackgroundForDialogs.visibility = View.GONE
-                                (activity as FormsActivity).overrideBackButton = false
-                                Log.v("Phone Edit --- ",Constants.submitFacilityPhone + urlString)
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString+ Utility.getLoggingParameters(activity, 0, getPhoneChanges(1,phoneFacilityChangedIndex)),
-                                        Response.Listener { response ->
-                                            requireActivity().runOnUiThread {
-                                                if (response.toString().contains("returnCode>0<", false)) {
-                                                    Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
-                                                    FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
-                                                    FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = newChangesPhoneNoText.text.toString()
-                                                    fillPhoneTableView()
-                                                    (activity as FormsActivity).saveDone = true
-                                                    checkIfChangeDone("PHONE")
-                                                } else {
-                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
-                                                }
-                                                contactInfoLoadingView.visibility = View.GONE
-                                                contactInfoLoadingText.text = "Loading ..."
-                                            }
-                                        }, Response.ErrorListener {
-                                    contactInfoLoadingView.visibility = View.GONE
-                                    contactInfoLoadingText.text = "Loading ..."
-                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+it.message+" )")
-                                    Log.v("error while submitting", "Phone Details")
-                                }))
-
-
+                        if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                            var rowIndex = binding.phoneTbl.indexOfChild(tableRow)
+                            var phoneFacilityChangedIndex = rowIndex - 1
+                            binding.newChangesPhoneNoText.text.clear()
+                            binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
+                            binding.editPhoneDialog.visibility = View.VISIBLE
+                            (activity as FormsActivity).overrideBackButton = true
+                            phoneTypeList = TypeTablesModel.getInstance().LocationPhoneType
+                            phoneTypeArray.clear()
+                            for (fac in phoneTypeList) {
+                                phoneTypeArray.add(fac.LocPhoneName)
                             }
-                        }
 
+
+                            var phoneTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, phoneTypeArray)
+                            phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            binding.newPhoneTypeSpinner.adapter = phoneTypeAdapter
+
+                            binding.newChangesPhoneNoText.setText(FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber)
+
+                            binding.phoneSaveChangesButton.setOnClickListener {
+                                var phoneTypeID = ""
+                                if (binding.newChangesPhoneNoText.text.isNullOrEmpty()) {
+                                    binding.newChangesPhoneNoText.setError("please enter required field")
+                                } else {
+                                    val phoneNo = binding.newChangesPhoneNoText.text.toString()
+                                    for (phoneTypeTableId in TypeTablesModel.getInstance().LocationPhoneType) {
+                                        if (phoneTypeTableId.LocPhoneName == textView.text.toString()) {
+                                            phoneTypeID = phoneTypeTableId.LocPhoneID.toString()
+                                        }
+                                    }
+                                    val insertDate = Date().toApiSubmitFormat()
+                                    val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+                                    val updateDate = Date().toApiSubmitFormat()
+                                    val updateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
+                                    val activeVal = "0"
+                                    val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                                    val clubCode = FacilityDataModel.getInstance().clubCode
+                                    var urlString = facilityNo + "&clubCode=" + clubCode + "&phoneTypeId=" + phoneTypeID + "&phoneNumber=" + phoneNo + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&phoneId=${FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneID}&active=1"
+                                    Log.v("Data To Submit", urlString)
+                                    binding.contactInfoLoadingText.text = "Saving ..."
+                                    binding.contactInfoLoadingView.visibility = View.VISIBLE
+                                    binding.editPhoneDialog.visibility = View.GONE
+                                    binding.alphaBackgroundForDialogs.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                    Log.v("Phone Edit --- ",Constants.submitFacilityPhone + urlString)
+                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString+ Utility.getLoggingParameters(activity, 0, getPhoneChanges(1,phoneFacilityChangedIndex)),
+                                            Response.Listener { response ->
+                                                requireActivity().runOnUiThread {
+                                                    if (response.toString().contains("returnCode>0<", false)) {
+                                                        Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
+                                                        FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = binding.newChangesPhoneNoText.text.toString()
+                                                        FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = binding.newChangesPhoneNoText.text.toString()
+                                                        fillPhoneTableView()
+                                                        (activity as FormsActivity).saveDone = true
+                                                        checkIfChangeDone("PHONE")
+                                                    } else {
+                                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                        Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
+                                                    }
+                                                    binding.contactInfoLoadingView.visibility = View.GONE
+                                                    binding.contactInfoLoadingText.text = "Loading ..."
+                                                }
+                                            }, Response.ErrorListener {
+                                            binding.contactInfoLoadingView.visibility = View.GONE
+                                            binding.contactInfoLoadingText.text = "Loading ..."
+                                        Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+it.message+" )")
+                                        Log.v("error while submitting", "Phone Details")
+                                    }))
+
+
+                                }
+                            }
+                        } else {
+                            Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
+                        }
                     }
-                    phoneTbl.addView(tableRow)
+                    binding.phoneTbl.addView(tableRow)
                 }
             }
         }
@@ -1778,9 +1913,9 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun fillEmailTableView() {
-        if (emailTbl.childCount>1) {
-            for (i in emailTbl.childCount - 1 downTo 1) {
-                emailTbl.removeViewAt(i)
+        if (binding.emailTbl.childCount>1) {
+            for (i in binding.emailTbl.childCount - 1 downTo 1) {
+                binding.emailTbl.removeViewAt(i)
             }
         }
 
@@ -1837,12 +1972,12 @@ class FragmentARRAVLocation : Fragment() {
 
 
                     textView.setOnClickListener {
-                        var rowIndex = emailTbl.indexOfChild(tableRow)
+                        var rowIndex = binding.emailTbl.indexOfChild(tableRow)
                         var emailFacilityChangedIndex = rowIndex - 1
-                        newChangesEmailText.text.clear()
-                        alphaBackgroundForDialogs.visibility = View.VISIBLE
+                        binding.newChangesEmailText.text.clear()
+                        binding.alphaBackgroundForDialogs.visibility = View.VISIBLE
                         (activity as FormsActivity).overrideBackButton = true
-                        editEmailDialog.visibility = View.VISIBLE
+                        binding.editEmailDialog.visibility = View.VISIBLE
                         emailTypeList = TypeTablesModel.getInstance().EmailType
                         emailTypeArray.clear()
                         for (fac in emailTypeList) {
@@ -1851,72 +1986,75 @@ class FragmentARRAVLocation : Fragment() {
 
                         var emailTypeAdapter = ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, emailTypeArray)
                         emailTypeAdapter .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        newEmailTypeSpinner.adapter = emailTypeAdapter
+                        binding.newEmailTypeSpinner.adapter = emailTypeAdapter
 
-                        newChangesEmailText.setText(FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email)
+                        binding.newChangesEmailText.setText(FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email)
 
-                        emailSaveChangesButton.setOnClickListener {
-
-                            var emailTypeID = ""
-                            if (newChangesEmailText.text.isNullOrEmpty()) {
-                                newChangesEmailText.setError("please enter required field")
-                            } else if (!Utility.isEmailValid(newChangesEmailText.text.toString())) {
-                                Utility.showValidationAlertDialog(activity,"Please enter a valid Email address")
-                            } else {
-                                val emailAddress = newChangesEmailText.text.toString()
-                                for (emailTypeTableId in TypeTablesModel.getInstance().EmailType) {
-                                    if (emailTypeTableId.EmailName == textView.text.toString()) {
-                                        emailTypeID = emailTypeTableId.EmailID.toString()
+                        binding.emailSaveChangesButton.setOnClickListener {
+                            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                                var emailTypeID = ""
+                                if (binding.newChangesEmailText.text.isNullOrEmpty()) {
+                                    binding.newChangesEmailText.setError("please enter required field")
+                                } else if (!Utility.isEmailValid(binding.newChangesEmailText.text.toString())) {
+                                    Utility.showValidationAlertDialog(activity,"Please enter a valid Email address")
+                                } else {
+                                    val emailAddress = binding.newChangesEmailText.text.toString()
+                                    for (emailTypeTableId in TypeTablesModel.getInstance().EmailType) {
+                                        if (emailTypeTableId.EmailName == textView.text.toString()) {
+                                            emailTypeID = emailTypeTableId.EmailID.toString()
+                                        }
                                     }
-                                }
-                                val insertDate = Date().toApiSubmitFormat()
-                                val insertBy = "sa"
-                                val updateDate = Date().toApiSubmitFormat()
-                                val updateBy = "sa"
-                                val activeVal = "0"
+                                    val insertDate = Date().toApiSubmitFormat()
+                                    val insertBy = "sa"
+                                    val updateDate = Date().toApiSubmitFormat()
+                                    val updateBy = "sa"
+                                    val activeVal = "0"
 
-                                val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                                    val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
 
-                                val clubCode = FacilityDataModel.getInstance().clubCode
-                                var urlString = facilityNo + "&clubcode=" + clubCode + "&emailTypeId=" + FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].emailTypeId + "&email=" + emailAddress+ "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&emailId=${FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].emailID}&active=1"
-                                Log.v("Data To Submit", urlString)
-                                contactInfoLoadingText.text = "Saving ..."
-                                contactInfoLoadingView.visibility = View.VISIBLE
-                                editEmailDialog.visibility = View.GONE
-                                alphaBackgroundForDialogs.visibility = View.GONE
-                                (activity as FormsActivity).overrideBackButton = false
-                                Log.v("Email Edit --- ",Constants.submitFacilityEmail + urlString)
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString+ Utility.getLoggingParameters(activity, 0, getEmailChanges(1,emailFacilityChangedIndex)),
-                                        Response.Listener { response ->
-                                            requireActivity().runOnUiThread {
-                                                if (response.toString().contains("returnCode>0<", false)) {
-                                                    Utility.showSubmitAlertDialog(activity, true, "Facility Email")
-                                                    FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = newChangesEmailText.text.toString()
-                                                    FacilityDataModelOrg.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = newChangesEmailText.text.toString()
-                                                    fillEmailTableView()
-                                                    checkIfChangeDone("EMAIL")
-                                                    (activity as FormsActivity).saveDone = true
-                                                } else {
-                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
+                                    val clubCode = FacilityDataModel.getInstance().clubCode
+                                    var urlString = facilityNo + "&clubcode=" + clubCode + "&emailTypeId=" + FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].emailTypeId + "&email=" + emailAddress+ "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&extension=&description=&emailId=${FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].emailID}&active=1"
+                                    Log.v("Data To Submit", urlString)
+                                    binding.contactInfoLoadingText.text = "Saving ..."
+                                    binding.contactInfoLoadingView.visibility = View.VISIBLE
+                                    binding.editEmailDialog.visibility = View.GONE
+                                    binding.alphaBackgroundForDialogs.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                    Log.v("Email Edit --- ",Constants.submitFacilityEmail + urlString)
+                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString+ Utility.getLoggingParameters(activity, 0, getEmailChanges(1,emailFacilityChangedIndex)),
+                                            Response.Listener { response ->
+                                                requireActivity().runOnUiThread {
+                                                    if (response.toString().contains("returnCode>0<", false)) {
+                                                        Utility.showSubmitAlertDialog(activity, true, "Facility Email")
+                                                        FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = binding.newChangesEmailText.text.toString()
+                                                        FacilityDataModelOrg.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = binding.newChangesEmailText.text.toString()
+                                                        fillEmailTableView()
+                                                        checkIfChangeDone("EMAIL")
+                                                        (activity as FormsActivity).saveDone = true
+                                                        setAlertColoring()
+                                                    } else {
+                                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                        Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
+                                                    }
+                                                    binding.contactInfoLoadingView.visibility = View.GONE
+                                                    binding.contactInfoLoadingText.text = "Loading ..."
                                                 }
-                                                contactInfoLoadingView.visibility = View.GONE
-                                                contactInfoLoadingText.text = "Loading ..."
-                                            }
-                                        }, Response.ErrorListener {
-                                    contactInfoLoadingView.visibility = View.GONE
-                                    contactInfoLoadingText.text = "Loading ..."
-                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+it.message+" )")
-                                }))
+                                            }, Response.ErrorListener {
+                                            binding.contactInfoLoadingView.visibility = View.GONE
+                                            binding.contactInfoLoadingText.text = "Loading ..."
+                                        Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+it.message+" )")
+                                    }))
 
 
+                                }
+                            } else {
+                            Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
                             }
                         }
-
                     }
 
                     tableRow.addView(textView)
-                    emailTbl.addView(tableRow)
+                    binding.emailTbl.addView(tableRow)
                 }
             }
 
@@ -1951,9 +2089,9 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
 
-        if (holidaysTbl.childCount>1) {
-            for (i in holidaysTbl.childCount - 1 downTo 1) {
-                holidaysTbl.removeViewAt(i)
+        if (binding.holidaysTbl.childCount>1) {
+            for (i in binding.holidaysTbl.childCount - 1 downTo 1) {
+                binding.holidaysTbl.removeViewAt(i)
             }
         }
 
@@ -2023,7 +2161,7 @@ class FragmentARRAVLocation : Fragment() {
                     textView.text = get(it).comments
                     tableRow.addView(textView)
 
-                    holidaysTbl.addView(tableRow)
+                    binding.holidaysTbl.addView(tableRow)
                 }
             }
         }
@@ -2037,22 +2175,22 @@ class FragmentARRAVLocation : Fragment() {
 
         FacilityDataModel.getInstance().tblHours.apply {
             (0 until size).forEach {
-                sunOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SunOpen.isNullOrEmpty()) "Closed" else get(it).SunOpen))
-                sunOpenSpinner.tag = sunOpenSpinner.selectedItemPosition
-                monOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).MonOpen.isNullOrEmpty()) "Closed" else get(it).MonOpen))
-                monOpenSpinner.tag = monOpenSpinner.selectedItemPosition
-                tueOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).TueOpen.isNullOrEmpty()) "Closed" else get(it).TueOpen))
-                tueOpenSpinner.tag = tueOpenSpinner.selectedItemPosition
-                wedOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).WedOpen.isNullOrEmpty()) "Closed" else get(it).WedOpen))
-                wedOpenSpinner.tag = wedOpenSpinner.selectedItemPosition
-                thuOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).ThuOpen.isNullOrEmpty()) "Closed" else get(it).ThuOpen))
-                thuOpenSpinner.tag = thuOpenSpinner.selectedItemPosition
-                friOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).FriOpen.isNullOrEmpty()) "Closed" else get(it).FriOpen))
-                friOpenSpinner.tag = friOpenSpinner.selectedItemPosition
-                satOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SatOpen.isNullOrEmpty()) "Closed" else get(it).SatOpen))
-                satOpenSpinner.tag = satOpenSpinner.selectedItemPosition
-                nightDropCheck.isChecked = get(it).NightDrop
-                nightDropInstText.setText(get(it).NightDropInstr)
+                binding.sunOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SunOpen.isNullOrEmpty()) "Closed" else get(it).SunOpen))
+                binding.sunOpenSpinner.tag = binding.sunOpenSpinner.selectedItemPosition
+                binding.monOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).MonOpen.isNullOrEmpty()) "Closed" else get(it).MonOpen))
+                binding.monOpenSpinner.tag = binding.monOpenSpinner.selectedItemPosition
+                binding.tueOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).TueOpen.isNullOrEmpty()) "Closed" else get(it).TueOpen))
+                binding.tueOpenSpinner.tag = binding.tueOpenSpinner.selectedItemPosition
+                binding.wedOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).WedOpen.isNullOrEmpty()) "Closed" else get(it).WedOpen))
+                binding.wedOpenSpinner.tag = binding.wedOpenSpinner.selectedItemPosition
+                binding.thuOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).ThuOpen.isNullOrEmpty()) "Closed" else get(it).ThuOpen))
+                binding.thuOpenSpinner.tag = binding.thuOpenSpinner.selectedItemPosition
+                binding.friOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).FriOpen.isNullOrEmpty()) "Closed" else get(it).FriOpen))
+                binding.friOpenSpinner.tag = binding.friOpenSpinner.selectedItemPosition
+                binding.satOpenSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SatOpen.isNullOrEmpty()) "Closed" else get(it).SatOpen))
+                binding.satOpenSpinner.tag = binding.satOpenSpinner.selectedItemPosition
+                binding.nightDropCheck.isChecked = get(it).NightDrop
+                binding.nightDropInstText.setText(get(it).NightDropInstr)
 
             }
         }
@@ -2061,20 +2199,20 @@ class FragmentARRAVLocation : Fragment() {
 
         FacilityDataModel.getInstance().tblHours.apply {
             (0 until size).forEach {
-                sunCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SunClose.isNullOrEmpty()) "Closed" else get(it).SunClose))
-                sunCloseSpinner.tag = sunCloseSpinner.selectedItemPosition
-                monCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).MonClose.isNullOrEmpty()) "Closed" else get(it).MonClose))
-                monCloseSpinner.tag = monCloseSpinner.selectedItemPosition
-                tueCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).TueClose.isNullOrEmpty()) "Closed" else get(it).TueClose))
-                tueCloseSpinner.tag = tueCloseSpinner.selectedItemPosition
-                wedCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).WedClose.isNullOrEmpty()) "Closed" else get(it).WedClose))
-                wedCloseSpinner.tag = wedCloseSpinner.selectedItemPosition
-                thuCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).ThuClose.isNullOrEmpty()) "Closed" else get(it).ThuClose))
-                thuCloseSpinner.tag = thuCloseSpinner.selectedItemPosition
-                friCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).FriClose.isNullOrEmpty()) "Closed" else get(it).FriClose))
-                friCloseSpinner.tag = friCloseSpinner.selectedItemPosition
-                satCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SatClose.isNullOrEmpty()) "Closed" else get(it).SatClose))
-                satCloseSpinner.tag = satCloseSpinner.selectedItemPosition
+                binding.sunCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SunClose.isNullOrEmpty()) "Closed" else get(it).SunClose))
+                binding.sunCloseSpinner.tag = binding.sunCloseSpinner.selectedItemPosition
+                binding.monCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).MonClose.isNullOrEmpty()) "Closed" else get(it).MonClose))
+                binding.monCloseSpinner.tag = binding.monCloseSpinner.selectedItemPosition
+                binding.tueCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).TueClose.isNullOrEmpty()) "Closed" else get(it).TueClose))
+                binding.tueCloseSpinner.tag = binding.tueCloseSpinner.selectedItemPosition
+                binding.wedCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).WedClose.isNullOrEmpty()) "Closed" else get(it).WedClose))
+                binding.wedCloseSpinner.tag = binding.wedCloseSpinner.selectedItemPosition
+                binding.thuCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).ThuClose.isNullOrEmpty()) "Closed" else get(it).ThuClose))
+                binding.thuCloseSpinner.tag = binding.thuCloseSpinner.selectedItemPosition
+                binding.friCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).FriClose.isNullOrEmpty()) "Closed" else get(it).FriClose))
+                binding.friCloseSpinner.tag = binding.friCloseSpinner.selectedItemPosition
+                binding.satCloseSpinner.setSelection(hoursArray!!.indexOf(if (get(it).SatClose.isNullOrEmpty()) "Closed" else get(it).SatClose))
+                binding.satCloseSpinner.tag = binding.satCloseSpinner.selectedItemPosition
 
 
             }
@@ -2092,9 +2230,9 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam.leftMargin = 2
         rowLayoutParam.gravity = Gravity.CENTER
 
-        if (locationTbl.childCount>1) {
-            for (i in locationTbl.childCount - 1 downTo 1) {
-                locationTbl.removeViewAt(i)
+        if (binding.locationTbl.childCount>1) {
+            for (i in binding.locationTbl.childCount - 1 downTo 1) {
+                binding.locationTbl.removeViewAt(i)
             }
         }
 
@@ -2317,7 +2455,7 @@ class FragmentARRAVLocation : Fragment() {
 //                    showLocationDialog(it)
 //                }
 
-                locationTbl.addView(tableRow)
+                binding.locationTbl.addView(tableRow)
 
             }
         }
@@ -2328,60 +2466,60 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun fillGeoCodesTable () {
-            if (!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3}.isNullOrEmpty()) {
-            editGeo1Lat.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3}[0].LATITUDE)
-            editGeo1Long.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3}[0].LONGITUDE)
+        if (!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}.isNullOrEmpty()) {
+                binding.editGeo1Lat.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LATITUDE)
+                binding.editGeo1Long.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LONGITUDE)
         }
-        if (!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==1}.isNullOrEmpty()) {
-            editGeo2Lat.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==1}[0].LATITUDE)
-            editGeo2Long.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==1}[0].LONGITUDE)
+        if (!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}.isNullOrEmpty()) {
+            binding.editGeo2Lat.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LATITUDE)
+            binding.editGeo2Long.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LONGITUDE)
         }
-        if (!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2}.isNullOrEmpty()) {
-            editGeo3Lat.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2}[0].LATITUDE)
-            editGeo3Long.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==2}[0].LONGITUDE)
+        if (!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}.isNullOrEmpty()) {
+            binding.editGeo3Lat.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LATITUDE)
+            binding.editGeo3Long.setText(FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LONGITUDE)
         }
 
-        btnUpdate1.setOnClickListener {
+        binding.btnUpdate1.setOnClickListener {
             btnToBeUpdated = 1
             captureLocation()
         }
-        btnOpen1.setOnClickListener {
-            if (editGeo1Lat.text.isNullOrEmpty() || editGeo1Long.text.isNullOrEmpty()) {
+        binding.btnOpen1.setOnClickListener {
+            if (binding.editGeo1Lat.text.isNullOrEmpty() || binding.editGeo1Long.text.isNullOrEmpty()) {
 
             } else {
                 val gmmIntentUri =
-                        Uri.parse("geo:${editGeo1Lat.text.toString()},${editGeo1Long.text.toString()}?z=16&q=${editGeo1Lat.text.toString()},${editGeo1Long.text.toString()}(Maps &amp; Driving Directions)")
+                        Uri.parse("geo:${binding.editGeo1Lat.text.toString()},${binding.editGeo1Long.text.toString()}?z=16&q=${binding.editGeo1Lat.text.toString()},${binding.editGeo1Long.text.toString()}(Maps &amp; Driving Directions)")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 startActivity(mapIntent)
             }
         }
 
-        btnOpen2.setOnClickListener {
-            if (editGeo2Lat.text.isNullOrEmpty() || editGeo2Long.text.isNullOrEmpty()) {
+        binding.btnOpen2.setOnClickListener {
+            if (binding.editGeo2Lat.text.isNullOrEmpty() || binding.editGeo2Long.text.isNullOrEmpty()) {
 
             } else {
                 val gmmIntentUri =
-                        Uri.parse("geo:${editGeo2Lat.text.toString()},${editGeo2Long.text.toString()}?z=16&q=${editGeo2Lat.text.toString()},${editGeo2Long.text.toString()}(Tow Truck Drop-Off)")
+                        Uri.parse("geo:${binding.editGeo2Lat.text.toString()},${binding.editGeo2Long.text.toString()}?z=16&q=${binding.editGeo2Lat.text.toString()},${binding.editGeo2Long.text.toString()}(Tow Truck Drop-Off)")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 startActivity(mapIntent)
             }
         }
 
-        btnOpen3.setOnClickListener {
-            if (editGeo3Lat.text.isNullOrEmpty() || editGeo3Long.text.isNullOrEmpty()) {
+        binding.btnOpen3.setOnClickListener {
+            if (binding.editGeo3Lat.text.isNullOrEmpty() || binding.editGeo3Long.text.isNullOrEmpty()) {
 
             } else {
                 val gmmIntentUri =
-                        Uri.parse("geo:${editGeo3Lat.text.toString()},${editGeo3Long.text.toString()}?z=16&q=${editGeo3Lat.text.toString()},${editGeo3Long.text.toString()}(Customer Waiting Area)")
+                        Uri.parse("geo:${binding.editGeo3Lat.text.toString()},${binding.editGeo3Long.text.toString()}?z=16&q=${binding.editGeo3Lat.text.toString()},${binding.editGeo3Long.text.toString()}(Customer Waiting Area)")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 startActivity(mapIntent)
             }
         }
 
-        btnUpdate2.setOnClickListener {
+        binding.btnUpdate2.setOnClickListener {
 //            if (editGeo2Long.text.isNullOrEmpty() || editGeo2Lat.text.isNullOrEmpty()){
 //                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
 //            } else
@@ -2389,7 +2527,7 @@ class FragmentARRAVLocation : Fragment() {
             btnToBeUpdated = 2
             captureLocation()
         }
-        btnUpdate3.setOnClickListener {
+        binding.btnUpdate3.setOnClickListener {
 //            if (editGeo3Long.text.isNullOrEmpty() || editGeo3Lat.text.isNullOrEmpty()){
 //                Utility.showValidationAlertDialog(activity, "Please add Latitude and Longitude")
 //            } else
@@ -2400,8 +2538,8 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun submitFacilityEmail(){
-        val emailTypeID = TypeTablesModel.getInstance().EmailType.filter { s -> s.EmailName==newEmailTypeSpinner.selectedItem.toString()}[0].EmailID
-        val email = if (newEmailAddrText.text.isNullOrEmpty())  "" else newEmailAddrText.text
+        val emailTypeID = TypeTablesModel.getInstance().EmailType.filter { s -> s.EmailName==binding.newEmailTypeSpinner.selectedItem.toString()}[0].EmailID
+        val email = if (binding.newEmailAddrText.text.isNullOrEmpty())  "" else binding.newEmailAddrText.text
         val insertDate = Date().toApiSubmitFormat()
         val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val updateDate = Date().toApiSubmitFormat()
@@ -2416,10 +2554,10 @@ class FragmentARRAVLocation : Fragment() {
 //        var seqNo = FacilityDataModel.getInstance().tblFacilityEmail.size+1
         var urlString = facilityNo+"&clubcode="+clubCode+"&emailTypeId="+emailTypeID+"&email="+email+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&emailId="
         Log.v("Data To Submit", urlString)
-        contactInfoLoadingText.text = "Saving ..."
-        contactInfoLoadingView.visibility = View.VISIBLE
-        addNewEmailDialog.visibility = View.GONE
-        alphaBackgroundForDialogs.visibility = View.GONE
+        binding.contactInfoLoadingText.text = "Saving ..."
+        binding.contactInfoLoadingView.visibility = View.VISIBLE
+        binding.addNewEmailDialog.visibility = View.GONE
+        binding.alphaBackgroundForDialogs.visibility = View.GONE
         (activity as FormsActivity).overrideBackButton = false
         Log.v("Email ADD --- ",Constants.submitFacilityEmail + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString + Utility.getLoggingParameters(activity, 0, getEmailChanges(0,0)),
@@ -2435,6 +2573,7 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
                             FacilityDataModelOrg.getInstance().tblFacilityEmail.add(newEmail)
                             fillEmailTableView()
+                            setAlertColoring()
                             (activity as FormsActivity).saveDone = true
                             HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityEmail= true
                             HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
@@ -2442,13 +2581,13 @@ class FragmentARRAVLocation : Fragment() {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
                         }
-                        contactInfoLoadingView.visibility = View.GONE
-                        contactInfoLoadingText.text = "Loading ..."
+                        binding.contactInfoLoadingView.visibility = View.GONE
+                        binding.contactInfoLoadingText.text = "Loading ..."
 
                     }
                 }, Response.ErrorListener {
-                    contactInfoLoadingView.visibility = View.GONE
-            contactInfoLoadingText.text = "Loading ..."
+                binding.contactInfoLoadingView.visibility = View.GONE
+                binding.contactInfoLoadingText.text = "Loading ..."
 
             Utility.showSubmitAlertDialog(activity,false,"Facility Email (Error: "+it.message+" )")
         }))
@@ -2461,8 +2600,8 @@ class FragmentARRAVLocation : Fragment() {
         val facilityNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode = FacilityDataModel.getInstance().clubCode
         val LocationTypeID = "1"
-        val facAddr1 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr1
-        val facAddr2 = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr2
+        val facAddr1 = URLEncoder.encode(FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr1,"UTF-8")
+        val facAddr2 = URLEncoder.encode(FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].FAC_Addr2,"UTF-8")
         val facCity = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].CITY
         val facCountry = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].County
         val facST = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].ST
@@ -2472,22 +2611,22 @@ class FragmentARRAVLocation : Fragment() {
         facBranchName = URLEncoder.encode(facBranchName.toString() , "UTF-8");
         val facBranchNo = FacilityDataModel.getInstance().tblAddress.filter { s -> s.LocationTypeID.equals(LocationTypeID) }[0].BranchNumber
 
-        val geocodeTypeID_Map = 3
-        val LATITUDE_Map = editGeo1Lat.text.toString()
-        val LONGITUDE_Map = editGeo1Long.text.toString()
-        val geocodeTypeID_Tow = 1
+        val geocodeTypeID_Map = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Maps")}[0].GeocodeTypeID
+        val LATITUDE_Map = binding.editGeo1Lat.text.toString()
+        val LONGITUDE_Map = binding.editGeo1Long.text.toString()
+        val geocodeTypeID_Tow = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Tow")}[0].GeocodeTypeID
         var LATITUDE_Tow = ""
         var LONGITUDE_Tow = ""
-        val geocodeTypeID_Cst = 2
+        val geocodeTypeID_Cst = TypeTablesModel.getInstance().GeocodeType.filter { s->s.GeocodeTypeName.contains("Cust")}[0].GeocodeTypeID
         var LATITUDE_Cst = ""
         var LONGITUDE_Cst = ""
-        if (!editGeo2Lat.toString().isNullOrEmpty()) {
-            LATITUDE_Tow = editGeo2Lat.text.toString()
-            LONGITUDE_Tow = editGeo2Long.text.toString()
+        if (!binding.editGeo2Lat.toString().isNullOrEmpty()) {
+            LATITUDE_Tow = binding.editGeo2Lat.text.toString()
+            LONGITUDE_Tow = binding.editGeo2Long.text.toString()
         }
-        if (!editGeo3Lat.toString().isNullOrEmpty()) {
-            LATITUDE_Cst = editGeo3Lat.text.toString()
-            LONGITUDE_Cst = editGeo3Long.text.toString()
+        if (!binding.editGeo3Lat.toString().isNullOrEmpty()) {
+            LATITUDE_Cst = binding.editGeo3Lat.text.toString()
+            LONGITUDE_Cst = binding.editGeo3Long.text.toString()
         }
 
         Log.v("REQUEST -->", Constants.submitFacilityGeoCodes + "${facID}&facnum=${facilityNo}&clubcode=${clubCode}" +
@@ -2504,10 +2643,51 @@ class FragmentARRAVLocation : Fragment() {
             Response.Listener { response ->
                 requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<",false)) {
-                        (activity as FormsActivity).saveRequired = false
-                        saveGeoCodesRequired = false
+
+
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Map}.isNotEmpty()) {
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Map }[0].LATITUDE =
+                                LATITUDE_Map
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Map }[0].LONGITUDE =
+                                LONGITUDE_Map
+                        }
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Cst}.isNotEmpty()) {
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Cst }[0].LATITUDE =
+                                LATITUDE_Cst
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Cst }[0].LONGITUDE =
+                                LONGITUDE_Cst
+                        }
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Tow}.isNotEmpty()) {
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Tow }[0].LATITUDE =
+                                LATITUDE_Tow
+                            FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Tow }[0].LONGITUDE =
+                                LONGITUDE_Tow
+                        }
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Map}.isNotEmpty()) {
+                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Map }[0].LATITUDE =
+                                LATITUDE_Map
+                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Map }[0].LONGITUDE =
+                                LONGITUDE_Map
+                        }
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Cst}.isNotEmpty()) {
+                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Cst }[0].LATITUDE =
+                                LATITUDE_Cst
+                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Cst }[0].LONGITUDE =
+                                LONGITUDE_Cst
+                        }
+                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Tow}.isNotEmpty()) {
+                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Tow }[0].LATITUDE =
+                                LATITUDE_Tow
+                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Tow }[0].LONGITUDE =
+                                LONGITUDE_Tow
+                        }
+
+                        fillGeoCodesTable()
+
 //                        HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
 //                        HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                        (activity as FormsActivity).saveRequired = false
+                        saveGeoCodesRequired = false
                         refreshButtonsState()
                         (activity as FormsActivity).saveDone = true
                         Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes")
@@ -2516,22 +2696,22 @@ class FragmentARRAVLocation : Fragment() {
                         var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                         Utility.showSubmitAlertDialog(activity, false, "Facility GeoCodes (Error: "+errorMessage+" )")
                     }
-                    contactInfoLoadingView.visibility = View.GONE
-                    contactInfoLoadingText.text = "Loading ..."
+                    binding.contactInfoLoadingView.visibility = View.GONE
+                    binding.contactInfoLoadingText.text = "Loading ..."
                 }
             }, Response.ErrorListener {
                 Log.v("error while loading", "error submitting geocodes")
                 Utility.showSubmitAlertDialog(activity,false,"Facility GeoCodes (Error: "+it.message+" )")
-                contactInfoLoadingView.visibility = View.GONE
-                contactInfoLoadingText.text = "Loading ..."
+                binding.contactInfoLoadingView.visibility = View.GONE
+                binding.contactInfoLoadingText.text = "Loading ..."
             }))
 
     }
 
     fun submitHours(){
 
-        val nightDrop= if (nightDropCheck.isChecked) "1" else "0"
-        val nightDropInstructions=nightDropInstText.text
+        val nightDrop= if (binding.nightDropCheck.isChecked) "1" else "0"
+        val nightDropInstructions= URLEncoder.encode(binding.nightDropInstText.text.toString(),"UTF-8")
 //        val sunClose = if (sunCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else sunCloseSpinner.selectedItem.toString()
 //        val monClose = if (monCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else monCloseSpinner.selectedItem.toString()
 //        val tueClose = if (tueCloseSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else tueCloseSpinner.selectedItem.toString()
@@ -2546,20 +2726,20 @@ class FragmentARRAVLocation : Fragment() {
 //        val thuOpen = if (thuOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else thuOpenSpinner.selectedItem.toString()
 //        val friOpen = if (friOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else friOpenSpinner.selectedItem.toString()
 //        val satOpen = if (satOpenSpinner.selectedItem.toString().equals("Closed")) "00:00:01 AM" else satOpenSpinner.selectedItem.toString()
-        val sunClose = if (sunCloseSpinner.selectedItem.toString().equals("Closed")) "" else sunCloseSpinner.selectedItem.toString()
-        val monClose = if (monCloseSpinner.selectedItem.toString().equals("Closed")) "" else monCloseSpinner.selectedItem.toString()
-        val tueClose = if (tueCloseSpinner.selectedItem.toString().equals("Closed")) "" else tueCloseSpinner.selectedItem.toString()
-        val wedClose = if (wedCloseSpinner.selectedItem.toString().equals("Closed")) "" else wedCloseSpinner.selectedItem.toString()
-        val thuClose = if (thuCloseSpinner.selectedItem.toString().equals("Closed")) "" else thuCloseSpinner.selectedItem.toString()
-        val friClose = if (friCloseSpinner.selectedItem.toString().equals("Closed")) "" else friCloseSpinner.selectedItem.toString()
-        val satClose = if (satCloseSpinner.selectedItem.toString().equals("Closed")) "" else satCloseSpinner.selectedItem.toString()
-        val sunOpen = if (sunOpenSpinner.selectedItem.toString().equals("Closed")) "" else sunOpenSpinner.selectedItem.toString()
-        val monOpen = if (monOpenSpinner.selectedItem.toString().equals("Closed")) "" else monOpenSpinner.selectedItem.toString()
-        val tueOpen = if (tueOpenSpinner.selectedItem.toString().equals("Closed")) "" else tueOpenSpinner.selectedItem.toString()
-        val wedOpen = if (wedOpenSpinner.selectedItem.toString().equals("Closed")) "" else wedOpenSpinner.selectedItem.toString()
-        val thuOpen = if (thuOpenSpinner.selectedItem.toString().equals("Closed")) "" else thuOpenSpinner.selectedItem.toString()
-        val friOpen = if (friOpenSpinner.selectedItem.toString().equals("Closed")) "" else friOpenSpinner.selectedItem.toString()
-        val satOpen = if (satOpenSpinner.selectedItem.toString().equals("Closed")) "" else satOpenSpinner.selectedItem.toString()
+        val sunClose = if (binding.sunCloseSpinner.selectedItem.toString().equals("Closed")) "" else binding.sunCloseSpinner.selectedItem.toString()
+        val monClose = if (binding.monCloseSpinner.selectedItem.toString().equals("Closed")) "" else binding.monCloseSpinner.selectedItem.toString()
+        val tueClose = if (binding.tueCloseSpinner.selectedItem.toString().equals("Closed")) "" else binding.tueCloseSpinner.selectedItem.toString()
+        val wedClose = if (binding.wedCloseSpinner.selectedItem.toString().equals("Closed")) "" else binding.wedCloseSpinner.selectedItem.toString()
+        val thuClose = if (binding.thuCloseSpinner.selectedItem.toString().equals("Closed")) "" else binding.thuCloseSpinner.selectedItem.toString()
+        val friClose = if (binding.friCloseSpinner.selectedItem.toString().equals("Closed")) "" else binding.friCloseSpinner.selectedItem.toString()
+        val satClose = if (binding.satCloseSpinner.selectedItem.toString().equals("Closed")) "" else binding.satCloseSpinner.selectedItem.toString()
+        val sunOpen = if (binding.sunOpenSpinner.selectedItem.toString().equals("Closed")) "" else binding.sunOpenSpinner.selectedItem.toString()
+        val monOpen = if (binding.monOpenSpinner.selectedItem.toString().equals("Closed")) "" else binding.monOpenSpinner.selectedItem.toString()
+        val tueOpen = if (binding.tueOpenSpinner.selectedItem.toString().equals("Closed")) "" else binding.tueOpenSpinner.selectedItem.toString()
+        val wedOpen = if (binding.wedOpenSpinner.selectedItem.toString().equals("Closed")) "" else binding.wedOpenSpinner.selectedItem.toString()
+        val thuOpen = if (binding.thuOpenSpinner.selectedItem.toString().equals("Closed")) "" else binding.thuOpenSpinner.selectedItem.toString()
+        val friOpen = if (binding.friOpenSpinner.selectedItem.toString().equals("Closed")) "" else binding.friOpenSpinner.selectedItem.toString()
+        val satOpen = if (binding.satOpenSpinner.selectedItem.toString().equals("Closed")) "" else binding.satOpenSpinner.selectedItem.toString()
         val facAvail = "1"
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityHours + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&monOpen=${monOpen}&tueOpen=${tueOpen}&wedOpen=${wedOpen}&thuOpen=${thuOpen}" +
@@ -2583,8 +2763,8 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModel.getInstance().tblHours[0].ThuOpen = thuOpen
                             FacilityDataModel.getInstance().tblHours[0].WedOpen = wedOpen
                             FacilityDataModel.getInstance().tblHours[0].TueOpen = tueOpen
-                            FacilityDataModel.getInstance().tblHours[0].NightDrop= nightDropCheck.isChecked
-                            FacilityDataModel.getInstance().tblHours[0].NightDropInstr = nightDropInstText.text.toString()
+                            FacilityDataModel.getInstance().tblHours[0].NightDrop= binding.nightDropCheck.isChecked
+                            FacilityDataModel.getInstance().tblHours[0].NightDropInstr = binding.nightDropInstText.text.toString()
                             FacilityDataModelOrg.getInstance().tblHours[0].MonClose = monClose
                             FacilityDataModelOrg.getInstance().tblHours[0].SunClose = sunClose
                             FacilityDataModelOrg.getInstance().tblHours[0].SatClose = satClose
@@ -2599,8 +2779,8 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen = thuOpen
                             FacilityDataModelOrg.getInstance().tblHours[0].WedOpen = wedOpen
                             FacilityDataModelOrg.getInstance().tblHours[0].TueOpen = tueOpen
-                            FacilityDataModelOrg.getInstance().tblHours[0].NightDrop= nightDropCheck.isChecked
-                            FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr = nightDropInstText.text.toString()
+                            FacilityDataModelOrg.getInstance().tblHours[0].NightDrop= binding.nightDropCheck.isChecked
+                            FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr = binding.nightDropInstText.text.toString()
                             (activity as FormsActivity).saveRequired = false
                             (activity as FormsActivity).saveDone = true
                             saveHoursRequired = false
@@ -2613,14 +2793,14 @@ class FragmentARRAVLocation : Fragment() {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity, false, "Facility Hours / Night Drop (Error: "+errorMessage+" )")
                         }
-                        contactInfoLoadingView.visibility = View.GONE
-                        contactInfoLoadingText.text = "Loading ..."
+                        binding.contactInfoLoadingView.visibility = View.GONE
+                        binding.contactInfoLoadingText.text = "Loading ..."
                     }
                 }, Response.ErrorListener {
             Log.v("error while loading", "error submitting hours")
             Utility.showSubmitAlertDialog(activity,false,"Facility Hours / Night Drop (Error: "+it.message+" )")
-            contactInfoLoadingView.visibility = View.GONE
-            contactInfoLoadingText.text = "Loading ..."
+                binding.contactInfoLoadingView.visibility = View.GONE
+                binding.contactInfoLoadingText.text = "Loading ..."
         }))
 
     }
@@ -2660,19 +2840,19 @@ class FragmentARRAVLocation : Fragment() {
                             Utility.showSubmitAlertDialog(activity, false, "Facility Languages (Error: "+errorMessage+" )")
                         }
 
-                        contactInfoLoadingView.visibility = View.GONE
-                        contactInfoLoadingText.text = "Loading ..."
+                        binding.contactInfoLoadingView.visibility = View.GONE
+                        binding.contactInfoLoadingText.text = "Loading ..."
                     }
                 }, Response.ErrorListener {
                 Utility.showSubmitAlertDialog(activity, false, "Facility Languages (Error: "+it.message+" )")
-            contactInfoLoadingView.visibility = View.GONE
-            contactInfoLoadingText.text = "Loading ..."
+                binding.contactInfoLoadingView.visibility = View.GONE
+                binding.contactInfoLoadingText.text = "Loading ..."
         }))
     }
 
     fun submitFacilityPhone(){
-        val phoneTypeID = TypeTablesModel.getInstance().LocationPhoneType.filter { s -> s.LocPhoneName==newPhoneTypeSpinner.selectedItem.toString()}[0].LocPhoneID
-        val phoneNo = if (newPhoneNoText.text.isNullOrEmpty())  "" else newPhoneNoText.text
+        val phoneTypeID = TypeTablesModel.getInstance().LocationPhoneType.filter { s -> s.LocPhoneName==binding.newPhoneTypeSpinner.selectedItem.toString()}[0].LocPhoneID
+        val phoneNo = if (binding.newPhoneNoText.text.isNullOrEmpty())  "" else binding.newPhoneNoText.text
         val insertDate = Date().toApiSubmitFormat()
         val insertBy = ApplicationPrefs.getInstance(activity).loggedInUserID
         val updateDate = Date().toApiSubmitFormat()
@@ -2686,10 +2866,10 @@ class FragmentARRAVLocation : Fragment() {
 //        var seqNo = FacilityDataModel.getInstance().tblPhone.size+1
         var urlString = facilityNo+"&clubCode="+clubCode+"&phoneTypeId="+phoneTypeID+"&phoneNumber="+phoneNo+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&extension=&description=&phoneId=&active=1"
         Log.v("Data To Submit", urlString)
-        contactInfoLoadingText.text = "Saving ..."
-        contactInfoLoadingView.visibility = View.VISIBLE
-        addNewPhoneDialog.visibility = View.GONE
-        alphaBackgroundForDialogs.visibility = View.GONE
+        binding.contactInfoLoadingText.text = "Saving ..."
+        binding.contactInfoLoadingView.visibility = View.VISIBLE
+        binding.addNewPhoneDialog.visibility = View.GONE
+        binding.alphaBackgroundForDialogs.visibility = View.GONE
         (activity as FormsActivity).overrideBackButton = false
         Log.v("PHONE ADD --- ",Constants.submitFacilityPhone + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString+ Utility.getLoggingParameters(activity, 0, getPhoneChanges(0,0)),
@@ -2711,21 +2891,21 @@ class FragmentARRAVLocation : Fragment() {
                             var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
                             Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
                         }
-                        contactInfoLoadingView.visibility = View.GONE
-                        contactInfoLoadingText.text = "Loading ..."
+                        binding.contactInfoLoadingView.visibility = View.GONE
+                        binding.contactInfoLoadingText.text = "Loading ..."
                     }
                 }, Response.ErrorListener {
-            contactInfoLoadingView.visibility = View.GONE
-            contactInfoLoadingText.text = "Loading ..."
+                binding.contactInfoLoadingView.visibility = View.GONE
+                binding.contactInfoLoadingText.text = "Loading ..."
             Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+it.message+" )")
         }))
     }
 
     fun altEmailTableRow(alt_row : Int) {
-        var childViewCount = emailTbl.getChildCount();
+        var childViewCount = binding.emailTbl.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= emailTbl.getChildAt(i) as TableRow;
+            var row : TableRow= binding.emailTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.setBackground(getResources().getDrawable(
@@ -2738,10 +2918,10 @@ class FragmentARRAVLocation : Fragment() {
         }
     }
     fun altPhoneTableRow(alt_row : Int) {
-        var childViewCount = phoneTbl.getChildCount();
+        var childViewCount = binding.phoneTbl.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= phoneTbl.getChildAt(i) as TableRow;
+            var row : TableRow= binding.phoneTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.setBackground(getResources().getDrawable(
@@ -2771,30 +2951,34 @@ class FragmentARRAVLocation : Fragment() {
                         Log.v("Location Captured", it.getLatitude().toString() + " " + it.getLongitude());
                         if (it.longitude.toString().split(".")[1].isNotEmpty()) {
                             if (it.longitude.toString().split(".")[1].length>6) {
-                                editGeo1Long.setText(String.format("%.6f", it.longitude))
-                                editGeo2Long.setText(String.format("%.6f", it.longitude))
-                                editGeo3Long.setText(String.format("%.6f", it.longitude))
+                                binding.editGeo1Long.setText(String.format("%.6f", it.longitude))
+                                binding.editGeo2Long.setText(String.format("%.6f", it.longitude))
+                                binding.editGeo3Long.setText(String.format("%.6f", it.longitude))
                             } else {
-                                editGeo1Long.setText(it.longitude.toString())
-                                editGeo2Long.setText(it.longitude.toString())
-                                editGeo3Long.setText(it.longitude.toString())
+                                binding.editGeo1Long.setText(it.longitude.toString())
+                                binding.editGeo2Long.setText(it.longitude.toString())
+                                binding.editGeo3Long.setText(it.longitude.toString())
                             }
                         }
                         if (it.latitude.toString().split(".")[1].isNotEmpty()) {
                             if (it.latitude.toString().split(".")[1].length>6) {
-                                editGeo1Lat.setText(String.format("%.6f", it.latitude))
-                                editGeo2Lat.setText(String.format("%.6f", it.latitude))
-                                editGeo3Lat.setText(String.format("%.6f", it.latitude))
+                                binding.editGeo1Lat.setText(String.format("%.6f", it.latitude))
+                                binding.editGeo2Lat.setText(String.format("%.6f", it.latitude))
+                                binding.editGeo3Lat.setText(String.format("%.6f", it.latitude))
                             } else {
-                                editGeo1Lat.setText(it.latitude.toString())
-                                editGeo2Lat.setText(it.latitude.toString())
-                                editGeo3Lat.setText(it.latitude.toString())
+                                binding.editGeo1Lat.setText(it.latitude.toString())
+                                binding.editGeo2Lat.setText(it.latitude.toString())
+                                binding.editGeo3Lat.setText(it.latitude.toString())
                             }
                         }
                     } else {
-                        Utility.showMessageDialog(activity,"Information","Unable to capture current location")
+//                        Utility.showMessageDialog(activity,"Information","Unable to capture current location")
+                        Utility.showUnifiedErrorDialog(activity,"Unable to capture current location")
                     }
                 }
+//                task.addOnFailureListener {e: Exception ->
+//                    Utility.showMessageDialog(activity,"Information","Unable to capture current location - ${e.message}")
+//                }
             } catch (e: SecurityException) {
 
             }
@@ -2819,16 +3003,16 @@ class FragmentARRAVLocation : Fragment() {
                         if (btnToBeUpdated ==1) {
                             if (it.longitude.toString().split(".")[1].isNotEmpty()) {
                                 if (it.longitude.toString().split(".")[1].length>6) {
-                                    editGeo1Long.setText(String.format("%.6f", it.longitude))
+                                    binding.editGeo1Long.setText(String.format("%.6f", it.longitude))
                                 } else {
-                                    editGeo1Long.setText(it.longitude.toString())
+                                    binding.editGeo1Long.setText(it.longitude.toString())
                                 }
                             }
                             if (it.latitude.toString().split(".")[1].isNotEmpty()) {
                                 if (it.latitude.toString().split(".")[1].length>6) {
-                                    editGeo1Lat.setText(String.format("%.6f", it.latitude))
+                                    binding.editGeo1Lat.setText(String.format("%.6f", it.latitude))
                                 } else {
-                                    editGeo1Lat.setText(it.latitude.toString())
+                                    binding.editGeo1Lat.setText(it.latitude.toString())
                                 }
                             }
 //                            editGeo1Long.setText(String.format("%.6f", it.longitude))
@@ -2836,36 +3020,37 @@ class FragmentARRAVLocation : Fragment() {
                         } else if (btnToBeUpdated ==2) {
                             if (it.longitude.toString().split(".")[1].isNotEmpty()) {
                                 if (it.longitude.toString().split(".")[1].length>6) {
-                                    editGeo2Long.setText(String.format("%.6f", it.longitude))
+                                    binding.editGeo2Long.setText(String.format("%.6f", it.longitude))
                                 } else {
-                                    editGeo2Long.setText(it.longitude.toString())
+                                    binding.editGeo2Long.setText(it.longitude.toString())
                                 }
                             }
                             if (it.latitude.toString().split(".")[1].isNotEmpty()) {
                                 if (it.latitude.toString().split(".")[1].length>6) {
-                                    editGeo2Lat.setText(String.format("%.6f", it.latitude))
+                                    binding.editGeo2Lat.setText(String.format("%.6f", it.latitude))
                                 } else {
-                                    editGeo2Lat.setText(it.latitude.toString())
+                                    binding.editGeo2Lat.setText(it.latitude.toString())
                                 }
                             }
                         } else {
                             if (it.longitude.toString().split(".")[1].isNotEmpty()) {
                                 if (it.longitude.toString().split(".")[1].length>6) {
-                                    editGeo3Long.setText(String.format("%.6f", it.longitude))
+                                    binding.editGeo3Long.setText(String.format("%.6f", it.longitude))
                                 } else {
-                                    editGeo3Long.setText(it.longitude.toString())
+                                    binding.editGeo3Long.setText(it.longitude.toString())
                                 }
                             }
                             if (it.latitude.toString().split(".")[1].isNotEmpty()) {
                                 if (it.latitude.toString().split(".")[1].length>6) {
-                                    editGeo3Lat.setText(String.format("%.6f", it.latitude))
+                                    binding.editGeo3Lat.setText(String.format("%.6f", it.latitude))
                                 } else {
-                                    editGeo3Lat.setText(it.latitude.toString())
+                                    binding.editGeo3Lat.setText(it.latitude.toString())
                                 }
                             }
                         }
                     } else {
-                        Utility.showMessageDialog(activity,"Information","Unable to capture current location")
+//                        Utility.showMessageDialog(activity,"Information","Unable to capture current location")
+                        Utility.showUnifiedErrorDialog(activity,"Unable to capture current location")
                     }
                 }
             } catch (e: SecurityException) {
@@ -2885,16 +3070,16 @@ class FragmentARRAVLocation : Fragment() {
                             if (btnToBeUpdated ==1) {
                                 if (it.longitude.toString().split(".")[1].isNotEmpty()) {
                                     if (it.longitude.toString().split(".")[1].length>6) {
-                                        editGeo1Long.setText(String.format("%.6f", it.longitude))
+                                        binding.editGeo1Long.setText(String.format("%.6f", it.longitude))
                                     } else {
-                                        editGeo1Long.setText(it.longitude.toString())
+                                        binding.editGeo1Long.setText(it.longitude.toString())
                                     }
                                 }
                                 if (it.latitude.toString().split(".")[1].isNotEmpty()) {
                                     if (it.latitude.toString().split(".")[1].length>6) {
-                                        editGeo1Lat.setText(String.format("%.6f", it.latitude))
+                                        binding.editGeo1Lat.setText(String.format("%.6f", it.latitude))
                                     } else {
-                                        editGeo1Lat.setText(it.latitude.toString())
+                                        binding.editGeo1Lat.setText(it.latitude.toString())
                                     }
                                 }
 //                            editGeo1Long.setText(String.format("%.6f", it.longitude))
@@ -2902,36 +3087,37 @@ class FragmentARRAVLocation : Fragment() {
                             } else if (btnToBeUpdated ==2) {
                                 if (it.longitude.toString().split(".")[1].isNotEmpty()) {
                                     if (it.longitude.toString().split(".")[1].length>6) {
-                                        editGeo2Long.setText(String.format("%.6f", it.longitude))
+                                        binding.editGeo2Long.setText(String.format("%.6f", it.longitude))
                                     } else {
-                                        editGeo2Long.setText(it.longitude.toString())
+                                        binding.editGeo2Long.setText(it.longitude.toString())
                                     }
                                 }
                                 if (it.latitude.toString().split(".")[1].isNotEmpty()) {
                                     if (it.latitude.toString().split(".")[1].length>6) {
-                                        editGeo2Lat.setText(String.format("%.6f", it.latitude))
+                                        binding.editGeo2Lat.setText(String.format("%.6f", it.latitude))
                                     } else {
-                                        editGeo2Lat.setText(it.latitude.toString())
+                                        binding.editGeo2Lat.setText(it.latitude.toString())
                                     }
                                 }
                             } else {
                                 if (it.longitude.toString().split(".")[1].isNotEmpty()) {
                                     if (it.longitude.toString().split(".")[1].length>6) {
-                                        editGeo3Long.setText(String.format("%.6f", it.longitude))
+                                        binding.editGeo3Long.setText(String.format("%.6f", it.longitude))
                                     } else {
-                                        editGeo3Long.setText(it.longitude.toString())
+                                        binding.editGeo3Long.setText(it.longitude.toString())
                                     }
                                 }
                                 if (it.latitude.toString().split(".")[1].isNotEmpty()) {
                                     if (it.latitude.toString().split(".")[1].length>6) {
-                                        editGeo3Lat.setText(String.format("%.6f", it.latitude))
+                                        binding.editGeo3Lat.setText(String.format("%.6f", it.latitude))
                                     } else {
-                                        editGeo3Lat.setText(it.latitude.toString())
+                                        binding.editGeo3Lat.setText(it.latitude.toString())
                                     }
                                 }
                             }
                         } else {
-                            Utility.showMessageDialog(activity,"Information","Unable to capture current location")
+//                            Utility.showMessageDialog(activity,"Information","Unable to capture current location")
+                            Utility.showUnifiedErrorDialog(activity,"Unable to capture current location")
                         }
                     }
                 } catch (e: SecurityException) {
@@ -2951,10 +3137,10 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun altLocationTableRow(alt_row : Int) {
-        var childViewCount = locationTbl.getChildCount();
+        var childViewCount = binding.locationTbl.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= locationTbl.getChildAt(i) as TableRow;
+            var row : TableRow= binding.locationTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.setBackground(getResources().getDrawable(
@@ -2968,10 +3154,10 @@ class FragmentARRAVLocation : Fragment() {
     }
 
     fun altHolidayTableRow(alt_row : Int) {
-        var childViewCount = holidaysTbl.getChildCount();
+        var childViewCount = binding.holidaysTbl.getChildCount();
 
         for ( i in 1..childViewCount-1) {
-            var row : TableRow= holidaysTbl.getChildAt(i) as TableRow;
+            var row : TableRow= binding.holidaysTbl.getChildAt(i) as TableRow;
 
             if (i % alt_row != 0) {
                 row.setBackground(getResources().getDrawable(

@@ -56,6 +56,156 @@
 
             </RelativeLayout>
 
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                >
+
+
+                <TableRow android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="AAR Signs:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/edit_aarsigns_val"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/item_solid_border"
+                        android:text=""
+                        android:ems="30"
+                        android:lines="5"
+                        android:layout_column="1"
+                        />
+                </TableRow>
+                <TableRow android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Member Benefits Poster:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/edit_memberbenefits_val"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/item_solid_border"
+                        android:layout_gravity="center"
+                        android:text=""
+                        android:ems="30"
+                        android:lines="5"
+                        android:layout_column="1"
+                        />
+                </TableRow>
+                <TableRow android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Quality Controls:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/edit_qualitycontrol_val"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/item_solid_border"
+                        android:text=""
+                        android:lines="5"
+                        android:ems="30"
+                        android:layout_column="1"
+                        />
+                </TableRow>
+                <TableRow android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Staff Training:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/edit_stafftraining_val"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""
+                        android:background="@drawable/item_solid_border"
+                        android:lines="5"
+                        android:ems="30"
+                        android:layout_column="1"
+                        />
+                </TableRow>
+                <TableRow android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_margin="5dp"
+                        android:text="Certificate Of Approval:"
+                        android:layout_column="0"
+                        android:textStyle="bold"
+                        />
+                    <EditText
+                        android:id="@+id/edit_certificate_val"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""
+                        android:background="@drawable/item_solid_border"
+                        android:lines="5"
+                        android:ems="30"
+                        android:layout_column="1"
+                        />
+                </TableRow>
+                <TableRow>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="5dp"
+                        android:text="SUBMIT"
+                        android:id="@+id/edit_submitVTracking"
+                        android:ems="12"
+                        android:layout_column="1"
+                        android:background="@drawable/new_btn_bkg"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
+                        android:layout_gravity="top|right"/>
+                    <!--                    <ImageButton-->
+                    <!--                        android:layout_marginTop="25dp"-->
+                    <!--                        android:id="@+id/edit_exitVTrackingDialogeBtnId"-->
+                    <!--                        android:layout_width="20dp"-->
+                    <!--                        android:layout_height="20dp"-->
+                    <!--                        android:background="@drawable/close"-->
+                    <!--                        android:layout_gravity="top|right"-->
+                    <!--                        android:layout_column="2"-->
+                    <!--                        />-->
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,7 +218,6 @@
                     android:layout_width="match_parent"
                     android:divider="@drawable/divider_table_layout"
                     android:layout_height="wrap_content"
-                    android:stretchColumns="*"
                     >
 
                     <TableRow
@@ -129,16 +278,16 @@
                             android:layout_weight="1">
                         </TextView>
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_column="5"
-                            android:layout_weight="0.6"
-                            android:textSize="14sp"
-                            android:layout_height="30dp"
-                            android:text="EDIT"
-                            android:gravity="center"
-                            android:textColor="@color/white"
-                            />
+<!--                        <TextView-->
+<!--                            android:layout_width="0dp"-->
+<!--                            android:layout_column="5"-->
+<!--                            android:layout_weight="0.6"-->
+<!--                            android:textSize="14sp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:text="EDIT"-->
+<!--                            android:gravity="center"-->
+<!--                            android:textColor="@color/white"-->
+<!--                            />-->
 
                     </TableRow>
 
@@ -170,180 +319,7 @@
             app:cardCornerRadius="5dp"
             app:cardElevation="10dp">
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                >
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:id="@+id/edit_VTrackingDialogeTitle"
-                        android:text="Edit Tracking Record"
-                        android:textSize="20sp"
-                        android:textColor="@color/dark_gray"
-                        android:ems="10"
-                        android:layout_column="0"
-                        />
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="5dp"
-                        android:text="SUBMIT"
-                        android:id="@+id/edit_submitVTracking"
-                        android:textColor="@color/white"
-                        android:ems="12"
-                        android:layout_column="1"
-                        android:background="@drawable/green_background_button"
-                        android:layout_gravity="top|right"/>
-                    <ImageButton
-                        android:layout_marginTop="25dp"
-                        android:id="@+id/edit_exitVTrackingDialogeBtnId"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/close"
-                        android:layout_gravity="top|right"
-                        android:layout_column="2"
-                        />
-                </TableRow>
 
-                <TableRow android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-
-                        android:text="Visitation ID:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:id="@+id/edit_vid"
-                        android:text=""
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                </TableRow>
-
-                <TableRow android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="AAR Signs:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/edit_aarsigns_val"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/item_solid_border"
-                        android:text=""
-                        android:ems="30"
-                        android:lines="5"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Member Benefits Poster:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/edit_memberbenefits_val"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/item_solid_border"
-                        android:layout_gravity="center"
-                        android:text=""
-                        android:ems="30"
-                        android:lines="5"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Quality Controls:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/edit_qualitycontrol_val"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:background="@drawable/item_solid_border"
-                        android:text=""
-                        android:ems="30"
-                        android:lines="5"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Staff Training:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/edit_stafftraining_val"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text=""
-                        android:background="@drawable/item_solid_border"
-                        android:ems="30"
-                        android:lines="5"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Certificate Of Approval:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/edit_certificate_val"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text=""
-                        android:background="@drawable/item_solid_border"
-                        android:ems="30"
-                        android:lines="5"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-            </TableLayout>
 
 
 

@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -23,17 +24,20 @@ import com.inspection.MainActivity.Companion.activity
 import com.inspection.MainActivity.Companion.mContext
 import com.inspection.R
 import com.inspection.Utils.*
+import com.inspection.databinding.FragmentAarPromotionsBinding
+import com.inspection.databinding.FragmentAaramOrderTrackingBinding
+import com.inspection.databinding.FragmentPromotionsBinding
 import com.inspection.model.*
-import kotlinx.android.synthetic.main.fragment_aar_promotions.*
-import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility.*
-import kotlinx.android.synthetic.main.fragment_arrav_facility.cancelButton
-import kotlinx.android.synthetic.main.fragment_arrav_facility.progressBarText
-import kotlinx.android.synthetic.main.fragment_arrav_facility.saveButton
-import kotlinx.android.synthetic.main.fragment_arrav_facility.scopeOfServicesChangesDialogueLoadingView
-import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
-import kotlinx.android.synthetic.main.scope_of_service_group_layout.PromotionsButton
-import kotlinx.android.synthetic.main.scope_of_service_group_layout.vehiclesButton
+//import kotlinx.android.synthetic.main.fragment_aar_promotions.*
+//import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
+//import kotlinx.android.synthetic.main.fragment_arrav_facility.*
+//import kotlinx.android.synthetic.main.fragment_arrav_facility.cancelButton
+//import kotlinx.android.synthetic.main.fragment_arrav_facility.progressBarText
+//import kotlinx.android.synthetic.main.fragment_arrav_facility.saveButton
+//import kotlinx.android.synthetic.main.fragment_arrav_facility.scopeOfServicesChangesDialogueLoadingView
+//import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
+//import kotlinx.android.synthetic.main.scope_of_service_group_layout.PromotionsButton
+//import kotlinx.android.synthetic.main.scope_of_service_group_layout.vehiclesButton
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,7 +51,8 @@ class FragmentAARPromotions : Fragment() {
     internal var promotionsAdapter: CustomAdapter? = null
     private var promoTypeArray = ArrayList<String>()
     var promotionListItems=ArrayList<TypeTablesModel.PromoTypeClass>()
-
+    private var _binding: FragmentAarPromotionsBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -58,8 +63,11 @@ class FragmentAARPromotions : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAarPromotionsBinding.bind(view)
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].PromotionsVisited= true
-        (activity as FormsActivity).PromotionsButton.setTextColor(Color.parseColor("#26C3AA"))
+        // SAEED TO BE REVIEWED
+        requireActivity().findViewById<Button>(R.id.PromotionsButton).setTextColor(Color.parseColor("#26C3AA"))
+//        (activity as FormsActivity).PromotionsButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
         promotionListItems = TypeTablesModel.getInstance().PromoType
         promoTypeArray.clear()
@@ -75,12 +83,26 @@ class FragmentAARPromotions : Fragment() {
         Log.v("Promotions COunt => ", FacilityDataModel.getInstance().tblPromotions.size.toString())
         promotionListItems.clear()
         PromotionsListView?.adapter = null
-        promotionsAdapter = context?.let { CustomAdapter(FacilityDataModel.getInstance().tblPromotions, it,this) }
-        PromotionsListView!!.adapter = promotionsAdapter
+        if (FacilityDataModel.getInstance().tblPromotions.filter { s->s.PromoID != -1 }.isNotEmpty())
+        {
+            binding.promotionListView.visibility = View.VISIBLE
+            binding.noActPromoTxt.visibility = View.GONE
+            promotionsAdapter = context?.let {
+                CustomAdapter(
+                    FacilityDataModel.getInstance().tblPromotions,
+                    it,
+                    this
+                )
+            }
+            PromotionsListView!!.adapter = promotionsAdapter
+        } else {
+            binding.promotionListView.visibility = View.GONE
+            binding.noActPromoTxt.visibility = View.VISIBLE
+        }
 
-        cancelButton.setOnClickListener {
-            progressBarText.text = "Cancelling ..."
-            promotionsDialogueLoadingView.visibility = View.VISIBLE
+        binding.cancelButton.setOnClickListener {
+            binding.progressBarText.text = "Cancelling ..."
+            binding.promotionsDialogueLoadingView.visibility = View.VISIBLE
             FacilityDataModel.getInstance().tblPromotions.clear()
             for (i in 0..FacilityDataModelOrg.getInstance().tblPromotions.size-1) {
                 var promotionItem = TblPromotions()
@@ -103,101 +125,105 @@ class FragmentAARPromotions : Fragment() {
                 promotionItem.UpdateBy = FacilityDataModelOrg.getInstance().tblPromotions[i].UpdateBy
                 promotionItem.UpdateDate = FacilityDataModelOrg.getInstance().tblPromotions[i].UpdateDate
                 promotionItem.active = FacilityDataModelOrg.getInstance().tblPromotions[i].active
+                promotionItem.ContestFlag = FacilityDataModelOrg.getInstance().tblPromotions[i].ContestFlag
                 FacilityDataModel.getInstance().tblPromotions.add(promotionItem)
             }
             (activity as FormsActivity).saveRequired = false
             setServices()
 
             refreshButtonsState()
-            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
-            progressBarText.text = "Loading ..."
-            promotionsDialogueLoadingView.visibility = View.GONE
+//            Utility.showMessageDialog(activity,"Confirmation ...","Changes cancelled succesfully ---")
+            Utility.showUnifiedConfirmationDialog(activity,"Changes cancelled successfully")
+            binding.progressBarText.text = "Loading ..."
+            binding.promotionsDialogueLoadingView.visibility = View.GONE
         }
-        saveButton.setOnClickListener {
-//            promotionsDialogueLoadingView.visibility = View.VISIBLE
-//            progressBarText.text = "Saving ..."
-            (activity as FormsActivity).overrideBackButton = false
-            var promoID = ""
-            var participantFlag = ""
-            var optInDate = ""
-            var optOutDate = ""
-            var promoID2 = ""
-            var participantFlag2 = ""
-            var optInDate2 = ""
-            var optOutDate2 = ""
-            FacilityDataModel.getInstance().tblPromotions.apply {
-                (0 until size).forEach {
-                    promoID += get(it).PromoID.toString() +","
-                    participantFlag += get(it).Participant +","
-                    optInDate += get(it).EffDate.split("T")[0] +","
-                    optOutDate += get(it).ExpDate.split("T")[0] +","
+        binding.saveButton.setOnClickListener {
+            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                (activity as FormsActivity).overrideBackButton = false
+                var promoID = ""
+                var participantFlag = ""
+                var optInDate = ""
+                var optOutDate = ""
+                var promoID2 = ""
+                var participantFlag2 = ""
+                var optInDate2 = ""
+                var optOutDate2 = ""
+                FacilityDataModel.getInstance().tblPromotions.apply {
+                    (0 until size).forEach {
+                        promoID += get(it).PromoID.toString() +","
+                        participantFlag += get(it).Participant +","
+                        optInDate += get(it).EffDate.split("T")[0] +","
+                        optOutDate += get(it).ExpDate.split("T")[0] +","
+                    }
                 }
-            }
-            promoID = promoID.substring(0,promoID.length-1)
-            participantFlag = participantFlag.substring(0,participantFlag.length-1)
-            optInDate = optInDate.substring(0,optInDate.length-1)
-            optOutDate = optOutDate.substring(0,optOutDate.length-1)
-            var urlString = "" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubcode=${FacilityDataModel.getInstance().clubCode}&promoID=${promoID}&participateFlag=${participantFlag}&optInStartDate=${optInDate}&optInEndDate=${optOutDate}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}"
-            Log.v("Update Promotions --- ", urlString)
-                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityPromotions + urlString + Utility.getLoggingParameters(activity, 0, ""),
-                        Response.Listener { response ->
-                            activity!!.runOnUiThread {
-                                if (response.toString().contains("returnCode>0<", false)) {
-                                    promotionsDialogueLoadingView.visibility = View.GONE
-                                    progressBarText.text = "Loading ..."
-                                    FacilityDataModelOrg.getInstance().tblPromotions.clear()
-                                    for (i in 0..FacilityDataModel.getInstance().tblPromotions.size-1) {
-                                        var promotionItem = TblPromotions()
-                                        promotionItem.PromoID = FacilityDataModel.getInstance().tblPromotions[i].PromoID
-                                        promotionItem.PromoPage = FacilityDataModel.getInstance().tblPromotions[i].PromoPage
-                                        promotionItem.CouponFileName = FacilityDataModel.getInstance().tblPromotions[i].CouponFileName
-                                        promotionItem.EffDate = FacilityDataModel.getInstance().tblPromotions[i].EffDate
-                                        promotionItem.Participant = FacilityDataModel.getInstance().tblPromotions[i].Participant
-                                        promotionItem.CouponText = FacilityDataModel.getInstance().tblPromotions[i].CouponText
-                                        promotionItem.Description = FacilityDataModel.getInstance().tblPromotions[i].Description
-                                        promotionItem.Disclaimer = FacilityDataModel.getInstance().tblPromotions[i].Disclaimer
-                                        promotionItem.ExpDate = FacilityDataModel.getInstance().tblPromotions[i].ExpDate
-                                        promotionItem.HoverText = FacilityDataModel.getInstance().tblPromotions[i].HoverText
-                                        promotionItem.ParticipantUpdateBy = FacilityDataModel.getInstance().tblPromotions[i].ParticipantUpdateBy
-                                        promotionItem.ParticipantUpdateDate = FacilityDataModel.getInstance().tblPromotions[i].ParticipantUpdateDate
-                                        promotionItem.PromoTypeName = FacilityDataModel.getInstance().tblPromotions[i].PromoTypeName
-                                        promotionItem.SearchDescription = FacilityDataModel.getInstance().tblPromotions[i].SearchDescription
-                                        promotionItem.SearchResultsHeader = FacilityDataModel.getInstance().tblPromotions[i].SearchResultsHeader
-                                        promotionItem.ToolTip = FacilityDataModel.getInstance().tblPromotions[i].ToolTip
-                                        promotionItem.UpdateBy = FacilityDataModel.getInstance().tblPromotions[i].UpdateBy
-                                        promotionItem.UpdateDate = FacilityDataModel.getInstance().tblPromotions[i].UpdateDate
-                                        promotionItem.active = FacilityDataModel.getInstance().tblPromotions[i].active
-                                        FacilityDataModelOrg.getInstance().tblPromotions.add(promotionItem)
+                promoID = promoID.substring(0,promoID.length-1)
+                participantFlag = participantFlag.substring(0,participantFlag.length-1)
+                optInDate = optInDate.substring(0,optInDate.length-1)
+                optOutDate = optOutDate.substring(0,optOutDate.length-1)
+                var urlString = "" + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubcode=${FacilityDataModel.getInstance().clubCode}&promoID=${promoID}&participateFlag=${participantFlag}&optInStartDate=${optInDate}&optInEndDate=${optOutDate}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}"
+                Log.v("Update Promotions --- ", urlString)
+                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityPromotions + urlString + Utility.getLoggingParameters(activity, 0, ""),
+                            Response.Listener { response ->
+                                requireActivity().runOnUiThread {
+                                    if (response.toString().contains("returnCode>0<", false)) {
+                                        binding.promotionsDialogueLoadingView.visibility = View.GONE
+                                        binding.progressBarText.text = "Loading ..."
+                                        FacilityDataModelOrg.getInstance().tblPromotions.clear()
+                                        for (i in 0..FacilityDataModel.getInstance().tblPromotions.size-1) {
+                                            var promotionItem = TblPromotions()
+                                            promotionItem.PromoID = FacilityDataModel.getInstance().tblPromotions[i].PromoID
+                                            promotionItem.PromoPage = FacilityDataModel.getInstance().tblPromotions[i].PromoPage
+                                            promotionItem.CouponFileName = FacilityDataModel.getInstance().tblPromotions[i].CouponFileName
+                                            promotionItem.EffDate = FacilityDataModel.getInstance().tblPromotions[i].EffDate
+                                            promotionItem.Participant = FacilityDataModel.getInstance().tblPromotions[i].Participant
+                                            promotionItem.CouponText = FacilityDataModel.getInstance().tblPromotions[i].CouponText
+                                            promotionItem.Description = FacilityDataModel.getInstance().tblPromotions[i].Description
+                                            promotionItem.Disclaimer = FacilityDataModel.getInstance().tblPromotions[i].Disclaimer
+                                            promotionItem.ExpDate = FacilityDataModel.getInstance().tblPromotions[i].ExpDate
+                                            promotionItem.HoverText = FacilityDataModel.getInstance().tblPromotions[i].HoverText
+                                            promotionItem.ParticipantUpdateBy = FacilityDataModel.getInstance().tblPromotions[i].ParticipantUpdateBy
+                                            promotionItem.ParticipantUpdateDate = FacilityDataModel.getInstance().tblPromotions[i].ParticipantUpdateDate
+                                            promotionItem.PromoTypeName = FacilityDataModel.getInstance().tblPromotions[i].PromoTypeName
+                                            promotionItem.SearchDescription = FacilityDataModel.getInstance().tblPromotions[i].SearchDescription
+                                            promotionItem.SearchResultsHeader = FacilityDataModel.getInstance().tblPromotions[i].SearchResultsHeader
+                                            promotionItem.ToolTip = FacilityDataModel.getInstance().tblPromotions[i].ToolTip
+                                            promotionItem.UpdateBy = FacilityDataModel.getInstance().tblPromotions[i].UpdateBy
+                                            promotionItem.UpdateDate = FacilityDataModel.getInstance().tblPromotions[i].UpdateDate
+                                            promotionItem.active = FacilityDataModel.getInstance().tblPromotions[i].active
+                                            FacilityDataModelOrg.getInstance().tblPromotions.add(promotionItem)
+                                        }
+                                        (activity as FormsActivity).saveDone = true
+                                        Utility.showSubmitAlertDialog(activity, true, "Promotions")
+                                        (activity as FormsActivity).saveRequired = false
+                                        refreshButtonsState()
+    //                                    HasChangedModel.getInstance().checkI()
+    //                                    HasChangedModel.getInstance().changeDoneForSoSVehicleServices()
+                                    } else {
+                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                        Utility.showSubmitAlertDialog(activity, false, "Promotions (Error: " + errorMessage + " )")
+                                        binding.promotionsDialogueLoadingView.visibility = View.GONE
+                                        binding.progressBarText.text = "Loading ..."
                                     }
-                                    (activity as FormsActivity).saveDone = true
-                                    Utility.showSubmitAlertDialog(activity, true, "Promotions")
-                                    (activity as FormsActivity).saveRequired = false
-                                    refreshButtonsState()
-//                                    HasChangedModel.getInstance().checkI()
-//                                    HasChangedModel.getInstance().changeDoneForSoSVehicleServices()
-                                } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
-                                    Utility.showSubmitAlertDialog(activity, false, "Promotions (Error: " + errorMessage + " )")
-                                    promotionsDialogueLoadingView.visibility = View.GONE
-                                    progressBarText.text = "Loading ..."
                                 }
-                            }
-                        }, Response.ErrorListener {
-                    promotionsDialogueLoadingView.visibility = View.GONE
-                    progressBarText.text = "Loading ..."
-                    Utility.showSubmitAlertDialog(activity, false, "Promotions (Error: " + it.message + " )")
-                }))
+                            }, Response.ErrorListener {
+                            binding.promotionsDialogueLoadingView.visibility = View.GONE
+                            binding.progressBarText.text = "Loading ..."
+                        Utility.showSubmitAlertDialog(activity, false, "Promotions (Error: " + it.message + " )")
+                    }))
 
 
 //            (activity as FormsActivity).saveRequired = false
 //            refreshButtonsState()
+            } else {
+                Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
+            }
         }
     }
 
 
     fun refreshButtonsState(){
-        saveButton.isEnabled = (activity as FormsActivity).saveRequired
-        cancelButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.saveButton.isEnabled = (activity as FormsActivity).saveRequired
+        binding.cancelButton.isEnabled = (activity as FormsActivity).saveRequired
     }
 
     companion object {
@@ -267,6 +293,7 @@ class CustomAdapter(private val dataSet: ArrayList<TblPromotions>, mContext: Con
 //        viewHolder.checkBox.tag = item.Participant
         viewHolder.checkBox.text = item.Description
         viewHolder.checkBox.isClickable = true
+        viewHolder.checkBox.isEnabled = !item.ContestFlag
         viewHolder.checkBox.setOnClickListener {
             if (viewHolder.checkBox.isChecked) {
                 FacilityDataModel.getInstance().tblPromotions.filter { s->s.PromoID.equals(item.PromoID)}[0].apply {
@@ -285,7 +312,8 @@ class CustomAdapter(private val dataSet: ArrayList<TblPromotions>, mContext: Con
             parentFragment.refreshButtonsState()
         }
         viewHolder.textView.setOnClickListener {
-            Utility.showMessageDialog(context,"Promotion Info ...","Hover Text --> " + Html.fromHtml(item.HoverText, Html.FROM_HTML_MODE_COMPACT) + "\n\n" + "Disclaimer --> " + Html.fromHtml(item.Disclaimer, Html.FROM_HTML_MODE_COMPACT) + "\n\n" + "Coupon --> " + Html.fromHtml(item.CouponText, Html.FROM_HTML_MODE_COMPACT))
+//            Utility.showMessageDialog(context,"Promotion Info ...","Hover Text --> " + Html.fromHtml(item.HoverText, Html.FROM_HTML_MODE_COMPACT) + "\n\n" + "Disclaimer --> " + Html.fromHtml(item.Disclaimer, Html.FROM_HTML_MODE_COMPACT) + "\n\n" + "Coupon --> " + Html.fromHtml(item.CouponText, Html.FROM_HTML_MODE_COMPACT))
+            Utility.showUnifiedInformationDialog(context,"Promotion Info: \n" +"Hover Text --> " + Html.fromHtml(item.HoverText, Html.FROM_HTML_MODE_COMPACT) + "\n\n" + "Disclaimer --> " + Html.fromHtml(item.Disclaimer, Html.FROM_HTML_MODE_COMPACT) + "\n\n" + "Coupon --> " + Html.fromHtml(item.CouponText, Html.FROM_HTML_MODE_COMPACT))
         }
         return result
     }
