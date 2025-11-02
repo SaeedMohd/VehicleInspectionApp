@@ -535,50 +535,52 @@ class FragmentARRAVScopeOfService : Fragment() {
                     binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.VISIBLE
                     Log.v("SOS GENERAL --- ",UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat()+"&discountPercentage=${discountPercentage}&maxDiscountAmount=${maxdiscountamount}")
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateScopeofServiceData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()}&clubCode="+FacilityDataModel.getInstance().clubCode+"&laborRateId=1&fixedLaborRate=$fixedLaborRate&laborMin=$laborRateMatrixMin&laborMax=$laborRateMatrixMax&diagnosticRate=$diagnosticLaborRate&numOfBays=$numberOfBaysEditText&numOfLifts=$numberOfLiftsEditText&warrantyTypeId=${warrantyTypeId}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+ Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + "&discountPercentage=${discountPercentage}&maxDiscountAmount=${maxdiscountamount}" + Utility.getLoggingParameters(activity, 1, getSoSChanges()),
-                            Response.Listener { response ->
-                                requireActivity().runOnUiThread {
-                                    if (response.toString().contains("returnCode>0<",false)) {
-                                        binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-                                        binding.progressBarText.text = "Loading ..."
-                                        Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
-                                        (activity as FormsActivity).saveDone = true
-    //                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage=discountPercentage
-    //                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount=maxdiscountamount
-                                        if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
-                                            FacilityDataModel.getInstance().tblScopeofService[0].apply {
-                                                DiscountCap = maxdiscountamount
-                                                DiscountAmount = discountPercentage
-                                                LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
-                                                LaborMin = if (watcher_LaborMin.isNullOrBlank()) LaborMin else watcher_LaborMin
-                                                FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FixedLaborRate else watcher_FixedLaborRate
-                                                DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank()) DiagnosticsRate else watcher_DiagnosticsRate
-                                                NumOfBays = if (watcher_NumOfBays.isNullOrBlank()) NumOfBays else watcher_NumOfBays
-                                                NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank()) NumOfLifts else watcher_NumOfLifts
-                                                for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
-                                                    if (typeWarranty.WarrantyTypeName == binding.warrantyPeriodVal.selectedItem) {
-                                                        FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
-                                                    }
+                        { response ->
+                            requireActivity().runOnUiThread {
+                                if (response.toString().contains("returnCode>0<",false)) {
+                                    HasChangedModel.getInstance().updateChangedData("Scope Of Services","General","",getSoSChanges())
+                                    binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                                    binding.progressBarText.text = "Loading ..."
+                                    Utility.showSubmitAlertDialog(activity, true, "Scope of Services General Information")
+                                    (activity as FormsActivity).saveDone = true
+//                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].discountpercentage=discountPercentage
+//                                    PRGDataModel.getInstance().tblPRGRepairDiscountFactors[0].maxdiscountamount=maxdiscountamount
+                                    if (FacilityDataModel.getInstance().tblScopeofService.size > 0) {
+                                        FacilityDataModel.getInstance().tblScopeofService[0].apply {
+                                            DiscountCap = maxdiscountamount
+                                            DiscountAmount = discountPercentage
+                                            LaborMax = if (watcher_LaborMax.isNullOrBlank()) LaborMax else watcher_LaborMax
+                                            LaborMin = if (watcher_LaborMin.isNullOrBlank()) LaborMin else watcher_LaborMin
+                                            FixedLaborRate = if (watcher_FixedLaborRate.isNullOrBlank()) FixedLaborRate else watcher_FixedLaborRate
+                                            DiagnosticsRate = if (watcher_DiagnosticsRate.isNullOrBlank()) DiagnosticsRate else watcher_DiagnosticsRate
+                                            NumOfBays = if (watcher_NumOfBays.isNullOrBlank()) NumOfBays else watcher_NumOfBays
+                                            NumOfLifts = if (watcher_NumOfLifts.isNullOrBlank()) NumOfLifts else watcher_NumOfLifts
+                                            for (typeWarranty in TypeTablesModel.getInstance().WarrantyPeriodType) {
+                                                if (typeWarranty.WarrantyTypeName == binding.warrantyPeriodVal.selectedItem) {
+                                                    FacilityDataModel.getInstance().tblScopeofService[0].WarrantyTypeID = typeWarranty.WarrantyTypeID
                                                 }
-
                                             }
+
                                         }
-                                        (activity as FormsActivity).saveRequired = false
-                                        refreshButtonsState()
-                                        setFields()
-                                        HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
-                                        HasChangedModel.getInstance().changeDoneForSoSGeneral()
-                                    } else {
-                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                        Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information (Error: "+ errorMessage+" )")
-                                        binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-                                        binding.progressBarText.text = "Loading ..."
                                     }
+                                    (activity as FormsActivity).saveRequired = false
+                                    refreshButtonsState()
+                                    setFields()
+                                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSGeneral()
+                                    HasChangedModel.getInstance().changeDoneForSoSGeneral()
+                                } else {
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                    Utility.showSubmitAlertDialog(activity, false, "Scope of Services General Information (Error: "+ errorMessage+" )")
+                                    binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                                    binding.progressBarText.text = "Loading ..."
                                 }
-                            }, Response.ErrorListener {
-                            binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
-                            binding.progressBarText.text = "Loading ..."
-                        Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information (Error: "+it.message+" )")
-                    }))
+                            }
+                        },
+                        {
+                        binding.scopeOfServiceGeneralInfoLoadingView.visibility = View.GONE
+                        binding.progressBarText.text = "Loading ..."
+                    Utility.showSubmitAlertDialog(activity,false,"Scope of Services General Information (Error: "+it.message+" )")
+                }))
                 } else {
                     Utility.showValidationAlertDialog(activity,validateMsg)
                 }

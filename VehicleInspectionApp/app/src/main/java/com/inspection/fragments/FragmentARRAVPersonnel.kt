@@ -304,9 +304,10 @@ class FragmentARRAVPersonnel : Fragment() {
                 Log.v("CREATE PRG USER --- ", Constants.CreatePRGUser + urlString)
                 Volley.newRequestQueue(context)
                     .add(StringRequest(Request.Method.GET, Constants.CreatePRGUser + urlString,
-                        Response.Listener { response ->
+                        { response ->
                             requireActivity().runOnUiThread {
                                 if (response.toString().contains("returnCode>0<", false)) {
+                                    HasChangedModel.getInstance().updateChangedData("Personnel Screen","Personnel","","PRG USER Created")
                                     if (response.toString().contains("ErrorFlag>0<", false)) {
                                         //                                    Utility.showSubmitAlertDialog(activity, true, "PRG USER")
                                         //                                    Utility.showMessageDialog(activity, "Confirmation...", "PRG User was created successfully")
@@ -392,7 +393,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                 binding.alphaBackgroundForPersonnelDialogs.visibility = View.GONE
                                 binding.personnelLoadingText.text = "Loading ..."
                             }
-                        }, Response.ErrorListener {
+                        }, {
                             //                Utility.showMessageDialog(activity, "Sorry...", "Error: " + it.message)
                             Utility.showUnifiedErrorDialog(activity, it.message)
                             binding.personnelLoadingView.visibility = View.GONE
@@ -891,6 +892,7 @@ class FragmentARRAVPersonnel : Fragment() {
                             Response.Listener { response ->
                                 requireActivity().runOnUiThread {
                                     if (response.toString().contains("returnCode>0<", false)) {
+                                        HasChangedModel.getInstance().updateChangedData("Personnel","Certifications","",getCertificationChanges(0, selectedPersonnelID))
                                         Utility.showSubmitAlertDialog(
                                             activity,
                                             true,
@@ -1046,7 +1048,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                 0,
                                 getPersonnelChanges(0, 0)
                             ),
-                            Response.Listener { response ->
+                            { response ->
                                 requireActivity().runOnUiThread {
                                     Log.v("ADD PERSONNEL RESPONSE", response.toString())
                                     var rspResponse = ""
@@ -1085,6 +1087,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                         Log.v("RSP RESPONSE", rspResponse)
                                     }
                                     if (response.toString().contains("returnCode>0<", false)) {
+                                        HasChangedModel.getInstance().updateChangedData("Personnel Screen","Personnel","",getPersonnelChanges(0, 0))
 //                                        if (response.toString()
 //                                                .contains("Duplicate ASE Certification ID")
 //                                        ) {
@@ -1337,7 +1340,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                     binding.personnelLoadingText.text = "Loading ..."
                                 }
                             },
-                            Response.ErrorListener {
+                            {
                                 Utility.showSubmitAlertDialog(
                                     activity,
                                     false,
@@ -1479,30 +1482,41 @@ class FragmentARRAVPersonnel : Fragment() {
         return strChanges
     }
 
-    fun getPersonnelChanges(action: Int, rowId: Int): String {
+    private fun getPersonnelChanges(action: Int, rowId: Int): String {
         var strChanges = ""
         try {
             if (action == 0) {
                 strChanges += "New personnel added with first name (" + if (binding.newFirstNameText.text.toString()
-                        .isNullOrEmpty()
+                        .isEmpty()
                 ) "" else binding.newFirstNameText.text.toString() + ") , last name (" + if (binding.newLastNameText.text.toString()
-                        .isNullOrEmpty()
+                        .isEmpty()
                 ) "" else binding.newLastNameText.text.toString()
                 strChanges += "), position (" + binding.newPersonnelTypeSpinner.getSelectedItem()
                     .toString() + ") and start date (" + if (binding.newStartDateBtn.text.equals("SELECT DATE")) "" else binding.newStartDateBtn.text.toString()
                 strChanges += "), end date (" + if (binding.newEndDateBtn.text.equals("SELECT DATE")) "" else binding.newEndDateBtn.text.toString() + ") and certification ID # (" + if (binding.newCertNoText.text.toString()
-                        .isNullOrEmpty()
+                        .isEmpty()
                 ) "" else binding.newCertNoText.text.toString() + ") and ASE Certification ID # (" + if (binding.newASECertNoText.text.toString()
-                        .isNullOrEmpty()
+                        .isEmpty()
                 ) "" else binding.newASECertNoText.text.toString()
-                strChanges += "), siniority date (" + if (binding.newSeniorityDateBtn.text.equals("SELECT DATE")) "" else binding.newSeniorityDateBtn.text.toString() + ") and contract signer (" + if (binding.newSignerCheck.isChecked == true) "true" else "false"
+                strChanges += "), Seniority date (" + if (binding.newSeniorityDateBtn.text.equals("SELECT DATE")) "" else binding.newSeniorityDateBtn.text.toString() + ") and contract signer (" + if (binding.newSignerCheck.isChecked == true) "true" else "false"
+                strChanges += ") and RSP User ID (" + binding.rspUserId.text.toString() + ")"
+                strChanges += ") and RSP Email (" + binding.rspEmailId.text.toString() + ")"
                 strChanges += ") and primary mail recipient (" + if (binding.newACSCheck.isChecked == true) "true" else "false" + ")"
+                strChanges += ") and Notification recipient (" + if (binding.newNotificationCheck.isChecked == true) "true" else "false" + ")"
+                strChanges += ") and Report recipient (" + if (binding.newReportCheck.isChecked == true) "true" else "false" + ")"
+                strChanges += ") and Complaint Contact (" + if (binding.newComplaintContact.isChecked == true) "true" else "false" + ")"
             } else {
                 if (binding.editNewFirstNameText.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].FirstName) {
                     strChanges += "First Name changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].FirstName + ") to (" + binding.editNewFirstNameText.text.toString() + ") - "
                 }
                 if (binding.editNewLastNameText.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].LastName) {
                     strChanges += "Last Name changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].LastName + ") to (" + binding.editNewLastNameText.text.toString() + ") - "
+                }
+                if (binding.editRspUserId.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].RSP_UserName) {
+                    strChanges += "RSP User ID changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].RSP_UserName + ") to (" + binding.editRspUserId.text.toString() + ") - "
+                }
+                if (binding.editRspEmailId.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].RSP_Email) {
+                    strChanges += "RSP Email changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].RSP_Email + ") to (" + binding.editRspEmailId.text.toString() + ") - "
                 }
                 if (binding.editNewPersonnelTypeSpinner.getSelectedItem()
                         .toString() != (TypeTablesModel.getInstance().PersonnelType.filter { s ->
@@ -1536,7 +1550,10 @@ class FragmentARRAVPersonnel : Fragment() {
                     strChanges += "Contract Signer flag changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].ContractSigner + ") to (" + binding.editNewSignerCheck.isChecked + ") - "
                 }
                 if (binding.editNewACSCheck.isChecked != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].PrimaryMailRecipient) {
-                    strChanges += "Contract Signer flag changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].PrimaryMailRecipient + ") to (" + binding.editNewACSCheck.isChecked + ") - "
+                    strChanges += "Primary Mail Recipient changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].PrimaryMailRecipient + ") to (" + binding.editNewACSCheck.isChecked + ") - "
+                }
+                if (binding.editNewComplaintCheck.isChecked != FacilityDataModelOrg.getInstance().tblPersonnel[rowId].ComplaintContact) {
+                    strChanges += "Complaint Contact changed from (" + FacilityDataModelOrg.getInstance().tblPersonnel[rowId].ComplaintContact + ") to (" + binding.editNewComplaintCheck.isChecked + ") - "
                 }
             }
             strChanges = strChanges.removeSuffix(" - ")
@@ -4998,12 +5015,13 @@ class FragmentARRAVPersonnel : Fragment() {
                                                     currentfacilityDataModelIndex
                                                 )
                                             ),
-                                            Response.Listener { response ->
+                                            { response ->
                                                 requireActivity().runOnUiThread {
                                                     Log.v(
                                                         "EDIT PERSONNEL RESPONSE",
                                                         response.toString()
                                                     )
+
                                                     var rspResponse = ""
                                                     var tokenResponse = ""
                                                     var personnelResponse = ""
@@ -5059,6 +5077,10 @@ class FragmentARRAVPersonnel : Fragment() {
                                                     if (response.toString()
                                                             .contains("returnCode>0<", false)
                                                     ) {
+                                                        HasChangedModel.getInstance().updateChangedData("Personnel Screen","Personnel","",getPersonnelChanges(
+                                                            1,
+                                                            currentfacilityDataModelIndex
+                                                        ))
                                                         if ((response.toString()
                                                                 .contains("<ErrorFlag>1</ErrorFlag>")) //&& sendToRSP == 0
                                                         ) {
@@ -5189,7 +5211,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                                                                 activity
                                                                             ).loggedInUserID
                                                                         }&updateDate=" + Date().toApiSubmitFormat() + "&active=1",
-                                                                        Response.Listener { response ->
+                                                                        { response ->
                                                                             requireActivity().runOnUiThread {
                                                                                 if (response.toString()
                                                                                         .contains(
@@ -5197,6 +5219,10 @@ class FragmentARRAVPersonnel : Fragment() {
                                                                                             false
                                                                                         )
                                                                                 ) {
+//                                                                                    HasChangedModel.getInstance().updateChangedData("Personnel Screen","Personnel","",getPersonnelChanges(
+//                                                                                        1,
+//                                                                                        currentfacilityDataModelIndex
+//                                                                                    ))
                                                                                     Utility.showSubmitAlertDialog(
                                                                                         activity,
                                                                                         true,
@@ -5279,7 +5305,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                                                                     "Loading ..."
                                                                             }
                                                                         },
-                                                                        Response.ErrorListener {
+                                                                        {
                                                                             Utility.showSubmitAlertDialog(
                                                                                 activity,
                                                                                 false,
@@ -5332,7 +5358,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                                     }
                                                 }
                                             },
-                                            Response.ErrorListener {
+                                            {
                                                 Utility.showSubmitAlertDialog(
                                                     activity,
                                                     false,
@@ -5652,6 +5678,7 @@ class FragmentARRAVPersonnel : Fragment() {
                                                     if (response.toString()
                                                             .contains("returnCode>0<", false)
                                                     ) {
+                                                        HasChangedModel.getInstance().updateChangedData("Personnel Screen","Personnel","",getCertificationChanges(0, selectedPersonnelID))
                                                         Utility.showSubmitAlertDialog(
                                                             activity,
                                                             true,

@@ -436,6 +436,7 @@ class FragmentARRAVPrograms : Fragment() {
                                     requireActivity().runOnUiThread {
                                         Log.v("PROGRAMS ADD RES --- ", response.toString())
                                         if (response.toString().contains("returnCode>0<", false)) {
+                                            HasChangedModel.getInstance().updateChangedData("Programs","","",getProgramChanges(0, 0))
                                             binding.alphaBackgroundForProgramDialogs.visibility =
                                                 View.GONE
                                             (activity as FormsActivity).overrideBackButton = false
@@ -1118,6 +1119,7 @@ class FragmentARRAVPrograms : Fragment() {
                                                                     activity,
                                                                     "Program Data Saved Successfully$RSPMsg"
                                                                 )
+                                                                HasChangedModel.getInstance().updateChangedData("Programs","","",getProgramChanges(1, currentfacilityDataModelIndex))
                                                                 HasChangedModel.getInstance().groupSoSPrograms[0].SoSPrograms =
                                                                     true
                                                                 HasChangedModel.getInstance()
@@ -1130,6 +1132,8 @@ class FragmentARRAVPrograms : Fragment() {
                                                                     currentRowDataModel.effDate
                                                                 FacilityDataModel.getInstance().tblPrograms[currentfacilityDataModelIndex].ProgramTypeID =
                                                                     currentRowDataModel.ProgramTypeID
+                                                                val changeLog = HasChangedModel.getInstance().compareChanges(FacilityDataModelOrg.getInstance().tblPrograms,FacilityDataModel.getInstance().tblPrograms)
+                                                                Log.v("CHANGES ---->",changeLog)
                                                                 FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].Comments =
                                                                     currentRowDataModel.Comments
                                                                 FacilityDataModelOrg.getInstance().tblPrograms[currentfacilityDataModelIndex].expDate =
@@ -1154,6 +1158,7 @@ class FragmentARRAVPrograms : Fragment() {
                                                                         FacilityDataModelOrg.getInstance().tblPrograms
                                                                     )
                                                                 fillPortalTrackingTableView()
+
                                                             } else {
                                                                 var errorMessage =
                                                                     response.toString()

@@ -206,36 +206,38 @@ class FragmentARRAVFacilityServices : Fragment() {
                     item.Comments=binding.commentsEditTextVal.text.toString()
                     Log.v("FAC SERVICES ADD --- ",UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo +"&clubCode="+FacilityDataModel.getInstance().clubCode+"&facilityServicesId=&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getFacServiceChanges(0,0)),
-                            Response.Listener { response ->
-                                requireActivity().runOnUiThread {
-                                    if (response.toString().contains("returnCode>0<",false)) {
-                                        item.FacilityServicesID= response.toString().substring(response.toString().indexOf("<FacilityServicesID")+20,response.toString().indexOf("</FacilityServicesID"))
-                                        FacilityDataModel.getInstance().tblFacilityServices.add(item)
-                                        FacilityDataModelOrg.getInstance().tblFacilityServices.add(item)
-                                        Utility.showSubmitAlertDialog(activity, true, "Facility Services")
-                                        fillPortalTrackingTableView()
-                                        altFacServiceTableRow(2)
-                                        (activity as FormsActivity).saveDone = true
-                                        HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices=true
-                                        HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
-                                    } else {
-                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                        Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
-                                    }
-                                    binding.facilityServicesCard.visibility = View.GONE
-                                    binding.FCLoadingView.visibility = View.GONE
-                                    (activity as FormsActivity).overrideBackButton = false
-                                    binding.progressBarText.text = "Loading ..."
-                                    binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+                        { response ->
+                            requireActivity().runOnUiThread {
+                                if (response.toString().contains("returnCode>0<",false)) {
+                                    HasChangedModel.getInstance().updateChangedData("Facility Services","","", getFacServiceChanges(0,0))
+                                    item.FacilityServicesID= response.toString().substring(response.toString().indexOf("<FacilityServicesID")+20,response.toString().indexOf("</FacilityServicesID"))
+                                    FacilityDataModel.getInstance().tblFacilityServices.add(item)
+                                    FacilityDataModelOrg.getInstance().tblFacilityServices.add(item)
+                                    Utility.showSubmitAlertDialog(activity, true, "Facility Services")
+                                    fillPortalTrackingTableView()
+                                    altFacServiceTableRow(2)
+                                    (activity as FormsActivity).saveDone = true
+                                    HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices=true
+                                    HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
+                                } else {
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
                                 }
-                            }, Response.ErrorListener {
-                        Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
-                            binding.facilityServicesCard.visibility = View.GONE
-                            binding.FCLoadingView.visibility = View.GONE
-                        (activity as FormsActivity).overrideBackButton = false
-                            binding.progressBarText.text = "Loading ..."
-                            binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
-                    }))
+                                binding.facilityServicesCard.visibility = View.GONE
+                                binding.FCLoadingView.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
+                                binding.progressBarText.text = "Loading ..."
+                                binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+                            }
+                        },
+                        {
+                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
+                        binding.facilityServicesCard.visibility = View.GONE
+                        binding.FCLoadingView.visibility = View.GONE
+                    (activity as FormsActivity).overrideBackButton = false
+                        binding.progressBarText.text = "Loading ..."
+                        binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+                }))
                 }else {
                     showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
     //                showValidationAlertDialog(activity,"Please fill all the required fields")
@@ -455,41 +457,43 @@ class FragmentARRAVFacilityServices : Fragment() {
                                     item.FacilityServicesID = FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].FacilityServicesID
                                     Log.v("FAC SERVICES EDIT --- ",UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat())
                                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityServicesData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode + "&facilityServicesId=${item.FacilityServicesID}&serviceId=${item.ServiceID}&effDate=${item.effDate}&expDate=${item.expDate}&comments=${item.Comments}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 1, getFacServiceChanges(1,currentfacilityDataModelIndex)),
-                                            Response.Listener { response ->
-                                                requireActivity().runOnUiThread {
-                                                    if (response.toString().contains("returnCode>0<", false)) {
-                                                        Utility.showSubmitAlertDialog(activity, true, "Facility Services")
-                                                        FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments = item.Comments
-                                                        FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate = item.effDate
-                                                        FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate = item.expDate
-                                                        FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
-                                                        FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments = item.Comments
-                                                        FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate = item.effDate
-                                                        FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate = item.expDate
-                                                        FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
-                                                        fillPortalTrackingTableView()
-                                                        altFacServiceTableRow(2)
-                                                        (activity as FormsActivity).saveDone = true
-                                                        HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices = true
-                                                        HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
-                                                    } else {
-                                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                        Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
-                                                    }
-                                                    binding.editFacilityServicesCard.visibility = View.GONE
-                                                    binding.FCLoadingView.visibility = View.GONE
-                                                    (activity as FormsActivity).overrideBackButton = false
-                                                    binding.progressBarText.text = "Loading ..."
-                                                    binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+                                        { response ->
+                                            requireActivity().runOnUiThread {
+                                                if (response.toString().contains("returnCode>0<", false)) {
+                                                    HasChangedModel.getInstance().updateChangedData("Facility Services","","", getFacServiceChanges(1,currentfacilityDataModelIndex))
+                                                    Utility.showSubmitAlertDialog(activity, true, "Facility Services")
+                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments = item.Comments
+                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate = item.effDate
+                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate = item.expDate
+                                                    FacilityDataModel.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
+                                                    FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].Comments = item.Comments
+                                                    FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].effDate = item.effDate
+                                                    FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].expDate = item.expDate
+                                                    FacilityDataModelOrg.getInstance().tblFacilityServices[currentfacilityDataModelIndex].ServiceID = item.ServiceID
+                                                    fillPortalTrackingTableView()
+                                                    altFacServiceTableRow(2)
+                                                    (activity as FormsActivity).saveDone = true
+                                                    HasChangedModel.getInstance().groupSoSFacilityServices[0].SoSFacilityServices = true
+                                                    HasChangedModel.getInstance().changeDoneForSoSFacilityServices()
+                                                } else {
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+errorMessage+" )")
                                                 }
-                                            }, Response.ErrorListener {
-                                        Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
-                                            binding.editFacilityServicesCard.visibility = View.GONE
-                                            binding.FCLoadingView.visibility = View.GONE
-                                        (activity as FormsActivity).overrideBackButton = false
-                                            binding.progressBarText.text = "Loading ..."
-                                        binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
-                                    }))
+                                                binding.editFacilityServicesCard.visibility = View.GONE
+                                                binding.FCLoadingView.visibility = View.GONE
+                                                (activity as FormsActivity).overrideBackButton = false
+                                                binding.progressBarText.text = "Loading ..."
+                                                binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+                                            }
+                                        },
+                                        {
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Services (Error: "+it.message+" )")
+                                        binding.editFacilityServicesCard.visibility = View.GONE
+                                        binding.FCLoadingView.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                        binding.progressBarText.text = "Loading ..."
+                                    binding.alphaBackgroundForFCServicesDialogs.visibility = View.GONE
+                                }))
                                 } else {
     //                                showValidationAlertDialog(activity, "Please fill all the required fields")
                                     showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")

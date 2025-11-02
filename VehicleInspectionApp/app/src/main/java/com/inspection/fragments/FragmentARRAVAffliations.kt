@@ -246,35 +246,37 @@ class FragmentARRAVAffliations : Fragment() {
                     affiliationItem.AffiliationTypeID= TypeTablesModel.getInstance().AARAffiliationType.filter { s->s.AffiliationTypeName.equals(binding.affiliationsTextviewVal.selectedItem.toString()) }[0].AARAffiliationTypeID.toInt()
                     Log.v("Affiliations ADD --- ",UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat())
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode="+FacilityDataModel.getInstance().clubCode+"&affiliationId=&affiliationTypeId=${affiliationItem.AffiliationTypeID}&affiliationTypeDetailsId=${affiliationItem.AffiliationTypeDetailID}&effDate=${affiliationItem.effDate}&expDate=${affiliationItem.expDate}&comment=${affiliationItem.comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+"&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getAffiliationChanges(0,0)),
-                            Response.Listener { response ->
-                                requireActivity().runOnUiThread {
-                                    if (response.toString().contains("returnCode>0<",false)) {
-                                        Utility.showSubmitAlertDialog(activity, true, "Affiliation")
-                                        affiliationItem.AffiliationID = response.toString().substring(response.toString().indexOf("<AffiliationID")+15,response.toString().indexOf("</AffiliationID")).toInt()
-                                        FacilityDataModel.getInstance().tblAffiliations.add(affiliationItem)
-                                        FacilityDataModelOrg.getInstance().tblAffiliations.add(affiliationItem)
-                                        fillAffTableView()
-                                        altLocationTableRow(2)
-                                        (activity as FormsActivity).saveDone = true
-                                        HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
-                                        HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
-                                    } else {
-                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                        Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
-                                    }
-                                    binding.affLoadingView.visibility = View.GONE
-                                    (activity as FormsActivity).overrideBackButton = false
-                                    binding.progressBarText.text = "Loading ..."
-                                    binding.affiliationsCard.visibility = View.GONE
-                                    binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+                        { response ->
+                            requireActivity().runOnUiThread {
+                                if (response.toString().contains("returnCode>0<",false)) {
+                                    HasChangedModel.getInstance().updateChangedData("Affiliations","","",getAffiliationChanges(0,0))
+                                    Utility.showSubmitAlertDialog(activity, true, "Affiliation")
+                                    affiliationItem.AffiliationID = response.toString().substring(response.toString().indexOf("<AffiliationID")+15,response.toString().indexOf("</AffiliationID")).toInt()
+                                    FacilityDataModel.getInstance().tblAffiliations.add(affiliationItem)
+                                    FacilityDataModelOrg.getInstance().tblAffiliations.add(affiliationItem)
+                                    fillAffTableView()
+                                    altLocationTableRow(2)
+                                    (activity as FormsActivity).saveDone = true
+                                    HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
+                                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
+                                } else {
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                    Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
                                 }
-                            }, Response.ErrorListener {
-                        Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
-                            binding.affLoadingView.visibility = View.GONE
-                        (activity as FormsActivity).overrideBackButton = false
-                            binding.affiliationsCard.visibility = View.GONE
-                            binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                    }))
+                                binding.affLoadingView.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
+                                binding.progressBarText.text = "Loading ..."
+                                binding.affiliationsCard.visibility = View.GONE
+                                binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+                            }
+                        },
+                        {
+                    Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
+                        binding.affLoadingView.visibility = View.GONE
+                    (activity as FormsActivity).overrideBackButton = false
+                        binding.affiliationsCard.visibility = View.GONE
+                        binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+                }))
                 }else {
                     Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
                 }
@@ -568,44 +570,46 @@ class FragmentARRAVAffliations : Fragment() {
                                 indexToRemove = rowIndex
                                 Log.v("AFFILIATION EDIT --- ",UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}")
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAffiliationsData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&affiliationId=${affiliationID}&affiliationTypeId=${affTypeID}&affiliationTypeDetailsId=${affDetailID}&effDate=${startDate}&expDate=${endDate}&comment=${comment}&active=1&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 1, getAffiliationChanges(1,rowIndex-1)),
-                                        Response.Listener { response ->
-                                            requireActivity().runOnUiThread {
-                                                if (response.toString().contains("returnCode>0<",false)) {
-                                                    Utility.showSubmitAlertDialog(activity, true, "Affiliation")
-                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
-                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
-                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
-                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
-                                                    FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment= comment
+                                    { response ->
+                                        requireActivity().runOnUiThread {
+                                            if (response.toString().contains("returnCode>0<",false)) {
+                                                HasChangedModel.getInstance().updateChangedData("Affiliations Screen","Affiliations","",getAffiliationChanges(1,rowIndex-1))
+                                                Utility.showSubmitAlertDialog(activity, true, "Affiliation")
+                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
+                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
+                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
+                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
+                                                FacilityDataModel.getInstance().tblAffiliations[rowIndex-1].comment= comment
 
-                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
-                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
-                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
-                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
-                                                    FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].comment= comment
-                                                    (activity as FormsActivity).saveDone = true
-                                                    binding.affLoadingView.visibility = View.GONE
-                                                    binding.progressBarText.text = "Loading ..."
-                                                    fillAffTableView()
-                                                    altLocationTableRow(2)
-                                                    HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
-                                                    HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
-                                                } else {
-                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                    Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
-                                                }
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeID = affTypeID.toInt()
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].AffiliationTypeDetailID = affDetailID.toInt()
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].effDate= startDate
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].expDate= endDate
+                                                FacilityDataModelOrg.getInstance().tblAffiliations[rowIndex-1].comment= comment
+                                                (activity as FormsActivity).saveDone = true
                                                 binding.affLoadingView.visibility = View.GONE
-                                                (activity as FormsActivity).overrideBackButton = false
-                                                binding.editAffiliationsCard.visibility = View.GONE
-                                                binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+                                                binding.progressBarText.text = "Loading ..."
+                                                fillAffTableView()
+                                                altLocationTableRow(2)
+                                                HasChangedModel.getInstance().groupSoSAffiliations[0].SoSAffiliations= true
+                                                HasChangedModel.getInstance().checkIfChangeWasDoneforSoSAffiliations()
+                                            } else {
+                                                var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                Utility.showSubmitAlertDialog(activity,false,"Affiliation (Error: "+ errorMessage+" )")
                                             }
-                                        }, Response.ErrorListener {
-                                    Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
-                                        binding.affLoadingView.visibility = View.GONE
-                                    (activity as FormsActivity).overrideBackButton = false
-                                        binding.editAffiliationsCard.visibility = View.GONE
-                                        binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
-                                }))
+                                            binding.affLoadingView.visibility = View.GONE
+                                            (activity as FormsActivity).overrideBackButton = false
+                                            binding.editAffiliationsCard.visibility = View.GONE
+                                            binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+                                        }
+                                    },
+                                    {
+                                Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: "+it.message+" )")
+                                    binding.affLoadingView.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
+                                    binding.editAffiliationsCard.visibility = View.GONE
+                                    binding.alphaBackgroundForAffilliationsDialogs.visibility = View.GONE
+                            }))
                             } else
                                 Utility.showValidationAlertDialog(activity, "Please fill all required fields \nExpiration Date should be after Effective Date")
                         } else {

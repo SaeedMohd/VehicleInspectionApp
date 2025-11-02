@@ -1266,7 +1266,7 @@ class FragmentAARAVPhotos : Fragment() {
                                 // START FROM HERE
                                 Log.v("SubmitPhoto -> ", Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=${itemAPP.Approved}&approvedBy=${itemAPP.ApprovedBy}&operation=EDIT&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=${itemAPP.ApprovedDate}&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)))
                                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=${itemAPP.Approved}&approvedBy=${itemAPP.ApprovedBy}&operation=EDIT&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=${itemAPP.ApprovedDate}&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)),
-                                    Response.Listener { response ->
+                                    { response ->
                                         requireActivity().runOnUiThread {
                                             if (response.toString().contains("Success", false)) {
                                                 Utility.showSubmitAlertDialog(activity, true, "Photos")
@@ -1295,7 +1295,8 @@ class FragmentAARAVPhotos : Fragment() {
                                             binding.editPhotoDialog.visibility = View.GONE
                                             (activity as FormsActivity).overrideBackButton = false
                                         }
-                                    }, Response.ErrorListener {
+                                    },
+                                    {
                                         Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + it.message + " )")
 
                                         binding.editPhotoDialog.visibility = View.GONE

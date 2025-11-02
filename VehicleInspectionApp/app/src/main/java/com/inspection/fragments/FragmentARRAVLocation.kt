@@ -1349,7 +1349,47 @@ class FragmentARRAVLocation : Fragment() {
         return strChanges
     }
 
-
+    fun getGeoCodesChanges() : String {
+        var strChanges = ""
+        try {
+            if ((!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}.isNullOrEmpty()) && (FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}.isNullOrEmpty())) {
+                strChanges += "GeoCode Type (Maps & Driving Directions) added - "
+            } else if ((!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}.isNullOrEmpty()) && (!FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}.isNullOrEmpty())) {
+                if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LATITUDE != FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LATITUDE) {
+                    strChanges += "GeoCode Type (Maps & Driving Directions) Latitude changed from (" + FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LATITUDE + ") to (" + FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LATITUDE + ") - "
+                }
+                if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LONGITUDE != FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LONGITUDE) {
+                    strChanges += "GeoCode Type (Maps & Driving Directions) Longitude changed from (" + FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LONGITUDE + ") to (" + FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Maps")}[0].LONGITUDE + ") - "
+                }
+            }
+            if ((!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}.isNullOrEmpty()) && (FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}.isNullOrEmpty())) {
+                strChanges += "GeoCode Type (Tow Truck Drop-Off) added - "
+            } else if ((!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}.isNullOrEmpty()) && (!FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}.isNullOrEmpty())) {
+                if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LATITUDE != FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LATITUDE) {
+                    strChanges += "GeoCode Type (Tow Truck Drop-Off) Latitude changed from (" + FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LATITUDE + ") to (" + FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LATITUDE + ") - "
+                }
+                if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LONGITUDE != FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LONGITUDE) {
+                    strChanges += "GeoCode Type (Tow Truck Drop-Off) Longitude changed from (" + FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LONGITUDE + ") to (" + FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Tow")}[0].LONGITUDE + ") - "
+                }
+            }
+            if ((!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}.isNullOrEmpty()) && (FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}.isNullOrEmpty())) {
+                strChanges += "GeoCode Type (Customer Waiting Area) added - "
+            } else if ((!FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}.isNullOrEmpty()) && (!FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}.isNullOrEmpty())) {
+                if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LATITUDE != FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LATITUDE) {
+                    strChanges += "GeoCode Type (Customer Waiting Area) Latitude changed from (" + FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LATITUDE + ") to (" + FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LATITUDE + ") - "
+                }
+                if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LONGITUDE != FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LONGITUDE) {
+                    strChanges += "GeoCode Type (Customer Waiting Area) Longitude changed from (" + FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LONGITUDE + ") to (" + FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeocodeTypeName.contains("Cust")}[0].LONGITUDE + ") - "
+                }
+            }
+            strChanges = strChanges.removeSuffix(" - ")
+            strChanges += ")"
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        Log.v("GeoCode Changes -- ",strChanges)
+        return strChanges
+    }
 
     fun getPhoneChanges(action : Int,rowId: Int) : String {
         var strChanges = ""
@@ -1423,37 +1463,38 @@ class FragmentARRAVLocation : Fragment() {
                 var urlString = facilityNo + "&clubcode=" + clubCode + "&BranchName=" + facBranchName + "&LATITUDE=" + Latitude + "&LONGITUDE=" + Longitude + "&BranchNumber=" + facBranchNo + "&locationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1&geocodeTypeID=3"
                 Log.v("Location Address --- ", Constants.submitContactInfoAddress + urlString)
                 Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString + Utility.getLoggingParameters(activity, 0, getAddressChanges()),
-                        Response.Listener { response ->
-                            requireActivity().runOnUiThread {
-                                if (response.toString().contains("returnCode>0<", false)) {
-                                    Utility.showSubmitAlertDialog(activity, true, "Facility Location")
-                                    FacilityDataModel.getInstance().tblAddress[index].LATITUDE = binding.newLocLatText.text.toString()
-                                    FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = binding.newLocLongText.text.toString()
-                                    FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LATITUDE = binding.newLocLatText.text.toString()
-                                    FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LONGITUDE = binding.newLocLongText.text.toString()
-                                    FacilityDataModelOrg.getInstance().tblAddress[index].LATITUDE = binding.newLocLatText.text.toString()
-                                    FacilityDataModelOrg.getInstance().tblAddress[index].LONGITUDE = binding.newLocLongText.text.toString()
-                                    fillLocationTableView()
-                                    fillGeoCodesTable()
-                                    (activity as FormsActivity).saveDone = true
-                                    HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
-                                    HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-                                } else {
-                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
-                                    Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: " + errorMessage + " )")
-                                }
-                                binding.contactInfoLoadingView.visibility = View.GONE
-                                binding.contactInfoLoadingText.text = "Loading ..."
-                                //                            enableAllAddButnsAndDialog()
+                    { response ->
+                        requireActivity().runOnUiThread {
+                            if (response.toString().contains("returnCode>0<", false)) {
+                                Utility.showSubmitAlertDialog(activity, true, "Facility Location")
+                                FacilityDataModel.getInstance().tblAddress[index].LATITUDE = binding.newLocLatText.text.toString()
+                                FacilityDataModel.getInstance().tblAddress[index].LONGITUDE = binding.newLocLongText.text.toString()
+                                FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LATITUDE = binding.newLocLatText.text.toString()
+                                FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==3 }[0].LONGITUDE = binding.newLocLongText.text.toString()
+                                FacilityDataModelOrg.getInstance().tblAddress[index].LATITUDE = binding.newLocLatText.text.toString()
+                                FacilityDataModelOrg.getInstance().tblAddress[index].LONGITUDE = binding.newLocLongText.text.toString()
+                                fillLocationTableView()
+                                fillGeoCodesTable()
+                                (activity as FormsActivity).saveDone = true
+                                HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
+                                HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                            } else {
+                                var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: " + errorMessage + " )")
                             }
-                        }, Response.ErrorListener {
+                            binding.contactInfoLoadingView.visibility = View.GONE
+                            binding.contactInfoLoadingText.text = "Loading ..."
+                            //                            enableAllAddButnsAndDialog()
+                        }
+                    },
+                    {
 
-                    Utility.showSubmitAlertDialog(activity, true, "Facility Location (Error: " + it.message + " )")
-                        binding.contactInfoLoadingView.visibility = View.GONE
-                        binding.contactInfoLoadingText.text = "Loading ..."
+                Utility.showSubmitAlertDialog(activity, true, "Facility Location (Error: " + it.message + " )")
+                    binding.contactInfoLoadingView.visibility = View.GONE
+                    binding.contactInfoLoadingText.text = "Loading ..."
 //                        enableAllAddButnsAndDialog()
-                    Log.v("error while submitting", "LOCATION Details")
-                }))
+                Log.v("error while submitting", "LOCATION Details")
+            }))
             }
             } else {
                 Utility.showInternetWarningDialog(requireContext(),(requireActivity() as FormsActivity).networkStatusErrorMsg)
@@ -1498,41 +1539,42 @@ class FragmentARRAVLocation : Fragment() {
         var urlString = facilityNo + "&clubcode=" + clubCode + "&BranchName=" + facBranchName + "&LATITUDE=" + Latitude + "&LONGITUDE=" + Longitude + "&BranchNumber=" + facBranchNo + "&locationTypeID=" + LocationTypeID + "&FAC_Addr1=" + facAddr1 + "&FAC_Addr2=" + facAddr2 + "&CITY=" + facCity + "&Country=" + facCountry + "&ST=" + facST + "&ZIP=" + facZip + "&ZIP4=" + facZip4 + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&active=1&geocodeTypeID="+geoCodeTypeID.toString()
         Log.v("Location GeoCodes --- ", Constants.submitContactInfoAddress + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitContactInfoAddress + urlString + Utility.getLoggingParameters(activity, 0, getAddressChanges()),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        if (response.toString().contains("returnCode>0<", false)) {
-                            Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes")
-                            if (geoCodeTypeID==3) {
-                                FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals("1") }[0].LATITUDE = Latitude
-                                FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals("1") }[0].LONGITUDE = Longitude
-                                FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LATITUDE = Latitude
-                                FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LONGITUDE = Longitude
-                            }
-                            fillLocationTableView()
+            { response ->
+                requireActivity().runOnUiThread {
+                    if (response.toString().contains("returnCode>0<", false)) {
+                        Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes")
+                        if (geoCodeTypeID==3) {
+                            FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals("1") }[0].LATITUDE = Latitude
+                            FacilityDataModel.getInstance().tblAddress.filter { s->s.LocationTypeID.equals("1") }[0].LONGITUDE = Longitude
                             FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LATITUDE = Latitude
                             FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LONGITUDE = Longitude
-                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LATITUDE = Latitude
-                            FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LONGITUDE = Longitude
-//                            fillGeoCodesTable()
-                            (activity as FormsActivity).saveDone = true
-                            HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
-                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-                        } else {
-                            var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
-                            Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: " + errorMessage + " )")
                         }
-                        binding.contactInfoLoadingView.visibility = View.GONE
-                        binding.contactInfoLoadingText.text = "Loading ..."
-                        //                            enableAllAddButnsAndDialog()
+                        fillLocationTableView()
+                        FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LATITUDE = Latitude
+                        FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LONGITUDE = Longitude
+                        FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LATITUDE = Latitude
+                        FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geoCodeTypeID }[0].LONGITUDE = Longitude
+//                            fillGeoCodesTable()
+                        (activity as FormsActivity).saveDone = true
+                        HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityAddress = true
+                        HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    } else {
+                        var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                        Utility.showSubmitAlertDialog(activity, false, "Facility Location (Error: " + errorMessage + " )")
                     }
-                }, Response.ErrorListener {
+                    binding.contactInfoLoadingView.visibility = View.GONE
+                    binding.contactInfoLoadingText.text = "Loading ..."
+                    //                            enableAllAddButnsAndDialog()
+                }
+            },
+            {
 
-            Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes (Error: " + it.message + " )")
-                binding.contactInfoLoadingView.visibility = View.GONE
-                binding.contactInfoLoadingText.text = "Loading ..."
+        Utility.showSubmitAlertDialog(activity, true, "Facility GeoCodes (Error: " + it.message + " )")
+            binding.contactInfoLoadingView.visibility = View.GONE
+            binding.contactInfoLoadingText.text = "Loading ..."
 //                        enableAllAddButnsAndDialog()
-            Log.v("error while submitting", "GeoCode Details")
-        }))
+        Log.v("error while submitting", "GeoCode Details")
+    }))
     }
     private fun getLocationTypeName(typeID: String): String {
         var typeName = ""
@@ -1875,28 +1917,30 @@ class FragmentARRAVLocation : Fragment() {
                                     (activity as FormsActivity).overrideBackButton = false
                                     Log.v("Phone Edit --- ",Constants.submitFacilityPhone + urlString)
                                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString+ Utility.getLoggingParameters(activity, 0, getPhoneChanges(1,phoneFacilityChangedIndex)),
-                                            Response.Listener { response ->
-                                                requireActivity().runOnUiThread {
-                                                    if (response.toString().contains("returnCode>0<", false)) {
-                                                        Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
-                                                        FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = binding.newChangesPhoneNoText.text.toString()
-                                                        FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = binding.newChangesPhoneNoText.text.toString()
-                                                        fillPhoneTableView()
-                                                        (activity as FormsActivity).saveDone = true
-                                                        checkIfChangeDone("PHONE")
-                                                    } else {
-                                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                        Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
-                                                    }
-                                                    binding.contactInfoLoadingView.visibility = View.GONE
-                                                    binding.contactInfoLoadingText.text = "Loading ..."
+                                        { response ->
+                                            requireActivity().runOnUiThread {
+                                                if (response.toString().contains("returnCode>0<", false)) {
+                                                    HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Phones","",getPhoneChanges(1,phoneFacilityChangedIndex))
+                                                    Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
+                                                    FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = binding.newChangesPhoneNoText.text.toString()
+                                                    FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = binding.newChangesPhoneNoText.text.toString()
+                                                    fillPhoneTableView()
+                                                    (activity as FormsActivity).saveDone = true
+                                                    checkIfChangeDone("PHONE")
+                                                } else {
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
                                                 }
-                                            }, Response.ErrorListener {
-                                            binding.contactInfoLoadingView.visibility = View.GONE
-                                            binding.contactInfoLoadingText.text = "Loading ..."
-                                        Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+it.message+" )")
-                                        Log.v("error while submitting", "Phone Details")
-                                    }))
+                                                binding.contactInfoLoadingView.visibility = View.GONE
+                                                binding.contactInfoLoadingText.text = "Loading ..."
+                                            }
+                                        },
+                                        {
+                                        binding.contactInfoLoadingView.visibility = View.GONE
+                                        binding.contactInfoLoadingText.text = "Loading ..."
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+it.message+" )")
+                                    Log.v("error while submitting", "Phone Details")
+                                }))
 
 
                                 }
@@ -2022,28 +2066,30 @@ class FragmentARRAVLocation : Fragment() {
                                     (activity as FormsActivity).overrideBackButton = false
                                     Log.v("Email Edit --- ",Constants.submitFacilityEmail + urlString)
                                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString+ Utility.getLoggingParameters(activity, 0, getEmailChanges(1,emailFacilityChangedIndex)),
-                                            Response.Listener { response ->
-                                                requireActivity().runOnUiThread {
-                                                    if (response.toString().contains("returnCode>0<", false)) {
-                                                        Utility.showSubmitAlertDialog(activity, true, "Facility Email")
-                                                        FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = binding.newChangesEmailText.text.toString()
-                                                        FacilityDataModelOrg.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = binding.newChangesEmailText.text.toString()
-                                                        fillEmailTableView()
-                                                        checkIfChangeDone("EMAIL")
-                                                        (activity as FormsActivity).saveDone = true
-                                                        setAlertColoring()
-                                                    } else {
-                                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                                                        Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
-                                                    }
-                                                    binding.contactInfoLoadingView.visibility = View.GONE
-                                                    binding.contactInfoLoadingText.text = "Loading ..."
+                                        { response ->
+                                            requireActivity().runOnUiThread {
+                                                if (response.toString().contains("returnCode>0<", false)) {
+                                                    HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Emails","",getEmailChanges(1,emailFacilityChangedIndex))
+                                                    Utility.showSubmitAlertDialog(activity, true, "Facility Email")
+                                                    FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = binding.newChangesEmailText.text.toString()
+                                                    FacilityDataModelOrg.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = binding.newChangesEmailText.text.toString()
+                                                    fillEmailTableView()
+                                                    checkIfChangeDone("EMAIL")
+                                                    (activity as FormsActivity).saveDone = true
+                                                    setAlertColoring()
+                                                } else {
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
                                                 }
-                                            }, Response.ErrorListener {
-                                            binding.contactInfoLoadingView.visibility = View.GONE
-                                            binding.contactInfoLoadingText.text = "Loading ..."
-                                        Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+it.message+" )")
-                                    }))
+                                                binding.contactInfoLoadingView.visibility = View.GONE
+                                                binding.contactInfoLoadingText.text = "Loading ..."
+                                            }
+                                        },
+                                        {
+                                        binding.contactInfoLoadingView.visibility = View.GONE
+                                        binding.contactInfoLoadingText.text = "Loading ..."
+                                    Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+it.message+" )")
+                                }))
 
 
                                 }
@@ -2561,36 +2607,38 @@ class FragmentARRAVLocation : Fragment() {
         (activity as FormsActivity).overrideBackButton = false
         Log.v("Email ADD --- ",Constants.submitFacilityEmail + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityEmail + urlString + Utility.getLoggingParameters(activity, 0, getEmailChanges(0,0)),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        if (response.toString().contains("returnCode>0<",false)) {
-                            Utility.showSubmitAlertDialog(activity, true, "Facility Email")
-                            if (FacilityDataModel.getInstance().tblFacilityEmail.size==1 && FacilityDataModel.getInstance().tblFacilityEmail[0].emailID.equals("-1")){
-                                FacilityDataModel.getInstance().tblFacilityEmail.removeAt(0)
-                                FacilityDataModelOrg.getInstance().tblFacilityEmail.removeAt(0)
-                            }
-                            newEmail.emailID = response.toString().substring(response.toString().indexOf("<emailID")+8,response.toString().indexOf("</emailID"))
-                            FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
-                            FacilityDataModelOrg.getInstance().tblFacilityEmail.add(newEmail)
-                            fillEmailTableView()
-                            setAlertColoring()
-                            (activity as FormsActivity).saveDone = true
-                            HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityEmail= true
-                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-                        } else {
-                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                            Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
+            { response ->
+                requireActivity().runOnUiThread {
+                    if (response.toString().contains("returnCode>0<",false)) {
+                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Emails","",getEmailChanges(0,0))
+                        Utility.showSubmitAlertDialog(activity, true, "Facility Email")
+                        if (FacilityDataModel.getInstance().tblFacilityEmail.size==1 && FacilityDataModel.getInstance().tblFacilityEmail[0].emailID.equals("-1")){
+                            FacilityDataModel.getInstance().tblFacilityEmail.removeAt(0)
+                            FacilityDataModelOrg.getInstance().tblFacilityEmail.removeAt(0)
                         }
-                        binding.contactInfoLoadingView.visibility = View.GONE
-                        binding.contactInfoLoadingText.text = "Loading ..."
-
+                        newEmail.emailID = response.toString().substring(response.toString().indexOf("<emailID")+8,response.toString().indexOf("</emailID"))
+                        FacilityDataModel.getInstance().tblFacilityEmail.add(newEmail)
+                        FacilityDataModelOrg.getInstance().tblFacilityEmail.add(newEmail)
+                        fillEmailTableView()
+                        setAlertColoring()
+                        (activity as FormsActivity).saveDone = true
+                        HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityEmail= true
+                        HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                    } else {
+                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                        Utility.showSubmitAlertDialog(activity, false, "Facility Email (Error: "+errorMessage+" )")
                     }
-                }, Response.ErrorListener {
-                binding.contactInfoLoadingView.visibility = View.GONE
-                binding.contactInfoLoadingText.text = "Loading ..."
+                    binding.contactInfoLoadingView.visibility = View.GONE
+                    binding.contactInfoLoadingText.text = "Loading ..."
 
-            Utility.showSubmitAlertDialog(activity,false,"Facility Email (Error: "+it.message+" )")
-        }))
+                }
+            },
+            {
+            binding.contactInfoLoadingView.visibility = View.GONE
+            binding.contactInfoLoadingText.text = "Loading ..."
+
+        Utility.showSubmitAlertDialog(activity,false,"Facility Email (Error: "+it.message+" )")
+    }))
     }
 
 
@@ -2633,18 +2681,17 @@ class FragmentARRAVLocation : Fragment() {
                 "&LocationTypeID_P=${LocationTypeID}&FAC_Addr1_P=${facAddr1}&FAC_Addr2_P=${facAddr2}&CITY_P=${facCity}&ST_P=${facST}&ZIP_P=${facZip}&County_P=${facCountry}&BranchName_P=${facBranchName}&BranchNumber_P=${facBranchNo}" +
                 "&geocodeTypeID_Map=${geocodeTypeID_Map}&LATITUDE_Map=${LATITUDE_Map}&LONGITUDE_Map=${LONGITUDE_Map}&geocodeTypeID_Tow=${geocodeTypeID_Tow}&LATITUDE_Tow=${LATITUDE_Tow}&LONGITUDE_Tow=${LONGITUDE_Tow}&geocodeTypeID_Cst=${geocodeTypeID_Cst}&LATITUDE_Cst=${LATITUDE_Cst}&LONGITUDE_Cst=${LONGITUDE_Cst}" +
                 "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
-                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getHoursChanges()))
+                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getGeoCodesChanges()))
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeoCodes + "${facID}&facnum=${facilityNo}&clubcode=${clubCode}" +
                 "&LocationTypeID_P=${LocationTypeID}&FAC_Addr1_P=${facAddr1}&FAC_Addr2_P=${facAddr2}&CITY_P=${facCity}&ST_P=${facST}&ZIP_P=${facZip}&County_P=${facCountry}&BranchName_P=${facBranchName}&BranchNumber_P=${facBranchNo}" +
                 "&geocodeTypeID_Map=${geocodeTypeID_Map}&LATITUDE_Map=${LATITUDE_Map}&LONGITUDE_Map=${LONGITUDE_Map}&geocodeTypeID_Tow=${geocodeTypeID_Tow}&LATITUDE_Tow=${LATITUDE_Tow}&LONGITUDE_Tow=${LONGITUDE_Tow}&geocodeTypeID_Cst=${geocodeTypeID_Cst}&LATITUDE_Cst=${LATITUDE_Cst}&LONGITUDE_Cst=${LONGITUDE_Cst}" +
                 "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
-                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getHoursChanges()),
-            Response.Listener { response ->
+                "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getGeoCodesChanges()),
+            { response ->
                 requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<",false)) {
-
-
+                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility GeoCodes","",getGeoCodesChanges())
                         if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Map}.isNotEmpty()) {
                             FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Map }[0].LATITUDE =
                                 LATITUDE_Map
@@ -2663,19 +2710,19 @@ class FragmentARRAVLocation : Fragment() {
                             FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Tow }[0].LONGITUDE =
                                 LONGITUDE_Tow
                         }
-                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Map}.isNotEmpty()) {
+                        if (FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Map}.isNotEmpty()) {
                             FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Map }[0].LATITUDE =
                                 LATITUDE_Map
                             FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Map }[0].LONGITUDE =
                                 LONGITUDE_Map
                         }
-                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Cst}.isNotEmpty()) {
+                        if (FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Cst}.isNotEmpty()) {
                             FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Cst }[0].LATITUDE =
                                 LATITUDE_Cst
                             FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Cst }[0].LONGITUDE =
                                 LONGITUDE_Cst
                         }
-                        if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Tow}.isNotEmpty()) {
+                        if (FacilityDataModelOrg.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Tow}.isNotEmpty()) {
                             FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Tow }[0].LATITUDE =
                                 LATITUDE_Tow
                             FacilityDataModelOrg.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Tow }[0].LONGITUDE =
@@ -2699,7 +2746,7 @@ class FragmentARRAVLocation : Fragment() {
                     binding.contactInfoLoadingView.visibility = View.GONE
                     binding.contactInfoLoadingText.text = "Loading ..."
                 }
-            }, Response.ErrorListener {
+            }, {
                 Log.v("error while loading", "error submitting geocodes")
                 Utility.showSubmitAlertDialog(activity,false,"Facility GeoCodes (Error: "+it.message+" )")
                 binding.contactInfoLoadingView.visibility = View.GONE
@@ -2746,62 +2793,63 @@ class FragmentARRAVLocation : Fragment() {
                 "&friOpen=${friOpen}&satOpen=${satOpen}&sunOpen=${sunOpen}&monClose=${monClose}&tueClose=${tueClose}&wedClose=${wedClose}&thuClose=${thuClose}&friClose=${friClose}" +
                 "&satClose=${satClose}&sunClose=${sunClose}&nightDrop=${nightDrop}&nightDropInstr=${nightDropInstructions}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat()+
                 "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=${Date().toApiSubmitFormat()}&facAvailability=${facAvail}&availEffDate=${Date().toApiSubmitFormat()}&availExpDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 0, getHoursChanges()),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        if (response.toString().contains("returnCode>0<",false)) {
-                            FacilityDataModel.getInstance().tblHours[0].MonClose = monClose
-                            FacilityDataModel.getInstance().tblHours[0].SunClose = sunClose
-                            FacilityDataModel.getInstance().tblHours[0].SatClose = satClose
-                            FacilityDataModel.getInstance().tblHours[0].FriClose = friClose
-                            FacilityDataModel.getInstance().tblHours[0].ThuClose = thuClose
-                            FacilityDataModel.getInstance().tblHours[0].WedClose = wedClose
-                            FacilityDataModel.getInstance().tblHours[0].TueClose = tueClose
-                            FacilityDataModel.getInstance().tblHours[0].MonOpen = monOpen
-                            FacilityDataModel.getInstance().tblHours[0].SunOpen = sunOpen
-                            FacilityDataModel.getInstance().tblHours[0].SatOpen = satOpen
-                            FacilityDataModel.getInstance().tblHours[0].FriOpen = friOpen
-                            FacilityDataModel.getInstance().tblHours[0].ThuOpen = thuOpen
-                            FacilityDataModel.getInstance().tblHours[0].WedOpen = wedOpen
-                            FacilityDataModel.getInstance().tblHours[0].TueOpen = tueOpen
-                            FacilityDataModel.getInstance().tblHours[0].NightDrop= binding.nightDropCheck.isChecked
-                            FacilityDataModel.getInstance().tblHours[0].NightDropInstr = binding.nightDropInstText.text.toString()
-                            FacilityDataModelOrg.getInstance().tblHours[0].MonClose = monClose
-                            FacilityDataModelOrg.getInstance().tblHours[0].SunClose = sunClose
-                            FacilityDataModelOrg.getInstance().tblHours[0].SatClose = satClose
-                            FacilityDataModelOrg.getInstance().tblHours[0].FriClose = friClose
-                            FacilityDataModelOrg.getInstance().tblHours[0].ThuClose = thuClose
-                            FacilityDataModelOrg.getInstance().tblHours[0].WedClose = wedClose
-                            FacilityDataModelOrg.getInstance().tblHours[0].TueClose = tueClose
-                            FacilityDataModelOrg.getInstance().tblHours[0].MonOpen = monOpen
-                            FacilityDataModelOrg.getInstance().tblHours[0].SunOpen = sunOpen
-                            FacilityDataModelOrg.getInstance().tblHours[0].SatOpen = satOpen
-                            FacilityDataModelOrg.getInstance().tblHours[0].FriOpen = friOpen
-                            FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen = thuOpen
-                            FacilityDataModelOrg.getInstance().tblHours[0].WedOpen = wedOpen
-                            FacilityDataModelOrg.getInstance().tblHours[0].TueOpen = tueOpen
-                            FacilityDataModelOrg.getInstance().tblHours[0].NightDrop= binding.nightDropCheck.isChecked
-                            FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr = binding.nightDropInstText.text.toString()
-                            (activity as FormsActivity).saveRequired = false
-                            (activity as FormsActivity).saveDone = true
-                            saveHoursRequired = false
-                            HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
-                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-                            refreshButtonsState()
-                            Utility.showSubmitAlertDialog(activity, true, "Facility Hours / Night Drop")
+            { response ->
+                requireActivity().runOnUiThread {
+                    if (response.toString().contains("returnCode>0<",false)) {
+                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Hours","",getHoursChanges())
+                        FacilityDataModel.getInstance().tblHours[0].MonClose = monClose
+                        FacilityDataModel.getInstance().tblHours[0].SunClose = sunClose
+                        FacilityDataModel.getInstance().tblHours[0].SatClose = satClose
+                        FacilityDataModel.getInstance().tblHours[0].FriClose = friClose
+                        FacilityDataModel.getInstance().tblHours[0].ThuClose = thuClose
+                        FacilityDataModel.getInstance().tblHours[0].WedClose = wedClose
+                        FacilityDataModel.getInstance().tblHours[0].TueClose = tueClose
+                        FacilityDataModel.getInstance().tblHours[0].MonOpen = monOpen
+                        FacilityDataModel.getInstance().tblHours[0].SunOpen = sunOpen
+                        FacilityDataModel.getInstance().tblHours[0].SatOpen = satOpen
+                        FacilityDataModel.getInstance().tblHours[0].FriOpen = friOpen
+                        FacilityDataModel.getInstance().tblHours[0].ThuOpen = thuOpen
+                        FacilityDataModel.getInstance().tblHours[0].WedOpen = wedOpen
+                        FacilityDataModel.getInstance().tblHours[0].TueOpen = tueOpen
+                        FacilityDataModel.getInstance().tblHours[0].NightDrop= binding.nightDropCheck.isChecked
+                        FacilityDataModel.getInstance().tblHours[0].NightDropInstr = binding.nightDropInstText.text.toString()
+                        FacilityDataModelOrg.getInstance().tblHours[0].MonClose = monClose
+                        FacilityDataModelOrg.getInstance().tblHours[0].SunClose = sunClose
+                        FacilityDataModelOrg.getInstance().tblHours[0].SatClose = satClose
+                        FacilityDataModelOrg.getInstance().tblHours[0].FriClose = friClose
+                        FacilityDataModelOrg.getInstance().tblHours[0].ThuClose = thuClose
+                        FacilityDataModelOrg.getInstance().tblHours[0].WedClose = wedClose
+                        FacilityDataModelOrg.getInstance().tblHours[0].TueClose = tueClose
+                        FacilityDataModelOrg.getInstance().tblHours[0].MonOpen = monOpen
+                        FacilityDataModelOrg.getInstance().tblHours[0].SunOpen = sunOpen
+                        FacilityDataModelOrg.getInstance().tblHours[0].SatOpen = satOpen
+                        FacilityDataModelOrg.getInstance().tblHours[0].FriOpen = friOpen
+                        FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen = thuOpen
+                        FacilityDataModelOrg.getInstance().tblHours[0].WedOpen = wedOpen
+                        FacilityDataModelOrg.getInstance().tblHours[0].TueOpen = tueOpen
+                        FacilityDataModelOrg.getInstance().tblHours[0].NightDrop= binding.nightDropCheck.isChecked
+                        FacilityDataModelOrg.getInstance().tblHours[0].NightDropInstr = binding.nightDropInstText.text.toString()
+                        (activity as FormsActivity).saveRequired = false
+                        (activity as FormsActivity).saveDone = true
+                        saveHoursRequired = false
+                        HasChangedModel.getInstance().checkGeneralInfoTblHoursChange()
+                        HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                        refreshButtonsState()
+                        Utility.showSubmitAlertDialog(activity, true, "Facility Hours / Night Drop")
 
-                        } else {
-                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                            Utility.showSubmitAlertDialog(activity, false, "Facility Hours / Night Drop (Error: "+errorMessage+" )")
-                        }
-                        binding.contactInfoLoadingView.visibility = View.GONE
-                        binding.contactInfoLoadingText.text = "Loading ..."
+                    } else {
+                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                        Utility.showSubmitAlertDialog(activity, false, "Facility Hours / Night Drop (Error: "+errorMessage+" )")
                     }
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error submitting hours")
-            Utility.showSubmitAlertDialog(activity,false,"Facility Hours / Night Drop (Error: "+it.message+" )")
-                binding.contactInfoLoadingView.visibility = View.GONE
-                binding.contactInfoLoadingText.text = "Loading ..."
-        }))
+                    binding.contactInfoLoadingView.visibility = View.GONE
+                    binding.contactInfoLoadingText.text = "Loading ..."
+                }
+            }, {
+        Log.v("error while loading", "error submitting hours")
+        Utility.showSubmitAlertDialog(activity,false,"Facility Hours / Night Drop (Error: "+it.message+" )")
+            binding.contactInfoLoadingView.visibility = View.GONE
+            binding.contactInfoLoadingText.text = "Loading ..."
+    }))
 
     }
 
@@ -2817,37 +2865,39 @@ class FragmentARRAVLocation : Fragment() {
         }
         Log.v("LANGUAGES --- ",UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubcode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat())
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateFacilityLanguageData + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&langTypeId=${langTypeId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate="+Date().toApiSubmitFormat() + Utility.getLoggingParameters(activity, 0, getLanguageChanges()),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        if (response.toString().contains("returnCode>0<",false)) {
-                            Utility.showSubmitAlertDialog(activity, true, "Facility Languages")
-                            (activity as FormsActivity).saveRequired = false
-                            FacilityDataModelOrg.getInstance().tblLanguage.clear()
-                            FacilityDataModel.getInstance().tblLanguage.apply {
-                                (0 until size).forEach {
-                                    var langItem = TblLanguage()
-                                    langItem.LangTypeID = get(it).LangTypeID
-                                    FacilityDataModelOrg.getInstance().tblLanguage.add(langItem)
-                                }
+            { response ->
+                requireActivity().runOnUiThread {
+                    if (response.toString().contains("returnCode>0<",false)) {
+                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Languages","",getLanguageChanges())
+                        Utility.showSubmitAlertDialog(activity, true, "Facility Languages")
+                        (activity as FormsActivity).saveRequired = false
+                        FacilityDataModelOrg.getInstance().tblLanguage.clear()
+                        FacilityDataModel.getInstance().tblLanguage.apply {
+                            (0 until size).forEach {
+                                var langItem = TblLanguage()
+                                langItem.LangTypeID = get(it).LangTypeID
+                                FacilityDataModelOrg.getInstance().tblLanguage.add(langItem)
                             }
-                            HasChangedModel.getInstance().checkGeneralInfoTblLanguagesChange()
-                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-                            (activity as FormsActivity).saveDone = true
-                            saveLangRequired = false
-                            refreshButtonsState()
-                        } else {
-                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                            Utility.showSubmitAlertDialog(activity, false, "Facility Languages (Error: "+errorMessage+" )")
                         }
-
-                        binding.contactInfoLoadingView.visibility = View.GONE
-                        binding.contactInfoLoadingText.text = "Loading ..."
+                        HasChangedModel.getInstance().checkGeneralInfoTblLanguagesChange()
+                        HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                        (activity as FormsActivity).saveDone = true
+                        saveLangRequired = false
+                        refreshButtonsState()
+                    } else {
+                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                        Utility.showSubmitAlertDialog(activity, false, "Facility Languages (Error: "+errorMessage+" )")
                     }
-                }, Response.ErrorListener {
-                Utility.showSubmitAlertDialog(activity, false, "Facility Languages (Error: "+it.message+" )")
-                binding.contactInfoLoadingView.visibility = View.GONE
-                binding.contactInfoLoadingText.text = "Loading ..."
-        }))
+
+                    binding.contactInfoLoadingView.visibility = View.GONE
+                    binding.contactInfoLoadingText.text = "Loading ..."
+                }
+            },
+            {
+            Utility.showSubmitAlertDialog(activity, false, "Facility Languages (Error: "+it.message+" )")
+            binding.contactInfoLoadingView.visibility = View.GONE
+            binding.contactInfoLoadingText.text = "Loading ..."
+    }))
     }
 
     fun submitFacilityPhone(){
@@ -2873,32 +2923,34 @@ class FragmentARRAVLocation : Fragment() {
         (activity as FormsActivity).overrideBackButton = false
         Log.v("PHONE ADD --- ",Constants.submitFacilityPhone + urlString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityPhone + urlString+ Utility.getLoggingParameters(activity, 0, getPhoneChanges(0,0)),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        if (response.toString().contains("returnCode>0<", false)) {
-                            Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
-                            if (FacilityDataModel.getInstance().tblPhone.size==1 && FacilityDataModel.getInstance().tblPhone[0].PhoneID.equals("-1")){
-                                FacilityDataModel.getInstance().tblPhone.removeAt(0)
-                                FacilityDataModelOrg.getInstance().tblPhone.removeAt(0)
-                            }
-                            newPhone.PhoneID = response.toString().substring(response.toString().indexOf("<PhoneID")+9,response.toString().indexOf("</PhoneID"))
-                            FacilityDataModel.getInstance().tblPhone.add(newPhone)
-                            HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = true
-                            HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
-                            (activity as FormsActivity).saveDone = true
-                            fillPhoneTableView()
-                        } else {
-                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                            Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
+            { response ->
+                requireActivity().runOnUiThread {
+                    if (response.toString().contains("returnCode>0<", false)) {
+                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Phones","",getPhoneChanges(0,0))
+                        Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
+                        if (FacilityDataModel.getInstance().tblPhone.size==1 && FacilityDataModel.getInstance().tblPhone[0].PhoneID.equals("-1")){
+                            FacilityDataModel.getInstance().tblPhone.removeAt(0)
+                            FacilityDataModelOrg.getInstance().tblPhone.removeAt(0)
                         }
-                        binding.contactInfoLoadingView.visibility = View.GONE
-                        binding.contactInfoLoadingText.text = "Loading ..."
+                        newPhone.PhoneID = response.toString().substring(response.toString().indexOf("<PhoneID")+9,response.toString().indexOf("</PhoneID"))
+                        FacilityDataModel.getInstance().tblPhone.add(newPhone)
+                        HasChangedModel.getInstance().groupFacilityContactInfo[0].FacilityPhone = true
+                        HasChangedModel.getInstance().changeDoneForFacilityContactInfo()
+                        (activity as FormsActivity).saveDone = true
+                        fillPhoneTableView()
+                    } else {
+                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                        Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+errorMessage+" )")
                     }
-                }, Response.ErrorListener {
-                binding.contactInfoLoadingView.visibility = View.GONE
-                binding.contactInfoLoadingText.text = "Loading ..."
-            Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+it.message+" )")
-        }))
+                    binding.contactInfoLoadingView.visibility = View.GONE
+                    binding.contactInfoLoadingText.text = "Loading ..."
+                }
+            },
+            {
+            binding.contactInfoLoadingView.visibility = View.GONE
+            binding.contactInfoLoadingText.text = "Loading ..."
+        Utility.showSubmitAlertDialog(activity, false, "Facility Phone (Error: "+it.message+" )")
+    }))
     }
 
     fun altEmailTableRow(alt_row : Int) {

@@ -1240,6 +1240,16 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
         }
 
+        if (jsonObj.has("tblFacilityBillingHeader")) {
+            if (jsonObj.get("tblFacilityBillingHeader").toString().startsWith("[")) {
+                FacilityDataModel.getInstance().tblFacilityBillingHeader = Gson().fromJson<ArrayList<TblFacilityBillingHeader>>(jsonObj.get("tblFacilityBillingHeader").toString(), object : TypeToken<ArrayList<TblFacilityBillingHeader>>() {}.type)
+                FacilityDataModelOrg.getInstance().tblFacilityBillingHeader = Gson().fromJson<ArrayList<TblFacilityBillingHeader>>(jsonObj.get("tblFacilityBillingHeader").toString(), object : TypeToken<ArrayList<TblFacilityBillingHeader>>() {}.type)
+            } else {
+                FacilityDataModel.getInstance().tblFacilityBillingHeader.add(Gson().fromJson<TblFacilityBillingHeader>(jsonObj.get("tblFacilityBillingHeader").toString(), TblFacilityBillingHeader::class.java))
+                FacilityDataModelOrg.getInstance().tblFacilityBillingHeader.add(Gson().fromJson<TblFacilityBillingHeader>(jsonObj.get("tblFacilityBillingHeader").toString(), TblFacilityBillingHeader::class.java))
+            }
+        }
+
         IndicatorsDataModel.getInstance().init()
         HasChangedModel.getInstance().init()
     }
@@ -2027,6 +2037,25 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             jsonObj = addOneElementtoKey(jsonObj, "FacilityPhotos")
         }
 
+        if (jsonObj.has("tblFacilityBillingHeader")) {
+            if (!jsonObj.get("tblFacilityBillingHeader").toString().equals("")) {
+                try {
+                    var result = jsonObj.getJSONArray("tblFacilityBillingHeader")
+                    for (i in result.length() - 1 downTo 0) {
+                        if (result[i].toString().equals("")) result.remove(i);
+                    }
+                    jsonObj.remove(("tblFacilityBillingHeader"))
+                    jsonObj.put("tblFacilityBillingHeader", result)
+                } catch (e: Exception) {
+
+                }
+            } else {
+                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingHeader")
+            }
+        } else {
+            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingHeader")
+        }
+
         return jsonObj
     }
 
@@ -2041,17 +2070,16 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     Volley.newRequestQueue(context).add(
                         StringRequest(Request.Method.GET,
                             Constants.getS3Url + get(it).FileName + "&type=lowResPhoto&approved=" + (if (get(
-                                    it
-                                ).Approved == "true"
+                                    it).Approved == "true"
                             ) "1" else "0"),
-                            Response.Listener { response ->
+                            { response ->
                                 requireActivity().runOnUiThread {
                                     if (!response.toString().contains("Error", false)) {
                                         get(it).imageUrl = response.toString()
                                     }
                                 }
                             },
-                            Response.ErrorListener {
+                            {
 //                                Utility.showSubmitAlertDialog(
 //                                    activity,
 //                                    false,
@@ -2381,6 +2409,11 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         } else if (key.equals("FacilityPhotos")) {
             var oneArray = FacilityPhotos()
             oneArray.PhotoId=-1
+            jsonObj.put(key, Gson().toJson(oneArray))
+        } else if (key.equals("tblFacilityBillingHeader")) {
+            var oneArray = TblFacilityBillingHeader()
+            oneArray.FACId=-1
+            oneArray.ACHParticipant=false
             jsonObj.put(key, Gson().toJson(oneArray))
         }
 

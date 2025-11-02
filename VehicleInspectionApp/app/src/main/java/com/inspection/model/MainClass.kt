@@ -623,6 +623,17 @@ class AffiliateVendorFacilities {
     var AffiliateVendor = ""
 }
 
+
+class TblFacilityBillingHeader {
+    var FACId = 0
+    var ACHParticipant = false
+    var BillBalanceDue = "0.0"
+    var NextBillRunDate = ""
+    var BillPrintCntInCycle = ""
+    var ResubmitFlag = ""
+    var RegenFlag = ""
+}
+
 class TblPromotions {
     var PromoID = 0
     var Description = ""

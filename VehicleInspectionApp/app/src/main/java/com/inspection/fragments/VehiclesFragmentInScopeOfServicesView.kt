@@ -401,41 +401,42 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
 //        removedData = removedData.removeSuffix(" - ")
 //        addedData = addedData.removeSuffix(" - ")
         totalDataChanges = addedData + " - " + removedData
-
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 1, totalDataChanges),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        if (response.toString().contains("returnCode>0<",false)) {
-                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                            binding.progressBarText.text = "Loading ..."
-                            FacilityDataModelOrg.getInstance().tblFacVehicles.clear()
-                            for (i in 0..FacilityDataModel.getInstance().tblFacVehicles.size-1) {
-                                var vehicleServiceItem = TblFacVehicles()
-                                vehicleServiceItem.FACID= FacilityDataModel.getInstance().tblFacVehicles[i].FACID
-                                vehicleServiceItem.VehicleID = FacilityDataModel.getInstance().tblFacVehicles[i].VehicleID
-                                vehicleServiceItem.insertBy= FacilityDataModel.getInstance().tblFacVehicles[i].insertBy
-                                vehicleServiceItem.updateBy= FacilityDataModel.getInstance().tblFacVehicles[i].updateBy
-                                vehicleServiceItem.insertDate = FacilityDataModel.getInstance().tblFacVehicles[i].insertDate
-                                vehicleServiceItem.updateDate= FacilityDataModel.getInstance().tblFacVehicles[i].updateDate
-                                FacilityDataModelOrg.getInstance().tblFacVehicles.add(vehicleServiceItem)
-                            }
-                            Utility.showSubmitAlertDialog(activity, true, "Vehicles")
-                            (activity as FormsActivity).saveRequired = false
-                            refreshButtonsState()
-                            HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicles()
-                            HasChangedModel.getInstance().changeDoneForSoSVehicles()
-                        } else {
-                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                            Utility.showSubmitAlertDialog(activity, false, "Vehicles (Error: "+ errorMessage+" )")
-                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                            binding.progressBarText.text = "Loading ..."
+            { response ->
+                requireActivity().runOnUiThread {
+                    if (response.toString().contains("returnCode>0<",false)) {
+                        HasChangedModel.getInstance().updateChangedData("Vehicles","","", totalDataChanges)
+                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                        binding.progressBarText.text = "Loading ..."
+                        FacilityDataModelOrg.getInstance().tblFacVehicles.clear()
+                        for (i in 0..FacilityDataModel.getInstance().tblFacVehicles.size-1) {
+                            var vehicleServiceItem = TblFacVehicles()
+                            vehicleServiceItem.FACID= FacilityDataModel.getInstance().tblFacVehicles[i].FACID
+                            vehicleServiceItem.VehicleID = FacilityDataModel.getInstance().tblFacVehicles[i].VehicleID
+                            vehicleServiceItem.insertBy= FacilityDataModel.getInstance().tblFacVehicles[i].insertBy
+                            vehicleServiceItem.updateBy= FacilityDataModel.getInstance().tblFacVehicles[i].updateBy
+                            vehicleServiceItem.insertDate = FacilityDataModel.getInstance().tblFacVehicles[i].insertDate
+                            vehicleServiceItem.updateDate= FacilityDataModel.getInstance().tblFacVehicles[i].updateDate
+                            FacilityDataModelOrg.getInstance().tblFacVehicles.add(vehicleServiceItem)
                         }
+                        Utility.showSubmitAlertDialog(activity, true, "Vehicles")
+                        (activity as FormsActivity).saveRequired = false
+                        refreshButtonsState()
+                        HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicles()
+                        HasChangedModel.getInstance().changeDoneForSoSVehicles()
+                    } else {
+                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                        Utility.showSubmitAlertDialog(activity, false, "Vehicles (Error: "+ errorMessage+" )")
+                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                        binding.progressBarText.text = "Loading ..."
                     }
-                }, Response.ErrorListener {
-                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                binding.progressBarText.text = "Loading ..."
-            Utility.showSubmitAlertDialog(activity,false,"Vehicles (Error: "+it.message+" )")
-        }))
+                }
+            },
+            {
+            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+            binding.progressBarText.text = "Loading ..."
+        Utility.showSubmitAlertDialog(activity,false,"Vehicles (Error: "+it.message+" )")
+    }))
     }
 
 

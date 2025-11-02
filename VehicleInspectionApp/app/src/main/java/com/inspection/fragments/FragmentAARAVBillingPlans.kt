@@ -120,6 +120,9 @@ class FragmentAARAVBillingPlans : Fragment() {
         })
 
         fillBillinPlanTableView()
+        if (FacilityDataModel.getInstance().tblBillingHistory[0].FACID!=-1) {
+            binding.achCheck.isChecked = (FacilityDataModel.getInstance().tblBillingHistory[0].ACHParticipant)
+        }
 
         binding.exitDialogeBtn.setOnClickListener({
             binding.addNewPlanDialog.visibility = View.GONE

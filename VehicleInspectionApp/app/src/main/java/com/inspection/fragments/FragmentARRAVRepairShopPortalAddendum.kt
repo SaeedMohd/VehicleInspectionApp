@@ -102,42 +102,43 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalAdminData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
                             "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
                             "&startDate=${portalAdminEntry.startDate}&endDate=${portalAdminEntry.endDate}&AddendumSigned=${portalAdminEntry.AddendumSigned}&cardReaders=${portalAdminEntry.CardReaders}&active=1" + Utility.getLoggingParameters(activity, 0, getRSPChanges()),
-                            Response.Listener { response ->
-                                requireActivity().runOnUiThread {
-                                    if (response.toString().contains("returnCode>0<", false)) {
-                                        Utility.showSubmitAlertDialog(activity, true, "RSP Admin")
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
-                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
-                                        FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
-                                        FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
-                                        FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
-                                        FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
-                                        (activity as FormsActivity).saveRequired = false
-                                        refreshButtonsState()
-                                        (activity as FormsActivity).saveDone = true
-                                        HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
-                                        HasChangedModel.getInstance().changeDoneForFacilityRSP()
+                        { response ->
+                            requireActivity().runOnUiThread {
+                                if (response.toString().contains("returnCode>0<", false)) {
+                                    HasChangedModel.getInstance().updateChangedData("RSP Tracking","RSP Header","",getRSPChanges())
+                                    Utility.showSubmitAlertDialog(activity, true, "RSP Admin")
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
+                                    FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
+                                    FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
+                                    FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
+                                    FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
+                                    FacilityDataModelOrg.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
+                                    (activity as FormsActivity).saveRequired = false
+                                    refreshButtonsState()
+                                    (activity as FormsActivity).saveDone = true
+                                    HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
+                                    HasChangedModel.getInstance().changeDoneForFacilityRSP()
 
-                                    } else {
-                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
-                                        Utility.showSubmitAlertDialog(activity, false, "RSP Admin (Error: " + errorMessage + " )")
-                                    }
-                                    binding.RSPLoadingView.visibility = View.GONE
-                                    binding.rspLoadingText.text = "Loading ..."
-                                    binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                    binding.AddAARPortalTrackingEntryCard.visibility = View.GONE
-                                    (activity as FormsActivity).overrideBackButton = false
+                                } else {
+                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                    Utility.showSubmitAlertDialog(activity, false, "RSP Admin (Error: " + errorMessage + " )")
                                 }
-                            }, Response.ErrorListener {
-                        Utility.showSubmitAlertDialog(activity, false, "RSP Admin (Error: " + it.message + " )")
-                            binding.RSPLoadingView.visibility = View.GONE
-                            binding.rspLoadingText.text = "Loading ..."
-                            binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
-                            binding.AddAARPortalTrackingEntryCard.visibility = View.GONE
-                        (activity as FormsActivity).overrideBackButton = false
-                    }))
+                                binding.RSPLoadingView.visibility = View.GONE
+                                binding.rspLoadingText.text = "Loading ..."
+                                binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                binding.AddAARPortalTrackingEntryCard.visibility = View.GONE
+                                (activity as FormsActivity).overrideBackButton = false
+                            }
+                        }, {
+                    Utility.showSubmitAlertDialog(activity, false, "RSP Admin (Error: " + it.message + " )")
+                        binding.RSPLoadingView.visibility = View.GONE
+                        binding.rspLoadingText.text = "Loading ..."
+                        binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
+                        binding.AddAARPortalTrackingEntryCard.visibility = View.GONE
+                    (activity as FormsActivity).overrideBackButton = false
+                }))
                 } else {
                     Utility.showValidationAlertDialog(activity,"Please fill all required fields")
                 }
@@ -345,40 +346,41 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalTrackingData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
                                 "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
                                 "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&trackingId=0&portalInspectionDate=${portalTrackingEntry.PortalInspectionDate}&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1" + Utility.getLoggingParameters(activity, 1, getRSPTrackingChanges(0)),
-                                Response.Listener { response ->
-                                    requireActivity().runOnUiThread {
-                                        if (response.toString().contains("returnCode>0<", false)) {
-                                            Utility.showSubmitAlertDialog(activity, true, "RSP")
-                                            portalTrackingEntry.TrackingID = response.toString().substring(response.toString().indexOf("<TrackingID") + 12, response.toString().indexOf("</TrackingID"))
-    //                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
-    //                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
-    //                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
-    //                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
-                                            FacilityDataModel.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
-                                            FacilityDataModelOrg.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
-                                            fillPortalTrackingTableView()
-                                            altLocationTableRow(2)
-                                            (activity as FormsActivity).saveDone = true
-                                            HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
-                                            HasChangedModel.getInstance().changeDoneForFacilityRSP()
-                                        } else {
-                                            var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
-                                            Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + errorMessage + " )")
-                                        }
-                                        binding.RSPLoadingView.visibility = View.GONE
-                                        binding.rspLoadingText.text = "Loading ..."
-                                        binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                        binding.AddAARPortalTrackingEntryCard.visibility = View.GONE
-                                        (activity as FormsActivity).overrideBackButton = false
+                            { response ->
+                                requireActivity().runOnUiThread {
+                                    if (response.toString().contains("returnCode>0<", false)) {
+                                        HasChangedModel.getInstance().updateChangedData("RSP Tracking","RSP Detail","",getRSPTrackingChanges(0))
+                                        Utility.showSubmitAlertDialog(activity, true, "RSP")
+                                        portalTrackingEntry.TrackingID = response.toString().substring(response.toString().indexOf("<TrackingID") + 12, response.toString().indexOf("</TrackingID"))
+//                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].endDate = portalAdminEntry.endDate
+//                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].startDate = portalAdminEntry.startDate
+//                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].CardReaders = portalAdminEntry.CardReaders
+//                                        FacilityDataModel.getInstance().tblAARPortalAdmin[0].AddendumSigned = portalAdminEntry.AddendumSigned
+                                        FacilityDataModel.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
+                                        FacilityDataModelOrg.getInstance().tblAARPortalTracking.add(portalTrackingEntry)
+                                        fillPortalTrackingTableView()
+                                        altLocationTableRow(2)
+                                        (activity as FormsActivity).saveDone = true
+                                        HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
+                                        HasChangedModel.getInstance().changeDoneForFacilityRSP()
+                                    } else {
+                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                        Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + errorMessage + " )")
                                     }
-                                }, Response.ErrorListener {
-                            Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + it.message + " )")
-                                binding.RSPLoadingView.visibility = View.GONE
-                                binding.rspLoadingText.text = "Loading ..."
-                                binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                binding.AddAARPortalTrackingEntryCard.visibility = View.GONE
-                            (activity as FormsActivity).overrideBackButton = false
-                        }))
+                                    binding.RSPLoadingView.visibility = View.GONE
+                                    binding.rspLoadingText.text = "Loading ..."
+                                    binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                    binding.AddAARPortalTrackingEntryCard.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+                                }
+                            }, {
+                        Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + it.message + " )")
+                            binding.RSPLoadingView.visibility = View.GONE
+                            binding.rspLoadingText.text = "Loading ..."
+                            binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
+                            binding.AddAARPortalTrackingEntryCard.visibility = View.GONE
+                        (activity as FormsActivity).overrideBackButton = false
+                    }))
                     }
                 } else {
                     Utility.showValidationAlertDialog(activity,"Please fill all required fields")
@@ -484,7 +486,6 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
             }
         }
 
-//        val requestQueue = Volley.newRequestQueue(context)
         Volley.newRequestQueue(context).add(stringRequest)
 
 
@@ -582,7 +583,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         ) */
     }
 
-    fun fillData() {
+    private fun fillData() {
         FacilityDataModel.getInstance().tblAARPortalAdmin.apply {
             (0 until size).forEach {
                 if (!get(it).CardReaders.equals("-1")) {
@@ -882,44 +883,45 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
                                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdateAARPortalTrackingData + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=" + FacilityDataModel.getInstance().clubCode +
                                             "&trackingId=${trackingID}&portalInspectionDate=${inspectionDate}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=" + Date().toApiSubmitFormat() + "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&updateDate=" + Date().toApiSubmitFormat() +
                                             "&facId=${FacilityDataModel.getInstance().tblFacilities[0].FACID}&loggedIntoPortal=${isLoggedInRsp}&numberUnacknowledgedTows=${numberOfUnacknowledgedRecords}&inProgressTows=${numberOfInProgressTwoInsvalue}&inProgressWalkIns=${numberOfInProgressWalkInsValue}&active=1" + Utility.getLoggingParameters(activity, 0, getRSPTrackingChanges(1)),
-                                            Response.Listener { response ->
-                                                requireActivity().runOnUiThread {
-                                                    if (response.toString().contains("returnCode>0<", false)) {
-                                                        Utility.showSubmitAlertDialog(activity, true, "RSP")
+                                        { response ->
+                                            requireActivity().runOnUiThread {
+                                                if (response.toString().contains("returnCode>0<", false)) {
+                                                    HasChangedModel.getInstance().updateChangedData("RSP Tracking","RSP Detail","",getRSPTrackingChanges(1))
+                                                    Utility.showSubmitAlertDialog(activity, true, "RSP")
 
-                                                        FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].PortalInspectionDate = "" + date
-                                                        FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
-                                                        FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
-                                                        FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                                                        FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                                                        FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].PortalInspectionDate = "" + date
-                                                        FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
-                                                        FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
-                                                        FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
-                                                        FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
-                                                        fillPortalTrackingTableView()
-                                                        altLocationTableRow(2)
-                                                        (activity as FormsActivity).saveDone = true
-                                                        HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
-                                                    } else {
-                                                        var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
-                                                        Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + errorMessage + " )")
-                                                    }
-                                                    binding.RSPLoadingView.visibility = View.GONE
-                                                    binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                                    binding.editAARPortalTrackingEntryCard.visibility = View.GONE
-                                                    (activity as FormsActivity).overrideBackButton = false
-
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].PortalInspectionDate = "" + date
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                                                    FacilityDataModel.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].PortalInspectionDate = "" + date
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].LoggedIntoPortal = "" + isLoggedInRsp
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressTows = "" + numberOfInProgressTwoInsvalue
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].InProgressWalkIns = "" + numberOfInProgressWalkInsValue
+                                                    FacilityDataModelOrg.getInstance().tblAARPortalTracking[rowIndex - 1].NumberUnacknowledgedTows = "" + numberOfUnacknowledgedRecords
+                                                    fillPortalTrackingTableView()
+                                                    altLocationTableRow(2)
+                                                    (activity as FormsActivity).saveDone = true
+                                                    HasChangedModel.getInstance().groupFacilityRSP[0].FacilityRSP = true
+                                                } else {
+                                                    var errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                                                    Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + errorMessage + " )")
                                                 }
-                                            }, Response.ErrorListener {
-                                        Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + it.message + " )")
-                                            binding.RSPLoadingView.visibility = View.GONE
-                                            binding.rspLoadingText.text = "Loading ..."
-                                            binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
-                                            binding.editAARPortalTrackingEntryCard.visibility = View.GONE
-                                        (activity as FormsActivity).overrideBackButton = false
+                                                binding.RSPLoadingView.visibility = View.GONE
+                                                binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                                binding.editAARPortalTrackingEntryCard.visibility = View.GONE
+                                                (activity as FormsActivity).overrideBackButton = false
 
-                                    }))
+                                            }
+                                        }, {
+                                    Utility.showSubmitAlertDialog(activity, false, "RSP (Error: " + it.message + " )")
+                                        binding.RSPLoadingView.visibility = View.GONE
+                                        binding.rspLoadingText.text = "Loading ..."
+                                        binding.alphaBackgroundForRSPDialogs.visibility = View.GONE
+                                        binding.editAARPortalTrackingEntryCard.visibility = View.GONE
+                                    (activity as FormsActivity).overrideBackButton = false
+
+                                }))
                                 }
                             } else
                                 Utility.showValidationAlertDialog(activity,"Please fill all required fields")

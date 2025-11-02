@@ -323,14 +323,32 @@ class FragmentVisitation : Fragment() {
 //                false // skip invalid date format
 //            }
 //        }
-        for (item in FacilityDataModel.getInstance().tblBillingHistory) {
-            if (item.InvoiceStatusName.equals("2nd") || item.InvoiceStatusName.equals("3rd")) {
-                if (!item.BillBalanceDue.equals("0")) {
-                    binding.billingAlertText.visibility = View.VISIBLE
-                    binding.billingAlertText.startAnimation(animation)
-                    break
-                }
-            }
+//        for (item in FacilityDataModel.getInstance().tblBillingHistory) {
+//            if (item.InvoiceStatusName.equals("2nd") || item.InvoiceStatusName.equals("3rd")) {
+//                if (!item.BillBalanceDue.equals("0")) {
+//                    binding.billingAlertText.visibility = View.VISIBLE
+//                    binding.billingAlertText.startAnimation(animation)
+//                    break
+//                }
+//            }
+//        }
+
+//        for (item in FacilityDataModel.getInstance().tblBillingHistory) {
+//            if (item.InvoiceStatusName.equals("2nd") || item.InvoiceStatusName.equals("3rd")) {
+//                if (!item.BillBalanceDue.equals("0")) {
+//                    binding.billingAlertText.visibility = View.VISIBLE
+//                    binding.billingAlertText.startAnimation(animation)
+//                    break
+//                }
+//            }
+//        }
+
+        if (FacilityDataModel.getInstance().tblBillingHistory[0].FACID!=-1 && FacilityDataModel.getInstance().tblBillingHistory[0].BillBalanceDue.toDouble()>0.0) {
+            binding.billingAlertText.visibility = View.VISIBLE
+            binding.billingAlertText.startAnimation(animation)
+        } else {
+            binding.billingAlertText.visibility = View.GONE
+//            binding.billingAlertText.clearAnimation()
         }
 
 
@@ -2454,7 +2472,7 @@ class FragmentVisitation : Fragment() {
                         binding.netwrokStatusText.text = (activity as FormsActivity).networkStatus
                         Bugfender.i("VisitationProcess", "API Call: ${Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=${FacilityDataModel.getInstance().clubCode}&userId=" + ApplicationPrefs.getInstance(context).loggedInUserID}")
                         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=${FacilityDataModel.getInstance().clubCode}&userId=" + ApplicationPrefs.getInstance(context).loggedInUserID,
-                            Response.Listener { response ->
+                            { response ->
                                 requireActivity().runOnUiThread {
                                     PRGDataModel.getInstance().tblPRGLogChanges.clear()
                                     (activity as FormsActivity).saveDone = true
@@ -2476,12 +2494,16 @@ class FragmentVisitation : Fragment() {
                                     var changesMade = if (PRGDataModel.getInstance().tblPRGLogChanges.isNullOrEmpty()) "No" else "Yes"
                                     awsReference = Date().toApiAWSFormat() + "_" + visitationType + "_" + binding.visitationReasonDropListId.selectedItem.toString()
                                     var awsRef = URLEncoder.encode(awsReference, "UTF-8");
-                                    var urlString = "facNum=" + facilityNo + "&clubCode=" + clubCode + "&DatePerformed=" + performedDate + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&staffTraining=" + staffTraining +"&changesMade=" + changesMade + "&qcProcess=" + qa + "&aarSign=" + aarSign + "&memberBenefits=" + memberBenefits + "&certOfApproval=" + certificateOfApproval + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&sessionId=" + ApplicationPrefs.getInstance(activity).sessionID + "&userId=" + insertBy + "&visitationTypeId=" + visitationTypeID+"&visitationMethod=" + visitmethodStr+ "&visitationType=" + visitationType + "&visitationReasonId=" + visitationReasonID +"&visitationReason=" + visitationReason + "&emailShopFlag=" + (if (binding.emailPdfCheckBox.isChecked) "1" else "0") + "&emailTo=" + binding.emailEditText.text + "&waiveVisitation=" + (if (binding.waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments=" + URLEncoder.encode(binding.waiverCommentsEditText.text.toString(),"UTF-8") + "&facilityRep=" + facilityRep + "&performedBy=" + automotiveSpecialist + "&visitationID=0&annualVisitationMonth=" + annualvisitationmonth + "&visitationMethodId=" + visitmethod + "&reference=" + awsRef + "&specialistEmail=" + specialistEmail + "&directorEmail=" + directorEmail + "&docId=0&fieldId=101" + "&specSignature=" + specSignatureName + "&repSignature=" + repSignatureName + "&waiveSignature=" + waiveSignatureName + "&defSignature=" + defSignatureName + "&annualVisitationMonth=" + annualvisitationmonth + "&visitationComments=" + URLEncoder.encode(binding.visitationCommentsEditText.text.toString(),"UTF-8")
+                                    var changedData = ""
+                                    HasChangedModel.getInstance().changeDetails.sortedWith(compareBy({ it.screen }, { it.item }, { it.tag })).forEach {
+                                        changedData = changedData + it.screen + "||" + it.item + "||" + it.details +";"
+                                    }
+                                    var urlString = "facNum=" + facilityNo + "&clubCode=" + clubCode + "&DatePerformed=" + performedDate + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&staffTraining=" + staffTraining +"&changesMade=" + changesMade + "&qcProcess=" + qa + "&aarSign=" + aarSign + "&memberBenefits=" + memberBenefits + "&certOfApproval=" + certificateOfApproval + "&insertBy=" + insertBy + "&insertDate=" + insertDate + "&updateBy=" + updateBy + "&updateDate=" + updateDate + "&sessionId=" + ApplicationPrefs.getInstance(activity).sessionID + "&userId=" + insertBy + "&visitationTypeId=" + visitationTypeID+"&visitationMethod=" + visitmethodStr+ "&visitationType=" + visitationType + "&visitationReasonId=" + visitationReasonID +"&visitationReason=" + visitationReason + "&emailShopFlag=" + (if (binding.emailPdfCheckBox.isChecked) "1" else "0") + "&emailTo=" + binding.emailEditText.text + "&waiveVisitation=" + (if (binding.waiveVisitationCheckBox.isChecked) "1" else "0") + "&waiveComments=" + URLEncoder.encode(binding.waiverCommentsEditText.text.toString(),"UTF-8") + "&facilityRep=" + facilityRep + "&performedBy=" + automotiveSpecialist + "&visitationID=0&annualVisitationMonth=" + annualvisitationmonth + "&visitationMethodId=" + visitmethod + "&reference=" + awsRef + "&specialistEmail=" + specialistEmail + "&directorEmail=" + directorEmail + "&docId=0&fieldId=101" + "&specSignature=" + specSignatureName + "&repSignature=" + repSignatureName + "&waiveSignature=" + waiveSignatureName + "&defSignature=" + defSignatureName + "&annualVisitationMonth=" + annualvisitationmonth + "&changedData=$changedData&visitationComments=" + URLEncoder.encode(binding.visitationCommentsEditText.text.toString(),"UTF-8")
                                     createMsg = urlString + Utility.getLoggingParameters(activity, 0, "Visitation Completed ...")
                                     Log.v("Visitation Tracking -- ", Constants.createVisitation + urlString)
                                     Bugfender.i("VisitationProcess", "Create Visitation: ${Constants.createVisitation + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Completed ...")}")
-                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.createVisitation + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Completed ..."),
-                                        Response.Listener { response ->
+                                    Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, Constants.createVisitation + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Completed ..."),
+                                        { response ->
                                             requireActivity().runOnUiThread {
                                                 Log.v("VT RESPONSE ||| ", response.toString())
                                                 Bugfender.i("VisitationProcess", "Create Visitation Response: ${response.toString()}")
@@ -2513,7 +2535,7 @@ class FragmentVisitation : Fragment() {
 //                                                    (activity as FormsActivity).saveDone = true
                                                     Bugfender.i("VisitationProcess", "Update Visitation Details: ${Constants.UpdateVisitationDetailsData + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Completed ...")}")
                                                     Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVisitationDetailsData + urlString + Utility.getLoggingParameters(activity, 0, "Visitation Completed ..."),
-                                                        Response.Listener { response ->
+                                                        { response ->
                                                             requireActivity().runOnUiThread {
                                                                 binding.netwrokStatusText.text = (activity as FormsActivity).networkStatus
                                                                 Log.v("VT RESPONSE ||| ", response.toString())
@@ -2654,7 +2676,8 @@ class FragmentVisitation : Fragment() {
                                                                     FirebaseCrashlytics.getInstance().log("Visitation Screen - Visitation Details API - Error: ${errorMessage}")
                                                                 }
                                                             }
-                                                        }, Response.ErrorListener {
+                                                        },
+                                                        {
                                                             Log.v("ERROR ->",it.message.toString())
                                                             binding.dialogueLoadingView.visibility = View.GONE
                                                             binding.progressBarTextVal.text = "Loading ..."
@@ -2685,7 +2708,8 @@ class FragmentVisitation : Fragment() {
                                                     FirebaseCrashlytics.getInstance().log("Visitation Screen - Visitation Tracking API - Error: ${errorMessage}")
                                                 }
                                             }
-                                        }, Response.ErrorListener {
+                                        },
+                                        {
                                             Log.v("ERROR ->",it.message.toString())
                                             Bugfender.i("VisitationProcess", "Create Visitation Failed: ${it.message}")
                                             steps[2].status = "Failed"
@@ -2701,7 +2725,8 @@ class FragmentVisitation : Fragment() {
                                         }))
 
                                 }
-                            }, Response.ErrorListener {
+                            },
+                            {
                                 Log.v("Loading PRG Data error", "" + it.message)
 //                                it.printStackTrace()
                                 Bugfender.i("VisitationProcess", "Loading PRG Data Failed: ${it.message}")

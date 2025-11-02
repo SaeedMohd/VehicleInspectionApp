@@ -253,6 +253,14 @@
                     />
             </TableRow>
             <TableRow>
+                <CheckBox
+                    android:id="@+id/cityGroupCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="0"
+                    android:checked="false"
+                    android:text="Group By City"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_span="2"

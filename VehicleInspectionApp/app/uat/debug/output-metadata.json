@@ -11,10 +11,11 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 121,
-      "versionName": "3.22-uat",
+      "versionCode": 123,
+      "versionName": "3.23-uat",
       "outputFile": "app-uat-debug.apk"
     }
   ],
-  "elementType": "File"
+  "elementType": "File",
+  "minSdkVersionForDexing": 24
 }

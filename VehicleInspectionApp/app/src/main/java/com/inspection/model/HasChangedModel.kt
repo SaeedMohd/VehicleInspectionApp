@@ -1,6 +1,9 @@
 package com.inspection.model
 
 import android.util.Log
+import com.google.gson.GsonBuilder
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.isAccessible
 
 class HasChangedModel {
 
@@ -44,6 +47,7 @@ class HasChangedModel {
     var groupDeficiency = ArrayList<GroupDeficiency>()
     var groupPhoto= ArrayList<GroupPhoto>()
     var groupDeficiencyDef = ArrayList<GroupDefeciencyDef>()
+    var changeDetails = ArrayList<ChangedData>()
 
 
     class GroupDeficiency {
@@ -89,6 +93,28 @@ class HasChangedModel {
         var FacilityEmail= false
         var FacilityHours= false
         var FacilityLanguages= false
+    }
+
+    class ChangedData {
+        var screen = ""
+        var item = ""
+        var tag = ""
+        var details = ""
+        var saved = false
+    }
+
+    fun updateChangedData(screen: String, item: String, tag: String, details: String) {
+        var data = ChangedData()
+        data.item = item
+        data.screen = screen
+        data.tag = tag
+        data.details = details
+        data.saved = true
+        changeDetails.add(data)
+//        Log.v("ChangeDetails-->", changeDetails.toString())
+
+        val gson = GsonBuilder().setPrettyPrinting().create()
+        Log.v("ChangeDetails", gson.toJson(changeDetails))
     }
 
     class GroupFacilityPersonnel {
@@ -496,6 +522,37 @@ class HasChangedModel {
             changeWasDone = true
         }
         groupSoSFacilityServices[0].SoSFacilityServices = changeWasDone
+    }
+
+
+    fun compareChanges(oldObj: Any, newObj: Any): String {
+        val changes = mutableListOf<String>()
+
+        val newProps = Any::class.memberProperties.associateBy { it.name }
+        val oldProps = Any::class.memberProperties.associateBy { it.name }
+
+        for ((name, oldProp) in oldProps) {
+            val newProp = newProps[name] ?: continue
+
+            oldProp.isAccessible = true
+            newProp.isAccessible = true
+
+            val oldValue = oldProp.get(oldObj)
+            val newValue = newProp.get(newObj)
+
+            if (oldValue != newValue) {
+                // Special handling for lists
+                if (oldValue is Collection<*> && newValue is Collection<*>) {
+                    if (oldValue.size != newValue.size) {
+                        changes.add("$name: size ${oldValue.size} ➝ ${newValue.size}")
+                    }
+                } else {
+                    changes.add("$name: $oldValue ➝ $newValue")
+                }
+            }
+        }
+
+        return if (changes.isEmpty()) "No changes found." else changes.joinToString("\n")
     }
 
 }

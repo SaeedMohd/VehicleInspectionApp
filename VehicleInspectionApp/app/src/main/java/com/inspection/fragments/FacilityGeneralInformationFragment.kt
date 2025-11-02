@@ -1032,6 +1032,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             if (FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName != FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName) {
                 strChanges += "Facility Type changed from (" + FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName + ") to (" + FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName + ") - "
             }
+
         } catch (e: Exception) {
 
         }
@@ -1085,53 +1086,55 @@ class FacilityGeneralInformationFragment : Fragment() {
         binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
         var urlString = facilityNo+"&clubCode="+clubCode+"&businessName="+busName+"&busTypeId="+busType+"&entityName="+entityName+"&assignToId="+assignedTo+"&officeId="+officeID+"&taxIdNumber="+taxIDNo+"&facilityRepairOrderCount="+facRepairCnt+"&facilityAnnualInspectionMonth="+inspectionMonth.toString()+"&inspectionCycle="+inspectionCycle+"&timeZoneId="+timeZoneID.toString()+"&svcAvailability="+svcAvailability+"&facilityTypeId="+facType+"&automotiveRepairNumber="+automtiveRepairNo+"&automotiveRepairExpDate="+automtiveRepairExpDate+"&contractCurrentDate="+contractCurrDate+"&contractInitialDate="+contractInitDate+"&billingMonth="+billingMonth+"&billingAmount="+billingAmount+"&internetAccess="+internetAccess+"&webSite="+webSite+"&terminationDate="+terminationDate+"&terminationId="+terminationReasonID+"&terminationComments="+terminationComments+"&insertBy="+insertBy+"&insertDate="+insertDate+"&updateBy="+updateBy+"&updateDate="+updateDate+"&active=${FacilityDataModel.getInstance().tblFacilities[0].ACTIVE}&achParticipant=0&insuranceExpDate="+insuranceExpDate.toString()+"&contractTypeId="+contractType+"&statusComments="+statusComment
 //
-
+        val changes = getGeneralInfoChanges()
         Log.v("Facility General --- ",Constants.submitFacilityGeneralInfo + urlString + Utility.getLoggingParameters(activity, 0, ""))
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString +Utility.getLoggingParameters(activity,0,getGeneralInfoChanges()),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        Log.v("RESPONSE",response.toString())
-                        if (response.toString().contains("returnCode>0<",false)) {
-                            Utility.showSubmitAlertDialog(activity, true, "Facility General Information")
-                            FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = binding.timeZoneSpinner.selectedItem.toString()
-                            FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
-                            FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
-                            FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
-                            FacilityDataModel.getInstance().tblFacilities[0].WebSite = webSite.toString()
-                            FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
-                            FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate = insuranceExpDate
-                            FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = binding.facilitytypeTextviewVal.selectedItem.toString()
-                            FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName = binding.timeZoneSpinner.selectedItem.toString()
-                            FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
-                            FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
-                            FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
-                            FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite = webSite.toString()
-                            FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
-                            FacilityDataModelOrg.getInstance().tblFacilities[0].InsuranceExpDate = insuranceExpDate
-                            FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName = binding.facilitytypeTextviewVal.selectedItem.toString()
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.submitFacilityGeneralInfo + urlString +Utility.getLoggingParameters(activity,0,changes),
+            { response ->
+                requireActivity().runOnUiThread {
+                    Log.v("RESPONSE",response.toString())
+                    if (response.toString().contains("returnCode>0<",false)) {
+                        HasChangedModel.getInstance().updateChangedData("Facility General Information","General Info","",changes)
+                        Utility.showSubmitAlertDialog(activity, true, "Facility General Information")
+                        FacilityDataModel.getInstance().tblTimezoneType[0].TimezoneName = binding.timeZoneSpinner.selectedItem.toString()
+                        FacilityDataModel.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
+                        FacilityDataModel.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
+                        FacilityDataModel.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
+                        FacilityDataModel.getInstance().tblFacilities[0].WebSite = webSite.toString()
+                        FacilityDataModel.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
+                        FacilityDataModel.getInstance().tblFacilities[0].InsuranceExpDate = insuranceExpDate
+                        FacilityDataModel.getInstance().tblFacilityType[0].FacilityTypeName = binding.facilitytypeTextviewVal.selectedItem.toString()
+                        FacilityDataModelOrg.getInstance().tblTimezoneType[0].TimezoneName = binding.timeZoneSpinner.selectedItem.toString()
+                        FacilityDataModelOrg.getInstance().tblFacilities[0].FacilityRepairOrderCount = facRepairCnt.toString().toInt()
+                        FacilityDataModelOrg.getInstance().tblFacilities[0].SvcAvailability = svcAvailability
+                        FacilityDataModelOrg.getInstance().tblFacilities[0].AutomotiveRepairExpDate = automtiveRepairExpDate
+                        FacilityDataModelOrg.getInstance().tblFacilities[0].WebSite = webSite.toString()
+                        FacilityDataModelOrg.getInstance().tblFacilities[0].InternetAccess = internetAccess.toBoolean()
+                        FacilityDataModelOrg.getInstance().tblFacilities[0].InsuranceExpDate = insuranceExpDate
+                        FacilityDataModelOrg.getInstance().tblFacilityType[0].FacilityTypeName = binding.facilitytypeTextviewVal.selectedItem.toString()
 
-                            (activity as FormsActivity).saveRequired = false
-                            (activity as FormsActivity).saveDone = true
-                            submitGeneralInfoRequired = false
-                            HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
-                            HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone=true
-                            HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType=true
-                            HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                            setAlertColoring()
-                            binding.progressBarText.text = "Loading ..."
-                        } else {
-                            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                            binding.progressBarText.text = "Loading ..."
-                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                            Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+ errorMessage+" )")
-                        }
+                        (activity as FormsActivity).saveRequired = false
+                        (activity as FormsActivity).saveDone = true
+                        submitGeneralInfoRequired = false
+                        HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
+                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone=true
+                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType=true
+                        HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                        setAlertColoring()
+                        binding.progressBarText.text = "Loading ..."
+                    } else {
+                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                        binding.progressBarText.text = "Loading ..."
+                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                        Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+ errorMessage+" )")
                     }
-                }, Response.ErrorListener {
-                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                binding.progressBarText.text = "Loading ..."
-            Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+it.message+" )")
-        }))
+                }
+            },
+            {
+            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+            binding.progressBarText.text = "Loading ..."
+        Utility.showSubmitAlertDialog(activity,false,"Facility General Information (Error: "+it.message+" )")
+    }))
     }
 
 
@@ -1230,15 +1233,15 @@ class FacilityGeneralInformationFragment : Fragment() {
                 strRemoved += "Goodyear Credit Card - "
             }
             if (!binding.appleCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 10 }
-                    .isEmpty()) {
+                    .isNotEmpty()) {
                 strRemoved += "Apple Pay - "
             }
             if (!binding.venmoCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 11 }
-                    .isEmpty()) {
+                    .isNotEmpty()) {
                 strRemoved += "Venmo - "
             }
             if (!binding.zelleCheckbox.isChecked && FacilityDataModelOrg.getInstance().tblPaymentMethods.filter { s -> s.PmtMethodID.toInt() == 12 }
-                    .isEmpty()) {
+                    .isNotEmpty()) {
                 strRemoved += "Zelle - "
             }
             if (!strRemoved.isNullOrEmpty()) {
@@ -1271,8 +1274,7 @@ class FacilityGeneralInformationFragment : Fragment() {
           val applepay: String=   if (binding.appleCheckbox.isChecked == true) "10" else ""
           val venmo: String=   if (binding.venmoCheckbox.isChecked == true) "11" else ""
           val zelle: String=   if (binding.zelleCheckbox.isChecked == true) "12" else ""
-
-         var paymentMethods= arrayOf(visa,mastercard,americanexpress,discover,paypal,debit,cash,check,goodyear,applepay,venmo,zelle)
+          var paymentMethods= arrayOf(visa,mastercard,americanexpress,discover,paypal,debit,cash,check,goodyear,applepay,venmo,zelle)
         var paymentMethodArray = ArrayList<String>()
         binding.progressBarText.text = "Saving ..."
         binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
@@ -1289,34 +1291,36 @@ class FacilityGeneralInformationFragment : Fragment() {
         val clubCode =FacilityDataModel.getInstance().clubCode
         Log.v("Facility Payments --- ",UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, UpdatePaymentMethodsData + "${facilityNo}&clubcode=${clubCode}&paymentMethodID=${payments.toString()}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${insertDate.appToApiSubmitFormatMMDDYYYY()}"+Utility.getLoggingParameters(activity,0,getPaymentDataChanges()),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        if (response.toString().contains("returnCode>0<",false)) {
-                            Utility.showSubmitAlertDialog(activity, true, "Payment Methods")
-                            (activity as FormsActivity).saveRequired = false
-                            FacilityDataModelOrg.getInstance().tblPaymentMethods.clear()
-                            for (i in 0..FacilityDataModel.getInstance().tblPaymentMethods.size-1) {
-                                var payMethod = TblPaymentMethods()
-                                payMethod.PmtMethodID = FacilityDataModel.getInstance().tblPaymentMethods[i].PmtMethodID
-                                FacilityDataModelOrg.getInstance().tblPaymentMethods.add(payMethod)
-                            }
-                            HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods = true
-                            HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
-                            refreshButtonsState()
-                            submitPaymentRequired=false
-                            (activity as FormsActivity).saveDone = true
-                        } else {
-                            var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                            Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+ errorMessage+" )")
+            { response ->
+                requireActivity().runOnUiThread {
+                    if (response.toString().contains("returnCode>0<",false)) {
+                        HasChangedModel.getInstance().updateChangedData("Facility General Information","Payment Methods","",getPaymentDataChanges())
+                        Utility.showSubmitAlertDialog(activity, true, "Payment Methods")
+                        (activity as FormsActivity).saveRequired = false
+                        FacilityDataModelOrg.getInstance().tblPaymentMethods.clear()
+                        for (i in 0..FacilityDataModel.getInstance().tblPaymentMethods.size-1) {
+                            var payMethod = TblPaymentMethods()
+                            payMethod.PmtMethodID = FacilityDataModel.getInstance().tblPaymentMethods[i].PmtMethodID
+                            FacilityDataModelOrg.getInstance().tblPaymentMethods.add(payMethod)
                         }
-                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                        binding.progressBarText.text = "Loading ..."
+                        HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityGeneralPaymentMethods = true
+                        HasChangedModel.getInstance().changeDoneForFacilityGeneralInfo()
+                        refreshButtonsState()
+                        submitPaymentRequired=false
+                        (activity as FormsActivity).saveDone = true
+                    } else {
+                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                        Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+ errorMessage+" )")
                     }
-                }, Response.ErrorListener {
-        Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+it.message+" )")
-                binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                binding.progressBarText.text = "Loading ..."
-        }))
+                    binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+                    binding.progressBarText.text = "Loading ..."
+                }
+            },
+            {
+    Utility.showSubmitAlertDialog(activity,false,"Payment Methods (Error: "+it.message+" )")
+            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+            binding.progressBarText.text = "Loading ..."
+    }))
 
 
     }
