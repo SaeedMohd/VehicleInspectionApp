@@ -48,6 +48,8 @@ import com.inspection.model.*
 //import kotlinx.android.synthetic.main.fragment_array_vehicle_services.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 
 
 /**
@@ -1396,6 +1398,9 @@ class FragmentARRAVPersonnel : Fragment() {
                 ) {
 
                 } else {
+                    // Handle issue when no dates are available and avoid crash facnum=7444 - clubcode=036
+                    if (FacilityDataModel.getInstance().tblPersonnelCertification[i].ExpirationDate.apiToAppFormatMMDDYYYY()=="") continue
+                    if (FacilityDataModel.getInstance().tblPersonnelCertification[i].CertificationDate.apiToAppFormatMMDDYYYY()=="") continue
                     val ASEExpDate =
                         sdf.parse(FacilityDataModel.getInstance().tblPersonnelCertification[i].ExpirationDate.apiToAppFormatMMDDYYYY())
                     val ASEExpDatedays =
@@ -1418,16 +1423,13 @@ class FragmentARRAVPersonnel : Fragment() {
                         }
                     } else if (ASEExpDatedays <= 180 && ASEExpDatedays > 0 && FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID == FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID }.size > 0) {
                         if (currentPersonnelID != FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID) {
-                            currentPersonnelID =
-                                FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID
-                            toolTipStr =
-                                toolTipStr + FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID == FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID }[0].FirstName + " " + FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID == FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID }[0].LastName + " has about to expire Certificate(s) in ${ASEExpDatedays} day(s) \n"
+                            currentPersonnelID = FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID
+                            toolTipStr = toolTipStr + FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID == FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID }[0].FirstName + " " + FacilityDataModel.getInstance().tblPersonnel.filter { s -> s.PersonnelID == FacilityDataModel.getInstance().tblPersonnelCertification[i].PersonnelID }[0].LastName + " has about to expire Certificate(s) in ${ASEExpDatedays} day(s) \n"
                         } else {
 
                         }
                     }
                 }
-
             }
         }
 
@@ -1468,7 +1470,10 @@ class FragmentARRAVPersonnel : Fragment() {
         var strChanges = ""
         try {
             if (action == 0) {
-                strChanges += "New Certification for personnel id (" + personnelId + ") added as: Certification Type (" + binding.newCertTypeSpinner.selectedItem.toString() + ") , Description (" + binding.newCertDescText.text.toString() + "), Start Date (" + binding.newCertStartDateBtn.text.toString() + ") and End Date (" + binding.newCertEndDateBtn.text.toString() + ")"
+                strChanges += "Certification for personnel  (" + FacilityDataModel.getInstance().tblPersonnel.filter { s->s.PersonnelID==personnelId }[0].FirstName + " " + FacilityDataModel.getInstance().tblPersonnel.filter { s->s.PersonnelID==personnelId }[0].LastName + ") added as: Certification Type (" + binding.newCertTypeSpinner.selectedItem.toString() + ") , Description (" + binding.newCertDescText.text.toString() + "), Start Date (" + binding.newCertStartDateBtn.text.toString() + ") and End Date (" + binding.newCertEndDateBtn.text.toString() + ")"
+            }
+            else if (action == 1) {
+                strChanges += "Certification for personnel  (" + FacilityDataModel.getInstance().tblPersonnel.filter { s->s.PersonnelID==personnelId }[0].FirstName + " " + FacilityDataModel.getInstance().tblPersonnel.filter { s->s.PersonnelID==personnelId }[0].LastName + ") updated as: Description (" + binding.editNewCertDescText.text.toString() + "), Start Date (" + binding.editNewCertStartDateBtn.text.toString() + ") and End Date (" + binding.editNewCertEndDateBtn.text.toString() + ")"
             }
 //        else { // personnelID for Edit is the rowID
 //            if (edit_.text.toString() != FacilityDataModelOrg.getInstance().tblPersonnelCertification[personnelId].CertID) {
@@ -1993,7 +1998,7 @@ class FragmentARRAVPersonnel : Fragment() {
     fun endDateMustBeAfterStartDateLogic() {
 
         binding.newCoEndDateBtn.setOnClickListener {
-            if (binding.newCoStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            if (binding.newCoStartDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
                 binding.newCoEndDateBtn.setError("Required Field")
                 Utility.showValidationAlertDialog(activity, "Please enter Start Date")
             } else {
@@ -2027,7 +2032,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
         }
         binding.newEndDateBtn.setOnClickListener {
-            if (binding.newStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            if (binding.newStartDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
                 binding.newStartDateBtn.setError("Required Field")
                 Utility.showValidationAlertDialog(activity, "Please enter Start Date")
             } else {
@@ -2062,7 +2067,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
         }
         binding.newCertEndDateBtn.setOnClickListener {
-            if (binding.newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            if (binding.newCertStartDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
                 binding.newCertStartDateBtn.setError("Required Field")
                 Utility.showValidationAlertDialog(activity, "Please enter Certificate Start Date")
             } else {
@@ -2098,7 +2103,7 @@ class FragmentARRAVPersonnel : Fragment() {
         }
 
         binding.editNewCertEndDateBtn.setOnClickListener {
-            if (binding.editNewCertStartDateBtn.text.toString().toUpperCase()
+            if (binding.editNewCertStartDateBtn.text.toString().uppercase(getDefault())
                     .equals("SELECT DATE")
             ) {
                 binding.editNewCertStartDateBtn.setError("Required Field")
@@ -2140,7 +2145,7 @@ class FragmentARRAVPersonnel : Fragment() {
     fun edit_endDateMustBeAfterStartDateLogic() {
 
         binding.editNewCoEndDateBtn.setOnClickListener(View.OnClickListener {
-            if (binding.editNewCoStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            if (binding.editNewCoStartDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
 
                 binding.editNewCoEndDateBtn.setError("Required Field")
                 Utility.showValidationAlertDialog(activity, "Please enter Contract End Date")
@@ -2177,7 +2182,7 @@ class FragmentARRAVPersonnel : Fragment() {
 
         })
         binding.editNewEndDateBtn.setOnClickListener(View.OnClickListener {
-            if (binding.editNewStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+            if (binding.editNewStartDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
                 binding.editNewEndDateBtn.setError("Required Field")
                 Utility.showValidationAlertDialog(activity, "Please enter ِEnd Date")
             } else {
@@ -5671,14 +5676,14 @@ class FragmentARRAVPersonnel : Fragment() {
                                             Constants.UpdatePersonnelCertification + urlString + Utility.getLoggingParameters(
                                                 activity,
                                                 0,
-                                                getCertificationChanges(0, selectedPersonnelID)
+                                                getCertificationChanges(1, selectedPersonnelID)
                                             ),
                                             Response.Listener { response ->
                                                 requireActivity().runOnUiThread {
                                                     if (response.toString()
                                                             .contains("returnCode>0<", false)
                                                     ) {
-                                                        HasChangedModel.getInstance().updateChangedData("Personnel Screen","Personnel","",getCertificationChanges(0, selectedPersonnelID))
+                                                        HasChangedModel.getInstance().updateChangedData("Personnel Screen","Personnel","",getCertificationChanges(1, selectedPersonnelID))
                                                         Utility.showSubmitAlertDialog(
                                                             activity,
                                                             true,
@@ -6253,13 +6258,14 @@ class FragmentARRAVPersonnel : Fragment() {
 
         cert.iscertInputValid = true
 
-        if (binding.newCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (binding.newCertStartDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             cert.iscertInputValid = false
             binding.certDateTextView.setError("Required Field")
             validationMsg = "Please fill all required fields"
         }
-        if (!binding.newCertStartDateBtn.text.toString().toUpperCase()
-                .equals("SELECT DATE") && binding.newCertEndDateBtn.text.toString().toUpperCase()
+        if (!binding.newCertStartDateBtn.text.toString().uppercase(getDefault())
+                .equals("SELECT DATE") && binding.newCertEndDateBtn.text.toString()
+                .uppercase(getDefault())
                 .equals("SELECT DATE")
         ) {
             cert.iscertInputValid = false
@@ -6322,7 +6328,7 @@ class FragmentARRAVPersonnel : Fragment() {
             cert.iscertInputValid = !certTypeExists
         }
 
-        if (!binding.newCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (!binding.newCertEndDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val effDate = SimpleDateFormat(
                 myFormat,
@@ -6355,14 +6361,14 @@ class FragmentARRAVPersonnel : Fragment() {
 
         cert.iscertInputValid = true
 
-        if (binding.editNewCertStartDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (binding.editNewCertStartDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             cert.iscertInputValid = false
             binding.editNewCertStartDateBtn.setError("Required Field")
             validationMsg = "Please fill all required fields"
         }
-        if (!binding.editNewCertStartDateBtn.text.toString().toUpperCase()
+        if (!binding.editNewCertStartDateBtn.text.toString().uppercase(getDefault())
                 .equals("SELECT DATE") && binding.editNewCertEndDateBtn.text.toString()
-                .toUpperCase().equals("SELECT DATE")
+                .uppercase(getDefault()).equals("SELECT DATE")
         ) {
             cert.iscertInputValid = false
             binding.editExpirationDateText.setError("Required Field")
@@ -6414,7 +6420,7 @@ class FragmentARRAVPersonnel : Fragment() {
             cert.iscertInputValid = !datesOverlapping
         }
 
-        if (!binding.editNewCertEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (!binding.editNewCertEndDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val effDate = SimpleDateFormat(
                 myFormat,
@@ -6576,7 +6582,7 @@ class FragmentARRAVPersonnel : Fragment() {
             binding.newAdd1Text.setError(null)
         }
 
-        if (!binding.newEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (!binding.newEndDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val effDate = SimpleDateFormat(
                 myFormat,
@@ -6739,11 +6745,9 @@ class FragmentARRAVPersonnel : Fragment() {
             binding.editStateTextView.setError(null)
             binding.editNewCityText.setError(null)
             binding.editNewAdd1Text.setError(null)
-
-
         }
 
-        if (!binding.editNewEndDateBtn.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (!binding.editNewEndDateBtn.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val effDate = SimpleDateFormat(
                 myFormat,

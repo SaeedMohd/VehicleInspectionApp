@@ -31,6 +31,8 @@ import com.inspection.singletons.AnnualVisitationSingleton
 //import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 import kotlin.collections.ArrayList
 
 /**
@@ -327,6 +329,7 @@ class FragmentARRAVAffliations : Fragment() {
                 val afType = binding.editAffiliationsTextviewVal.selectedItem.toString()
                 val afTypeDetail =
                     if (binding.editAfDetailsTextviewVal.selectedItem == null) "" else binding.editAfDetailsTextviewVal.selectedItem.toString()
+                strChanges = "Affiliation Type: " + TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeID }[0].AffiliationTypeName + " - Affiliation Type Detail: " + TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }[0].AffiliationDetailTypeName + " "
                 if (Comments != FacilityDataModelOrg.getInstance().tblAffiliations[rowId].comment) {
                     strChanges += "Comments changed from (" + FacilityDataModelOrg.getInstance().tblAffiliations[rowId].comment + ") to (${Comments}) - "
                 }
@@ -338,14 +341,14 @@ class FragmentARRAVAffliations : Fragment() {
                 }
 
                 if (afType != (TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeID }[0].AffiliationTypeName)) {
-                    strChanges += "Affiliation Type changed from (" + TypeTablesModel.getInstance().AARAffiliationType.filter { s -> s.AARAffiliationTypeID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeID }[0].AffiliationTypeName + ") to (" + afType + ") - "
+                    strChanges += "Affiliation Type changed to ($afType) - "
                 }
 
                 if (afTypeDetail.isNotEmpty()) {
                     if (TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }
                             .isNotEmpty()) {
                         if (afTypeDetail != (TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }[0].AffiliationDetailTypeName)) {
-                            strChanges += "Affiliation Type Detail changed from (" + TypeTablesModel.getInstance().AffiliationDetailType.filter { s -> s.AffiliationTypeDetailID.toInt() == FacilityDataModelOrg.getInstance().tblAffiliations[rowId].AffiliationTypeDetailID }[0].AffiliationDetailTypeName + ") to (" + afTypeDetail + ") - "
+                            strChanges += "Affiliation Type Detail changed to ($afTypeDetail) - "
                         }
                     } else {
                         strChanges += "Affiliation Type Detail changed from ( ) to (" + afTypeDetail + ") - "
@@ -629,12 +632,12 @@ class FragmentARRAVAffliations : Fragment() {
 
         binding.afDtlseffectiveDateTextviewVal.setError(null)
 
-        if(binding.afDtlseffectiveDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(binding.afDtlseffectiveDateTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             isInputsValid=false
             binding.afDtlseffectiveDateTextviewVal.setError("Required Field")
         }
 
-        if(!binding.afDtlsexpirationDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(!binding.afDtlsexpirationDateTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val effDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.afDtlsexpirationDateTextviewVal!!.text.toString())
             val expDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.afDtlsexpirationDateTextviewVal!!.text.toString())
@@ -657,12 +660,12 @@ class FragmentARRAVAffliations : Fragment() {
 
         binding.editAfDtlseffectiveDateTextviewVal.setError(null)
 
-        if(binding.editAfDtlseffectiveDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(binding.editAfDtlseffectiveDateTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             isInputsValid=false
             binding.editAfDtlseffectiveDateTextviewVal.setError("Required Field")
         }
 
-        if(!binding.editAfDtlsexpirationDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(!binding.editAfDtlsexpirationDateTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val effDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.editAfDtlseffectiveDateTextviewVal!!.text.toString())
             val expDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.editAfDtlsexpirationDateTextviewVal!!.text.toString())

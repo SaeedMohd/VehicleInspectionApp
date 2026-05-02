@@ -34,7 +34,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import aws.smithy.kotlin.runtime.util.length
+
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -63,6 +63,8 @@ import java.io.IOException
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -498,7 +500,7 @@ class FragmentAARAVPhotos : Fragment() {
     }
 
     fun getPhotosS3Urls() {
-        var counter = FacilityDataModel.getInstance().FacilityPhotos.filter { s->s.FileName.isNotEmpty() && s.PhotoId>-1}.length
+        var counter = FacilityDataModel.getInstance().FacilityPhotos.filter { s->s.FileName.isNotEmpty() && s.PhotoId>-1}.size
         FacilityDataModel.getInstance().FacilityPhotos.apply {
             (0 until size).forEach {
                 if (get(it).PhotoId > -1 && get(it).FileName.isNotEmpty()) {
@@ -1207,7 +1209,9 @@ class FragmentAARAVPhotos : Fragment() {
                     editButton.setOnClickListener {
                         (activity as FormsActivity).overrideBackButton = true
                         binding.editFileDescText.setText(textView2.text)
-                        binding.editFileNameText.setText(textView1.text.toString().toLowerCase())
+                        binding.editFileNameText.setText(
+                            textView1.text.toString().lowercase(getDefault())
+                        )
 //                        editFileNameTitle.text = ""
                         binding.editClubCHeck.isChecked = textView7.text.contains("Club Hub/MRM")
                         binding.editCommCHeck.isChecked = textView7.text.contains("eComm")
@@ -1229,8 +1233,10 @@ class FragmentAARAVPhotos : Fragment() {
                                 binding.photoLoadingView.visibility = View.VISIBLE
 
 //                                var photoID = tblFacilityPhotos[currentPhotoIndex].photoid
-                                var fileDescStr = binding.editFileDescText.text.toString().toLowerCase()
-                                var fileNameStr = binding.editFileNameText.text.toString().toLowerCase()
+                                var fileDescStr =
+                                    binding.editFileDescText.text.toString().lowercase(getDefault())
+                                var fileNameStr =
+                                    binding.editFileNameText.text.toString().lowercase(getDefault())
                                 var approvalReq = binding.editApprovalReqCheck.isChecked
                                 var downstreamStr = ""
                                 if (binding.editClubCHeck.isChecked) downstreamStr += binding.clubCHeck.text.toString() + ", "
@@ -1264,8 +1270,10 @@ class FragmentAARAVPhotos : Fragment() {
                                 itemAPP.SeqNum = FacilityDataModel.getInstance().FacilityPhotos.filter { s->s.PhotoId == photoID }[0].SeqNum
                                 itemAPP.LastUpdateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
                                 // START FROM HERE
-                                Log.v("SubmitPhoto -> ", Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=${itemAPP.Approved}&approvedBy=${itemAPP.ApprovedBy}&operation=EDIT&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=${itemAPP.ApprovedDate}&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)))
-                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=${itemAPP.Approved}&approvedBy=${itemAPP.ApprovedBy}&operation=EDIT&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=${itemAPP.ApprovedDate}&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)),
+                                Log.v("SubmitPhoto -> ", Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=${itemAPP.Approved}&approvedBy=${itemAPP.ApprovedBy}&operation=EDIT&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=${itemAPP.ApprovedDate}&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${
+                                    fileNameStr.lowercase(getDefault())
+                                }&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)))
+                                Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=${itemAPP.Approved}&approvedBy=${itemAPP.ApprovedBy}&operation=EDIT&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=${itemAPP.ApprovedDate}&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr.lowercase(getDefault())}&fileDescription=${fileDescStr}&photoId=${photoID}&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)),
                                     { response ->
                                         requireActivity().runOnUiThread {
                                             if (response.toString().contains("Success", false)) {
@@ -1749,43 +1757,44 @@ class FragmentAARAVPhotos : Fragment() {
         itemAPP.ApprovedDate= ""
         itemAPP.SeqNum = if (FacilityDataModel.getInstance().FacilityPhotos.filter { s->s.PhotoId>0}.isEmpty()) 0 else FacilityDataModel.getInstance().FacilityPhotos.maxByOrNull { it.SeqNum }!!.SeqNum + 1
         itemAPP.LastUpdateBy = ApplicationPrefs.getInstance(activity).loggedInUserID
-        Log.v("SubmitPhoto -> ", Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=0&approvedBy=&operation=ADD&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=0&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)))
+        Log.v("SubmitPhoto -> ", Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=0&approvedBy=&operation=ADD&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr.lowercase(getDefault())}&fileDescription=${fileDescStr}&photoId=0&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)))
 //        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotos + "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&operation=ADD&downstreamApps=${downstreamStr}&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)),
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=0&approvedBy=&operation=ADD&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr}&fileDescription=${fileDescStr}&photoId=0&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        Log.v("SubmitPhoto -> ", "result: " + response.toString())
-                        if (response.toString().contains("returnCode>0<", false)) {
-                            Utility.showSubmitAlertDialog(activity, true, "Photos")
-                            binding.photoLoadingView.visibility = View.GONE
-                            binding.progressBarText.text = "Loading ..."
-                            itemAPP.PhotoId = response.toString().substring(response.toString().indexOf("<PhotoId") + 9, response.toString().indexOf("</PhotoId")).toInt()
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.updateFacilityPhotosData + "${FacilityDataModel.getInstance().tblFacilities[0].FACID}&seqNum=${itemAPP.SeqNum}&facNum=${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&approved=0&approvedBy=&operation=ADD&downstreamAppId=${downstreamAPPStr}&lastUpdateDate=${Date().toApiSubmitFormat()}&approvedDate=&downstreamApps=${downstreamStr}&primaryPhoto=0&lastUpdateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&fileName=${fileNameStr.lowercase(getDefault())}&fileDescription=${fileDescStr}&photoId=0&approvalRequested=${approvalReq}" + Utility.getLoggingParameters(activity, 0, getPhotosChanges(0,0)),
+            { response ->
+                requireActivity().runOnUiThread {
+                    Log.v("SubmitPhoto -> ", "result: " + response.toString())
+                    if (response.toString().contains("returnCode>0<", false)) {
+                        Utility.showSubmitAlertDialog(activity, true, "Photos")
+                        binding.photoLoadingView.visibility = View.GONE
+                        binding.progressBarText.text = "Loading ..."
+                        itemAPP.PhotoId = response.toString().substring(response.toString().indexOf("<PhotoId") + 9, response.toString().indexOf("</PhotoId")).toInt()
 //                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos.add(item)
 //                            tblFacilityPhotos.add(item)
-                            FacilityDataModel.getInstance().FacilityPhotos.add(itemAPP)
-                            fillPhotosTableView()
-                            getPhotosS3Urls()
-                            HasChangedModel.getInstance().groupPhoto[0].Photos= true
-                            HasChangedModel.getInstance().changeDoneForPhotoDef()
-                        } else {
-                            var errorMessage = response.toString()
-                            Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + errorMessage + " )")
-                        }
-                        binding.photoLoadingView.visibility = View.GONE
-                        binding.photosLoadingView.visibility = View.GONE
-                        binding.addNewPhotoDialog.visibility = View.GONE
-                        binding.progressBarText.text = "Loading ..."
-                        (activity as FormsActivity).overrideBackButton = false
+                        FacilityDataModel.getInstance().FacilityPhotos.add(itemAPP)
+                        fillPhotosTableView()
+                        getPhotosS3Urls()
+                        HasChangedModel.getInstance().groupPhoto[0].Photos= true
+                        HasChangedModel.getInstance().changeDoneForPhotoDef()
+                    } else {
+                        var errorMessage = response.toString()
+                        Utility.showSubmitAlertDialog(activity, false, "Photos (Error: " + errorMessage + " )")
                     }
-                }, Response.ErrorListener {
-            Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: " + it.message + " )")
-            binding.photoLoadingView.visibility = View.GONE
-            binding.photosLoadingView.visibility = View.GONE
-            binding.addNewPhotoDialog.visibility = View.GONE
-            binding.progressBarText.text = "Loading ..."
-            (activity as FormsActivity).overrideBackButton = false
+                    binding.photoLoadingView.visibility = View.GONE
+                    binding.photosLoadingView.visibility = View.GONE
+                    binding.addNewPhotoDialog.visibility = View.GONE
+                    binding.progressBarText.text = "Loading ..."
+                    (activity as FormsActivity).overrideBackButton = false
+                }
+            },
+            {
+        Utility.showSubmitAlertDialog(activity, false, "Affiliation (Error: " + it.message + " )")
+        binding.photoLoadingView.visibility = View.GONE
+        binding.photosLoadingView.visibility = View.GONE
+        binding.addNewPhotoDialog.visibility = View.GONE
+        binding.progressBarText.text = "Loading ..."
+        (activity as FormsActivity).overrideBackButton = false
 
-        }))
+    }))
 
     }
 

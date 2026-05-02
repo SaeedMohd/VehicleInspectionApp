@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:gravity="center_vertical"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -15,34 +16,35 @@
     <!--</ListView>-->
 
     <LinearLayout
-        android:id="@+id/visitationPlanningButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/ll_1st"
         android:gravity="center"
-        android:layout_centerInParent="true">
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:id="@+id/visitationPlanningButton"
             android:orientation="vertical"
             android:background="@drawable/big_button_background"
             android:gravity="center"
             android:padding="10dp">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:src="@drawable/calendar"
                 android:layout_marginBottom="20dp"
-                android:tint="@color/mainColor" />
+                app:tint="@color/mainColor" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Visitation\nPlanning"
-                android:textSize="26sp"
+                android:textSize="18sp"
                 android:textColor="@color/mainColor"
                 android:layout_gravity="center"
                 android:gravity="center" />
@@ -53,17 +55,17 @@
 
         <LinearLayout
             android:id="@+id/adHocVisitationButton"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
             android:orientation="vertical"
             android:background="@drawable/big_button_background"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="100dp"
             android:gravity="center"
             android:padding="10dp">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:src="@drawable/todo"
                 android:layout_marginBottom="20dp" />
@@ -71,11 +73,83 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:text="APP/Ad Hoc Visitation"
-                android:textSize="26sp"
+                android:textColor="@color/mainColor"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/applicantButton"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:background="@drawable/big_button_background"
+            android:visibility="gone"
+            android:layout_marginStart="100dp"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/garage"
+                android:layout_marginBottom="20dp"
+                app:tint="@color/mainColor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Applicant"
+                android:textSize="18sp"
                 android:textColor="@color/mainColor"
                 android:layout_gravity="center"
-                android:gravity="center" />
+                android:gravity="center"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_below="@id/ll_1st"
+        android:id="@+id/ll_2nd"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/pinnedVisitationButton"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            android:background="@drawable/big_button_background"
+            android:gravity="center_vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/day_calendar"
+                android:layout_marginBottom="20dp"
+                app:tint="@color/mainColor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/todayVisitationTitle"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Today's \nVisitation"
+                android:textColor="@color/mainColor"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -96,8 +170,8 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:src="@drawable/speedometer"
-                android:tint="@color/mainColor"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="20dp"
+                app:tint="@color/mainColor" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -111,36 +185,36 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/applicantButton"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:id="@+id/completedVisitationsButton"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
             android:orientation="vertical"
             android:background="@drawable/big_button_background"
-            android:visibility="gone"
-            android:layout_marginLeft="50dp"
+            android:visibility="visible"
+            android:layout_marginLeft="100dp"
             android:gravity="center"
             android:padding="10dp">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:src="@drawable/garage"
+                android:src="@drawable/speedometer"
                 android:layout_marginBottom="20dp"
                 app:tint="@color/mainColor" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Applicant"
-                android:textSize="26sp"
+                android:text="Completed\nVisitations"
+                android:textSize="18sp"
                 android:textColor="@color/mainColor"
                 android:layout_gravity="center"
-                android:gravity="center"
-                />
+                android:gravity="center" />
 
         </LinearLayout>
 
     </LinearLayout>
+
 
 </RelativeLayout>

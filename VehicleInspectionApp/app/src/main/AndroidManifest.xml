@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:required="false" />
@@ -73,10 +74,15 @@
         android:theme="@style/myAppThemeCompat"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustResize">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
         <activity
             android:name=".ApplicantActivity"
             android:exported="true"
-            android:label="@string/title_activity_applicant"
+            android:label=""
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:theme="@style/myAppThemeCompat" />
         <!-- <activity -->
         <!-- android:name=".ErrorActivity" -->

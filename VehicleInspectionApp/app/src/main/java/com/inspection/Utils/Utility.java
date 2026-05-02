@@ -66,12 +66,6 @@ import com.inspection.interfaces.LocationJobScheduler;
 import com.inspection.model.VehicleProfileModel;
 import com.itextpdf.text.Image;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;

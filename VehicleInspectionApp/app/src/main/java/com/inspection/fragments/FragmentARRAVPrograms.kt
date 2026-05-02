@@ -31,6 +31,8 @@ import com.inspection.model.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 
 
 /**
@@ -554,6 +556,11 @@ class FragmentARRAVPrograms : Fragment() {
                 if (binding.editExpirationDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editExpirationDateTextviewVal.text.toString()
             val programName = binding.editProgramNameTextviewVal.selectedItem.toString()
             if (action == 1) {
+                strChanges = "Program: " + TypeTablesModel.getInstance().ProgramsType.filter { s ->
+                    s.ProgramTypeID.equals(
+                        FacilityDataModelOrg.getInstance().tblPrograms[rowId].ProgramTypeID
+                    )
+                }[0].ProgramTypeName + " "
                 if (Comments != FacilityDataModelOrg.getInstance().tblPrograms[rowId].Comments) {
                     strChanges += "Program comments changed from (" + FacilityDataModelOrg.getInstance().tblPrograms[rowId].Comments + ") to (${Comments}) - "
                 }
@@ -568,11 +575,7 @@ class FragmentARRAVPrograms : Fragment() {
                             FacilityDataModelOrg.getInstance().tblPrograms[rowId].ProgramTypeID
                         )
                     }[0].ProgramTypeName)) {
-                    strChanges += "Program Type changed from (" + TypeTablesModel.getInstance().ProgramsType.filter { s ->
-                        s.ProgramTypeID.equals(
-                            FacilityDataModelOrg.getInstance().tblPrograms[rowId].ProgramTypeID
-                        )
-                    }[0].ProgramTypeName + ") to (" + programName + ") - "
+                    strChanges += "Program Type changed to ($programName) - "
                 }
             }
             strChanges = strChanges.removeSuffix(" - ")
@@ -1337,12 +1340,12 @@ class FragmentARRAVPrograms : Fragment() {
         binding.effectiveDateTextviewVal.setError(null)
         binding.commentsEditTextVal.setError(null)
 
-        if (binding.effectiveDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (binding.effectiveDateTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             programValide = false
             binding.effectiveDateTextviewVal.setError("Required Field")
         }
 
-        if (!binding.expirationDateTextviewVal.text.toString().toUpperCase()
+        if (!binding.expirationDateTextviewVal.text.toString().uppercase(getDefault())
                 .equals("SELECT DATE")
         ) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
@@ -1377,14 +1380,14 @@ class FragmentARRAVPrograms : Fragment() {
         binding.editCommentsEditTextVal.setError(null)
         binding.editEffectiveDateTextviewVal.setError(null)
 
-        if (binding.editEffectiveDateTextviewVal.text.toString().toUpperCase()
+        if (binding.editEffectiveDateTextviewVal.text.toString().uppercase(getDefault())
                 .equals("SELECT DATE")
         ) {
             programValide = false
             binding.editEffectiveDateTextviewVal.setError("Required Field")
         }
 
-        if (!binding.editExpirationDateTextviewVal.text.toString().toUpperCase()
+        if (!binding.editExpirationDateTextviewVal.text.toString().uppercase(getDefault())
                 .equals("SELECT DATE")
         ) {
             val myFormat = "MM/dd/yyyy" // mention the format you need

@@ -4,7 +4,7 @@
     <!-- ActionBar styles -->
 
 
-    <style name="myAppThemeCompat" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="myAppThemeCompat" parent="Theme.MaterialComponents.Light.NoActionBar">
 
         <item name="colorPrimary">@color/mainColor</item>
         <item name="colorPrimaryDark">@color/headerColor</item>
@@ -63,5 +63,16 @@
         <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item> <!-- Optional customizations -->
     </style>
 
+    <style name="FadeDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+    </style>
+
+    <style name="TabTextNormal" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="TabTextSelected" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">14sp</item>
+    </style>
 
 </resources>

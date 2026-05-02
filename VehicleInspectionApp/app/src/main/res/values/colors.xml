@@ -21,6 +21,13 @@
     <color name="firstRowColor">#f0f8ff</color>
     <color name="secondRowColor">#FAFAFA</color>
     <color name="darkBlue">#073763</color>
+    <color name="status_active">#2E7D32</color>
+    <color name="status_applicant">#1976D2</color>
+    <color name="status_potential">#0288D1</color>
+    <color name="status_pending">#F57C00</color>
+    <color name="status_inactive">#9E9E9E</color>
+    <color name="status_disapproved">#D32F2F</color>
+    <color name="status_discontinued">#616161</color>
 <!--    #073763-->
 </resources>
 

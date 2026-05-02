@@ -272,6 +272,19 @@
                     android:text="Filtered Visitations --> ()"
                      />
             </TableRow>
+
+            <TableRow>
+                <CheckBox
+                    android:id="@+id/addAllCheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_span="2"
+                    android:layout_column="0"
+                    android:checked="false"
+                    android:text="Add all to Today's Visitations"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
+            </TableRow>
+
             <TableRow>
                 <View
                     android:layout_width="0dp"
@@ -360,14 +373,14 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/close" />
             </RelativeLayout>
-        <WebView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/webView"/>
-            <com.github.barteksc.pdfviewer.PDFView
-                android:id="@+id/pdfView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+<!--        <WebView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:id="@+id/webView"/>-->
+<!--            <com.github.barteksc.pdfviewer.PDFView-->
+<!--                android:id="@+id/pdfView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"/>-->
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

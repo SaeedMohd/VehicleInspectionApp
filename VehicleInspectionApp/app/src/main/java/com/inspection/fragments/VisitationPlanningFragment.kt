@@ -1,18 +1,13 @@
 package com.inspection.fragments
 
 
-//import kotlinx.android.synthetic.main.dialog_forgot_password.view.*
-//import kotlinx.android.synthetic.main.fragment_visitation_form.*
-//import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.*
-//import kotlinx.android.synthetic.main.visitation_planning_filter_fragment.progressBarRecords
-import android.R.attr
 import android.annotation.SuppressLint
-import android.app.Activity
+
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.os.AsyncTask
+
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,9 +15,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
@@ -32,33 +24,29 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.github.barteksc.pdfviewer.PDFView
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.inspection.R
 import com.inspection.Utils.*
 import com.inspection.databinding.VisitationPlanningFilterFragmentBinding
-import com.inspection.interfaces.LocationAlarmManager.REQUEST_CODE
 import com.inspection.model.*
-import kotlinx.coroutines.*
+import com.inspection.utils.XmlUtils
+import com.inspection.utils.XmlUtils.normalizeForModel
+import com.inspection.utils.XmlUtils.xmlToJsonObject
+
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
-import org.w3c.dom.Text
-import shaded.org.json.JSONObject
-import shaded.org.json.XML
-import java.io.BufferedInputStream
+
 import java.io.IOException
-import java.io.InputStream
-import java.net.HttpURLConnection
-import java.net.URL
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Locale.getDefault
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.HttpsURLConnection
-
 
 /**
  * A simple [Fragment] subclass.
@@ -76,8 +64,9 @@ class VisitationPlanningFragment : Fragment() {
     private var mParam2: String? = null
     var fragment: Fragment? = null
     var defaultClubCode = ""
-    lateinit var pdfView : PDFView
+//    lateinit var pdfView : PDFView
     private var mListener: OnFragmentInteractionListener? = null
+    var facilities = ArrayList<CsiFacility>()
     var facilityNames = ArrayList<String>()
     var facilitiesList = ArrayList<AAAFacilityComplete>()
     var visitationList = ArrayList<AnnualVisitationInspectionFormData>()
@@ -97,7 +86,7 @@ class VisitationPlanningFragment : Fragment() {
     var visitationID =""
     var totalVisitations = 0
     var overridOverdue = VisitationStatus.Overdue
-    var facilities = ArrayList<CsiFacility>()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,7 +109,7 @@ class VisitationPlanningFragment : Fragment() {
         _binding = VisitationPlanningFilterFragmentBinding.bind(view)
 
         binding.visitationfacilityListView.visibility = View.GONE
-        pdfView = view.findViewById(R.id.pdfView)
+//        pdfView = view.findViewById<com.github.barteksc.pdfviewer.PDFView>(R.id.pdfView)
         var visitationYearFilterSpinnerEntries = mutableListOf<String>()
         var currentYear = Calendar.getInstance().get(Calendar.YEAR)
 //        visitationYearFilterSpinnerEntries.add    ("Any")
@@ -138,50 +127,13 @@ class VisitationPlanningFragment : Fragment() {
             reloadVisitationsList()
         }
 
-//        facilityNameButton.onFocusChangeListener = View.OnFocusChangeListener { view: View, b: Boolean ->
-//            if (b) {
-//                view.hideKeyboard()
-//            }
-//        }
+        binding.addAllCheckBox.setOnClickListener {
+            reloadVisitationsList()
+            it.hideKeyboard()
+        }
 
-//        getTypeTables()
         loadSpecialists()
-//        loadSpecialistDetails()
         loadSpecialistName()
-//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
-//                Response.Listener { response ->
-//                    Log.v("****response", response)
-//                    activity!!.runOnUiThread {
-//                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-//                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-//                                Response.Listener { response ->
-//                                    activity!!.runOnUiThread {
-//                                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-//                                        if (specialistName != null && specialistName.size > 0) {
-//                                            requiredSpecialistName = specialistName[0].specialistname
-//                                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistName[0].accspecid
-//                                            for (sn in specialistName){
-//                                                specialistClubCodes.add(sn.clubcode)
-//                                            }
-////                                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
-////                                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
-////                                            var reformattedName = firstName + " " + lastName
-////                                            visitationSpecialistName.setText(reformattedName)
-////                                            visitationSpecialistName.setText(requiredSpecialistName)
-//                                        }
-//                                        loadSpecialistName()
-////                                        loadClubCodes()
-//                                    }
-//                                }, Response.ErrorListener {
-//                            Log.v("error while loading", "error while loading facilities")
-//                            Log.v("Loading error", "" + it.message)
-//                        }))
-//                    }
-//                }, Response.ErrorListener {
-//            Log.v("error while loading", "error while loading specialists")
-//            Log.v("Loading error", "" + it.message)
-//        }))
-
     }
 
 
@@ -253,13 +205,7 @@ class VisitationPlanningFragment : Fragment() {
 
         binding.visitationSpecialistName.setOnClickListener {
             var personnelNames = ArrayList<String>()
-//            (0 until CsiSpecialistSingletonModel.getInstance().csiSpecialists.size).forEach {
-//                personnelNames.add(CsiSpecialistSingletonModel.getInstance().csiSpecialists[it].specialistname)
-//            }
-//            personnelNames.sort()
-//            personnelNames.add(0, "Any")
             (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
-//                personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].LastName + " " + TypeTablesModel.getInstance().EmployeeList[it].FirstName)
                 personnelNames.add(TypeTablesModel.getInstance().EmployeeList[it].FullName)
             }
             personnelNames.sort()
@@ -286,20 +232,6 @@ class VisitationPlanningFragment : Fragment() {
         }
 
         binding.facilityNameButton.setOnClickListener {
-//            recordsProgressView.visibility = View.VISIBLE
-//            Log.v("VISITATION FAC NAME --- ",Constants.getAllFacilities + "")
-//            Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
-//                    Response.Listener { response ->
-//                        activity!!.runOnUiThread {
-//                            recordsProgressView.visibility = View.INVISIBLE
-//                            var facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-//                            var facilityNames = ArrayList<String>()
-//                            (0 until facilities.size).forEach {
-//                                facilityNames.add(facilities[it].facname)
-//                            }
-//                            facilityNames.sort()
-//                            facilityNames.add(0, "Any")
-//
                             var facNamesFiltered = ArrayList<String>()
                             if (binding.visitationSpecialistName.text.contains("Select") || binding.visitationSpecialistName.text.isEmpty()) {
                                 facilities.forEach {
@@ -404,7 +336,6 @@ class VisitationPlanningFragment : Fragment() {
         facilities.clear()
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
                 Response.Listener { response ->
-                    Log.v("test","testtesttest-----------")
                     requireActivity().runOnUiThread {
                         binding.recordsProgressView.visibility = View.INVISIBLE
                         CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
@@ -415,11 +346,6 @@ class VisitationPlanningFragment : Fragment() {
                         Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
                         facilities.removeIf { s->s.accspecid.isNullOrEmpty() }
                         if (facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
-//                            (0 until facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.size).forEach {
-//                                facilityNames.add(facilities[it].facname + " || " + facilities[it].facnum)
-//                            }
-//                            defaultFacNumber = facilities.filter { s -> s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID) }.sortedWith(compareBy { it.facnum })[0].facnum
-//                            adHocFacilityIdVal.setText(defaultFacNumber)
                             defaultClubCode = facilities.filter { s->s.accspecid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
                             binding.clubCodeEditText.setText(defaultClubCode)
                         } else {
@@ -430,7 +356,6 @@ class VisitationPlanningFragment : Fragment() {
                         firstLoadingCompleted()
                     }
                 }, Response.ErrorListener {
-//            Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
                 Utility.showUnifiedErrorDialog(activity,"Error while retrieving Facilities - " + it.message)
                 binding.recordsProgressView.visibility = View.INVISIBLE
             Log.v("error while loading", "error while loading facilities")
@@ -619,7 +544,24 @@ class VisitationPlanningFragment : Fragment() {
 //                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
 //                            else
 //                            Utility.showMessageDialog(activity, "Retrieve Data Error", responseString)
-                            Utility.showUnifiedErrorDialog(activity,"Error while retrieving Visitations - " + responseString)
+                            Utility.showUnifiedErrorDialog(
+                                activity,
+                                "Error while retrieving Visitations - " + responseString
+                            )
+                            binding.recordsProgressView.visibility = View.GONE
+                            binding.visitationfacilityListView.visibility = View.VISIBLE
+                            visitationsModel.pendingVisitationsArray.clear()
+                            visitationsModel.completedVisitationsArray.clear()
+                            visitationsModel.deficienciesArray.clear()
+
+                            var visitationPlanningAdapter =
+                                VisitationPlanningAdapter(context, visitationsModel)
+                            binding.visitationfacilityListView.adapter = visitationPlanningAdapter
+                            totalVisitations = 0
+                        }
+                    } else if (!responseString.contains("<responseXml>",false)) {
+                        requireActivity().runOnUiThread {
+                            Utility.showUnifiedInformationDialog(activity,"No Visitations Found with the applied filters ...");
                             binding.recordsProgressView.visibility = View.GONE
                             binding.visitationfacilityListView.visibility = View.VISIBLE
                             visitationsModel.pendingVisitationsArray.clear()
@@ -629,12 +571,29 @@ class VisitationPlanningFragment : Fragment() {
                             var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
                             binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                             totalVisitations = 0
-
                         }
                     } else {
 //                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
-                        if (obj.toString().equals("{\"responseXml\":\"\"}")) {
+//                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
+                        val xmlPart = responseString.substring(
+                            responseString.indexOf("<responseXml"),
+                            responseString.indexOf("<returnCode")
+                        )
+//                            .replace("&amp;", "&")
+                        Log.v("xmlPart -> ", xmlPart)
+                        val rootJson = xmlToJsonObject(xmlPart)
+                        Log.v("rootJson -> ", rootJson.toString())
+
+                        // IMPORTANT: Jsoup already removed wrapper
+                        val responseJson = rootJson
+
+                        Log.v("responseJson -> ", responseJson.toString())
+
+                        val normalized = normalizeForModel(
+                            responseJson,
+                            TypeTablesModel::class.java
+                        )
+                        if (responseString.toString().equals("{\"responseXml\":\"\"}")) {
                             activity!!.runOnUiThread {
                                 visitationsModel.listArray.clear()
                                 binding.visitationfacilityListView.adapter = null
@@ -644,9 +603,9 @@ class VisitationPlanningFragment : Fragment() {
                                 Utility.showUnifiedInformationDialog(requireContext(),"No available visitations to show")
                             }
                         } else {
-                            var jsonObj = obj.getJSONObject("responseXml")
-
-                            visitationsModel = parseVisitationsData(jsonObj)
+//                            var jsonObj = obj.getJSONObject("responseXml")
+//                            val jsonObj = JSONObject(obj.toString())
+                            visitationsModel = parseVisitationsData(normalized)
                             // Remove Test Shops as Per Richard Email
                             visitationsModel.pendingVisitationsArray.removeIf { s-> s.FACNo == "22214" && s.ClubCode == "004" }
                             visitationsModel.pendingVisitationsArray.removeIf { s-> s.FACNo == "22216" && s.ClubCode == "252" }
@@ -686,9 +645,11 @@ class VisitationPlanningFragment : Fragment() {
                                                                 FillVisitationList()
                                                                 if (binding.cityGroupCheckBox.isChecked)
                                                                     visitationsModel.listArray.sortWith(compareBy({it.city}, {it.BusinessName}))
+
+
                                                                 //
 //                                                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                                                var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel)
+                                                                var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel,binding.addAllCheckBox.isChecked)
                                                                 binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                                                                 totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
 //                                                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
@@ -705,7 +666,8 @@ class VisitationPlanningFragment : Fragment() {
                                                 activity!!.runOnUiThread {
                                                     binding.recordsProgressView.visibility = View.GONE
                                                     binding.visitationfacilityListView.visibility = View.VISIBLE
-                                                    var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                                    // WAS OLD ADAPTER
+                                                    var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel,binding.addAllCheckBox.isChecked)
                                                     binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                                                     totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
 //                                                Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
@@ -723,7 +685,8 @@ class VisitationPlanningFragment : Fragment() {
                                 activity!!.runOnUiThread {
                                     binding.recordsProgressView.visibility = View.GONE
                                     binding.visitationfacilityListView.visibility = View.VISIBLE
-                                    var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                                    // WAS OLD ADAPTER
+                                    val visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel,binding.addAllCheckBox.isChecked)
                                     binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                                     totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
 //                                    Utility.showMessageDialog(activity, "Filter Result", " " + totalVisitations + " Visitations Filtered ...")
@@ -748,12 +711,25 @@ class VisitationPlanningFragment : Fragment() {
                             Utility.showUnifiedErrorDialog(activity,"Error while retrieving Visitations - " + responseString.substring(responseString.indexOf("<message")+9,responseString.indexOf("</message")))
                         } else {
             //                                var obj = XML.toJSONObject(response.substring(response.indexOf("&lt;responseXml"), response.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                            var obj = XML.toJSONObject(response.substring(response.indexOf("<responseXml"), response.indexOf("<returnCode")))
-                            var jsonObj = obj.getJSONObject("responseXml")
+//                            val xmlPart = responseString.substring(
+//                                responseString.indexOf("<responseXml"),
+//                                responseString.indexOf("<returnCode")
+//                            )
+
+
+//                            var obj = XML.toJSONObject(response.substring(response.indexOf("<responseXml"), response.indexOf("<returnCode")))
+//                            val jsonObj = JSONObject(responseXmlNode.toString())
+//                            var jsonObj = obj.getJSONObject("responseXml")
+                            val xmlPart = XmlUtils.extractResponseXmlBlock(responseString)
+
+                            val rootJson = XmlUtils.xmlToJsonObject(xmlPart)
+
+                            val jsonObj = rootJson.getAsJsonObject("responseXml")
                             var visitationsModel = parseVisitationsData(jsonObj)
                             binding.recordsProgressView.visibility = View.GONE
                             binding.visitationfacilityListView.visibility = View.VISIBLE
-                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
+                            // WAS OLD ADAPTER
+                            var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel,binding.addAllCheckBox.isChecked)
                             binding.visitationfacilityListView.adapter = visitationPlanningAdapter
                         }
                     }
@@ -798,11 +774,12 @@ class VisitationPlanningFragment : Fragment() {
             item.ContractInitialDate = it.ContractInitialDate
             item.FACNo = it.FACNo
             item.FacID = it.FacID
+            item.latitude = it.LATITUDE
+            item.longitude = it.LONGITUDE
             item.FacilityAnnualInspectionMonth = it.FacilityAnnualInspectionMonth
             Log.v("CITY --> ",item.FACNo + " --- " + item.ClubCode)
             try {
-                item.city =
-                    facilities.first { s -> s.facnum == it.FACNo && s.clubcode == it.ClubCode }.city
+                item.city = facilities.first { s -> s.facnum == it.FACNo && s.clubcode == it.ClubCode }.city
             } catch (exp: Exception) {
                 item.city = ""
                 Log.v("CITY --> " ,"ERROR IS HERE - "+item.FACNo + " --- " + item.ClubCode)
@@ -835,6 +812,7 @@ class VisitationPlanningFragment : Fragment() {
                 visitationsModel.deficienciesArray.removeIf { s->s.FACNo.equals(item.FACNo) && s.ClubCode.equals(item.ClubCode)}
             }
             if (!reviewFilters(item.VisitationType,item.VisitationStatus)) visitationsModel.listArray.add(item)
+            Log.v("ITEMS SIZE --- ", visitationsModel.listArray.size.toString())
         }
 
         visitationsModel.completedVisitationsArray.forEach {
@@ -852,7 +830,9 @@ class VisitationPlanningFragment : Fragment() {
             item.VisitationType = it.VisitationTypeID.toString()
             item.VisitationStatus = "Completed"
             item.insertBy1 = it.insertBy1
-            item.city = facilities.first { s -> s.facnum == it.FACNo }.city
+            item.latitude = it.LATITUDE
+            item.longitude = it.LONGITUDE
+            item.city = facilities.first { s -> s.facnum == it.FACNo && s.clubcode == it.ClubCode }.city
             when (item.VisitationType.toInt()) {
                 1 -> item.VisitationType = "Annual"
                 2 -> item.VisitationType = "Quarterly"
@@ -877,7 +857,10 @@ class VisitationPlanningFragment : Fragment() {
             item.FacilityAnnualInspectionMonth = it.FacilityAnnualInspectionMonth
             item.DueDate = it.DueDate.apiToAppFormatMMDDYYYY()
             item.VisitationType = "Deficiency"
-            item.city = facilities.first { s -> s.facnum == it.FACNo }.city
+//            item.city = facilities.first { s -> s.facnum == it.FACNo }.city
+            item.city = facilities.first { s -> s.facnum == it.FACNo && s.clubcode == it.ClubCode }.city
+            item.latitude = it.LATITUDE
+            item.longitude = it.LONGITUDE
             val dueDate = it.DueDate.substring(0,10)
             val format = SimpleDateFormat("yyyy-MM-dd");
             try {
@@ -966,7 +949,7 @@ class VisitationPlanningFragment : Fragment() {
         visitationsModel.deficienciesArray.clear()
     }
 
-    fun parseVisitationsData(jsonObject: JSONObject): VisitationsModel {
+    fun parseVisitationsData(jsonObject: JsonObject): VisitationsModel {
         var visitationsModel = VisitationsModel()
 
         if (jsonObject.has("PendingVisitations")) {
@@ -1016,7 +999,6 @@ class VisitationPlanningFragment : Fragment() {
 //            visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(5, 7).equals(filteredMonth) }
 //            visitationsModel.completedVisitationsArray.removeIf { s -> !s.DatePerformed.substring(0, 4).equals(filteredYear) }
         }
-
 //        visitationsModel.pendingVisitationsArray.removeIf { s->!s..substring(5,7).equals(filteredMonth)}
 //        visitationsModel.pendingVisitationsArray.removeIf { s->!s.DatePerformed.substring(0,4).equals(filteredYear)}
 //        if (!annualVisitationCheckBox.isChecked) {
@@ -1045,35 +1027,16 @@ class VisitationPlanningFragment : Fragment() {
     fun loadSpecialists() {
         Log.v("ADHOC ALL SPECIAL --- ",Constants.getAllSpecialists + "")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
-                Response.Listener { response ->
-                    Log.v("****response", response)
-                    requireActivity().runOnUiThread {
-                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(java.util.ArrayList())
+            { response ->
+                Log.v("****response", response)
+                requireActivity().runOnUiThread {
+                    CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(java.util.ArrayList())
 
-//                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-//                                Response.Listener { response ->
-//                                    activity!!.runOnUiThread {
-//                                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-//                                        if (specialistName != null && specialistName.size > 0) {
-//                                            requiredSpecialistName = specialistName[0].specialistname
-//                                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistName[0].accspecid
-////                                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
-////                                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
-////                                            var reformattedName = firstName + " " + lastName
-////                                            adHocFacilitySpecialistButton.setText(reformattedName)
-//                                        }
-//                                        loadSpecialistName()
-////                                        loadClubCodes()
-//                                    }
-//                                }, Response.ErrorListener {
-//                            Log.v("error while loading", "error while loading facilities")
-//                            Log.v("Loading error", "" + it.message)
-//                        }))
-                    }
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading specialists")
-            Log.v("Loading error", "" + it.message)
-        }))
+                }
+            }, {
+        Log.v("error while loading", "error while loading specialists")
+        Log.v("Loading error", "" + it.message)
+    }))
 
     }
 
@@ -1086,14 +1049,22 @@ class VisitationPlanningFragment : Fragment() {
                         var specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail.substring(0,ApplicationPrefs.getInstance(context).loggedInUserEmail.indexOf("@")).lowercase()
                         if (specialistArrayModel != null && specialistArrayModel.size > 0) {
 //                            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
-                            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].FullName
-                            var positionID = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].PositionID
+                            requiredSpecialistName = specialistArrayModel.filter { s ->
+                                s.Email.lowercase(
+                                    getDefault()
+                                ).startsWith(specMail)}[0].FullName
+                            var positionID = specialistArrayModel.filter { s ->
+                                s.Email.lowercase(
+                                    getDefault()
+                                ).startsWith(specMail)}[0].PositionID
                             if (positionID.equals("1")) {
                                 binding.visitationSpecialistName.setText(requiredSpecialistName)
                             }
 //                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].NTLogin
-                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].NTLogin
-                            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].FullName
+                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s ->
+                                s.Email.lowercase(getDefault()).startsWith(specMail)}[0].NTLogin
+                            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s ->
+                                s.Email.lowercase(getDefault()).startsWith(specMail)}[0].FullName
                         }
                         loadClubCodes()
 //                    }
@@ -1105,40 +1076,30 @@ class VisitationPlanningFragment : Fragment() {
     }
 
 
-    private fun loadSpecialistDetails() {
-//        FirebaseCrashlytics.getInstance().setCustomKey("Screen", "Visitation Planning Screen")
-//        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Specialist Details")
-        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistDetails + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        specialistModel = Gson().fromJson(response.toString(), Array<CsiSpecialistDetails>::class.java).toCollection(ArrayList())
-                        if (specialistModel != null && specialistModel.size > 0) {
-                            binding.visitationSpecialistName.setText(specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize() )
-                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistModel[0].accspecid
-                            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize()
-                        }
-                    }
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading Specialist Details")
-            Log.v("Loading error", "" + it.message)
-        }))
-    }
-
 
     private fun loadSpecialistDetailsUpdated() {
 //        FirebaseCrashlytics.getInstance().setCustomKey("Screen", "Visitation Planning Screen")
 //        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Specialist Details")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistDetails + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-            Response.Listener { response ->
+            { response ->
                 requireActivity().runOnUiThread {
                     specialistModel = Gson().fromJson(response.toString(), Array<CsiSpecialistDetails>::class.java).toCollection(ArrayList())
                     if (specialistModel != null && specialistModel.size > 0) {
-                        binding.visitationSpecialistName.setText(specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize() )
+                        binding.visitationSpecialistName.setText(
+                            specialistModel[0].specialistfname.lowercase(
+                                getDefault()
+                            ).capitalize()+" "+ specialistModel[0].specialistlname.lowercase(
+                                getDefault()
+                            ).capitalize() )
                         ApplicationPrefs.getInstance(activity).loggedInUserID = specialistModel[0].accspecid
-                        ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistModel[0].specialistfname.toLowerCase().capitalize()+" "+specialistModel[0].specialistlname.toLowerCase().capitalize()
+                        ApplicationPrefs.getInstance(activity).loggedInUserFullName =
+                            specialistModel[0].specialistfname.lowercase(getDefault()).capitalize()+" "+ specialistModel[0].specialistlname.lowercase(
+                                getDefault()
+                            ).capitalize()
                     }
                 }
-            }, Response.ErrorListener {
+            },
+            {
                 Log.v("error while loading", "error while loading Specialist Details")
                 Log.v("Loading error", "" + it.message)
             }))
@@ -1670,7 +1631,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationStatusTextView.text = "Status:"
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
-
+                vh.todayCB.setOnCheckedChangeListener(null) // 🚫 Detach listener first
 
                 var visitationTypeAndStatus = determineVisitationTypeAndStatus(visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].FacID.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].ClubCode.toInt())
                 vh.visitationTypeValueTextView.text = visitationTypeAndStatus.first.toString()
@@ -1719,6 +1680,29 @@ class VisitationPlanningFragment : Fragment() {
                     }
 //                }
 
+                vh.todayCB.isVisible = true
+                vh.todayCB.isChecked = visitationExists(requireContext(),visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(),visitationPlanningModelList.pendingVisitationsArray[position].ClubCode)
+                vh.todayCB.setOnCheckedChangeListener { _, isChecked ->
+                    Log.v("Checkbox State", "$isChecked")
+                    if (isChecked) {
+                        val item = TodayVisitationModel();
+                        item.facNum = visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt();
+                        item.clubCode = visitationPlanningModelList.pendingVisitationsArray[position].ClubCode;
+                        item.facName = visitationPlanningModelList.pendingVisitationsArray[position].BusinessName;
+                        item.status = vh.visitationStatusValueTextView.text.toString();
+
+                        item.type = VisitationTypes.valueOf(vh.visitationTypeValueTextView.text.toString())
+                        item.city = vh.visitationCityView.text.toString()
+                        item.latitude = visitationPlanningModelList.pendingVisitationsArray[position].LATITUDE
+                        item.longitude = visitationPlanningModelList.pendingVisitationsArray[position].LONGITUDE
+                        addTodayVisitation(requireContext(),item)
+                        Utility.showUnifiedConfirmationDialog(requireContext(),"Facility Added successfully")
+                    } else {
+                        removeTodayVisitation(requireContext(),visitationPlanningModelList.pendingVisitationsArray[position].FACNo,visitationPlanningModelList.pendingVisitationsArray[position].ClubCode)
+
+                        Utility.showUnifiedConfirmationDialog(requireContext(),"Facility Removed successfully")
+                    }
+                }
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode,false,visitationTypeAndStatus.first)
                 })
@@ -1733,6 +1717,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.initialContractDateTextView.text = "Visitation Date & ID:"
                 vh.visitationStatusTextView.text = "Status:"
                 vh.loadBtn.text = "VIEW  PDF"
+                vh.todayCB.isVisible = false
                 vh.emailPDFBtn.text = "EMAIL PDF"
                 vh.emailPDFBtn.visibility = View.VISIBLE
                 visitationID = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID
@@ -1791,6 +1776,28 @@ class VisitationPlanningFragment : Fragment() {
                 } catch (e : ParseException) {
                     e.printStackTrace();
                 }
+                vh.todayCB.setOnCheckedChangeListener(null) // 🚫 Detach listener first
+                vh.todayCB.isVisible = true
+
+                vh.todayCB.isChecked = visitationExists(requireContext(),visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt(),visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode)
+                vh.todayCB.setOnCheckedChangeListener { buttonView, isChecked ->
+                    if (isChecked) {
+                        val item = TodayVisitationModel();
+                        item.facNum = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo.toInt();
+                        item.clubCode = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode;
+                        item.facName = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].BusinessName;
+                        item.status = vh.visitationStatusValueTextView.text.toString();
+                        item.type = VisitationTypes.Deficiency
+                        item.city = vh.visitationCityView.text.toString()
+                        item.latitude = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].LATITUDE;
+                        item.longitude = visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].LONGITUDE;
+                        addTodayVisitation(requireContext(),item)
+                        Utility.showUnifiedConfirmationDialog(requireContext(),"Facility Added successfully")
+                    } else {
+                        removeTodayVisitation(requireContext(),visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].FACNo,visitationPlanningModelList.deficienciesArray[position - visitationPlanningModelList.pendingVisitationsArray.size - visitationPlanningModelList.completedVisitationsArray.size].ClubCode)
+                        Utility.showUnifiedConfirmationDialog(requireContext(),"Facility Removed successfully")
+                    }
+                }
                 vh.visitationTypeValueTextView.text = "Deficiency"
                 vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
                 vh.initialContractDateTextView.text = "Deficiency Due Date:"
@@ -1819,6 +1826,7 @@ class VisitationPlanningFragment : Fragment() {
                     VisitationTypes.Deficiency.toString() -> vh.listBkg.setBackgroundColor(Color.rgb(255, 229, 204))
                 }
             }
+
 //              if (reviewFilters(vh.visitationTypeValueTextView.text.toString(),vh.visitationStatusValueTextView.text.toString())) {
 //                  vh.listBkg.visibility = View.GONE
 //                  totalVisitations -= 1
@@ -1863,10 +1871,12 @@ class VisitationPlanningFragment : Fragment() {
 
         private var visitationPlanningModelList = VisitationsModel()
         private var context: Context? = null
+        private var addAll: Boolean = false
 
-        constructor(context: Context?, visitationsModel: VisitationsModel) : super() {
+        constructor(context: Context?, visitationsModel: VisitationsModel,addAll: Boolean) : super() {
             this.visitationPlanningModelList = visitationsModel
             this.context = context
+            this.addAll = addAll
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
@@ -1901,6 +1911,40 @@ class VisitationPlanningFragment : Fragment() {
 //                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
                 vh.initialContractDateTextView.text = "Annual Visitation Month:"
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].FacilityAnnualInspectionMonth.toInt().monthNoToName()
+                vh.todayCB.setOnCheckedChangeListener(null) // 🚫 Detach listener first
+                vh.todayCB.isVisible = true
+                if (addAll && !visitationExists(requireContext(), visitationPlanningModelList.listArray[position].FACNo.toInt(), visitationPlanningModelList.listArray[position].ClubCode)) {
+                    val item = TodayVisitationModel();
+                    item.facNum = visitationPlanningModelList.listArray[position].FACNo.toInt();
+                    item.clubCode = visitationPlanningModelList.listArray[position].ClubCode;
+                    item.facName = visitationPlanningModelList.listArray[position].BusinessName;
+                    item.status = vh.visitationStatusValueTextView.text.toString();
+                    item.type = VisitationTypes.valueOf(vh.visitationTypeValueTextView.text.toString())
+                    item.city = vh.visitationCityView.text.toString()
+                    item.latitude = visitationPlanningModelList.listArray[position].latitude;
+                    item.longitude = visitationPlanningModelList.listArray[position].longitude;
+                    addTodayVisitation(requireContext(),item)
+                }
+                vh.todayCB.isChecked = visitationExists(requireContext(),visitationPlanningModelList.listArray[position].FACNo.toInt(),visitationPlanningModelList.listArray[position].ClubCode)
+                vh.todayCB.setOnCheckedChangeListener { _, isChecked ->
+                    Log.v("Checkbox State", "$isChecked")
+                    if (isChecked) {
+                        val item = TodayVisitationModel();
+                        item.facNum = visitationPlanningModelList.listArray[position].FACNo.toInt();
+                        item.clubCode = visitationPlanningModelList.listArray[position].ClubCode;
+                        item.facName = visitationPlanningModelList.listArray[position].BusinessName;
+                        item.status = vh.visitationStatusValueTextView.text.toString();
+                        item.type = VisitationTypes.valueOf(vh.visitationTypeValueTextView.text.toString())
+                        item.city = vh.visitationCityView.text.toString()
+                        item.latitude = visitationPlanningModelList.listArray[position].latitude;
+                        item.longitude = visitationPlanningModelList.listArray[position].longitude;
+                        addTodayVisitation(requireContext(),item)
+//                        Utility.showUnifiedConfirmationDialog(requireContext(),"Facility Added successfully")
+                    } else {
+                        removeTodayVisitation(requireContext(),visitationPlanningModelList.listArray[position].FACNo,visitationPlanningModelList.listArray[position].ClubCode)
+//                        Utility.showUnifiedConfirmationDialog(requireContext(),"Facility Removed successfully")
+                    }
+                }
                 vh.loadBtn.setOnClickListener({
                     getFullFacilityDataFromAAA(visitationPlanningModelList.listArray[position].FACNo.toInt(), visitationPlanningModelList.listArray[position].ClubCode,false,VisitationTypes.valueOf(visitationPlanningModelList.listArray[position].VisitationType))
                 })
@@ -1943,6 +1987,40 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
                 vh.visitationStatusValueTextView.text = visitationPlanningModelList.listArray[position].VisitationStatus
+                vh.todayCB.setOnCheckedChangeListener(null) // 🚫 Detach listener first
+                vh.todayCB.isVisible = true
+                if (addAll && !visitationExists(requireContext(), visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt(), visitationPlanningModelList.pendingVisitationsArray[position].ClubCode)) {
+                    val item = TodayVisitationModel();
+                    item.facNum = visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt();
+                    item.clubCode = visitationPlanningModelList.pendingVisitationsArray[position].ClubCode;
+                    item.facName = visitationPlanningModelList.pendingVisitationsArray[position].BusinessName;
+                    item.status = vh.visitationStatusValueTextView.text.toString();
+                    item.type = VisitationTypes.valueOf(vh.visitationTypeValueTextView.text.toString())
+                    item.city = vh.visitationCityView.text.toString()
+                    item.latitude = visitationPlanningModelList.pendingVisitationsArray[position].LATITUDE;
+                    item.longitude = visitationPlanningModelList.pendingVisitationsArray[position].LONGITUDE;
+                    addTodayVisitation(requireContext(),item)
+                }
+                vh.todayCB.isChecked = visitationExists(requireContext(),visitationPlanningModelList.listArray[position].FACNo.toInt(),visitationPlanningModelList.listArray[position].ClubCode)
+                vh.todayCB.setOnCheckedChangeListener { _, isChecked ->
+                    Log.v("Checkbox State", "$isChecked")
+                    if (isChecked) {
+                        val item = TodayVisitationModel();
+                        item.facNum = visitationPlanningModelList.pendingVisitationsArray[position].FACNo.toInt();
+                        item.clubCode = visitationPlanningModelList.pendingVisitationsArray[position].ClubCode;
+                        item.facName = visitationPlanningModelList.pendingVisitationsArray[position].BusinessName;
+                        item.status = vh.visitationStatusValueTextView.text.toString();
+                        item.type = VisitationTypes.valueOf(vh.visitationTypeValueTextView.text.toString())
+                        item.city = vh.visitationCityView.text.toString()
+                        item.latitude = visitationPlanningModelList.pendingVisitationsArray[position].LATITUDE;
+                        item.longitude = visitationPlanningModelList.pendingVisitationsArray[position].LONGITUDE;
+                        addTodayVisitation(requireContext(),item)
+                        Utility.showUnifiedConfirmationDialog(requireContext(),"Facility Added successfully")
+                    } else {
+                        removeTodayVisitation(requireContext(),visitationPlanningModelList.pendingVisitationsArray[position].FACNo,visitationPlanningModelList.pendingVisitationsArray[position].ClubCode)
+                        Utility.showUnifiedConfirmationDialog(requireContext(),"Facility Removed successfully")
+                    }
+                }
                 vh.loadBtn.setOnClickListener {
                     getFullFacilityDataFromAAA(visitationPlanningModelList.listArray[position].FACNo.toInt(), visitationPlanningModelList.listArray[position].ClubCode,false,VisitationTypes.Deficiency)
                 }
@@ -1998,49 +2076,50 @@ class VisitationPlanningFragment : Fragment() {
         if (isCompleted) {
             binding.recordsProgressView.visibility = View.VISIBLE
             if (Constants.specialistEmailForPDF.equals("")) {
-                binding.webView!!.clearCache(true)
-                binding.webView!!.webViewClient = object : WebViewClient() {
-                    override fun onPageFinished(view: WebView?, url: String?) {
-                        if (view?.getTitle().equals("")) {
-                            view?.reload();
-                        }
-                    }
-                }
-                binding.webCardView.visibility = View.VISIBLE
-//                webView.visibility = View.GONE
-                binding.pdfName.text = "Visitation PDF For Specialist (ID: " + Constants.visitationIDForPDF + ")"
-                binding.exitPDFDialogeBtn.setOnClickListener {
-                    binding.webView.loadUrl("about:blank")
-                    binding.recordsProgressView.visibility = View.GONE
-                    binding.webCardView.visibility = View.GONE
-                }
-                    Log.v("DOWNLOAD ",Constants.getPDF + Constants.visitationIDForPDF)
-//                RetrievePDFFromURL(pdfView).execute(Constants.getPDF + Constants.visitationIDForPDF)
-//                RetrievePDFFromURL(pdfView).execute("https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf")
-
-                binding.webView.requestFocus()
-                binding.webView.settings.javaScriptEnabled = true
-                binding.webView.settings.loadWithOverviewMode = true;
-                binding.webView.settings.useWideViewPort = true;
-                binding.webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE;
-                binding.webView.settings.setSupportZoom(true);
-                binding.webView.settings.builtInZoomControls = true;
-                binding.webView.settings.allowFileAccess = true;
-                binding.webView.settings.allowContentAccess = true;
-                binding.webView.settings.domStorageEnabled = true;
-                binding.webView.settings.allowFileAccessFromFileURLs = true;
-                binding.webView.settings.allowUniversalAccessFromFileURLs = true;
-
-//              var url = URLEncoder.encode(Constants.getPDF + Constants.visitationIDForPDF, "UTF-8" );
-                binding.webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + Constants.getPDF + Constants.visitationIDForPDF)
-//                webView.loadUrl(Constants.getPDF + Constants.visitationIDForPDF)
-//                webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + url)
-                binding.webView.webViewClient = object : WebViewClient() {
-                    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                        view.loadUrl(url)
-                        return true
-                    }
-                }
+                // SAEED PDF
+//                binding.webView!!.clearCache(true)
+//                binding.webView!!.webViewClient = object : WebViewClient() {
+//                    override fun onPageFinished(view: WebView?, url: String?) {
+//                        if (view?.getTitle().equals("")) {
+//                            view?.reload();
+//                        }
+//                    }
+//                }
+//                binding.webCardView.visibility = View.VISIBLE
+////                webView.visibility = View.GONE
+//                binding.pdfName.text = "Visitation PDF For Specialist (ID: " + Constants.visitationIDForPDF + ")"
+//                binding.exitPDFDialogeBtn.setOnClickListener {
+//                    binding.webView.loadUrl("about:blank")
+//                    binding.recordsProgressView.visibility = View.GONE
+//                    binding.webCardView.visibility = View.GONE
+//                }
+//                    Log.v("DOWNLOAD ",Constants.getPDF + Constants.visitationIDForPDF)
+////                RetrievePDFFromURL(pdfView).execute(Constants.getPDF + Constants.visitationIDForPDF)
+////                RetrievePDFFromURL(pdfView).execute("https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf")
+//
+//                binding.webView.requestFocus()
+//                binding.webView.settings.javaScriptEnabled = true
+//                binding.webView.settings.loadWithOverviewMode = true;
+//                binding.webView.settings.useWideViewPort = true;
+//                binding.webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE;
+//                binding.webView.settings.setSupportZoom(true);
+//                binding.webView.settings.builtInZoomControls = true;
+//                binding.webView.settings.allowFileAccess = true;
+//                binding.webView.settings.allowContentAccess = true;
+//                binding.webView.settings.domStorageEnabled = true;
+//                binding.webView.settings.allowFileAccessFromFileURLs = true;
+//                binding.webView.settings.allowUniversalAccessFromFileURLs = true;
+//
+////              var url = URLEncoder.encode(Constants.getPDF + Constants.visitationIDForPDF, "UTF-8" );
+//                binding.webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + Constants.getPDF + Constants.visitationIDForPDF)
+////                webView.loadUrl(Constants.getPDF + Constants.visitationIDForPDF)
+////                webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + url)
+//                binding.webView.webViewClient = object : WebViewClient() {
+//                    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+//                        view.loadUrl(url)
+//                        return true
+//                    }
+//                }
 //                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://docs.google.com/gview?embedded=true&url=" + Constants.getPDF + Constants.visitationIDForPDF))
 //                startActivity(browserIntent)
             } else {
@@ -2075,53 +2154,53 @@ class VisitationPlanningFragment : Fragment() {
         }
     }
 
-    class RetrievePDFFromURL(pdfView: PDFView) :
-            AsyncTask<String, Void, InputStream>() {
-
-        // on below line we are creating a variable for our pdf view.
-        val mypdfView: PDFView = pdfView
-
-        // on below line we are calling our do in background method.
-        override fun doInBackground(vararg params: String?): InputStream? {
-            // on below line we are creating a variable for our input stream.
-            var inputStream: InputStream? = null
-            try {
-                // on below line we are creating an url
-                // for our url which we are passing as a string.
-                val url = URL(params.get(0))
-
-                // on below line we are creating our http url connection.
-                val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
-
-                // on below line we are checking if the response
-                // is successful with the help of response code
-                // 200 response code means response is successful
-                if (urlConnection.responseCode == 200) {
-                    // on below line we are initializing our input stream
-                    // if the response is successful.
-                    inputStream = BufferedInputStream(urlConnection.inputStream)
-                }
-            }
-            // on below line we are adding catch block to handle exception
-            catch (e: Exception) {
-                // on below line we are simply printing
-                // our exception and returning null
-                e.printStackTrace()
-                return null;
-            }
-            // on below line we are returning input stream.
-            return inputStream;
-        }
-
-        // on below line we are calling on post execute
-        // method to load the url in our pdf view.
-        override fun onPostExecute(result: InputStream?) {
-            // on below line we are loading url within our
-            // pdf view on below line using input stream.
-            mypdfView.fromStream(result).load()
-
-        }
-    }
+//    class RetrievePDFFromURL(pdfView: PDFView) :
+//            AsyncTask<String, Void, InputStream>() {
+//
+//        // on below line we are creating a variable for our pdf view.
+//        val mypdfView: PDFView = pdfView
+//
+//        // on below line we are calling our do in background method.
+//        override fun doInBackground(vararg params: String?): InputStream? {
+//            // on below line we are creating a variable for our input stream.
+//            var inputStream: InputStream? = null
+//            try {
+//                // on below line we are creating an url
+//                // for our url which we are passing as a string.
+//                val url = URL(params.get(0))
+//
+//                // on below line we are creating our http url connection.
+//                val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
+//
+//                // on below line we are checking if the response
+//                // is successful with the help of response code
+//                // 200 response code means response is successful
+//                if (urlConnection.responseCode == 200) {
+//                    // on below line we are initializing our input stream
+//                    // if the response is successful.
+//                    inputStream = BufferedInputStream(urlConnection.inputStream)
+//                }
+//            }
+//            // on below line we are adding catch block to handle exception
+//            catch (e: Exception) {
+//                // on below line we are simply printing
+//                // our exception and returning null
+//                e.printStackTrace()
+//                return null;
+//            }
+//            // on below line we are returning input stream.
+//            return inputStream;
+//        }
+//
+//        // on below line we are calling on post execute
+//        // method to load the url in our pdf view.
+//        override fun onPostExecute(result: InputStream?) {
+//            // on below line we are loading url within our
+//            // pdf view on below line using input stream.
+//            mypdfView.fromStream(result).load()
+//
+//        }
+//    }
 
     fun AdjustIndicatorsAndStartActivity () {
 //        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Starting Activity")
@@ -2142,19 +2221,6 @@ class VisitationPlanningFragment : Fragment() {
 //        startActivityForResult(intent,100)
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        Log.v("FragmentA", "Returned from Activity B with data -- STARTED")
-//        if (requestCode === 100) {
-////            if (resultCode === /Activity.RESULT_OK) {
-//                // The user returned successfully from Activity B
-//                // Handle the data returned (if any)
-//                Log.v("FragmentA", "Returned from Activity B with data")
-////            } else {
-////                Log.v("FragmentA", "User canceled or there was an error.")
-////            }
-//        }
-//    }
 
     fun getFacilityPRGData(isCompleted : Boolean) {
         PRGDataModel.getInstance().tblPRGVisitationHeader.clear()
@@ -2164,143 +2230,149 @@ class VisitationPlanningFragment : Fragment() {
         PRGDataModel.getInstance().tblPRGPersonnelDetails.clear()
         PRGDataModel.getInstance().tblPRGRepairDiscountFactors.clear()
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        if (!response.toString().replace(" ","").equals("[ ]")) {
-                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
-                        } else {
-                            var item = PRGFacilityPhotos()
-                            item.photoid = -1
-                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos.add(item)
-                        }
-                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
-                                Response.Listener { response ->
-                                    requireActivity().runOnUiThread {
-                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                            PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
-                                        } else {
-                                            var item = PRGLogChanges()
-                                            item.recordid=-1
-                                            PRGDataModel.getInstance().tblPRGLogChanges.add(item)
-                                        }
-                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getVisitationHeader + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
-                                                Response.Listener { response ->
+            { response ->
+                requireActivity().runOnUiThread {
+                    if (!response.toString().replace(" ","").equals("[ ]")) {
+                        PRGDataModel.getInstance().tblPRGFacilitiesPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
+                    } else {
+                        var item = PRGFacilityPhotos()
+                        item.photoid = -1
+                        PRGDataModel.getInstance().tblPRGFacilitiesPhotos.add(item)
+                    }
+                    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
+                        { response ->
+                            requireActivity().runOnUiThread {
+                                if (!response.toString().replace(" ","").equals("[]")) {
+                                    PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
+                                } else {
+                                    var item = PRGLogChanges()
+                                    item.recordid=-1
+                                    PRGDataModel.getInstance().tblPRGLogChanges.add(item)
+                                }
+                                Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getVisitationHeader + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
+                                    { response ->
+                                        requireActivity().runOnUiThread {
+                                            if (!response.toString().replace(" ","").equals("[]")) {
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
+                                            } else {
+                                                var item = PRGVisitationHeader()
+                                                item.recordid=-1
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
+                                            }
+                                            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getRepairDiscountFactors + "${FacilityDataModel.getInstance().clubCode}",
+                                                { response ->
                                                     requireActivity().runOnUiThread {
                                                         if (!response.toString().replace(" ","").equals("[]")) {
-                                                            PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
+                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors= Gson().fromJson(response.toString(), Array<PRGRepairDiscountFactors>::class.java).toCollection(ArrayList())
                                                         } else {
-                                                            var item = PRGVisitationHeader()
-                                                            item.recordid=-1
-                                                            PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
+                                                            var item = PRGRepairDiscountFactors()
+                                                            item.clubcode= FacilityDataModel.getInstance().clubCode
+                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors.add(item)
                                                         }
-                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getRepairDiscountFactors + "${FacilityDataModel.getInstance().clubCode}",
-                                                                Response.Listener { response ->
-                                                                    requireActivity().runOnUiThread {
-                                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors= Gson().fromJson(response.toString(), Array<PRGRepairDiscountFactors>::class.java).toCollection(ArrayList())
-                                                                        } else {
-                                                                            var item = PRGRepairDiscountFactors()
-                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode
-                                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors.add(item)
-                                                                        }
-                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPersonnelDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
-                                                                                Response.Listener { response ->
-                                                                                    requireActivity().runOnUiThread {
-                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                                                            PRGDataModel.getInstance().tblPRGPersonnelDetails= Gson().fromJson(response.toString(), Array<PRGPersonnelDetails>::class.java).toCollection(ArrayList())
-                                                                                        } else {
-                                                                                            var item = PRGPersonnelDetails()
-                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
-                                                                                            item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                                                                                            PRGDataModel.getInstance().tblPRGPersonnelDetails.add(item)
-                                                                                        }
-                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGFacilityDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
-                                                                                                Response.Listener { response ->
-                                                                                                    requireActivity().runOnUiThread {
-                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDetails= Gson().fromJson(response.toString(), Array<PRGFacilityDetails>::class.java).toCollection(ArrayList())
-                                                                                                        } else {
-                                                                                                            var item = PRGFacilityDetails()
-                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
-                                                                                                            item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                                                                                                            item.napanumber = ""
-                                                                                                            item.nationalnumber = ""
-                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
-                                                                                                        }
-                                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityDirectors + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
-                                                                                                                Response.Listener { response ->
-                                                                                                                    requireActivity().runOnUiThread {
-                                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDirectors= Gson().fromJson(response.toString(), Array<PRGFacilityDirectors>::class.java).toCollection(ArrayList())
-                                                                                                                        } else {
-                                                                                                                            var item = PRGFacilityDirectors()
-                                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
-                                                                                                                            item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                                                                                                                            item.specialistid = -1
-                                                                                                                            item.directorid = -1
-                                                                                                                            item.directoremail = ""
-                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDirectors.add(item)
-                                                                                                                        }
-                                                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityHolidays + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
-                                                                                                                                Response.Listener { response ->
-                                                                                                                                    requireActivity().runOnUiThread {
-                                                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityShopHolidayTimes= Gson().fromJson(response.toString(), Array<PRGFacilityShopHolidayTimes>::class.java).toCollection(ArrayList())
-                                                                                                                                        } else {
-                                                                                                                                            var item = PRGFacilityShopHolidayTimes()
-                                                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toString()
-                                                                                                                                            item.FacNum = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
-                                                                                                                                            item.comments = "-1"
-                                                                                                                                            item.startdate = ""
-                                                                                                                                            item.enddate = ""
-                                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityShopHolidayTimes.add(item)
-                                                                                                                                        }
-                                                                                                                                        launchNextAction(isCompleted)
-                                                                                                                                    }
-                                                                                                                                }, Response.ErrorListener {
-                                                                                                                            Log.v("Loading PRG Data error", "" + it.message)
-//                                                                                                            launchNextAction(isCompleted)
-                                                                                                                            it.printStackTrace()
-                                                                                                                        }))                                                                                                    }
-                                                                                                                }, Response.ErrorListener {
-                                                                                                            Log.v("Loading PRG Data error", "" + it.message)
-//                                                                                                            launchNextAction(isCompleted)
-                                                                                                            it.printStackTrace()
-                                                                                                        }))                                                                                                    }
-                                                                                                }, Response.ErrorListener {
-                                                                                            Log.v("Loading PRG Data error", "" + it.message)
-                                                                                            launchNextAction(isCompleted)
-                                                                                            it.printStackTrace()
-                                                                                        }))
-                                                                                    }
-                                                                                }, Response.ErrorListener {
-                                                                            Log.v("Loading PRG Data error", "" + it.message)
-                                                                            it.printStackTrace()
-                                                                        }))
+                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPersonnelDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                            { response ->
+                                                                requireActivity().runOnUiThread {
+                                                                    if (!response.toString().replace(" ","").equals("[]")) {
+                                                                        PRGDataModel.getInstance().tblPRGPersonnelDetails= Gson().fromJson(response.toString(), Array<PRGPersonnelDetails>::class.java).toCollection(ArrayList())
+                                                                    } else {
+                                                                        var item = PRGPersonnelDetails()
+                                                                        item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                        item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                        PRGDataModel.getInstance().tblPRGPersonnelDetails.add(item)
                                                                     }
-                                                                }, Response.ErrorListener {
-                                                            Log.v("Loading PRG Data error", "" + it.message)
-                                                            it.printStackTrace()
-                                                        }))
+                                                                    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGFacilityDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                        { response ->
+                                                                            requireActivity().runOnUiThread {
+                                                                                if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                    PRGDataModel.getInstance().tblPRGFacilityDetails= Gson().fromJson(response.toString(), Array<PRGFacilityDetails>::class.java).toCollection(ArrayList())
+                                                                                } else {
+                                                                                    var item = PRGFacilityDetails()
+                                                                                    item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                    item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                    item.napanumber = ""
+                                                                                    item.nationalnumber = ""
+                                                                                    PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
+                                                                                }
+                                                                                Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityDirectors + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                        Response.Listener { response ->
+                                                                                            requireActivity().runOnUiThread {
+                                                                                                if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                    PRGDataModel.getInstance().tblPRGFacilityDirectors= Gson().fromJson(response.toString(), Array<PRGFacilityDirectors>::class.java).toCollection(ArrayList())
+                                                                                                } else {
+                                                                                                    var item = PRGFacilityDirectors()
+                                                                                                    item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                                    item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                                    item.specialistid = -1
+                                                                                                    item.directorid = -1
+                                                                                                    item.directoremail = ""
+                                                                                                    PRGDataModel.getInstance().tblPRGFacilityDirectors.add(item)
+                                                                                                }
+                                                                                                Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityHolidays + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                                        Response.Listener { response ->
+                                                                                                            requireActivity().runOnUiThread {
+                                                                                                                if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                                    PRGDataModel.getInstance().tblPRGFacilityShopHolidayTimes= Gson().fromJson(response.toString(), Array<PRGFacilityShopHolidayTimes>::class.java).toCollection(ArrayList())
+                                                                                                                } else {
+                                                                                                                    var item = PRGFacilityShopHolidayTimes()
+                                                                                                                    item.clubcode= FacilityDataModel.getInstance().clubCode.toString()
+                                                                                                                    item.FacNum = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+                                                                                                                    item.comments = "-1"
+                                                                                                                    item.startdate = ""
+                                                                                                                    item.enddate = ""
+                                                                                                                    PRGDataModel.getInstance().tblPRGFacilityShopHolidayTimes.add(item)
+                                                                                                                }
+                                                                                                                launchNextAction(isCompleted)
+                                                                                                            }
+                                                                                                        }, Response.ErrorListener {
+                                                                                                    Log.v("Loading PRG Data error", "" + it.message)
+//                                                                                                            launchNextAction(isCompleted)
+                                                                                                    it.printStackTrace()
+                                                                                                }))                                                                                                    }
+                                                                                        }, Response.ErrorListener {
+                                                                                    Log.v("Loading PRG Data error", "" + it.message)
+//                                                                                                            launchNextAction(isCompleted)
+                                                                                    it.printStackTrace()
+                                                                                }))                                                                                                    }
+                                                                        },
+                                                                        {
+                                                                    Log.v("Loading PRG Data error", "" + it.message)
+                                                                    launchNextAction(isCompleted)
+                                                                    it.printStackTrace()
+                                                                }))
+                                                                }
+                                                            },
+                                                            {
+                                                        Log.v("Loading PRG Data error", "" + it.message)
+                                                        it.printStackTrace()
+                                                    }))
                                                     }
-                                                }, Response.ErrorListener {
+                                                },
+                                                {
                                             Log.v("Loading PRG Data error", "" + it.message)
-//                                            launchNextAction(isCompleted)
                                             it.printStackTrace()
                                         }))
+                                        }
+                                    },
+                                    {
+                                Log.v("Loading PRG Data error", "" + it.message)
+//                                            launchNextAction(isCompleted)
+                                it.printStackTrace()
+                            }))
 //                                        launchNextAction(isCompleted)
-                                    }
-                                }, Response.ErrorListener {
-                            Log.v("Loading PRG Data error", "" + it.message)
+                            }
+                        },
+                        {
+                    Log.v("Loading PRG Data error", "" + it.message)
 //                            launchNextAction(isCompleted)
-                            it.printStackTrace()
-                        }))
+                    it.printStackTrace()
+                }))
 
-                    }
-                }, Response.ErrorListener {
-            Log.v("Loading PRG Data error", "" + it.message)
-            it.printStackTrace()
-        }))
+                }
+            },
+            {
+        Log.v("Loading PRG Data error", "" + it.message)
+        it.printStackTrace()
+    }))
     }
 
     fun getTypeTables() {
@@ -2327,8 +2399,23 @@ class VisitationPlanningFragment : Fragment() {
                     }
                 } else {
 //                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
-                    var jsonObj = obj.getJSONObject("responseXml")
+//                    val xmlPart = responseString.substring(
+//                        responseString.indexOf("<responseXml"),
+//                        responseString.indexOf("<returnCode")
+//                    )
+
+//                    val xmlMapper = XmlMapper()
+//                    val rootNode: JsonNode = xmlMapper.readTree(xmlPart)
+//
+//                    val responseXmlNode = rootNode.get("responseXml")
+
+//                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
+//                    var jsonObj = obj.getJSONObject("responseXml")
+                    val xmlPart = XmlUtils.extractResponseXmlBlock(responseString)
+
+                    val rootJson = XmlUtils.xmlToJsonObject(xmlPart)
+
+                    val jsonObj = rootJson.getAsJsonObject("responseXml")
                     TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
                     (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
                         TypeTablesModel.getInstance().EmployeeList[it].FullName = TypeTablesModel.getInstance().EmployeeList[it].FirstName + " " + TypeTablesModel.getInstance().EmployeeList[it].LastName
@@ -2396,14 +2483,39 @@ class VisitationPlanningFragment : Fragment() {
                         } else {
 //                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
 //                                    .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                            var jsonObj = obj.getJSONObject("responseXml")
-                            jsonObj = removeEmptyJsonTags(jsonObj)
+//                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
+//                            var jsonObj = obj.getJSONObject("responseXml")
+//                            val xmlPart = responseString.substring(
+//                                responseString.indexOf("<responseXml"),
+//                                responseString.indexOf("<returnCode")
+//                            ).replace(
+//                                "<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>",
+//                                ""
+//                            )
+//                            val rootJson = xmlToJsonObject(xmlPart)
+//                            var jsonObj = rootJson.getAsJsonObject("responseXml")
+//                            jsonObj = removeEmptyJsonTags(jsonObj)
+//                            parseFacilityDataJsonToObject(jsonObj)
+                            val xmlPart = responseString.substring(
+                                responseString.indexOf("<responseXml"),
+                                responseString.indexOf("<returnCode")
+                            ).replace(
+                                "<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>",
+                                ""
+                            )
+//                                .replace("&amp;", "&")
+
+                            val rootJson = xmlToJsonObject(xmlPart)
+
+//                            var jsonObj = rootJson
+//                            jsonObj = removeEmptyJsonTags(jsonObj)
+                            var jsonObj = normalizeJson(rootJson)
                             parseFacilityDataJsonToObject(jsonObj)
+//                            parseFacilityDataJsonToObject(cleanedNode)
                             getFacilityPRGData(isCompleted)
                             FirebaseCrashlytics.getInstance().log("User Clicked Load Facility")
                             FirebaseCrashlytics.getInstance().setCustomKey("Facility", facilityNumber.toString())
-                            FirebaseCrashlytics.getInstance().setCustomKey("ClubCode", clubCode.toString())
+                            FirebaseCrashlytics.getInstance().setCustomKey("ClubCode", clubCode)
                             FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType = visitationType
                         }
                     } else {
@@ -2419,7 +2531,7 @@ class VisitationPlanningFragment : Fragment() {
 
     }
 
-    fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
+    fun parseFacilityDataJsonToObject(jsonObj: JsonObject) {
         FacilityDataModel.getInstance().clear()
         FacilityDataModelOrg.getInstance().clear()
         FacilityDataModel.getInstance().clubCode = clubCode
@@ -2954,18 +3066,20 @@ class VisitationPlanningFragment : Fragment() {
 //        IndicatorsDataModel.getInstance().validateAllScreensVisited()
     }
 
-    fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {
+
+
+    fun removeEmptyJsonTags(jsonObjOrg : JsonObject) : JsonObject {
         var jsonObj = jsonObjOrg;
 
         if (jsonObj.has("tblSurveySoftwares")) {
             if (!jsonObj.get("tblSurveySoftwares").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblSurveySoftwares")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblSurveySoftwares")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblSurveySoftwares"))
-                    jsonObj.put("tblSurveySoftwares", result)
+                    jsonObj.add("tblSurveySoftwares", result)
                 } catch (e: Exception) {
 
                 }
@@ -2979,12 +3093,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblAddress")) {
             if (!jsonObj.get("tblAddress").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblAddress")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblAddress")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblAddress"))
-                    jsonObj.put("tblAddress", result)
+                    jsonObj.add("tblAddress", result)
                 } catch (e: Exception) {
 
                 }
@@ -2998,12 +3112,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblGeocodes")) {
             if (!jsonObj.get("tblGeocodes").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblGeocodes")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblGeocodes")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblGeocodes"))
-                    jsonObj.put("tblGeocodes", result)
+                    jsonObj.add("tblGeocodes", result)
                 } catch (e: Exception) {
 
                 }
@@ -3017,12 +3131,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblVisitationTracking")) {
             if (!jsonObj.get("tblVisitationTracking").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblVisitationTracking")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblVisitationTracking")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblVisitationTracking"))
-                    jsonObj.put("tblVisitationTracking", result)
+                    jsonObj.add("tblVisitationTracking", result)
                 } catch (e: Exception) {
 
                 }
@@ -3036,12 +3150,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblPhone")) {
             if (!jsonObj.get("tblPhone").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblPhone")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblPhone")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblPhone"))
-                    jsonObj.put("tblPhone", result)
+                    jsonObj.add("tblPhone", result)
                 } catch (e: Exception) {
 
                 }
@@ -3055,12 +3169,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacilityEmail")) {
             if (!jsonObj.get("tblFacilityEmail").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityEmail")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacilityEmail")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacilityEmail"))
-                    jsonObj.put("tblFacilityEmail", result)
+                    jsonObj.add("tblFacilityEmail", result)
                 } catch (e: Exception) {
 
                 }
@@ -3075,12 +3189,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblOfficeType")) {
             if (!jsonObj.get("tblOfficeType").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblOfficeType")
-                    for (i in result.length()-1 downTo 0){
+                    var result = jsonObj.getAsJsonArray("tblOfficeType")
+                    for (i in result.size()-1 downTo 0){
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblOfficeType"))
-                    jsonObj.put("tblOfficeType",result)
+                    jsonObj.add("tblOfficeType",result)
                 } catch (e: Exception) {
 
                 }
@@ -3094,12 +3208,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblPersonnel")) {
             if (!jsonObj.get("tblPersonnel").toString().equals("")) {
                 try {
-        var result = jsonObj.getJSONArray("tblPersonnel")
-        for (i in result.length()-1 downTo 0){
+        var result = jsonObj.getAsJsonArray("tblPersonnel")
+        for (i in result.size()-1 downTo 0){
             if (result[i].toString().equals("")) result.remove(i);
         }
         jsonObj.remove(("tblPersonnel"))
-        jsonObj.put("tblPersonnel",result)
+        jsonObj.add("tblPersonnel",result)
                 } catch (e: Exception) {
 
                 }
@@ -3113,12 +3227,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblAmendmentOrderTracking")) {
             if (!jsonObj.get("tblAmendmentOrderTracking").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblAmendmentOrderTracking")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblAmendmentOrderTracking")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblAmendmentOrderTracking"))
-                    jsonObj.put("tblAmendmentOrderTracking", result)
+                    jsonObj.add("tblAmendmentOrderTracking", result)
                 } catch (e: Exception) {
 
                 }
@@ -3132,12 +3246,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblAARPortalAdmin")) {
             if (!jsonObj.get("tblAARPortalAdmin").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblAARPortalAdmin")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblAARPortalAdmin")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblAARPortalAdmin"))
-                    jsonObj.put("tblAARPortalAdmin", result)
+                    jsonObj.add("tblAARPortalAdmin", result)
                 } catch (e: Exception) {
 
                 }
@@ -3152,12 +3266,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblScopeofService")) {
             if (!jsonObj.get("tblScopeofService").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblScopeofService")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblScopeofService")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblScopeofService"))
-                    jsonObj.put("tblScopeofService", result)
+                    jsonObj.add("tblScopeofService", result)
                 } catch (e:Exception){
 
                 }
@@ -3171,12 +3285,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblPrograms")) {
             if (!jsonObj.get("tblPrograms").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblPrograms")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblPrograms")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblPrograms"))
-                    jsonObj.put("tblPrograms", result)
+                    jsonObj.add("tblPrograms", result)
                 } catch (e: Exception) {
 
                 }
@@ -3191,12 +3305,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacilityServices")) {
             if (!jsonObj.get("tblFacilityServices").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityServices")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacilityServices")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacilityServices"))
-                    jsonObj.put("tblFacilityServices", result)
+                    jsonObj.add("tblFacilityServices", result)
                 } catch (e: Exception) {
 
                 }
@@ -3210,12 +3324,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblAffiliations")) {
             if (!jsonObj.get("tblAffiliations").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblAffiliations")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblAffiliations")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblAffiliations"))
-                    jsonObj.put("tblAffiliations", result)
+                    jsonObj.add("tblAffiliations", result)
                 } catch (e: Exception) {
 
                 }
@@ -3229,12 +3343,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblDeficiency")) {
             if (!jsonObj.get("tblDeficiency").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblDeficiency")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblDeficiency")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblDeficiency"))
-                    jsonObj.put("tblDeficiency",result)
+                    jsonObj.add("tblDeficiency",result)
                 } catch (e: Exception) {
 
                 }
@@ -3248,12 +3362,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblComplaintFiles")) {
             if (!jsonObj.get("tblComplaintFiles").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblComplaintFiles")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblComplaintFiles")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblComplaintFiles"))
-                    jsonObj.put("tblComplaintFiles", result)
+                    jsonObj.add("tblComplaintFiles", result)
                 } catch (e: Exception) {
 
                 }
@@ -3267,12 +3381,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacilityPhotos")) {
             if (!jsonObj.get("tblFacilityPhotos").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityPhotos")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacilityPhotos")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacilityPhotos"))
-                    jsonObj.put("tblFacilityPhotos", result)
+                    jsonObj.add("tblFacilityPhotos", result)
                 } catch (e: Exception) {
 
                 }
@@ -3286,12 +3400,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("Billing")) {
             if (!jsonObj.get("Billing").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("Billing")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("Billing")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("Billing"))
-                    jsonObj.put("Billing", result)
+                    jsonObj.add("Billing", result)
                 } catch (e: Exception) {
 
                 }
@@ -3305,12 +3419,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("BillingPlan")) {
             if (!jsonObj.get("BillingPlan").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblBillingPlan")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblBillingPlan")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("BillingPlan"))
-                    jsonObj.put("BillingPlan", result)
+                    jsonObj.add("BillingPlan", result)
                 } catch (e: Exception) {
 
                 }
@@ -3324,12 +3438,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacilityBillingDetail")) {
             if (!jsonObj.get("tblFacilityBillingDetail").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityBillingDetail")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacilityBillingDetail")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacilityBillingDetail"))
-                    jsonObj.put("tblFacilityBillingDetail", result)
+                    jsonObj.add("tblFacilityBillingDetail", result)
                 } catch (e: Exception) {
 
                 }
@@ -3343,12 +3457,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblInvoiceInfo")) {
             if (!jsonObj.get("tblInvoiceInfo").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblInvoiceInfo")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblInvoiceInfo")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblInvoiceInfo"))
-                    jsonObj.put("tblInvoiceInfo", result)
+                    jsonObj.add("tblInvoiceInfo", result)
                 } catch (e: Exception) {
 
                 }
@@ -3362,12 +3476,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("VendorRevenue")) {
             if (!jsonObj.get("VendorRevenue").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("VendorRevenue")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("VendorRevenue")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("VendorRevenue"))
-                    jsonObj.put("VendorRevenue", result)
+                    jsonObj.add("VendorRevenue", result)
                 } catch (e: Exception) {
 
                 }
@@ -3381,12 +3495,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("BillingHistory")) {
             if (!jsonObj.get("BillingHistory").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("BillingHistory")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("BillingHistory")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("BillingHistory"))
-                    jsonObj.put("BillingHistory", result)
+                    jsonObj.add("BillingHistory", result)
                 } catch (e: Exception) {
 
                 }
@@ -3400,12 +3514,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblComments")) {
             if (!jsonObj.get("tblComments").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblComments")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblComments")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblComments"))
-                    jsonObj.put("tblComments", result)
+                    jsonObj.add("tblComments", result)
                 } catch (e: Exception) {
 
                 }
@@ -3419,12 +3533,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblVehicleServices")) {
             if (!jsonObj.get("tblVehicleServices").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblVehicleServices")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblVehicleServices")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblVehicleServices"))
-                    jsonObj.put("tblVehicleServices", result)
+                    jsonObj.add("tblVehicleServices", result)
                 } catch (e: Exception) {
 
                 }
@@ -3438,12 +3552,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblAARPortalTracking")) {
             if (!jsonObj.get("tblAARPortalTracking").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblAARPortalTracking")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblAARPortalTracking")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblAARPortalTracking"))
-                    jsonObj.put("tblAARPortalTracking", result)
+                    jsonObj.add("tblAARPortalTracking", result)
                 } catch (e: Exception) {
 
                 }
@@ -3457,12 +3571,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblPersonnelCertification")) {
             if (!jsonObj.get("tblPersonnelCertification").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblPersonnelCertification")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblPersonnelCertification")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblPersonnelCertification"))
-                    jsonObj.put("tblPersonnelCertification", result)
+                    jsonObj.add("tblPersonnelCertification", result)
                 } catch (e: Exception) {
 
                 }
@@ -3476,12 +3590,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("BillingAdjustments")) {
             if (!jsonObj.get("BillingAdjustments").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("BillingAdjustments")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("BillingAdjustments")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("BillingAdjustments"))
-                    jsonObj.put("BillingAdjustments", result)
+                    jsonObj.add("BillingAdjustments", result)
                 } catch (e: Exception) {
 
                 }
@@ -3495,12 +3609,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblAAAPortalEmailFacilityRepTable")) {
             if (!jsonObj.get("tblAAAPortalEmailFacilityRepTable").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblAAAPortalEmailFacilityRepTable")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblAAAPortalEmailFacilityRepTable")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblAAAPortalEmailFacilityRepTable"))
-                    jsonObj.put("tblAAAPortalEmailFacilityRepTable", result)
+                    jsonObj.add("tblAAAPortalEmailFacilityRepTable", result)
                 } catch (e: Exception) {
 
                 }
@@ -3514,12 +3628,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("InvoiceInfo")) {
             if (!jsonObj.get("InvoiceInfo").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("InvoiceInfo")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("InvoiceInfo")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("InvoiceInfo"))
-                    jsonObj.put("InvoiceInfo", result)
+                    jsonObj.add("InvoiceInfo", result)
                 } catch (e: Exception) {
 
                 }
@@ -3533,12 +3647,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacVehicles")) {
             if (!jsonObj.get("tblFacVehicles").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacVehicles")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacVehicles")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacVehicles"))
-                    jsonObj.put("tblFacVehicles", result)
+                    jsonObj.add("tblFacVehicles", result)
                 } catch (e: Exception) {
 
                 }
@@ -3552,12 +3666,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblPersonnelSigner")) {
             if (!jsonObj.get("tblPersonnelSigner").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblPersonnelSigner")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblPersonnelSigner")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblPersonnelSigner"))
-                    jsonObj.put("tblPersonnelSigner", result)
+                    jsonObj.add("tblPersonnelSigner", result)
                 } catch (e: Exception) {
 
                 }
@@ -3571,12 +3685,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblHours")) {
             if (!jsonObj.get("tblHours").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblHours")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblHours")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblHours"))
-                    jsonObj.put("tblHours", result)
+                    jsonObj.add("tblHours", result)
                 } catch (e: Exception) {
 
                 }
@@ -3590,12 +3704,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblTerminationCodeType")) {
             if (!jsonObj.get("tblTerminationCodeType").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblTerminationCodeType")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblTerminationCodeType")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblTerminationCodeType"))
-                    jsonObj.put("tblTerminationCodeType", result)
+                    jsonObj.add("tblTerminationCodeType", result)
                 } catch (e: Exception) {
 
                 }
@@ -3609,12 +3723,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblBusinessType")) {
             if (!jsonObj.get("tblBusinessType").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblBusinessType")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblBusinessType")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblBusinessType"))
-                    jsonObj.put("tblBusinessType", result)
+                    jsonObj.add("tblBusinessType", result)
                 } catch (e: Exception) {
 
                 }
@@ -3628,12 +3742,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacilityClosure")) {
             if (!jsonObj.get("tblFacilityClosure").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityClosure")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacilityClosure")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacilityClosure"))
-                    jsonObj.put("tblFacilityClosure", result)
+                    jsonObj.add("tblFacilityClosure", result)
                 } catch (e: Exception) {
 
                 }
@@ -3647,12 +3761,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacilityManagers")) {
             if (!jsonObj.get("tblFacilityManagers").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityManagers")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacilityManagers")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacilityManagers"))
-                    jsonObj.put("tblFacilityManagers", result)
+                    jsonObj.add("tblFacilityManagers", result)
                 } catch (e: Exception) {
 
                 }
@@ -3666,12 +3780,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacilityServiceProvider")) {
             if (!jsonObj.get("tblFacilityServiceProvider").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityServiceProvider")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacilityServiceProvider")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacilityServiceProvider"))
-                    jsonObj.put("tblFacilityServiceProvider", result)
+                    jsonObj.add("tblFacilityServiceProvider", result)
                 } catch (e: Exception) {
 
                 }
@@ -3685,12 +3799,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("VendorRevenue")) {
             if (!jsonObj.get("VendorRevenue").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("VendorRevenue")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("VendorRevenue")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("VendorRevenue"))
-                    jsonObj.put("VendorRevenue", result)
+                    jsonObj.add("VendorRevenue", result)
                 } catch (e: Exception) {
 
                 }
@@ -3704,12 +3818,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacilityType")) {
             if (!jsonObj.get("tblFacilityType").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityType")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacilityType")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacilityType"))
-                    jsonObj.put("tblFacilityType", result)
+                    jsonObj.add("tblFacilityType", result)
                 } catch (e: Exception) {
 
                 }
@@ -3723,12 +3837,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("FacilityPhotos")) {
             if (!jsonObj.get("FacilityPhotos").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("FacilityPhotos")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("FacilityPhotos")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("FacilityPhotos"))
-                    jsonObj.put("FacilityPhotos", result)
+                    jsonObj.add("FacilityPhotos", result)
                 } catch (e: Exception) {
 
                 }
@@ -3740,12 +3854,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("Promotions")) {
             if (!jsonObj.get("Promotions").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("Promotions")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("Promotions")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("Promotions"))
-                    jsonObj.put("Promotions", result)
+                    jsonObj.add("Promotions", result)
                 } catch (e: Exception) {
 
                 }
@@ -3759,12 +3873,12 @@ class VisitationPlanningFragment : Fragment() {
         if (jsonObj.has("tblFacilityBillingHeader")) {
             if (!jsonObj.get("tblFacilityBillingHeader").toString().equals("")) {
                 try {
-                    var result = jsonObj.getJSONArray("tblFacilityBillingHeader")
-                    for (i in result.length() - 1 downTo 0) {
+                    var result = jsonObj.getAsJsonArray("tblFacilityBillingHeader")
+                    for (i in result.size() - 1 downTo 0) {
                         if (result[i].toString().equals("")) result.remove(i);
                     }
                     jsonObj.remove(("tblFacilityBillingHeader"))
-                    jsonObj.put("tblFacilityBillingHeader", result)
+                    jsonObj.add("tblFacilityBillingHeader", result)
                 } catch (e: Exception) {
 
                 }
@@ -3778,9 +3892,7 @@ class VisitationPlanningFragment : Fragment() {
         return jsonObj
     }
 
-
-
-    fun addOneElementtoKey (jsonObj: JSONObject, key: String) : JSONObject {
+    fun addOneElementtoKey (jsonObj: JsonObject, key: String) : JsonObject {
         if (key.equals("tblFacilityServices")) {
             var oneArray = TblFacilityServices();
             oneArray.Comments = "";
@@ -3788,7 +3900,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.effDate = "";
             oneArray.expDate = "";
             oneArray.FacilityServicesID="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAffiliations")) {
             var oneArray = TblAffiliations()
             oneArray.AffiliationID = -1
@@ -3796,7 +3911,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.AffiliationTypeID = 0
             oneArray.effDate = "";
             oneArray.comment = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblDeficiency")) {
             var oneArray = TblDeficiency()
             oneArray.ClearedDate = ""
@@ -3804,15 +3922,20 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.DefTypeID = "-1"
             oneArray.EnteredDate = ""
             oneArray.VisitationDate = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblComplaintFiles")) {
             var oneArray = TblComplaintFiles()
             oneArray.ComplaintID = ""
             oneArray.FirstName = ""
             oneArray.LastName = ""
             oneArray.ReceivedDate = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
-            //
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblVisitationTracking")) {
             var oneArray = TblVisitationTracking()
             oneArray.AARSigns=""
@@ -3832,7 +3955,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.waiveVisitations=false
             oneArray.waiverComments=""
             oneArray.waiverSignature=null
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAmendmentOrderTracking")) {
             var oneArray = TblAmendmentOrderTracking()
             oneArray.AOID = ""
@@ -3840,7 +3966,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.EventTypeID = ""
             oneArray.EventID = ""
             oneArray.AOTEmployee = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblScopeofService")) {
             var oneArray = TblScopeofService()
             oneArray.WarrantyTypeID=""
@@ -3850,7 +3979,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.LaborMax=""
             oneArray.LaborMin=""
             oneArray.NumOfBays=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblSurveySoftwares")) {
             var oneArray = TblSurveySoftwares()
             oneArray.FACID=0
@@ -3859,7 +3991,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.insertDate=""
             oneArray.updateBy=""
             oneArray.updateDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAddress")) {
             var oneArray = TblAddress()
             oneArray.BranchName=""
@@ -3874,30 +4009,45 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.ST=""
             oneArray.ZIP=""
             oneArray.ZIP4=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityEmail")) {
             var oneArray = TblFacilityEmail()
             oneArray.email=""
             oneArray.emailID="-1"
             oneArray.emailTypeId=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPhone")) {
             var oneArray = TblPhone()
             oneArray.PhoneNumber=""
             oneArray.PhoneTypeID=""
             oneArray.PhoneID="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblGeocodes")) {
             var oneArray = TblGeocodes()
             oneArray.GeoCodeTypeID=-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAARPortalAdmin")) {
             var oneArray = TblAARPortalAdmin()
             oneArray.AddendumSigned=""
             oneArray.CardReaders="-1"
 
             oneArray.startDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPrograms")) {
             var oneArray = TblPrograms()
             oneArray.Comments=""
@@ -3906,7 +4056,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.effDate=""
             oneArray.expDate=""
             oneArray.programtypename=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityPhotos")) {
             var oneArray = TblFacilityPhotos()
             oneArray.ApprovalRequested=""
@@ -3917,7 +4070,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.FileName=""
             oneArray.LastUpdateBy=""
             oneArray.LastUpdateDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("Billing")) {
             var oneArray = TblBilling()
             oneArray.ACHParticipant=0
@@ -3936,7 +4092,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.insertDate=""
             oneArray.updateBy=""
             oneArray.updateDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("BillingPlan")) {
             var oneArray = TblBillingPlan()
             oneArray.BillingPlanCatgID=0
@@ -3950,7 +4109,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.insertDate=""
             oneArray.updateBy=""
             oneArray.updateDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityBillingDetail")) {
             var oneArray = TblFacilityBillingDetail()
             oneArray.FacBillId=-1
@@ -3963,7 +4125,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.insertBy=""
             oneArray.insertDate=""
             oneArray.BillingInvoiceDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblInvoiceInfo")) {
             var oneArray = TblInvoiceInfo()
             oneArray.ACHParticipant=false
@@ -3979,7 +4144,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.updateDate=""
             oneArray.InvoicePrintDate=""
             oneArray.InvoiceStatusId=0
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("VendorRevenue")) {
             var oneArray = TblVendorRevenue()
             oneArray.Amount=""
@@ -3996,15 +4164,24 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.RevenueSourceID=0
             oneArray.StateRevenueAcct=""
             oneArray.VendorRevenueID=-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("BillingHistory")) {
             var oneArray = TblBillingHistory()
             oneArray.InvoiceId = -1
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblOfficeType")) {
             var oneArray = TblOfficeType()
             oneArray.OfficeName=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblComments")) {
             var oneArray = TblComments()
             oneArray.FACID=0
@@ -4012,7 +4189,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.insertDate=""
             oneArray.CommentTypeID=0
             oneArray.SeqNum=0
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPersonnel")) {
             var oneArray = TblPersonnel()
             oneArray.Addr1=""
@@ -4037,7 +4217,10 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.ZIP4=""
             oneArray.email=""
             oneArray.startDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblVehicleServices")) {
             var oneArray = TblVehicleServices()
             oneArray.FACID = 0
@@ -4045,76 +4228,131 @@ class VisitationPlanningFragment : Fragment() {
             oneArray.VehiclesTypeID = -1
             oneArray.insertBy=""
             oneArray.insertDate = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAARPortalTracking")) {
             var oneArray = TblAARPortalTracking()
             oneArray.TrackingID="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPersonnelCertification")) {
             var oneArray = TblPersonnelCertification()
             oneArray.PersonnelID=0
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("BillingAdjustments")) {
             var oneArray = TblBillingAdjustments()
             oneArray.AdjustmentId=-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAAAPortalEmailFacilityRepTable")) {
             var oneArray = TblAAAPortalEmailFacilityRepTable()
             oneArray.ContractSID="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("InvoiceInfo")) {
             var oneArray = InvoiceInfo()
             oneArray.InvoiceId="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacVehicles")) {
             var oneArray = TblFacVehicles()
             oneArray.VehicleID =-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPersonnelSigner")) {
             var oneArray = TblPersonnelSigner()
             oneArray.PersonnelID = -1
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblHours")) {
             var oneArray = TblHours()
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblBusinessType")) {
             var oneArray = TblBusinessType()
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblTerminationCodeType")) {
-            var oneArray = TblBusinessType()
-            jsonObj.put(key, Gson().toJson(oneArray))
+            var oneArray = TblTerminationCodeType()
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityClosure")) {
             var oneArray = TblFacilityClosure()
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityManagers")) {
             var oneArray = TblFacilityManagers()
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityServiceProvider")) {
             var oneArray = TblFacilityServiceProvider()
             oneArray.SrvProviderId="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityType")) {
             var oneArray = TblFacilityType()
             oneArray.FacilityTypeName="Independent"
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("Promotions")) {
             var oneArray = TblPromotions()
             oneArray.PromoID=-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("FacilityPhotos")) {
             var oneArray = FacilityPhotos()
             oneArray.PhotoId=-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityBillingHeader")) {
             var oneArray = TblFacilityBillingHeader()
             oneArray.FACId=-1
             oneArray.BillBalanceDue="0.0"
             oneArray.ACHParticipant=false
-            jsonObj.put(key, Gson().toJson(oneArray))
+            //            jsonObj.add(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         }
         return jsonObj;
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun sendCompletedPDF() {
 //        var specialistEmail = ApplicationPrefs.getInstance(activity).loggedInUserEmail
 //        var specialistEmail = "saeed@pacificresearchgroup.com"//Constants.specialistEmailForPDF
@@ -4135,7 +4373,6 @@ class VisitationPlanningFragment : Fragment() {
                         requireActivity().runOnUiThread {
                             binding.recordsProgressView.visibility = View.GONE
                             Utility.showUnifiedConfirmationDialog(activity,  "PDF for Visitation Number ${Constants.visitationIDForPDF} has been sent to $specialistEmail")
-//                            Utility.showMessageDialog(activity, "Confirmation...", "PDF for Visitation Number ${Constants.visitationIDForPDF} has been sent to $specialistEmail")
                             Constants.specialistEmailForPDF = ""
                         }
                     }, {
@@ -4163,6 +4400,7 @@ class VisitationPlanningFragment : Fragment() {
         val loadBtn: Button
         val emailPDFBtn: Button
         val listBkg: CardView
+        val todayCB: CheckBox
 
         init {
             this.facilityNameValueTextView = view?.findViewById(R.id.facilityNameValueTextView) as TextView
@@ -4177,6 +4415,7 @@ class VisitationPlanningFragment : Fragment() {
             this.emailPDFBtn = view?.findViewById(R.id.emailPDFBtn) as Button
             this.listBkg = view?.findViewById(R.id.listBkg) as CardView
             this.visitationCityView  = view?.findViewById(R.id.cityValueTextView) as TextView
+            this.todayCB = view?.findViewById(R.id.todayVisCB) as CheckBox
         }
 
     }

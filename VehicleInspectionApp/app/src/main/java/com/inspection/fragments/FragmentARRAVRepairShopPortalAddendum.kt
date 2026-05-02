@@ -33,6 +33,8 @@ import com.inspection.databinding.FragmentArrayRepairShopPortalAddendumBinding
 import com.inspection.model.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 
 
 /**
@@ -606,7 +608,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         binding.addsignDateButton.setError(null)
         binding.addnumberOfCardsReaderEditText.setError(null)
 
-        if (binding.addstartDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (binding.addstartDateButton.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             portalValide = false
             binding.addstartDateButton.setError("Required Field")
         }
@@ -616,7 +618,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
 //            addendDateButton.setError("Required Field")
 //        }
 
-        if (binding.addsignDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (binding.addsignDateButton.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             portalValide = false
             binding.addsignDateButton.setError("Required Field")
         }
@@ -640,7 +642,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         binding.numberOfInProgressTwoIns.setError(null)
         binding.numberOfInProgressWalkIns.setError(null)
 
-        if (binding.inspectionDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (binding.inspectionDateButton.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             portalValide = false
             binding.inspectionDateButton.setError("Required Field")
         }
@@ -672,7 +674,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         binding.editNumberOfInProgressTwoIns.setError(null)
         binding.editNumberOfInProgressWalkIns.setError(null)
 
-        if (binding.editInspectionDateButton.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (binding.editInspectionDateButton.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             isInputsValid = false
             binding.editInspectionDateButton.setError("Required Field")
         }

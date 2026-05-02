@@ -4,133 +4,158 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_item_ll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:padding="0dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_margin="10dp"
-        tools:cardElevation="5dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center_vertical"
-            android:padding="15dp">
+            android:padding="16dp">
 
+            <!-- Load Facility Button -->
             <Button
                 android:id="@+id/loadFacilityButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/new_btn_bkg"
-                android:textColor="@color/white"
-                app:backgroundTint="@null"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+
                 android:text="Load Facility"
-                android:textStyle="bold" />
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
 
+            <!-- Content Table -->
             <TableLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/loadFacilityButton"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="5dp"
-                android:stretchColumns="*"
-                >
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/loadFacilityButton"
+                android:layout_marginEnd="12dp"
+                android:stretchColumns="0,1,4">
 
-                <TableRow android:layout_marginTop="5dp">
+                <!-- Row 1 -->
+                <TableRow android:layout_marginTop="6dp">
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Club Code"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        />
+                        android:textColor="@color/black" />
+
                     <TextView
                         android:id="@+id/adHocClubCodeValueTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
                     <TextView
-                        android:text="Contract Status"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        />
-                    <TextView
+                        android:visibility="gone"
+                        android:text="Contract Status"
+                        android:layout_marginEnd="20dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/adHocCoStatusValueTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        />
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="ACTIVE"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/white"
+                        app:chipBackgroundColor="@color/mainColor"
+                        app:chipCornerRadius="12dp"
+                        app:chipMinHeight="28dp"
+                        app:chipStartPadding="8dp"
+                        app:chipEndPadding="8dp"
+                        app:ensureMinTouchTargetSize="false"
+                        app:closeIconEnabled="false" />
+                    <View android:layout_column="4"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"/>
                 </TableRow>
 
+                <!-- Row 2 -->
+                <TableRow android:layout_marginTop="6dp">
 
-                <TableRow android:layout_marginTop="5dp">
                     <TextView
-                        android:text="Facility Name: "
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        />
+                        android:text="Facility Name:"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+
                     <TextView
                         android:id="@id/facilityNameValueTextView"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_span="3"
-                        />
+                        android:layout_span="3" />
                 </TableRow>
-                <TableRow android:layout_marginTop="5dp">
+
+                <!-- Row 3 -->
+                <TableRow android:layout_marginTop="6dp">
+
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Facility Number"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        />
+                        android:textColor="@color/black" />
+
                     <TextView
                         android:id="@+id/facilityNumberValueTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_span="3"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="5dp">
-                    <TextView
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
+                        android:layout_span="3" />
+                </TableRow>
+
+                <!-- Row 4 -->
+                <TableRow android:layout_marginTop="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Facility City:"
-                        />
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/cityValueTextView"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
                         android:layout_span="3"
                         android:text="test" />
                 </TableRow>
+
+                <!-- Row 5 -->
+                <TableRow android:layout_marginTop="8dp">
+
+                    <CheckBox
+                        android:id="@+id/todayVisCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add To Today's Visitations"
+                        android:textStyle="bold"
+                        android:textColor="@color/mainColor"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+                </TableRow>
+
             </TableLayout>
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
+
 </RelativeLayout>

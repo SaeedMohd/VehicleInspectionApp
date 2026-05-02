@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="CustomRadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
         <item name="android:buttonTint">@color/blue</item>
+
     </style>
     <style name="Base.myAppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="radioButtonStyle">@style/CustomRadioButton</item>

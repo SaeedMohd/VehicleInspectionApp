@@ -105,10 +105,10 @@ class HasChangedModel {
 
     fun updateChangedData(screen: String, item: String, tag: String, details: String) {
         var data = ChangedData()
-        data.item = item
-        data.screen = screen
-        data.tag = tag
-        data.details = details
+        data.item = item.replace('&',' ')
+        data.screen = screen.replace('&',' ')
+        data.tag = tag.replace('&',' ')
+        data.details = details.replace('&',' ')
         data.saved = true
         changeDetails.add(data)
 //        Log.v("ChangeDetails-->", changeDetails.toString())

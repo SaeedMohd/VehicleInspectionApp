@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <!-- ================= FACILITY NAME ================= -->
+
+        <TextView
+            android:id="@+id/facNameVal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainColor"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- ================= LEFT COLUMN ================= -->
+
+        <LinearLayout
+            android:id="@+id/leftColumn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/facNameVal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/rightColumn"
+            app:layout_constraintHorizontal_weight="1">
+
+            <TextView
+                android:text="Facility Number:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/facNoVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:text="Visitation Type:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/typeVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:text="Facility Representative:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/repVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:text="Waived:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/waiveVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:text="Visitation ID:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/idVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <!-- ================= RIGHT COLUMN ================= -->
+
+        <LinearLayout
+            android:id="@+id/rightColumn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/facNameVal"
+            app:layout_constraintStart_toEndOf="@id/leftColumn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1">
+
+            <TextView
+                android:text="Club Code:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/clubNoVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:text="Visitation Method:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/methodVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:text="Visitation Reason:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/reasonVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:text="Performed Date:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/dateVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/idURL"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:text="Link to Visitation PDF"
+                android:textStyle="bold"
+                android:textColor="@color/mainColor"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

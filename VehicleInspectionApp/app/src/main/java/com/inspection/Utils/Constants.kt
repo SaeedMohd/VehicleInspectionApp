@@ -101,6 +101,9 @@ object Constants {
     val uploadFile = permanentURL + "uploadFile?aws=Y&email="
     val uploadPhoto = permanentURL + "uploadPhoto?fileNameToSave="
     val getFacilityData = permanentURL + "getFacilityData?facnum=%d&clubcode=%s"
+    val getCompletedVisitations = permanentURL + "getPDFCompletedVisitations?specialist="
+    val getPDFStats = permanentURL + "getPDFStats?specialist="
+
     val IDLE_TIMEOUT = if (BuildConfig.FLAVOR.equals("uat")) 30 * 60 * 1000L else 20 * 60 * 1000L // 15 minutes
     val getTypeTables = permanentURL + "getTableTypes"
     val getS3Url = permanentURL + "getS3Url?objectKey="
@@ -159,6 +162,8 @@ object Constants {
     val UpdateVisitationDetailsDataProgress=permanentURL + "updateVisitationDetailsDataProgress?facnum="
     val UpdateVisitationTrackingData=permanentURL + "updateVisitationTrackingData?facnum="
     val createVisitation=permanentURL + "createVisitation?"
+    val getFacilityLocation=permanentURL + "getFacilityLocation?facNo="
+    val getApplicantMatchingFacilities=permanentURL + "getApplicantMatchingFacilities?placeId="
 
     val getSpecialistIdsForClubCode = permanentURL + "getSpecialistsForClubCode?"
     val internetConnectionErrMsg = "\n" +

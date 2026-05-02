@@ -8,17 +8,22 @@ import android.net.Uri
 import android.os.Bundle
 //import androidx.fragment.app.Fragment
 import android.util.Log
+import android.util.Xml
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import aws.smithy.kotlin.runtime.util.length
+import androidx.core.view.isVisible
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+
+import com.google.android.material.chip.Chip
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.inspection.FormsActivity
 import com.inspection.R
@@ -27,19 +32,25 @@ import com.inspection.databinding.AppAdhocVisitationFilterFragmentBinding
 import com.inspection.databinding.FragmentVisitationTrackingSubBinding
 import com.inspection.imageloader.Utils
 import com.inspection.model.*
+import com.inspection.utils.XmlUtils.normalizeForModel
+import com.inspection.utils.XmlUtils.xmlToJsonObject
 //import kotlinx.android.synthetic.main.app_adhoc_visitation_filter_fragment.*
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
 
 
-import shaded.org.json.JSONObject
-import shaded.org.json.XML
-import java.io.File
+
+//import shaded.org.json.JSONObject
+//import shaded.org.json.XML
+//import org.json.JSONObject
+//import org.json.XML
 import java.io.IOException
-import java.net.URLEncoder
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 import java.util.concurrent.TimeUnit
+import kotlin.text.replace
 
 
 /**
@@ -108,78 +119,41 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     fun loadSpecialists() {
         Log.v("ADHOC ALL SPECIAL --- ",Constants.getAllSpecialists + "")
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllSpecialists + "",
-                Response.Listener { response ->
-                    Log.v("****response", response)
-                    requireActivity().runOnUiThread {
-                        CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-
-//                        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-//                                Response.Listener { response ->
-//                                    activity!!.runOnUiThread {
-//                                        var specialistName = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-//                                        if (specialistName != null && specialistName.size > 0) {
-//                                            requiredSpecialistName = specialistName[0].specialistname
-//                                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistName[0].accspecid
-////                                            var firstName = requiredSpecialistName .substring(requiredSpecialistName .indexOf(",")+2,requiredSpecialistName .length)
-////                                            var lastName = requiredSpecialistName .substring(0,requiredSpecialistName .indexOf(","))
-////                                            var reformattedName = firstName + " " + lastName
-////                                            adHocFacilitySpecialistButton.setText(reformattedName)
-//                                        }
-//                                        loadSpecialistName()
-////                                        loadClubCodes()
-//                                    }
-//                                }, Response.ErrorListener {
-//                            Log.v("error while loading", "error while loading facilities")
-//                            Log.v("Loading error", "" + it.message)
-//                        }))
-                    }
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading specialists")
-            Log.v("Loading error", "" + it.message)
-        }))
+            { response ->
+                Log.v("****response", response)
+                requireActivity().runOnUiThread {
+                    CsiSpecialistSingletonModel.getInstance().csiSpecialists = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
+                }
+            },
+            {
+        Log.v("error while loading", "error while loading specialists")
+        Log.v("Loading error", "" + it.message)
+    }))
 
     }
 
     private fun loadFacilityNames(){
         facilities.clear()
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getAllFacilities + "",
-                Response.Listener { response ->
-                    Log.v("test","testtesttest-----------")
-                    requireActivity().runOnUiThread {
-                        binding.recordsProgressView.visibility = View.INVISIBLE
-                        facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-                        CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
-                        facilityNames.add(0, "Any")
-                        (0 until facilities.size).forEach {
-                            facilityNames.add(facilities[it].facname + " || " + facilities[it].facnum)
-                        }
-                        Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
-//                        if (facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.isNotEmpty()) {
-////                            defaultFacNumber = facilities.filter { s -> s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID) }.sortedWith(compareBy { it.facnum })[0].facnum
-////                            adHocFacilityIdVal.setText(defaultFacNumber)
-//                            defaultClubCode = facilities.filter { s->s.specialistid.equals(ApplicationPrefs.getInstance(activity).loggedInUserID)}.sortedWith(compareBy { it.clubcode})[0].clubcode
-//                            clubCodeEditText.setText(defaultClubCode)
-//                        }
-//                        facilityNames.sort()
-
-                        reloadFacilitiesList()
-//                        var searchDialog = SearchDialog(context, facilityNames)
-//                        searchDialog.show()
-//                        searchDialog.setOnDismissListener {
-//                            if (searchDialog.selectedString == "Any") {
-//                                adHocFacilityNameButton.setText("")
-//                            } else {
-//                                adHocFacilityNameButton.setText(searchDialog.selectedString)
-//                            }
-//                        }
+            { response ->
+                requireActivity().runOnUiThread {
+                    binding.recordsProgressView.visibility = View.INVISIBLE
+                    facilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
+                    CSIFacilitySingelton.getInstance().csiFacilities = Gson().fromJson(response.toString(), Array<CsiFacility>::class.java).toCollection(ArrayList())
+                    facilityNames.add(0, "Any")
+                    (0 until facilities.size).forEach {
+                        facilityNames.add(facilities[it].facname + " || " + facilities[it].facnum)
                     }
-                }, Response.ErrorListener {
-//            Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
-                Utility.showUnifiedErrorDialog(activity,"Connection Error while retrieving Facilities - " + it.message)
-                binding.recordsProgressView.visibility = View.INVISIBLE
-            Log.v("error while loading", "error while loading facilities")
-            Log.v("Loading error", "" + it.message)
-        }))
+                    Log.v("Logged User --- >  ",ApplicationPrefs.getInstance(activity).loggedInUserID)
+                    reloadFacilitiesList()
+                }
+            },
+            {
+            Utility.showUnifiedErrorDialog(activity,"Connection Error while retrieving Facilities - " + it.message)
+            binding.recordsProgressView.visibility = View.INVISIBLE
+        Log.v("error while loading", "error while loading facilities")
+        Log.v("Loading error", "" + it.message)
+    }))
     }
 
     private fun setFieldsListeners() {
@@ -208,7 +182,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             }
             Log.v("Filtered AdHoc--> ", facNamesFiltered.size.toString())
             if (facNamesFiltered.size == 0)
-//                Utility.showMessageDialog(activity, "Information", "No Assigned Facilities for the selected Specialist")
                 Utility.showUnifiedInformationDialog(activity,"No Assigned Facilities for the selected Specialist")
             else {
                 var searchDialog = SearchDialog(context, facNamesFiltered)
@@ -217,7 +190,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                     if (searchDialog.selectedString == "Any" || searchDialog.selectedString == "") {
                         binding.adHocFacilityNameButton.setText("")
                     } else {
-//                                    adHocFacilityNameButton.setText(searchDialog.selectedString)
                         binding.adHocFacilityNameButton.setText(
                             searchDialog.selectedString.substring(
                                 0,
@@ -227,13 +199,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                         binding.adHocFacilityIdVal.setText(searchDialog.selectedString.substringAfter("|| "))
                     }
                 }
-//                        }
-//                    }, Response.ErrorListener {
-//                Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities - " + it.message)
-//                recordsProgressView.visibility = View.INVISIBLE
-//                Log.v("error while loading", "error while loading facilities")
-//                Log.v("Loading error", "" + it.message)
-//            }))
             }
         }
 
@@ -284,21 +249,21 @@ class AppAdHockVisitationFilterFragment : Fragment() {
     private fun loadClubCodes() {
         Log.v("ADHOC CLUB--- ",Constants.getClubCodes)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getClubCodes,
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
-                        allClubCodes.clear()
-                        for (cc in clubCodeModels) {
-                            allClubCodes.add(cc.clubcode)
-                        }
-                        binding.recordsProgressView.visibility = View.GONE
+            { response ->
+                requireActivity().runOnUiThread {
+                    var clubCodeModels = Gson().fromJson(response.toString(), Array<ClubCodeModel>::class.java)
+                    allClubCodes.clear()
+                    for (cc in clubCodeModels) {
+                        allClubCodes.add(cc.clubcode)
                     }
-                    loadFacilityNames()
-                }, Response.ErrorListener {
-            Log.v("error while loading", "error while loading club codes")
+                    binding.recordsProgressView.visibility = View.GONE
+                }
+                loadFacilityNames()
+            }, {
+        Log.v("error while loading", "error while loading club codes")
 //                Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Club Codes - " + it.message)
-                Utility.showUnifiedErrorDialog(activity,"Connection Error while retrieving Club Codes - " + it.message)
-        }))
+            Utility.showUnifiedErrorDialog(activity,"Connection Error while retrieving Club Codes - " + it.message)
+    }))
     }
 
     fun reloadFacilitiesList() {
@@ -366,29 +331,30 @@ class AppAdHockVisitationFilterFragment : Fragment() {
 
         Log.v("ADHOC FACWITHFILTERS--",Constants.getFacilitiesWithFilters + parametersString)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilitiesWithFilters + parametersString+Utility.getLoggingParameters(activity, 0, "Search Facilities ..."),
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        binding.recordsProgressView.visibility = View.INVISIBLE
-                        var sortedList = ArrayList<CsiFacility>()
-                        facilitiesList = Gson().fromJson(response, Array<CsiFacility>::class.java).toCollection(ArrayList())
-                        if (facilitiesList.size == 0) {
-                            binding.noRecordsFoundTextView.visibility = View.VISIBLE
-                        } else {
-                            binding.noRecordsFoundTextView.visibility = View.GONE
-                        }
-                        binding.facilitiesListView.visibility = View.VISIBLE
-                        facilitiesList.sortedWith(compareBy { it.facname}).toCollection(sortedList)
-                        var visitationPlanningAdapter = AdhocAdapter(context, sortedList)
-                        binding.facilitiesListView.adapter = visitationPlanningAdapter
-                        var totalFacilities= sortedList.size
-//                        Utility.showMessageDialog(activity,"Filter Result"," " + totalFacilities + " Facilities Filtered ...")
+            { response ->
+                requireActivity().runOnUiThread {
+                    binding.recordsProgressView.visibility = View.INVISIBLE
+                    var sortedList = ArrayList<CsiFacility>()
+                    facilitiesList = Gson().fromJson(response, Array<CsiFacility>::class.java).toCollection(ArrayList())
+                    if (facilitiesList.size == 0) {
+                        binding.noRecordsFoundTextView.visibility = View.VISIBLE
+                    } else {
+                        binding.noRecordsFoundTextView.visibility = View.GONE
                     }
-                }, Response.ErrorListener {
-                binding.recordsProgressView.visibility = View.INVISIBLE
+                    binding.facilitiesListView.visibility = View.VISIBLE
+                    facilitiesList.sortedWith(compareBy { it.facname}).toCollection(sortedList)
+                    var visitationPlanningAdapter = AdhocAdapter(context, sortedList)
+                    binding.facilitiesListView.adapter = visitationPlanningAdapter
+                    var totalFacilities= sortedList.size
+//                        Utility.showMessageDialog(activity,"Filter Result"," " + totalFacilities + " Facilities Filtered ...")
+                }
+            },
+            {
+            binding.recordsProgressView.visibility = View.INVISIBLE
 //                Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facilities List - " + it.message)
-                Utility.showUnifiedErrorDialog(activity,"Connection Error while retrieving Facilities List - " + it.message)
-            Log.v("error while loading", "error while loading visitation records")
-        }))
+            Utility.showUnifiedErrorDialog(activity,"Connection Error while retrieving Facilities List - " + it.message)
+        Log.v("Error While Loading", "error while loading visitation records")
+    }))
 
     }
 
@@ -408,10 +374,17 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         var specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail.substring(0,ApplicationPrefs.getInstance(context).loggedInUserEmail.indexOf("@")).lowercase()
         if (specialistArrayModel != null && specialistArrayModel.size > 0) {
 //             requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
-            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].FullName
+            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.lowercase(getDefault())
+                .startsWith(specMail)}[0].FullName
             binding.adHocFacilitySpecialistButton.setText(requiredSpecialistName)
-            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].NTLogin
-            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].FullName
+            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s ->
+                s.Email.lowercase(
+                    getDefault()
+                ).startsWith(specMail)}[0].NTLogin
+            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s ->
+                s.Email.lowercase(
+                    getDefault()
+                ).startsWith(specMail)}[0].FullName
         }
         loadClubCodes()
     }
@@ -455,6 +428,52 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 vh.adHocStatusValueTextView?.text = TypeTablesModel.getInstance().FacilityStatusType.filter { s->s.FacilityStatusID.equals(facilitiesArrayList[position].status)}[0].FacilityStatusName
             else
                 vh.adHocStatusValueTextView?.text = ""
+            when (
+                TypeTablesModel.getInstance()
+                    .FacilityStatusType
+                    .first { it.FacilityStatusID == facilitiesArrayList[position].status }
+                    .FacilityStatusName
+            ) {
+                "Active" ->
+                    vh.adHocStatusValueTextView?.setChipBackgroundColorResource(R.color.status_active)
+
+                "Applicant" ->
+                    vh.adHocStatusValueTextView?.setChipBackgroundColorResource(R.color.status_applicant)
+
+                "Potential Applicant" ->
+                    vh.adHocStatusValueTextView?.setChipBackgroundColorResource(R.color.status_potential)
+
+                "Pending" ->
+                    vh.adHocStatusValueTextView?.setChipBackgroundColorResource(R.color.status_pending)
+
+                "Inactive" ->
+                    vh.adHocStatusValueTextView?.setChipBackgroundColorResource(R.color.alertColor)
+
+                "Disapproved" ->
+                    vh.adHocStatusValueTextView?.setChipBackgroundColorResource(R.color.status_disapproved)
+
+                "Discontinued" ->
+                    vh.adHocStatusValueTextView?.setChipBackgroundColorResource(R.color.status_discontinued)
+            }
+            vh.todayCB.isVisible = true
+            vh.todayCB.isChecked = visitationExists(requireContext(),facilitiesArrayList[position].clientfacnum.toInt(),facilitiesArrayList[position].clubcode)
+            vh.todayCB.setOnCheckedChangeListener { _, isChecked ->
+                Log.v("Checkbox State", "$isChecked")
+                if (isChecked) {
+                    val item = TodayVisitationModel();
+                    item.facNum = facilitiesArrayList[position].clientfacnum.toInt();
+                    item.clubCode = facilitiesArrayList[position].clubcode;
+                    item.facName = facilitiesArrayList[position].facname;
+                    item.status = "Not Started";
+
+                    item.type = VisitationTypes.AdHoc
+                    item.city = vh.visitationCityView?.text.toString()
+                    addTodayVisitation(requireContext(),item)
+//                    Utility.showUnifiedConfirmationDialog(requireContext(),"Facility Added successfully")
+                } else {
+                    removeTodayVisitation(requireContext(),facilitiesArrayList[position].clientfacnum,facilitiesArrayList[position].clubcode)
+                }
+            }
 
             vh.loadFacilityButton!!.setOnClickListener {
                 getFullFacilityDataFromAAA(facilitiesArrayList[position].clientfacnum.toInt(), facilitiesArrayList[position].clubcode)
@@ -479,53 +498,6 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         }
     }
 
-    fun getTypeTableData() {
-        var clientBuilder = OkHttpClient().newBuilder().connectTimeout(40, TimeUnit.SECONDS).readTimeout(40, TimeUnit.SECONDS)
-        var client = clientBuilder.build()
-        var request = okhttp3.Request.Builder().url(Constants.getTypeTables).build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.v("&&&&&*(*", "failed with exception : " + e!!.message)
-                activity!!.runOnUiThread {
-//                    Utility.showMessageDialog(activity, "Retrieve Data Error", "Connection Error while retrieving Facility Data - " + e.message)
-                    Utility.showUnifiedErrorDialog(activity,"Connection Error while retrieving Facility Data - " + e.message)
-                }
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-
-                var responseString = response!!.body!!.string()
-                Log.v("getTypeTables retrieved", "GetTYpeTables retrieved")
-                if (responseString.toString().contains("returnCode>1<", false)) {
-                    activity!!.runOnUiThread {
-//                        Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
-                        Utility.showUnifiedErrorDialog(activity,responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
-                        binding.recordsProgressView.visibility = View.GONE
-                    }
-                } else {
-                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
-                    var jsonObj = obj.getJSONObject("responseXml")
-                    TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
-                    (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
-                        TypeTablesModel.getInstance().EmployeeList[it].FullName = TypeTablesModel.getInstance().EmployeeList[it].FirstName + " " + TypeTablesModel.getInstance().EmployeeList[it].LastName
-                    }
-                    contractStatusList = TypeTablesModel.getInstance().FacilityStatusType
-                    contractStatusArray.clear()
-                    contractStatusArray.add("All")
-                    for (fac in contractStatusList) {
-                        contractStatusArray.add(fac.FacilityStatusName)
-                    }
-
-                    var coStatusAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_item, contractStatusArray)
-                    coStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    activity!!.runOnUiThread {
-                        binding.contractStatusTypeSpinner.adapter = coStatusAdapter
-                        loadSpecialistName()
-                    }
-                }
-            }
-        })
-    }
 
     fun getFullFacilityDataFromAAA(facilityNumber: Int, clubCode: String) {
         var clientBuilder = OkHttpClient().newBuilder().connectTimeout(50, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
@@ -552,14 +524,29 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                             activity!!.runOnUiThread {
 //                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
                                 Utility.showUnifiedErrorDialog(activity,responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
+                                binding.recordsProgressView.visibility = View.GONE
                             }
                         } else {
 //                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
 //                                    .replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                            var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")).replace("<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>", ""))
-                            var jsonObj = obj.getJSONObject("responseXml")
-                            jsonObj = removeEmptyJsonTags(jsonObj)
-                            parseFacilityDataJsonToObject(jsonObj)
+                            val xmlPart = responseString.substring(
+                                responseString.indexOf("<responseXml"),
+                                responseString.indexOf("<returnCode")
+                            ).replace(
+                                "<tblSurveySoftwares/><tblSurveySoftwares><ShopMgmtSoftwareName/></tblSurveySoftwares>",
+                                ""
+                            )
+//                                .replace("&amp;", "&")
+                            val rootJson = xmlToJsonObject(xmlPart)
+                            val responseJson = rootJson
+                            var normalized = normalizeForModel(
+                                responseJson,
+                                TypeTablesModel::class.java
+                            )
+//                            val jsonObj = rootJson.getAsJsonObject("responseXml")
+                            normalized = normalizeJson(normalized)
+
+                            parseFacilityDataJsonToObject(normalized)
                             getFacilityPRGData()
                             FirebaseCrashlytics.getInstance().setCustomKey("Facility", facilityNumber.toString())
                             FirebaseCrashlytics.getInstance().setCustomKey("ClubCode", clubCode.toString())
@@ -600,131 +587,134 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         PRGDataModel.getInstance().tblPRGRepairDiscountFactors.clear()
 
         Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        if (!response.toString().replace(" ","").equals("[ ]")) {
-                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
-                        } else {
-                            var item = PRGFacilityPhotos()
-                            item.photoid = -1
-                            PRGDataModel.getInstance().tblPRGFacilitiesPhotos.add(item)
-                        }
-                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
-                                Response.Listener { response ->
-                                    requireActivity().runOnUiThread {
-                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                            PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
-                                        } else {
-                                            var item = PRGLogChanges()
-                                            item.recordid=-1
-                                            PRGDataModel.getInstance().tblPRGLogChanges.add(item)
-                                        }
-                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getVisitationHeader + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
-                                                Response.Listener { response ->
-                                                    requireActivity().runOnUiThread {
-                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                            PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
-                                                        } else {
-                                                            var item = PRGVisitationHeader()
-                                                            item.recordid=-1
-                                                            PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
-//                                                            launchNextAction()
-                                                        }
-                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getRepairDiscountFactors + "${FacilityDataModel.getInstance().clubCode}",
-                                                                Response.Listener { response ->
-                                                                    requireActivity().runOnUiThread {
-                                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors= Gson().fromJson(response.toString(), Array<PRGRepairDiscountFactors>::class.java).toCollection(ArrayList())
-                                                                        } else {
-                                                                            var item = PRGRepairDiscountFactors()
-                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode
-                                                                            PRGDataModel.getInstance().tblPRGRepairDiscountFactors.add(item)
-                                                                        }
-                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPersonnelDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
-                                                                                Response.Listener { response ->
-                                                                                    requireActivity().runOnUiThread {
-                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                                                            PRGDataModel.getInstance().tblPRGPersonnelDetails= Gson().fromJson(response.toString(), Array<PRGPersonnelDetails>::class.java).toCollection(ArrayList())
-                                                                                        } else {
-                                                                                            var item = PRGPersonnelDetails()
-                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
-                                                                                            item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                                                                                            PRGDataModel.getInstance().tblPRGPersonnelDetails.add(item)
-                                                                                        }
-                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGFacilityDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
-                                                                                                Response.Listener { response ->
-                                                                                                    requireActivity().runOnUiThread {
-                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDetails= Gson().fromJson(response.toString(), Array<PRGFacilityDetails>::class.java).toCollection(ArrayList())
-                                                                                                        } else {
-                                                                                                            var item = PRGFacilityDetails()
-                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
-                                                                                                            item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
-                                                                                                        }
-                                                                                                        Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityDirectors + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
-                                                                                                                Response.Listener { response ->
-                                                                                                                    requireActivity().runOnUiThread {
-                                                                                                                        Log.v("Load Director ", " --> 1")
-                                                                                                                        if (!response.toString().replace(" ","").equals("[]")) {
-                                                                                                                            Log.v("Load Director ", " --> 2")
-                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDirectors= Gson().fromJson(response.toString(), Array<PRGFacilityDirectors>::class.java).toCollection(ArrayList())
-                                                                                                                        } else {
-                                                                                                                            Log.v("Load Director ", " --> 3")
-                                                                                                                            var item = PRGFacilityDirectors()
-                                                                                                                            item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
-                                                                                                                            item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
-                                                                                                                            item.specialistid = -1
-                                                                                                                            item.directorid = -1
-                                                                                                                            item.directoremail = ""
-                                                                                                                            PRGDataModel.getInstance().tblPRGFacilityDirectors.add(item)
-                                                                                                                        }
-                                                                                                                        launchNextAction()
-                                                                                                                    }
-                                                                                                                }, Response.ErrorListener {
-                                                                                                            Log.v("Load Director ", " --> 4")
-                                                                                                            Log.v("Loading PRG Data error", "" + it.message)
-//                                                                                                            launchNextAction()
-                                                                                                            it.printStackTrace()
-                                                                                                        }))
-                                                                                                    }
-                                                                                                }, Response.ErrorListener {
-                                                                                            Log.v("Loading PRG Data error", "" + it.message)
-//                                                                                            launchNextAction()
-                                                                                            it.printStackTrace()
-                                                                                        }))
-                                                                                    }
-                                                                                }, Response.ErrorListener {
-                                                                            Log.v("Loading PRG Data error", "" + it.message)
-                                                                            it.printStackTrace()
-                                                                        }))
-                                                                    }
-                                                                }, Response.ErrorListener {
-                                                            Log.v("Loading PRG Data error", "" + it.message)
-                                                            it.printStackTrace()
-                                                        }))
-                                                    }
-                                                }, Response.ErrorListener {
-                                            Log.v("Loading PRG Data error", "" + it.message)
-                                            it.printStackTrace()
-                                        }))
-//                                        launchNextAction(isCompleted)
-                                    }
-                                }, Response.ErrorListener {
-                            Log.v("Loading PRG Data error", "" + it.message)
-//                            launchNextAction(isCompleted)
-                            it.printStackTrace()
-                        }))
-
+            { response ->
+                requireActivity().runOnUiThread {
+                    if (!response.toString().replace(" ","").equals("[ ]")) {
+                        PRGDataModel.getInstance().tblPRGFacilitiesPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
+                    } else {
+                        var item = PRGFacilityPhotos()
+                        item.photoid = -1
+                        PRGDataModel.getInstance().tblPRGFacilitiesPhotos.add(item)
                     }
-                }, Response.ErrorListener {
-            Log.v("Loading PRG Data error", "" + it.message)
-            it.printStackTrace()
-        }))
+                    Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getLoggedActions + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}&userId="+ApplicationPrefs.getInstance(context).loggedInUserID,
+                        { response ->
+                            requireActivity().runOnUiThread {
+                                if (!response.toString().replace(" ","").equals("[]")) {
+                                    PRGDataModel.getInstance().tblPRGLogChanges = Gson().fromJson(response.toString(), Array<PRGLogChanges>::class.java).toCollection(ArrayList())
+                                } else {
+                                    var item = PRGLogChanges()
+                                    item.recordid=-1
+                                    PRGDataModel.getInstance().tblPRGLogChanges.add(item)
+                                }
+                                Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getVisitationHeader + FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubCode=${FacilityDataModel.getInstance().clubCode}",
+                                    { response ->
+                                        requireActivity().runOnUiThread {
+                                            if (!response.toString().replace(" ","").equals("[]")) {
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader= Gson().fromJson(response.toString(), Array<PRGVisitationHeader>::class.java).toCollection(ArrayList())
+                                            } else {
+                                                var item = PRGVisitationHeader()
+                                                item.recordid=-1
+                                                PRGDataModel.getInstance().tblPRGVisitationHeader.add(item)
+//                                                            launchNextAction()
+                                            }
+                                            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getRepairDiscountFactors + "${FacilityDataModel.getInstance().clubCode}",
+                                                    Response.Listener { response ->
+                                                        requireActivity().runOnUiThread {
+                                                            if (!response.toString().replace(" ","").equals("[]")) {
+                                                                PRGDataModel.getInstance().tblPRGRepairDiscountFactors= Gson().fromJson(response.toString(), Array<PRGRepairDiscountFactors>::class.java).toCollection(ArrayList())
+                                                            } else {
+                                                                var item = PRGRepairDiscountFactors()
+                                                                item.clubcode= FacilityDataModel.getInstance().clubCode
+                                                                PRGDataModel.getInstance().tblPRGRepairDiscountFactors.add(item)
+                                                            }
+                                                            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPersonnelDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                    Response.Listener { response ->
+                                                                        requireActivity().runOnUiThread {
+                                                                            if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                PRGDataModel.getInstance().tblPRGPersonnelDetails= Gson().fromJson(response.toString(), Array<PRGPersonnelDetails>::class.java).toCollection(ArrayList())
+                                                                            } else {
+                                                                                var item = PRGPersonnelDetails()
+                                                                                item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                PRGDataModel.getInstance().tblPRGPersonnelDetails.add(item)
+                                                                            }
+                                                                            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGFacilityDetails + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                    Response.Listener { response ->
+                                                                                        requireActivity().runOnUiThread {
+                                                                                            if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                PRGDataModel.getInstance().tblPRGFacilityDetails= Gson().fromJson(response.toString(), Array<PRGFacilityDetails>::class.java).toCollection(ArrayList())
+                                                                                            } else {
+                                                                                                var item = PRGFacilityDetails()
+                                                                                                item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                                item.facid = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                                PRGDataModel.getInstance().tblPRGFacilityDetails.add(item)
+                                                                                            }
+                                                                                            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getFacilityDirectors + "${FacilityDataModel.getInstance().clubCode}&facNum="+FacilityDataModel.getInstance().tblFacilities[0].FACNo,
+                                                                                                    Response.Listener { response ->
+                                                                                                        requireActivity().runOnUiThread {
+                                                                                                            Log.v("Load Director ", " --> 1")
+                                                                                                            if (!response.toString().replace(" ","").equals("[]")) {
+                                                                                                                Log.v("Load Director ", " --> 2")
+                                                                                                                PRGDataModel.getInstance().tblPRGFacilityDirectors= Gson().fromJson(response.toString(), Array<PRGFacilityDirectors>::class.java).toCollection(ArrayList())
+                                                                                                            } else {
+                                                                                                                Log.v("Load Director ", " --> 3")
+                                                                                                                var item = PRGFacilityDirectors()
+                                                                                                                item.clubcode= FacilityDataModel.getInstance().clubCode.toInt()
+                                                                                                                item.facnum = FacilityDataModel.getInstance().tblFacilities[0].FACNo
+                                                                                                                item.specialistid = -1
+                                                                                                                item.directorid = -1
+                                                                                                                item.directoremail = ""
+                                                                                                                PRGDataModel.getInstance().tblPRGFacilityDirectors.add(item)
+                                                                                                            }
+                                                                                                            launchNextAction()
+                                                                                                        }
+                                                                                                    }, Response.ErrorListener {
+                                                                                                Log.v("Load Director ", " --> 4")
+                                                                                                Log.v("Loading PRG Data error", "" + it.message)
+//                                                                                                            launchNextAction()
+                                                                                                it.printStackTrace()
+                                                                                            }))
+                                                                                        }
+                                                                                    }, Response.ErrorListener {
+                                                                                Log.v("Loading PRG Data error", "" + it.message)
+//                                                                                            launchNextAction()
+                                                                                it.printStackTrace()
+                                                                            }))
+                                                                        }
+                                                                    }, Response.ErrorListener {
+                                                                Log.v("Loading PRG Data error", "" + it.message)
+                                                                it.printStackTrace()
+                                                            }))
+                                                        }
+                                                    }, Response.ErrorListener {
+                                                Log.v("Loading PRG Data error", "" + it.message)
+                                                it.printStackTrace()
+                                            }))
+                                        }
+                                    },
+                                    {
+                                Log.v("Loading PRG Data error", "" + it.message)
+                                it.printStackTrace()
+                            }))
+//                                        launchNextAction(isCompleted)
+                            }
+                        },
+                        {
+                    Log.v("Loading PRG Data error", "" + it.message)
+//                            launchNextAction(isCompleted)
+                    it.printStackTrace()
+                }))
+
+                }
+            },
+            {
+        Log.v("Loading PRG Data error", "" + it.message)
+        it.printStackTrace()
+    }))
     }
 
 
-    fun parseFacilityDataJsonToObject(jsonObj: JSONObject) {
+    fun parseFacilityDataJsonToObject(jsonObj: JsonObject) {
         FacilityDataModel.getInstance().clear()
         FacilityDataModelOrg.getInstance().clear()
         FacilityDataModel.getInstance().clubCode = clubCode
@@ -1235,7 +1225,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
                 FacilityDataModel.getInstance().FacilityPhotos.add(Gson().fromJson<FacilityPhotos>(jsonObj.get("FacilityPhotos").toString(), FacilityPhotos::class.java))
                 FacilityDataModelOrg.getInstance().FacilityPhotos.add(Gson().fromJson<FacilityPhotos>(jsonObj.get("FacilityPhotos").toString(), FacilityPhotos::class.java))
             }
-            if (FacilityDataModel.getInstance().FacilityPhotos.length>0) {
+            if (FacilityDataModel.getInstance().FacilityPhotos.size>0) {
                 getPhotosS3Urls()
             }
         }
@@ -1254,810 +1244,813 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         HasChangedModel.getInstance().init()
     }
 
-    fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {
-        var jsonObj = jsonObjOrg;
 
-        if (jsonObj.has("tblSurveySoftwares")) {
-            if (!jsonObj.get("tblSurveySoftwares").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblSurveySoftwares")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblSurveySoftwares"))
-                    jsonObj.put("tblSurveySoftwares", result)
-                } catch (e: Exception) {
 
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblSurveySoftwares")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblSurveySoftwares")
-        }
 
-        if (jsonObj.has("tblAddress")) {
-            if (!jsonObj.get("tblAddress").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblAddress")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblAddress"))
-                    jsonObj.put("tblAddress", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblAddress")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblAddress")
-        }
-
-        if (jsonObj.has("tblFacilityEmail")) {
-            if (!jsonObj.get("tblFacilityEmail").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacilityEmail")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacilityEmail"))
-                    jsonObj.put("tblFacilityEmail", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityEmail")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblFacilityEmail")
-        }
-
-
-        if (jsonObj.has("tblPhone")) {
-            if (!jsonObj.get("tblPhone").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblPhone")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblPhone"))
-                    jsonObj.put("tblPhone", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblPhone")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblPhone")
-        }
-
-        if (jsonObj.has("tblOfficeType")) {
-            if (!jsonObj.get("tblOfficeType").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblOfficeType")
-                    for (i in result.length()-1 downTo 0){
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblOfficeType"))
-                    jsonObj.put("tblOfficeType",result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblOfficeType")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblOfficeType")
-        }
-
-        if (jsonObj.has("tblPersonnel")) {
-            if (!jsonObj.get("tblPersonnel").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblPersonnel")
-                    for (i in result.length()-1 downTo 0){
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblPersonnel"))
-                    jsonObj.put("tblPersonnel",result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblPersonnel")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblPersonnel")
-        }
-
-        if (jsonObj.has("tblAmendmentOrderTracking")) {
-            if (!jsonObj.get("tblAmendmentOrderTracking").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblAmendmentOrderTracking")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblAmendmentOrderTracking"))
-                    jsonObj.put("tblAmendmentOrderTracking", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblAmendmentOrderTracking")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblAmendmentOrderTracking")
-        }
-
-        if (jsonObj.has("tblAARPortalAdmin")) {
-            if (!jsonObj.get("tblAARPortalAdmin").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblAARPortalAdmin")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblAARPortalAdmin"))
-                    jsonObj.put("tblAARPortalAdmin", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalAdmin")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblAARPortalAdmin")
-        }
-
-
-        if (jsonObj.has("tblScopeofService")) {
-            if (!jsonObj.get("tblScopeofService").toString().equals("")) {
-            try {
-                var result = jsonObj.getJSONArray("tblScopeofService")
-                for (i in result.length() - 1 downTo 0) {
-                    if (result[i].toString().equals("")) result.remove(i);
-                }
-                jsonObj.remove(("tblScopeofService"))
-                jsonObj.put("tblScopeofService", result)
-            } catch (e:Exception){
-
-            }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblScopeofService")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblScopeofService")
-        }
-
-        if (jsonObj.has("tblPrograms")) {
-            if (!jsonObj.get("tblPrograms").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblPrograms")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblPrograms"))
-                    jsonObj.put("tblPrograms", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblPrograms")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblPrograms")
-        }
-
-        // check if the tag exists
-        if (jsonObj.has("tblFacilityServices")) {
-            if (!jsonObj.get("tblFacilityServices").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacilityServices")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacilityServices"))
-                    jsonObj.put("tblFacilityServices", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj,"tblFacilityServices")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblFacilityServices")
-        }
-
-        if (jsonObj.has("tblAffiliations")) {
-            if (!jsonObj.get("tblAffiliations").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblAffiliations")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblAffiliations"))
-                    jsonObj.put("tblAffiliations", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblAffiliations")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblAffiliations")
-        }
-
-        if (jsonObj.has("tblDeficiency")) {
-            if (!jsonObj.get("tblDeficiency").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblDeficiency")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblDeficiency"))
-                    jsonObj.put("tblDeficiency",result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblDeficiency")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblDeficiency")
-        }
-
-        if (jsonObj.has("tblComplaintFiles")) {
-            if (!jsonObj.get("tblComplaintFiles").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblComplaintFiles")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblComplaintFiles"))
-                    jsonObj.put("tblComplaintFiles", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblComplaintFiles")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblComplaintFiles")
-        }
-
-        if (jsonObj.has("tblFacilityPhotos")) {
-            if (!jsonObj.get("tblFacilityPhotos").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacilityPhotos")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacilityPhotos"))
-                    jsonObj.put("tblFacilityPhotos", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityPhotos")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityPhotos")
-        }
-
-        if (jsonObj.has("Billing")) {
-            if (!jsonObj.get("Billing").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("Billing")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("Billing"))
-                    jsonObj.put("Billing", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblBilling")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblBilling")
-        }
-
-        if (jsonObj.has("BillingPlan")) {
-            if (!jsonObj.get("BillingPlan").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("BillingPlan")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("BillingPlan"))
-                    jsonObj.put("BillingPlan", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "BillingPlan")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "BillingPlan")
-        }
-
-        if (jsonObj.has("tblFacilityBillingDetail")) {
-            if (!jsonObj.get("tblFacilityBillingDetail").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacilityBillingDetail")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacilityBillingDetail"))
-                    jsonObj.put("tblFacilityBillingDetail", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingDetail")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingDetail")
-        }
-
-        if (jsonObj.has("tblInvoiceInfo")) {
-            if (!jsonObj.get("tblInvoiceInfo").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblInvoiceInfo")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblInvoiceInfo"))
-                    jsonObj.put("tblInvoiceInfo", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblInvoiceInfo")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblInvoiceInfo")
-        }
-
-        if (jsonObj.has("tblVisitationTracking")) {
-            if (!jsonObj.get("tblVisitationTracking").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblVisitationTracking")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblVisitationTracking"))
-                    jsonObj.put("tblVisitationTracking", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblVisitationTracking")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj,"tblVisitationTracking")
-        }
-
-        if (jsonObj.has("VendorRevenue")) {
-            if (!jsonObj.get("VendorRevenue").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("VendorRevenue")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("VendorRevenue"))
-                    jsonObj.put("VendorRevenue", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
-        }
-
-        if (jsonObj.has("BillingHistory")) {
-            if (!jsonObj.get("BillingHistory").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("BillingHistory")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("BillingHistory"))
-                    jsonObj.put("BillingHistory", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "BillingHistory")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "BillingHistory")
-        }
-
-        if (jsonObj.has("tblComments")) {
-            if (!jsonObj.get("tblComments").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblComments")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblComments"))
-                    jsonObj.put("tblComments", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblComments")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblComments")
-        }
-
-        if (jsonObj.has("tblVehicleServices")) {
-            if (!jsonObj.get("tblVehicleServices").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblVehicleServices")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblVehicleServices"))
-                    jsonObj.put("tblVehicleServices", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblVehicleServices")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblVehicleServices")
-        }
-        if (jsonObj.has("tblAARPortalTracking")) {
-            if (!jsonObj.get("tblAARPortalTracking").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblAARPortalTracking")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblAARPortalTracking"))
-                    jsonObj.put("tblAARPortalTracking", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalTracking")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalTracking")
-        }
-
-        if (jsonObj.has("tblPersonnelCertification")) {
-            if (!jsonObj.get("tblPersonnelCertification").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblPersonnelCertification")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblPersonnelCertification"))
-                    jsonObj.put("tblPersonnelCertification", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelCertification")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelCertification")
-        }
-
-        if (jsonObj.has("BillingAdjustments")) {
-            if (!jsonObj.get("BillingAdjustments").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("BillingAdjustments")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("BillingAdjustments"))
-                    jsonObj.put("BillingAdjustments", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "BillingAdjustments")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "BillingAdjustments")
-        }
-
-        if (jsonObj.has("tblAAAPortalEmailFacilityRepTable")) {
-            if (!jsonObj.get("tblAAAPortalEmailFacilityRepTable").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblAAAPortalEmailFacilityRepTable")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblAAAPortalEmailFacilityRepTable"))
-                    jsonObj.put("tblAAAPortalEmailFacilityRepTable", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblAAAPortalEmailFacilityRepTable")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblAAAPortalEmailFacilityRepTable")
-        }
-
-        if (jsonObj.has("InvoiceInfo")) {
-            if (!jsonObj.get("InvoiceInfo").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("InvoiceInfo")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("InvoiceInfo"))
-                    jsonObj.put("InvoiceInfo", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "InvoiceInfo")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "InvoiceInfo")
-        }
-
-        if (jsonObj.has("tblFacVehicles")) {
-            if (!jsonObj.get("tblFacVehicles").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacVehicles")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacVehicles"))
-                    jsonObj.put("tblFacVehicles", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacVehicles")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblFacVehicles")
-        }
-
-        if (jsonObj.has("tblPersonnelSigner")) {
-            if (!jsonObj.get("tblPersonnelSigner").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblPersonnelSigner")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblPersonnelSigner"))
-                    jsonObj.put("tblPersonnelSigner", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelSigner")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelSigner")
-        }
-
-
-        if (jsonObj.has("tblHours")) {
-            if (!jsonObj.get("tblHours").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblHours")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblHours"))
-                    jsonObj.put("tblHours", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblHours")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblHours")
-        }
-        if (jsonObj.has("tblTerminationCodeType")) {
-            if (!jsonObj.get("tblTerminationCodeType").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblTerminationCodeType")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblTerminationCodeType"))
-                    jsonObj.put("tblTerminationCodeType", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblTerminationCodeType")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblTerminationCodeType")
-        }
-
-        if (jsonObj.has("tblBusinessType")) {
-            if (!jsonObj.get("tblBusinessType").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblBusinessType")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblBusinessType"))
-                    jsonObj.put("tblBusinessType", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblBusinessType")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblBusinessType")
-        }
-
-        if (jsonObj.has("tblFacilityClosure")) {
-            if (!jsonObj.get("tblFacilityClosure").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacilityClosure")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacilityClosure"))
-                    jsonObj.put("tblFacilityClosure", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
-        }
-
-        if (jsonObj.has("tblFacilityManagers")) {
-            if (!jsonObj.get("tblFacilityManagers").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacilityManagers")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacilityManagers"))
-                    jsonObj.put("tblFacilityManagers", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
-        }
-        if (jsonObj.has("tblFacilityServiceProvider")) {
-            if (!jsonObj.get("tblFacilityServiceProvider").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacilityServiceProvider")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacilityServiceProvider"))
-                    jsonObj.put("tblFacilityServiceProvider", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
-        }
-
-        if (jsonObj.has("VendorRevenue")) {
-            if (!jsonObj.get("VendorRevenue").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("VendorRevenue")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("VendorRevenue"))
-                    jsonObj.put("VendorRevenue", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
-        }
-
-        if (jsonObj.has("tblFacilityType")) {
-            if (!jsonObj.get("tblFacilityType").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacilityType")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacilityType"))
-                    jsonObj.put("tblFacilityType", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
-        }
-
-        if (jsonObj.has("Promotions")) {
-            if (!jsonObj.get("Promotions").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("Promotions")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("Promotions"))
-                    jsonObj.put("Promotions", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "Promotions")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "Promotions")
-        }
-
-        if (jsonObj.has("FacilityPhotos")) {
-            if (!jsonObj.get("FacilityPhotos").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("FacilityPhotos")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("FacilityPhotos"))
-                    jsonObj.put("FacilityPhotos", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "FacilityPhotos")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "FacilityPhotos")
-        }
-
-        if (jsonObj.has("tblFacilityBillingHeader")) {
-            if (!jsonObj.get("tblFacilityBillingHeader").toString().equals("")) {
-                try {
-                    var result = jsonObj.getJSONArray("tblFacilityBillingHeader")
-                    for (i in result.length() - 1 downTo 0) {
-                        if (result[i].toString().equals("")) result.remove(i);
-                    }
-                    jsonObj.remove(("tblFacilityBillingHeader"))
-                    jsonObj.put("tblFacilityBillingHeader", result)
-                } catch (e: Exception) {
-
-                }
-            } else {
-                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingHeader")
-            }
-        } else {
-            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingHeader")
-        }
-
-        return jsonObj
-    }
+//    fun removeEmptyJsonTags(jsonObjOrg : JSONObject) : JSONObject {
+//        var jsonObj = jsonObjOrg;
+//
+//        if (jsonObj.has("tblSurveySoftwares")) {
+//            if (!jsonObj.get("tblSurveySoftwares").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblSurveySoftwares")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblSurveySoftwares"))
+//                    jsonObj.put("tblSurveySoftwares", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblSurveySoftwares")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblSurveySoftwares")
+//        }
+//
+//        if (jsonObj.has("tblAddress")) {
+//            if (!jsonObj.get("tblAddress").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblAddress")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblAddress"))
+//                    jsonObj.put("tblAddress", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblAddress")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblAddress")
+//        }
+//
+//        if (jsonObj.has("tblFacilityEmail")) {
+//            if (!jsonObj.get("tblFacilityEmail").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacilityEmail")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacilityEmail"))
+//                    jsonObj.put("tblFacilityEmail", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityEmail")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblFacilityEmail")
+//        }
+//
+//
+//        if (jsonObj.has("tblPhone")) {
+//            if (!jsonObj.get("tblPhone").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblPhone")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblPhone"))
+//                    jsonObj.put("tblPhone", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblPhone")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblPhone")
+//        }
+//
+//        if (jsonObj.has("tblOfficeType")) {
+//            if (!jsonObj.get("tblOfficeType").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblOfficeType")
+//                    for (i in result.length()-1 downTo 0){
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblOfficeType"))
+//                    jsonObj.put("tblOfficeType",result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblOfficeType")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblOfficeType")
+//        }
+//
+//        if (jsonObj.has("tblPersonnel")) {
+//            if (!jsonObj.get("tblPersonnel").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblPersonnel")
+//                    for (i in result.length()-1 downTo 0){
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblPersonnel"))
+//                    jsonObj.put("tblPersonnel",result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblPersonnel")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblPersonnel")
+//        }
+//
+//        if (jsonObj.has("tblAmendmentOrderTracking")) {
+//            if (!jsonObj.get("tblAmendmentOrderTracking").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblAmendmentOrderTracking")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblAmendmentOrderTracking"))
+//                    jsonObj.put("tblAmendmentOrderTracking", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblAmendmentOrderTracking")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblAmendmentOrderTracking")
+//        }
+//
+//        if (jsonObj.has("tblAARPortalAdmin")) {
+//            if (!jsonObj.get("tblAARPortalAdmin").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblAARPortalAdmin")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblAARPortalAdmin"))
+//                    jsonObj.put("tblAARPortalAdmin", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalAdmin")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblAARPortalAdmin")
+//        }
+//
+//
+//        if (jsonObj.has("tblScopeofService")) {
+//            if (!jsonObj.get("tblScopeofService").toString().equals("")) {
+//            try {
+//                var result = jsonObj.getJSONArray("tblScopeofService")
+//                for (i in result.length() - 1 downTo 0) {
+//                    if (result[i].toString().equals("")) result.remove(i);
+//                }
+//                jsonObj.remove(("tblScopeofService"))
+//                jsonObj.put("tblScopeofService", result)
+//            } catch (e:Exception){
+//
+//            }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblScopeofService")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblScopeofService")
+//        }
+//
+//        if (jsonObj.has("tblPrograms")) {
+//            if (!jsonObj.get("tblPrograms").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblPrograms")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblPrograms"))
+//                    jsonObj.put("tblPrograms", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblPrograms")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblPrograms")
+//        }
+//
+//        // check if the tag exists
+//        if (jsonObj.has("tblFacilityServices")) {
+//            if (!jsonObj.get("tblFacilityServices").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacilityServices")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacilityServices"))
+//                    jsonObj.put("tblFacilityServices", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj,"tblFacilityServices")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblFacilityServices")
+//        }
+//
+//        if (jsonObj.has("tblAffiliations")) {
+//            if (!jsonObj.get("tblAffiliations").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblAffiliations")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblAffiliations"))
+//                    jsonObj.put("tblAffiliations", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblAffiliations")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblAffiliations")
+//        }
+//
+//        if (jsonObj.has("tblDeficiency")) {
+//            if (!jsonObj.get("tblDeficiency").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblDeficiency")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblDeficiency"))
+//                    jsonObj.put("tblDeficiency",result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblDeficiency")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblDeficiency")
+//        }
+//
+//        if (jsonObj.has("tblComplaintFiles")) {
+//            if (!jsonObj.get("tblComplaintFiles").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblComplaintFiles")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblComplaintFiles"))
+//                    jsonObj.put("tblComplaintFiles", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblComplaintFiles")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblComplaintFiles")
+//        }
+//
+//        if (jsonObj.has("tblFacilityPhotos")) {
+//            if (!jsonObj.get("tblFacilityPhotos").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacilityPhotos")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacilityPhotos"))
+//                    jsonObj.put("tblFacilityPhotos", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityPhotos")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityPhotos")
+//        }
+//
+//        if (jsonObj.has("Billing")) {
+//            if (!jsonObj.get("Billing").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("Billing")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("Billing"))
+//                    jsonObj.put("Billing", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblBilling")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblBilling")
+//        }
+//
+//        if (jsonObj.has("BillingPlan")) {
+//            if (!jsonObj.get("BillingPlan").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("BillingPlan")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("BillingPlan"))
+//                    jsonObj.put("BillingPlan", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "BillingPlan")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "BillingPlan")
+//        }
+//
+//        if (jsonObj.has("tblFacilityBillingDetail")) {
+//            if (!jsonObj.get("tblFacilityBillingDetail").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacilityBillingDetail")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacilityBillingDetail"))
+//                    jsonObj.put("tblFacilityBillingDetail", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingDetail")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingDetail")
+//        }
+//
+//        if (jsonObj.has("tblInvoiceInfo")) {
+//            if (!jsonObj.get("tblInvoiceInfo").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblInvoiceInfo")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblInvoiceInfo"))
+//                    jsonObj.put("tblInvoiceInfo", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblInvoiceInfo")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblInvoiceInfo")
+//        }
+//
+//        if (jsonObj.has("tblVisitationTracking")) {
+//            if (!jsonObj.get("tblVisitationTracking").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblVisitationTracking")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblVisitationTracking"))
+//                    jsonObj.put("tblVisitationTracking", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblVisitationTracking")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj,"tblVisitationTracking")
+//        }
+//
+//        if (jsonObj.has("VendorRevenue")) {
+//            if (!jsonObj.get("VendorRevenue").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("VendorRevenue")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("VendorRevenue"))
+//                    jsonObj.put("VendorRevenue", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
+//        }
+//
+//        if (jsonObj.has("BillingHistory")) {
+//            if (!jsonObj.get("BillingHistory").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("BillingHistory")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("BillingHistory"))
+//                    jsonObj.put("BillingHistory", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "BillingHistory")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "BillingHistory")
+//        }
+//
+//        if (jsonObj.has("tblComments")) {
+//            if (!jsonObj.get("tblComments").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblComments")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblComments"))
+//                    jsonObj.put("tblComments", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblComments")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblComments")
+//        }
+//
+//        if (jsonObj.has("tblVehicleServices")) {
+//            if (!jsonObj.get("tblVehicleServices").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblVehicleServices")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblVehicleServices"))
+//                    jsonObj.put("tblVehicleServices", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblVehicleServices")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblVehicleServices")
+//        }
+//        if (jsonObj.has("tblAARPortalTracking")) {
+//            if (!jsonObj.get("tblAARPortalTracking").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblAARPortalTracking")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblAARPortalTracking"))
+//                    jsonObj.put("tblAARPortalTracking", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalTracking")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblAARPortalTracking")
+//        }
+//
+//        if (jsonObj.has("tblPersonnelCertification")) {
+//            if (!jsonObj.get("tblPersonnelCertification").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblPersonnelCertification")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblPersonnelCertification"))
+//                    jsonObj.put("tblPersonnelCertification", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelCertification")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelCertification")
+//        }
+//
+//        if (jsonObj.has("BillingAdjustments")) {
+//            if (!jsonObj.get("BillingAdjustments").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("BillingAdjustments")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("BillingAdjustments"))
+//                    jsonObj.put("BillingAdjustments", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "BillingAdjustments")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "BillingAdjustments")
+//        }
+//
+//        if (jsonObj.has("tblAAAPortalEmailFacilityRepTable")) {
+//            if (!jsonObj.get("tblAAAPortalEmailFacilityRepTable").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblAAAPortalEmailFacilityRepTable")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblAAAPortalEmailFacilityRepTable"))
+//                    jsonObj.put("tblAAAPortalEmailFacilityRepTable", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblAAAPortalEmailFacilityRepTable")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblAAAPortalEmailFacilityRepTable")
+//        }
+//
+//        if (jsonObj.has("InvoiceInfo")) {
+//            if (!jsonObj.get("InvoiceInfo").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("InvoiceInfo")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("InvoiceInfo"))
+//                    jsonObj.put("InvoiceInfo", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "InvoiceInfo")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "InvoiceInfo")
+//        }
+//
+//        if (jsonObj.has("tblFacVehicles")) {
+//            if (!jsonObj.get("tblFacVehicles").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacVehicles")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacVehicles"))
+//                    jsonObj.put("tblFacVehicles", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblFacVehicles")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblFacVehicles")
+//        }
+//
+//        if (jsonObj.has("tblPersonnelSigner")) {
+//            if (!jsonObj.get("tblPersonnelSigner").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblPersonnelSigner")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblPersonnelSigner"))
+//                    jsonObj.put("tblPersonnelSigner", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelSigner")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblPersonnelSigner")
+//        }
+//
+//
+//        if (jsonObj.has("tblHours")) {
+//            if (!jsonObj.get("tblHours").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblHours")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblHours"))
+//                    jsonObj.put("tblHours", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblHours")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblHours")
+//        }
+//        if (jsonObj.has("tblTerminationCodeType")) {
+//            if (!jsonObj.get("tblTerminationCodeType").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblTerminationCodeType")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblTerminationCodeType"))
+//                    jsonObj.put("tblTerminationCodeType", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblTerminationCodeType")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblTerminationCodeType")
+//        }
+//
+//        if (jsonObj.has("tblBusinessType")) {
+//            if (!jsonObj.get("tblBusinessType").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblBusinessType")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblBusinessType"))
+//                    jsonObj.put("tblBusinessType", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblBusinessType")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblBusinessType")
+//        }
+//
+//        if (jsonObj.has("tblFacilityClosure")) {
+//            if (!jsonObj.get("tblFacilityClosure").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacilityClosure")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacilityClosure"))
+//                    jsonObj.put("tblFacilityClosure", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityClosure")
+//        }
+//
+//        if (jsonObj.has("tblFacilityManagers")) {
+//            if (!jsonObj.get("tblFacilityManagers").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacilityManagers")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacilityManagers"))
+//                    jsonObj.put("tblFacilityManagers", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityManagers")
+//        }
+//        if (jsonObj.has("tblFacilityServiceProvider")) {
+//            if (!jsonObj.get("tblFacilityServiceProvider").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacilityServiceProvider")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacilityServiceProvider"))
+//                    jsonObj.put("tblFacilityServiceProvider", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityServiceProvider")
+//        }
+//
+//        if (jsonObj.has("VendorRevenue")) {
+//            if (!jsonObj.get("VendorRevenue").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("VendorRevenue")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("VendorRevenue"))
+//                    jsonObj.put("VendorRevenue", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "VendorRevenue")
+//        }
+//
+//        if (jsonObj.has("tblFacilityType")) {
+//            if (!jsonObj.get("tblFacilityType").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacilityType")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacilityType"))
+//                    jsonObj.put("tblFacilityType", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityType")
+//        }
+//
+//        if (jsonObj.has("Promotions")) {
+//            if (!jsonObj.get("Promotions").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("Promotions")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("Promotions"))
+//                    jsonObj.put("Promotions", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "Promotions")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "Promotions")
+//        }
+//
+//        if (jsonObj.has("FacilityPhotos")) {
+//            if (!jsonObj.get("FacilityPhotos").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("FacilityPhotos")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("FacilityPhotos"))
+//                    jsonObj.put("FacilityPhotos", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "FacilityPhotos")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "FacilityPhotos")
+//        }
+//
+//        if (jsonObj.has("tblFacilityBillingHeader")) {
+//            if (!jsonObj.get("tblFacilityBillingHeader").toString().equals("")) {
+//                try {
+//                    var result = jsonObj.getJSONArray("tblFacilityBillingHeader")
+//                    for (i in result.length() - 1 downTo 0) {
+//                        if (result[i].toString().equals("")) result.remove(i);
+//                    }
+//                    jsonObj.remove(("tblFacilityBillingHeader"))
+//                    jsonObj.put("tblFacilityBillingHeader", result)
+//                } catch (e: Exception) {
+//
+//                }
+//            } else {
+//                jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingHeader")
+//            }
+//        } else {
+//            jsonObj = addOneElementtoKey(jsonObj, "tblFacilityBillingHeader")
+//        }
+//
+//        return jsonObj
+//    }
 
     fun getPhotosS3Urls() {
         FacilityDataModel.getInstance().FacilityPhotos.sortWith(
@@ -2093,7 +2086,7 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         Log.v("TEST ==>","HERE")
     }
 
-    fun addOneElementtoKey (jsonObj: JSONObject, key: String) : JSONObject {
+    fun addOneElementtoKey (jsonObj: JsonObject, key: String) : JsonObject {
         if (key.equals("tblFacilityServices")) {
             var oneArray = TblFacilityServices();
             oneArray.Comments = "";
@@ -2101,7 +2094,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.effDate = "";
             oneArray.expDate = "";
             oneArray.FacilityServicesID="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAffiliations")) {
             var oneArray = TblAffiliations()
             oneArray.AffiliationID = -1
@@ -2109,7 +2105,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.AffiliationTypeID = 0
             oneArray.effDate = "";
             oneArray.comment = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblDeficiency")) {
             var oneArray = TblDeficiency()
             oneArray.ClearedDate = ""
@@ -2117,14 +2116,20 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.DefTypeID = "-1"
             oneArray.EnteredDate = ""
             oneArray.VisitationDate = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblComplaintFiles")) {
             var oneArray = TblComplaintFiles()
             oneArray.ComplaintID = ""
             oneArray.FirstName = ""
             oneArray.LastName = ""
             oneArray.ReceivedDate = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAmendmentOrderTracking")) {
             var oneArray = TblAmendmentOrderTracking()
             oneArray.AOID = ""
@@ -2132,7 +2137,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.EventTypeID = ""
             oneArray.EventID = ""
             oneArray.AOTEmployee = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblScopeofService")) {
             var oneArray = TblScopeofService()
             oneArray.WarrantyTypeID=""
@@ -2142,7 +2150,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.LaborMax=""
             oneArray.LaborMin=""
             oneArray.NumOfBays=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblSurveySoftwares")) {
             var oneArray = TblSurveySoftwares()
             oneArray.FACID=0
@@ -2151,7 +2162,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.insertDate=""
             oneArray.updateBy=""
             oneArray.updateDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAddress")) {
             var oneArray = TblAddress()
             oneArray.BranchName=""
@@ -2166,7 +2180,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.ST=""
             oneArray.ZIP=""
             oneArray.ZIP4=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblVisitationTracking")) {
             var oneArray = TblVisitationTracking()
             oneArray.AARSigns=""
@@ -2185,25 +2202,37 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.waiveVisitations=false
             oneArray.waiverComments=""
             oneArray.waiverSignature=null
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityEmail")) {
             var oneArray = TblFacilityEmail()
             oneArray.email=""
             oneArray.emailID="-1"
             oneArray.emailTypeId=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPhone")) {
             var oneArray = TblPhone()
             oneArray.PhoneNumber=""
             oneArray.PhoneTypeID=""
             oneArray.PhoneID="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAARPortalAdmin")) {
             var oneArray = TblAARPortalAdmin()
             oneArray.AddendumSigned=""
             oneArray.CardReaders="-1"
             oneArray.startDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPrograms")) {
             var oneArray = TblPrograms()
             oneArray.Comments=""
@@ -2211,7 +2240,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.effDate=""
             oneArray.expDate=""
             oneArray.programtypename=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityPhotos")) {
             var oneArray = TblFacilityPhotos()
             oneArray.ApprovalRequested=""
@@ -2222,7 +2254,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.FileName=""
             oneArray.LastUpdateBy=""
             oneArray.LastUpdateDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("Billing")) {
             var oneArray = TblBilling()
             oneArray.ACHParticipant=0
@@ -2241,7 +2276,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.insertDate=""
             oneArray.updateBy=""
             oneArray.updateDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("BillingPlan")) {
             var oneArray = TblBillingPlan()
             oneArray.BillingPlanCatgID=0
@@ -2255,7 +2293,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.insertDate=""
             oneArray.updateBy=""
             oneArray.updateDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityBillingDetail")) {
             var oneArray = TblFacilityBillingDetail()
             oneArray.FacBillId=-1
@@ -2268,7 +2309,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.insertBy=""
             oneArray.insertDate=""
             oneArray.BillingInvoiceDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblInvoiceInfo")) {
             var oneArray = TblInvoiceInfo()
             oneArray.ACHParticipant=false
@@ -2284,7 +2328,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.updateDate=""
             oneArray.InvoicePrintDate=""
             oneArray.InvoiceStatusId=0
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("VendorRevenue")) {
             var oneArray = TblVendorRevenue()
             oneArray.Amount=""
@@ -2301,15 +2348,24 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.RevenueSourceID=0
             oneArray.StateRevenueAcct=""
             oneArray.VendorRevenueID=-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("BillingHistory")) {
             var oneArray = TblBillingHistory()
             oneArray.InvoiceId = -1
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblOfficeType")) {
             var oneArray = TblOfficeType()
             oneArray.OfficeName=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblComments")) {
             var oneArray = TblComments()
             oneArray.FACID=0
@@ -2317,7 +2373,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.insertDate=""
             oneArray.CommentTypeID=0
             oneArray.SeqNum=0
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPersonnel")) {
             var oneArray = TblPersonnel()
             oneArray.Addr1=""
@@ -2342,7 +2401,10 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.ZIP4=""
             oneArray.email=""
             oneArray.startDate=""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblVehicleServices")) {
             var oneArray = TblVehicleServices()
             oneArray.FACID = 0
@@ -2350,71 +2412,125 @@ class AppAdHockVisitationFilterFragment : Fragment() {
             oneArray.VehiclesTypeID = -1
             oneArray.insertBy=""
             oneArray.insertDate = ""
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAARPortalTracking")) {
             var oneArray = TblAARPortalTracking()
             oneArray.TrackingID="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPersonnelCertification")) {
             var oneArray = TblPersonnelCertification()
             oneArray.PersonnelID=0
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("BillingAdjustments")) {
             var oneArray = TblBillingAdjustments()
             oneArray.AdjustmentId=-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblAAAPortalEmailFacilityRepTable")) {
             var oneArray = TblAAAPortalEmailFacilityRepTable()
             oneArray.ContractSID="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("InvoiceInfo")) {
             var oneArray = InvoiceInfo()
             oneArray.InvoiceId="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacVehicles")) {
             var oneArray = TblFacVehicles()
             oneArray.VehicleID =-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblPersonnelSigner")) {
             var oneArray = TblPersonnelSigner()
             oneArray.PersonnelID = -1
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblHours")) {
             var oneArray = TblHours()
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblBusinessType")) {
             var oneArray = TblBusinessType()
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblTerminationCodeType")) {
             var oneArray = TblBusinessType()
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityClosure")) {
             var oneArray = TblFacilityClosure()
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityManagers")) {
             var oneArray = TblFacilityManagers()
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityServiceProvider")) {
             var oneArray = TblFacilityServiceProvider()
             oneArray.SrvProviderId="-1"
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityType")) {
             var oneArray = TblFacilityType()
             oneArray.FacilityTypeName="Independent"
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("Promotions")) {
             var oneArray = TblPromotions()
             oneArray.PromoID=-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("FacilityPhotos")) {
             var oneArray = FacilityPhotos()
             oneArray.PhotoId=-1
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         } else if (key.equals("tblFacilityBillingHeader")) {
             var oneArray = TblFacilityBillingHeader()
             oneArray.FACId=-1
             oneArray.ACHParticipant=false
-            jsonObj.put(key, Gson().toJson(oneArray))
+//            jsonObj.put(key, Gson().toJson(oneArray))
+            val array = JsonArray()
+            array.add(Gson().toJsonTree(oneArray))
+            jsonObj.add(key, array)
         }
 
 
@@ -2425,17 +2541,19 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         var facilityNameValueTextView: TextView? = null
         var facilityNumberValueTextView: TextView? = null
         var adHocClubCodeValueTextView: TextView? = null
-        var adHocStatusValueTextView: TextView? = null
+        var adHocStatusValueTextView: Chip? = null
         var visitationCityView: TextView? = null
         var loadFacilityButton: Button? = null
+        val todayCB: CheckBox
 
         init {
             this.facilityNameValueTextView = view?.findViewById(R.id.facilityNameValueTextView) as TextView
             this.facilityNumberValueTextView = view?.findViewById(R.id.facilityNumberValueTextView) as TextView
             this.adHocClubCodeValueTextView = view?.findViewById(R.id.adHocClubCodeValueTextView)
             this.loadFacilityButton = view?.findViewById(R.id.loadFacilityButton) as Button
-            this.adHocStatusValueTextView = view?.findViewById(R.id.adHocCoStatusValueTextView) as TextView
+            this.adHocStatusValueTextView = view?.findViewById(R.id.adHocCoStatusValueTextView) as Chip
             this.visitationCityView  = view?.findViewById(R.id.cityValueTextView) as TextView
+            this.todayCB = view?.findViewById(R.id.todayVisCB) as CheckBox
         }
     }
 

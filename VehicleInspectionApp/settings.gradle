@@ -1,2 +1,12 @@
-include ':app'
-//enableFeaturePreview('IMPROVED_POM_SUPPORT')
+//dependencyResolutionManagement {
+//    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+//
+//    repositories {
+//        google()
+//        mavenCentral()
+//        maven { url "https://jitpack.io" }
+//    }
+//}
+
+rootProject.name = "VehicleInspectionApp"
+include(":app")

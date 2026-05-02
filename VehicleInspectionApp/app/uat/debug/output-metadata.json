@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 123,
-      "versionName": "3.23-uat",
+      "versionCode": 131,
+      "versionName": "3.32-uat",
       "outputFile": "app-uat-debug.apk"
     }
   ],

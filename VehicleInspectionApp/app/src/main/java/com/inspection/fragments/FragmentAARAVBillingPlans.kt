@@ -121,7 +121,7 @@ class FragmentAARAVBillingPlans : Fragment() {
 
         fillBillinPlanTableView()
         if (FacilityDataModel.getInstance().tblBillingHistory[0].FACID!=-1) {
-            binding.achCheck.isChecked = (FacilityDataModel.getInstance().tblBillingHistory[0].ACHParticipant)
+            binding.achCheck.isChecked = (FacilityDataModel.getInstance().tblFacilities[0].ACHParticipant == 1)
         }
 
         binding.exitDialogeBtn.setOnClickListener({
@@ -144,8 +144,6 @@ class FragmentAARAVBillingPlans : Fragment() {
         binding.achCheck.setOnCheckedChangeListener { compoundButton, b ->
 //            FacilityDataModel.getInstance().tblBi[0].emailVisitationPdfToFacility = b
         }
-
-
     }
 
     private fun validateBillinPlanData() {

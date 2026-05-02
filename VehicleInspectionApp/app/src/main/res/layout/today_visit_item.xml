@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listBkg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardRL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- ================= ORDER CIRCLE ================= -->
+
+        <TextView
+            android:id="@+id/orderCircle"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/circle_drawable"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- ================= FACILITY NAME ================= -->
+
+        <TextView
+            android:id="@+id/facNameVal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainColor"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/orderCircle"/>
+
+        <!-- ================= LEFT COLUMN ================= -->
+
+        <LinearLayout
+            android:id="@+id/leftColumn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/facNameVal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/rightColumn"
+            app:layout_constraintHorizontal_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Facility Number:"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/facNoVal"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="City:"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/cityVal"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type:"
+                android:textSize="12sp"
+
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/typeVal"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- ================= RIGHT COLUMN ================= -->
+
+        <LinearLayout
+            android:id="@+id/rightColumn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/facNameVal"
+            app:layout_constraintStart_toEndOf="@id/leftColumn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Club Code:"
+
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/clubNoVal"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Facility Annual Month:"
+
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/facAnnualMonthVal"
+                android:layout_width="wrap_content"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status:"
+                android:textSize="12sp"
+                android:textColor="@color/mainColor"/>
+
+            <TextView
+                android:id="@+id/statusVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- ================= ETA ROW ================= -->
+
+        <LinearLayout
+            android:id="@+id/etaRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/rightColumn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/etaLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/mainColor"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- ================= LOCATION ROW ================= -->
+
+        <LinearLayout
+            android:id="@+id/locFoundRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/etaRow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/locFoundLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="* Location Available"
+                android:textColor="@color/mainColor"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- ================= NOTES ================= -->
+
+        <LinearLayout
+            android:id="@+id/notesContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/locFoundRow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/notesVal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:maxLines="5"/>
+
+            <ImageButton
+                android:id="@+id/recordBtn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/mic_icon"/>
+
+            <ImageButton
+                android:id="@+id/stopBtn"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:visibility="gone"
+                android:background="@drawable/hangup_call"/>
+        </LinearLayout>
+
+        <!-- ================= BUTTON ROW 1 ================= -->
+
+        <LinearLayout
+            android:id="@+id/buttonRow1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:weightSum="3"
+            app:layout_constraintTop_toBottomOf="@id/notesContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/saveNotesBtn"
+                android:layout_width="0dp"
+                android:padding="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Save Notes"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/removeBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Remove"
+                android:textSize="12sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/loadBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Load Facility"
+                android:textSize="12sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
+        </LinearLayout>
+
+        <!-- ================= MOVE BUTTONS ================= -->
+
+        <LinearLayout
+            android:id="@+id/buttonRow2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            android:weightSum="4"
+            app:layout_constraintTop_toBottomOf="@id/buttonRow1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/moveFirstBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Move\nFirst"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/moveUpBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Move\nUp"
+                android:layout_marginStart="10dp"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/moveDownBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Move\nDown"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/moveLastBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Move\nLast"
+                android:textSize="12sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

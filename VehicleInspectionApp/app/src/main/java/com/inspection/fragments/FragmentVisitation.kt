@@ -81,6 +81,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.net.URLEncoder
+import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -180,7 +181,9 @@ class FragmentVisitation : Fragment() {
 //        setFieldsListeners()
         fillTrackingData()
         setAlertColoring()
-
+        Bugfender.setDeviceString("ClubNo", FacilityDataModel.getInstance().clubCode)
+        Bugfender.setDeviceString("FacNum", FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString())
+        Bugfender.setDeviceString("FacName", FacilityDataModel.getInstance().tblFacilities[0].BusinessName)
         // NetworkStatus Indicator [Start]
         val animation: Animation = AlphaAnimation(1.0f, 0.0f)
         animation.duration = 500 //1 second duration for each animation cycle
@@ -294,15 +297,21 @@ class FragmentVisitation : Fragment() {
         animation.repeatMode = Animation.REVERSE //animation will start from end point once ended.
         binding.alertVisitationRIcon.isVisible = false
         binding.alertVisitationYIcon.isVisible = false
+        binding.alertVisitationRIcon.animation = null
+        binding.alertVisitationYIcon.animation = null
         binding.alertVisitationRIcon.tooltipText = toolTipStr
         binding.alertVisitationYIcon.tooltipText = toolTipStr
         binding.billingAlertText.isVisible = false
-        if (binding.emailEditText.text.isNotEmpty()) {
+        Log.v("Email Format Valid --> ", binding.emailEditText.text.toString())
+        if (binding.emailEditText.text.isNotEmpty() && binding.emailPdfCheckBox.isChecked) {
             if (!emailFormatValidation(binding.emailEditText.text.toString())) {
+                Log.v("Email Format Valid --> ", "False")
+
                 binding.alertVisitationRIcon.isVisible = true
                 binding.alertVisitationYIcon.isVisible = false
                 binding.alertVisitationRIcon.isClickable = true
-                toolTipStr = "${FacilityDataModel.getInstance().tblFacilityEmail[0].email} Format is incorrect\nPlease update the email from Location & Contact Info Screen"
+//                toolTipStr = "${FacilityDataModel.getInstance().tblFacilityEmail[0].email} Format is incorrect\nPlease update the email from Location & Contact Info Screen"
+                toolTipStr = "Facility Email (${binding.emailEditText.text}) format is incorrect"
                 binding.alertVisitationRIcon.startAnimation(animation) //to start animation
                 binding.alertVisitationYIcon.startAnimation(animation) //to start animation
                 binding.alertVisitationRIcon.setOnClickListener({
@@ -310,8 +319,11 @@ class FragmentVisitation : Fragment() {
                     Utility.showUnifiedInformationDialog(requireContext(),toolTipStr)
                 })
             } else {
-                binding.alertVisitationRIcon.isVisible = false
-                binding.alertVisitationYIcon.isVisible = false
+                Log.v("Email Format Valid --> ", "True")
+                Log.v("Email Format Valid --> ", binding.alertVisitationRIcon.isVisible.toString())
+                binding.alertVisitationRIcon.animation = null;
+                binding.alertVisitationRIcon.visibility = View.GONE
+                binding.alertVisitationYIcon.visibility = View.GONE
             }
         }
 //        var billingAlerts = false
@@ -343,15 +355,42 @@ class FragmentVisitation : Fragment() {
 //            }
 //        }
 
-        if (FacilityDataModel.getInstance().tblBillingHistory[0].FACID!=-1 && FacilityDataModel.getInstance().tblBillingHistory[0].BillBalanceDue.toDouble()>0.0) {
-            binding.billingAlertText.visibility = View.VISIBLE
-            binding.billingAlertText.startAnimation(animation)
-        } else {
-            binding.billingAlertText.visibility = View.GONE
+        binding.billingAlertText.visibility = View.GONE
+//        2023-09-01T00:00:00-07:00
+        if (FacilityDataModel.getInstance().tblBillingHistory.size > 0 ) {
+            if (FacilityDataModel.getInstance().tblBillingHistory[0].FACID != -1 && FacilityDataModel.getInstance().tblBillingHistory[0].BillBalanceDue.toDouble() > 0.0) {
+                val myFormat = "MM/dd/yyyy" // mention the format you need
+                val dueDate = SimpleDateFormat(
+                    myFormat,
+                    Locale.US
+                ).parse(FacilityDataModel.getInstance().tblBillingHistory[0].BillingDueDate.apiToAppFormatMMDDYYYY())
+                val todayDate =
+                    SimpleDateFormat(myFormat, Locale.US).parse(Date().toAppFormatMMDDYYYY())
+                Log.v("Billing Due Date --> ", " " + dueDate)
+                Log.v("Today Date --> ", " " + todayDate)
+                if (dueDate.before(todayDate)) {
+                    binding.billingAlertText.visibility = View.VISIBLE
+                    binding.billingAlertText.startAnimation(animation)
+                }
+            } else {
+                binding.billingAlertText.visibility = View.GONE
 //            binding.billingAlertText.clearAnimation()
+            }
+        }
+        var defAlert = checkUnClearedDeficiencies()
+        if (defAlert.isNullOrEmpty()) {
+            binding.deficienciesText.visibility = View.GONE
+        } else {
+            defAlert = "Uncleared Deficiencies: $defAlert"
+            binding.deficienciesText.text = defAlert
+            binding.deficienciesText.visibility = View.VISIBLE
         }
 
-
+        if (checkDownStreamFlag()) {
+            binding.downStreamFlagText.visibility = View.GONE
+        } else {
+            binding.downStreamFlagText.visibility = View.VISIBLE
+        }
 
 //
 //        if (RAlert) {
@@ -547,6 +586,9 @@ class FragmentVisitation : Fragment() {
 
         binding.completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
         binding.facilityRepresentativeSignatureButton.isEnabled  = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+        binding.waiverConditionedEnablingLayout.visibility = View.VISIBLE
+        binding.waiveSignRL.visibility = View.VISIBLE
+        binding.waiveCBRL.visibility = View.VISIBLE
         if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == null) {
             binding.adhocVisitationType.isChecked = true
             binding.adhocVisitationType.isClickable = true
@@ -584,6 +626,11 @@ class FragmentVisitation : Fragment() {
                 binding.quarterlyVisitationType.isEnabled = true
                 binding.defVisitationType.isClickable = true
                 binding.defVisitationType.isEnabled = true
+                binding.waiverConditionedEnablingLayout.visibility = View.GONE
+                binding.waiveSignRL.visibility = View.GONE
+                binding.waiveCBRL.visibility = View.GONE
+                binding.waiveVisitationCheckBox.isChecked = false
+                binding.waiverCommentsEditText.setText("")
 
                 // End
                 binding.visitationReasonDropListId.setSelection(0, true)
@@ -662,55 +709,7 @@ class FragmentVisitation : Fragment() {
 //            automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(if (FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.isNullOrBlank()) 0 else FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.toUpperCase()))
             binding.automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(ApplicationPrefs.getInstance(activity).loggedInUserFullName))
             binding.automotiveSpecialistSpinner.tag = binding.automotiveSpecialistSpinner.selectedItemPosition
-//            automotiveSpecialistSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//                override fun onNothingSelected(p0: AdapterView<*>?) {
-//                }
-//
-//                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-//                    //Adding condition as a workaround not to lost the applied changes for signature. As this method is called also during adapter initialization
-//
-//                    if (p2 > 0) {
-//                        if (isAutomotiveSpecialistSignatureInitialized) {
-//                            isAutomotiveSpecialistSignatureInitialized = false
-//                        } else {
-////                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = facilitySpecialistNames[p2]
-////                            FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = null
-////                            automotiveSpecialistSignatureImageView.setImageBitmap(null)
-//
-//                        }
-//                    } else {
-//                        FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName = ""
-//                    }
-//
-//                    if (!automotiveSpecialistSpinner.tag.equals(p2) || automotiveSpecialistSpinner.tag.equals("-1")) {
-//                        automotiveSpecialistSpinner.tag = "-1"
-//                        if (firsLoadDone) {
-//                            (activity as FormsActivity).saveRequired = true
-//                            Log.v("SAVEREQUIRED -->", " automotiveSpecialistSpinner")
-//                            refreshButtonsState()
-//                        }
-//                    }
-//
-//                    checkMarkChangesDone()
-//                }
-//
-//            }
         }
-
-        // Do Not load signatures
-//        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
-//            if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature != null) {
-//                isFacilityRepresentativeSignatureInitialized = true
-//                facilityRepresentativeSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature)
-//            }
-//        }
-//
-//        if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
-//            if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature != null) {
-//                isAutomotiveSpecialistSignatureInitialized = true
-//                automotiveSpecialistSignatureImageView.setImageBitmap(FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistSignature)
-//            }
-//        }
 
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
             if (FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeDeficienciesSignature != null) {
@@ -742,12 +741,6 @@ class FragmentVisitation : Fragment() {
                 }
             }
 
-//            if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
-//                if (FacilityDataModel.getInstance().tblVisitationTracking[0].performedBy.isNotEmpty()) {
-////                    facilityRepresentativesSpinner.setSelection(CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname }.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
-//                    facilityRepresentativesSpinner.setSelection(TypeTablesModel.getInstance().EmployeeList.map { s -> s.FullName}.indexOf(FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeName))
-//                }
-//            }
 
             binding.facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(ApplicationPrefs.getInstance(activity).loggedInUserFullName))
             binding.facilityRepresentativesSpinner.tag = binding.facilityRepresentativesSpinner.selectedItemPosition
@@ -897,12 +890,21 @@ class FragmentVisitation : Fragment() {
             }
         }
         var visitationType = "";
+        // REMOVE WAIVE from AdHoc
+        binding.waiverConditionedEnablingLayout.visibility = View.VISIBLE
+        binding.waiveSignRL.visibility = View.VISIBLE
+        binding.waiveCBRL.visibility = View.VISIBLE
         if (binding.annualVisitationType.isChecked) {
             visitationType = VisitationTypes.Annual.toString()
         } else if (binding.quarterlyVisitationType.isChecked) {
             visitationType = VisitationTypes.Quarterly.toString()
         } else if (binding.adhocVisitationType.isChecked) {
             visitationType = VisitationTypes.AdHoc.toString()
+            binding.waiverCommentsEditText.setText("")
+            binding.waiveVisitationCheckBox.isChecked = false
+            binding.waiveCBRL.visibility = View.GONE
+            binding.waiverConditionedEnablingLayout.visibility = View.GONE
+            binding.waiveSignRL.visibility = View.GONE
         } else if (binding.defVisitationType.isChecked) {
             visitationType = VisitationTypes.Deficiency.toString()
         }
@@ -1015,6 +1017,14 @@ class FragmentVisitation : Fragment() {
                     binding.emailEditText.setError("please type your email correctly")
                 } else {
                     binding.emailEditText.setError(null)
+                    if (binding.emailEditText.text.isNotEmpty() && binding.emailPdfCheckBox.isChecked) {
+                        if (!emailFormatValidation(binding.emailEditText.text.toString())) {
+                            Utility.showValidationAlertDialog(activity, "Incorrect email format")
+                            return@setOnClickListener
+                        } else {
+                            binding.emailEditText.setError(null)
+                        }
+                    }
                     var visitationID = 0
                     val facilityNo =
                         FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
@@ -1054,6 +1064,8 @@ class FragmentVisitation : Fragment() {
                         visitationType = VisitationTypes.Quarterly.toString()
                     } else if (binding.adhocVisitationType.isChecked) {
                         visitationType = VisitationTypes.AdHoc.toString()
+                        binding.waiveVisitationCheckBox.isChecked = false
+                        binding.waiverCommentsEditText.setText("")
                     } else if (binding.defVisitationType.isChecked) {
                         visitationType = VisitationTypes.Deficiency.toString()
                     }
@@ -1108,7 +1120,7 @@ class FragmentVisitation : Fragment() {
                                 0,
                                 "Visitation Saved ... Type --> " + visitationType
                             ),
-                            Response.Listener { response ->
+                            { response ->
                                 requireActivity().runOnUiThread {
                                     Log.v("VT RESPONSE ||| ", response.toString())
                                     if (response.toString().contains("Success", false)) {
@@ -1119,8 +1131,7 @@ class FragmentVisitation : Fragment() {
                                         emailPdfCBPreviousValue = binding.emailPdfCheckBox.isChecked
                                         waiverCommentsPreviousValue =
                                             binding.waiverCommentsEditText.text.toString()
-                                        emailEditTextPreviousValue =
-                                            binding.emailEditText.text.toString()
+                                        emailEditTextPreviousValue = binding.emailEditText.text.toString()
                                         staffTrainingProcessPreviousValue =
                                             binding.staffTrainingProcessEditText.text.toString()
                                         qualityControlProcessPreviousValue =
@@ -1172,6 +1183,7 @@ class FragmentVisitation : Fragment() {
 //                                    (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                                         (activity as FormsActivity).saveDone = true
                                         refreshButtonsState()
+                                        setAlertColoring()
 //                                        Utility.showMessageDialog(
 //                                            activity,
 //                                            "Confirmation ...",
@@ -1197,7 +1209,7 @@ class FragmentVisitation : Fragment() {
                                     }
                                 }
                             },
-                            Response.ErrorListener {
+                            {
                                 binding.dialogueLoadingView.visibility = View.GONE
                                 binding.progressBarTextVal.text = "Loading ..."
                                 Utility.showSubmitAlertDialog(
@@ -1215,12 +1227,10 @@ class FragmentVisitation : Fragment() {
             }
         }
 
-
-
-
         binding.emailPdfCheckBox.setOnCheckedChangeListener { compoundButton, b ->
             FacilityDataModel.getInstance().tblVisitationTracking[0].emailVisitationPdfToFacility = b
             checkMarkChangesDone()
+            setAlertColoring()
         }
 
         binding.facilityRepresentativesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -1229,7 +1239,6 @@ class FragmentVisitation : Fragment() {
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-
                 if (p2 > 0) {
                     if (isFacilityRepresentativeSignatureInitialized) {
                         isFacilityRepresentativeSignatureInitialized = false
@@ -1684,6 +1693,7 @@ class FragmentVisitation : Fragment() {
                     refreshButtonsState()
 //                PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailpdf =
                     checkMarkChangesDone()
+                    setAlertColoring()
                 }
                 else {
 
@@ -1740,6 +1750,11 @@ class FragmentVisitation : Fragment() {
                 (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                 binding.completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
                 binding.facilityRepresentativeSignatureButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+                binding.waiverCommentsEditText.setText("")
+                binding.waiveVisitationCheckBox.isChecked = false
+                binding.waiveCBRL.visibility = View.GONE
+                binding.waiverConditionedEnablingLayout.visibility = View.GONE
+                binding.waiveSignRL.visibility = View.GONE
             }
 
         }
@@ -1755,11 +1770,15 @@ class FragmentVisitation : Fragment() {
                 (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                 binding.completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
                 binding.facilityRepresentativeSignatureButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+                binding.waiverConditionedEnablingLayout.visibility = View.VISIBLE
+                binding.waiveSignRL.visibility = View.VISIBLE
+                binding.waiveCBRL.visibility = View.VISIBLE
             }
         }
 
         binding.annualVisitationType.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
+                Log.v("Entered ", "---- > annualVisitationType")
                 binding.quarterlyVisitationType.isChecked = false
                 binding.defVisitationType.isChecked = false
                 binding.adhocVisitationType.isChecked = false
@@ -1769,6 +1788,9 @@ class FragmentVisitation : Fragment() {
                 (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                 binding.completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
                 binding.facilityRepresentativeSignatureButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+                binding.waiverConditionedEnablingLayout.visibility = View.VISIBLE
+                binding.waiveSignRL.visibility = View.VISIBLE
+                binding.waiveCBRL.visibility = View.VISIBLE
             }
         }
 
@@ -1783,6 +1805,9 @@ class FragmentVisitation : Fragment() {
                 (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
                 binding.completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
                 binding.facilityRepresentativeSignatureButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
+                binding.waiverConditionedEnablingLayout.visibility = View.VISIBLE
+                binding.waiveSignRL.visibility = View.VISIBLE
+                binding.waiveCBRL.visibility = View.VISIBLE
             }
         }
 
@@ -2423,7 +2448,8 @@ class FragmentVisitation : Fragment() {
         } else if (binding.adhocVisitationType.isChecked) {
             visitationType = VisitationTypes.AdHoc.toString()
             visitationTypeID = "3"
-
+            binding.waiveVisitationCheckBox.isChecked = false
+            binding.waiverCommentsEditText.setText("")
         } else if (binding.defVisitationType.isChecked) {
             visitationType = VisitationTypes.Deficiency.toString()
             visitationTypeID = "4"
@@ -2589,6 +2615,8 @@ class FragmentVisitation : Fragment() {
                                                                         if (!saveToDBFailed) {
                                                                             Bugfender.i("VisitationProcess", "Process Completed")
                                                                             steps[4].status = "Process initiated. Check your email shortly. You may safely close this screen now"
+//                                                                            markSavedVisitationAsCompleted(requireContext(),FacilityDataModel.getInstance().tblFacilities[0].FACNo,FacilityDataModel.getInstance().clubCode)
+                                                                            removeTodayVisitation(requireContext(),FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString(),FacilityDataModel.getInstance().clubCode)
                                                                         } else {
                                                                             steps[4].status =
                                                                                 "Process Failed. Please send the below text or screenshot to PRG Support via mail before closing the screen:\n$createMsg"
@@ -2607,6 +2635,7 @@ class FragmentVisitation : Fragment() {
                                                                                     if (steps[4].status.equals("Success") || steps[4].status.contains("Process",true)) {
 //                                                                                        (activity as FormsActivity).onBackPressed()
                                                                                         binding.visitationStatusBtn.isEnabled = true
+
                                                                                     }
                                                                                 } else {
                                                                                     // Retry after 500ms
@@ -2759,17 +2788,18 @@ class FragmentVisitation : Fragment() {
         handler.post(conditionCheck)
     }
 
-    fun emailFormatValidation(target: CharSequence): Boolean {
+//    fun emailFormatValidation(target: CharSequence): Boolean {
+//
+//        if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
+//            emailValid = true else emailValid = false
+//        return emailValid
+//    }
 
-        if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
-            emailValid = true else emailValid = false
-        return emailValid
-    }
+    fun emailFormatValidation(target: CharSequence?) =
+        !target.isNullOrBlank() && Patterns.EMAIL_ADDRESS.matcher(target).matches()
 
     fun emailValidation() {
-
         binding.emailEditText.isEnabled = binding.emailPdfCheckBox.isChecked
-
         binding.emailPdfCheckBox.setOnClickListener {
             binding.emailEditText.isEnabled = binding.emailPdfCheckBox.isChecked
             (activity as FormsActivity).saveRequired = true

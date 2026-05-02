@@ -1,24 +1,24 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
+
 android {
-    compileSdkVersion 34
-    namespace = "com.inspection"
+    namespace "com.inspection"
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.inspection"
-        minSdkVersion 24
-        targetSdkVersion 34
-        versionCode 123
-        versionName "3.23"
-        multiDexEnabled true
-        vectorDrawables.useSupportLibrary = true // For older Android versions
-    }
+        minSdk 24
+        targetSdk 34
+        versionCode 131
+        versionName "3.32"
 
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+    }
 
     signingConfigs {
         release {
@@ -31,18 +31,18 @@ android {
 
     buildTypes {
         release {
-            debuggable false
             signingConfig signingConfigs.release
-            minifyEnabled true // Enable ProGuard/R8
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android-optimize.txt'
+            ), 'proguard-rules.pro'
         }
         debug {
-            debuggable true
             signingConfig signingConfigs.release
+            debuggable true
         }
     }
-
-    flavorDimensions += "environment"
 
     flavorDimensions "environment"
 
@@ -59,9 +59,17 @@ android {
             buildConfigField "String", "FLAVOR", "\"production\""
         }
     }
+
     packagingOptions {
         resources {
-            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/ASL2.0']
+            excludes += [
+                    "META-INF/DEPENDENCIES",
+                    "META-INF/LICENSE",
+                    "META-INF/LICENSE.txt",
+                    "META-INF/NOTICE",
+                    "META-INF/NOTICE.txt",
+                    "META-INF/ASL2.0"
+            ]
         }
     }
 
@@ -70,14 +78,15 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+
     buildFeatures {
         viewBinding true
         buildConfig true
     }
 
-    kotlinOptions {
-        jvmTarget = "11"
-    }
     lint {
         abortOnError false
         checkReleaseBuilds false
@@ -90,138 +99,87 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
-configurations {
-    shadowImplementation {
-        canBeResolved = true
-        canBeConsumed = false
-        extendsFrom implementation
-    }
-}
-
-//tasks.register("mergeShadowJarClasses") {
-//    dependsOn(tasks.named("shadowJar"))
-//    doLast {
-//        copy {
-//            from(zipTree("$buildDir/libs/app-shadow.jar"))
-//            into("$buildDir/intermediates/javac/release/classes") // Adjust based on your build variant
-//        }
-//    }
-//}
-
-//tasks.named("preBuild").configure {
-//    dependsOn(tasks.named("shadowJar"))
-//}
-
 dependencies {
-    // Google Play Services
-    implementation 'com.google.android.gms:play-services-plus:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
 
-    // AndroidX
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    /* ===========================
+       Google Play Services
+       =========================== */
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.google.android.gms:play-services-maps:20.0.0'
+
+    /* ===========================
+       AndroidX
+       =========================== */
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.core:core:1.12.0'
     implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    // Google Material Design
-    implementation 'com.google.android.material:material:1.11.0'
+    /* ===========================
+       Material
+       =========================== */
+    implementation 'com.google.android.material:material:1.13.0'
 
-    // Firebase
-    implementation platform('com.google.firebase:firebase-bom:32.2.0')
+    /* ===========================
+       Firebase
+       =========================== */
+    implementation platform('com.google.firebase:firebase-bom:34.9.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    /* ===========================
+       Kotlin
+       =========================== */
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-reflect"
 
-    // Networking and JSON
+    /* ===========================
+       Networking & JSON
+       =========================== */
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'org.jsoup:jsoup:1.15.3'
-//    implementation 'org.json:json:20230618'
+    implementation 'com.squareup.okhttp3:okhttp:5.3.2'
 
-//    shadowImplementation 'org.json:json:20230618' // 2 Uncomment this one
-    implementation files("$buildDir/libs/app-shadow.jar") // 1 comment this one
-// 3 run command to build shadow jar "./gradlew shadowJar" then reverse 1 and 2
-//    implementation 'org.json:json:20210307'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
-//    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2'
-//    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
-//    implementation 'javax.xml.stream:stax-api:1.0-2'
-//    implementation 'org.codehaus.woodstox:woodstox-core:6.2.9'
+    // ❗ DO NOT add org.json dependency
+    // Android framework provides org.json + XML
 
-    // Dialogs
-    implementation 'com.github.d-max:spots-dialog:0.7@aar'
+    /* ===========================
+       UI / Utils
+       =========================== */
+    implementation 'com.github.bumptech.glide:glide:5.0.5'
+    implementation 'com.airbnb.android:lottie:6.7.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-    // AWS SDK (Kotlin)
-    implementation("aws.sdk.kotlin:s3:0.16.0")
-    implementation("aws.sdk.kotlin:s3control:0.16.0")
-    implementation("aws.sdk.kotlin:sts:0.16.0")
-    implementation("aws.sdk.kotlin:secretsmanager:0.16.0")
-
-    // UI Libraries
-    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation 'com.github.shuhart:stepview:1.5.1'
-    implementation 'com.github.mhiew:android-pdf-viewer:3.2.0-beta.1'
-    implementation "com.google.android.flexbox:flexbox:3.0.0"
-
-    // Utilities
     implementation 'com.simplify:ink:1.0.0'
+
+    /* ===========================
+       PDF
+       =========================== */
     implementation 'com.itextpdf:itextg:5.5.10'
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.22'
-    implementation ('io.github.softmedtanzania:maskededittext:1.0.5')
-    implementation ('com.ernestoyaquello.stepperform:vertical-stepper-form:2.7.0')
-    implementation 'com.bugfender.sdk:android:3.+'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.3'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.9.3'
-    implementation 'com.google.android.gms:play-services-maps:19.2.0'
-    implementation 'com.google.maps.android:android-maps-utils:3.8.0'
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation 'com.github.mhiew:android-pdf-viewer:3.2.0-beta.3'
+
+    /* ===========================
+       Other
+       =========================== */
+    implementation 'com.googlecode.libphonenumber:libphonenumber:9.0.23'
+    implementation 'io.github.softmedtanzania:maskededittext:1.0.5'
+    implementation 'com.ernestoyaquello.stepperform:vertical-stepper-form:2.7.0'
+    implementation 'com.bugfender.sdk:android:4.+'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.10.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.7'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.9.7'
+    implementation 'org.jsoup:jsoup:1.17.2'
 }
 
-tasks.register("shadowJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
-    group = "build"
-    description = "Create a shadow JAR with relocated org.json library."
-//    configurations = [project.configurations.shadowImplementation]
-// Include the main output classes and resources
-//    from("$buildDir/intermediates/classes/debug")  // Adjust this path if needed for the correct variant
-    from("$buildDir/intermediates/classes/debug")  // Use `debug` or `release` as required
-    from("$buildDir/intermediates/res/debug")
-    // If you need to include resources, use this
-//    from("$buildDir/intermediates/res/debug")
-    configurations = [project.configurations.shadowImplementation]
-//    configurations = [project.configurations.compileClasspath]
-
-
-    dependencies {
-        include(dependency("org.json:json"))
-    }
-    relocate("org.json", "shaded.org.json")
-    archiveClassifier.set("shadow")
-    destinationDirectory.set(file("$buildDir/libs"))
-    archiveFileName.set("app-shadow.jar")
-//    doLast {
-//        copy {
-//            from("$buildDir/libs/app-shadow.jar")
-//            into("$buildDir/libs") // Ensure it's copied to the correct location
-//        }
-//    }
-}
-
-
-gradle.buildFinished {
-    if (file("$buildDir/libs/app-shadow.jar").exists()) {
-        println("Shadow JAR built successfully: $buildDir/libs/app-shadow.jar")
-        dependencies {
-            // Add the shadow JAR as a file dependency after the build completes
-//            implementation files("$buildDir/libs/app-shadow.jar")
-//            add("implementation", files("$buildDir/libs/app-shadow.jar"))
-        }
-    } else {
-        println("Shadow JAR is missing after build.")
+configurations.all {
+    resolutionStrategy {
+        force "androidx.core:core:1.12.0"
+        force "androidx.core:core-ktx:1.12.0"
     }
 }

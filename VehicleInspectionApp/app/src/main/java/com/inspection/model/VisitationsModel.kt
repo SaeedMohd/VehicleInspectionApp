@@ -42,6 +42,8 @@ class VisitationsModel {
         var ACHParticipant = ""
         var InsuranceExpDate = ""
         var ContractTypeID = ""
+        var LATITUDE = 0.0
+        var LONGITUDE = 0.0
     }
 
     class CompletedVisitationModel{
@@ -86,6 +88,8 @@ class VisitationsModel {
         var DateReceived = ""
         var VisitationTypeID = 0
         var VisitationReasonTypeID = 0
+        var LATITUDE = 0.0
+        var LONGITUDE = 0.0
     }
 
     class DeficiencyModel {
@@ -135,6 +139,8 @@ class VisitationsModel {
         var updateBy1 = ""
         var updateDate1 = ""
         var DueDate = ""
+        var LATITUDE = 0.0
+        var LONGITUDE = 0.0
     }
 
     class VisitationListModel{
@@ -157,6 +163,8 @@ class VisitationsModel {
         var active = "0"
         var insertBy1 = ""
         var city = ""
+        var latitude = 0.0
+        var longitude = 0.0
     }
 
 

@@ -3,6 +3,7 @@ package com.inspection
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
+import android.widget.LinearLayout
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -12,6 +13,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.tabs.TabLayoutMediator
 import com.inspection.databinding.ActivityApplicantBinding
 import com.inspection.fragments.ApplicantMapFragment
 import com.inspection.fragments.FacilityGroupFragment
@@ -29,6 +35,42 @@ class ApplicantActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.topAppBar)
+        binding.topAppBar.title = "Applicant Shops Management"
+//        setMenuColor(0)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.mainContent, ApplicantMapFragment())
+            .commit()
+
+//        val viewPager = binding.viewPager
+//        val tabLayout = binding.tabLayout
+//        viewPager.isUserInputEnabled = false
+//        viewPager.adapter = TabsPagerAdapter(this)
+//
+//        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+//            when (position) {
+//                0 -> {
+//                    tab.text = "Map"
+//                    tab.setIcon(R.drawable.search_map)
+//                }
+////                1 -> {
+////                    tab.text = "Saved Shops"
+////                    tab.setIcon(R.drawable.bookmark)
+////                }
+////                2 -> {
+////                    tab.text = "Visited Shops"
+////                    tab.setIcon(R.drawable.visited)
+////                }
+//            }
+//        }.attach()
+//
+//        for (i in 0 until tabLayout.tabCount) {
+//            tabLayout.getTabAt(i)?.view?.layoutParams?.width =
+//                LinearLayout.LayoutParams.MATCH_PARENT
+//        }
+//        tabLayout.requestLayout()
+
+
 
         setFields()
 
@@ -46,8 +88,8 @@ class ApplicantActivity : AppCompatActivity() {
     fun setFields() {
         binding.showMapLL.setOnClickListener {
             binding.topAppBar.title = "Map View"
+
             setMenuColor(0)
-//            var fragment = ApplicantMapFragment()
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.mainContent, ApplicantMapFragment())
@@ -108,4 +150,20 @@ class ApplicantActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_applicant)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+    class TabsPagerAdapter(
+        activity: FragmentActivity
+    ) : FragmentStateAdapter(activity) {
+
+        override fun getItemCount() = 3
+
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> ApplicantMapFragment()
+                1 -> ApplicantMapFragment()
+                else -> ApplicantMapFragment()
+            }
+        }
+    }
 }
+

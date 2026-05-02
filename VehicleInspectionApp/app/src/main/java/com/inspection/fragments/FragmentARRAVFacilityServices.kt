@@ -31,6 +31,8 @@ import com.inspection.model.*
 //import kotlinx.android.synthetic.main.scope_of_service_group_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 
 /**
  * A simple [Fragment] subclass.
@@ -268,8 +270,13 @@ class FragmentARRAVFacilityServices : Fragment() {
                 if (binding.editFcexpirationDateTextviewVal.text.equals("SELECT DATE")) "" else binding.editFcexpirationDateTextviewVal.text.toString()
             val facilityService = binding.editFcServicesTextviewVal.selectedItem.toString()
             if (action == 1) {
+                strChanges += "Facility Service: " + TypeTablesModel.getInstance().ServicesType.filter { s ->
+                    s.ServiceTypeID.equals(
+                        FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].ServiceID
+                    )
+                }[0].ServiceTypeName + " "
                 if (Comments != FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].Comments) {
-                    strChanges += "Facility Service comments changed from (" + FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].Comments + ") to (${Comments}) - "
+                    strChanges += "Comments changed from (" + FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].Comments + ") to (${Comments}) - "
                 }
                 if (effDate != FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].effDate.apiToAppFormatMMDDYYYY()) {
                     strChanges += "Effective Date changed from (" + FacilityDataModelOrg.getInstance().tblFacilityServices[rowId].effDate.apiToAppFormatMMDDYYYY() + ") to (" + effDate + ") - "
@@ -538,12 +545,12 @@ class FragmentARRAVFacilityServices : Fragment() {
         binding.fceffectiveDateTextviewVal.setError(null)
         binding.fcServiceSpinner.setError(null)
         binding.commentsEditTextVal.setError(null)
-        if(binding.fceffectiveDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(binding.fceffectiveDateTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             facServicesValide = false
             binding.fceffectiveDateTextviewVal.setError("Required Field")
         }
 
-        if(!binding.fcexpirationDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(!binding.fcexpirationDateTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val effDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.fceffectiveDateTextviewVal!!.text.toString())
             val expDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.fcexpirationDateTextviewVal!!.text.toString())
@@ -575,12 +582,12 @@ class FragmentARRAVFacilityServices : Fragment() {
         binding.editFceffectiveDateTextviewVal.setError(null)
         binding.editFcServiceSpinner.setError(null)
         binding.editCommentsEditTextVal.setError(null)
-        if(binding.editFceffectiveDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(binding.editFceffectiveDateTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             facServicesValide = false
             binding.editFceffectiveDateTextviewVal.setError("Required Field")
         }
 
-        if(!binding.editFcexpirationDateTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if(!binding.editFcexpirationDateTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val effDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.editFceffectiveDateTextviewVal!!.text.toString())
             val expDate = SimpleDateFormat(myFormat, Locale.US).parse(binding.editFcexpirationDateTextviewVal!!.text.toString())

@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 123,
-      "versionName": "3.23-prod",
+      "versionCode": 131,
+      "versionName": "3.32-prod",
       "outputFile": "app-production-debug.apk"
     }
   ],

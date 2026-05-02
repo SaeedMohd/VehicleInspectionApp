@@ -373,34 +373,38 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
             }
         }
 
-        addedData += "Added Vehicle(s): "
+//        addedData += "Added Vehicle(s): ["
         var vehcileCount = 0
         for (i in 0 until addedVehicles.size) {
             if (TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==addedVehicles[i].toInt()}.isNotEmpty()) {
                 vehcileCount++
-//                var item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == addedVehicles[i].toInt() }[0]
+                val item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == addedVehicles[i].toInt() }[0]
 //                addedData += "Type (" + TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeID.toInt() == item.VehicleTypeID }[0].VehiclesTypeName + ")"
 //                addedData += ", Category (" + TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + ")"
 //                addedData += ", Make (" + item.MakeName + ") - "
+                addedData += TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + " " + item.MakeName + " - "
             }
         }
-        addedData += "Added Vehicle(s): " + vehcileCount
+        addedData = "Added Vehicle(s): [ " + vehcileCount + " ]"
 
-        removedData += "Removed Vehicle(s): "
+//        removedData += "Removed Vehicle(s): ["
         vehcileCount = 0
         for (i in 0 until removedVehicles.size) {
             if (TypeTablesModel.getInstance().VehicleMakes.filter {s->s.VehicleID==removedVehicles[i].toInt()}.isNotEmpty()) {
                 vehcileCount++
-//                var item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == removedVehicles[i].toInt() }[0]
+                val item = TypeTablesModel.getInstance().VehicleMakes.filter { s -> s.VehicleID == removedVehicles[i].toInt() }[0]
 //                removedData += "Type (" + TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeID.toInt() == item.VehicleTypeID }[0].VehiclesTypeName + ")"
 //                removedData += ", Category (" + TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + ")"
 //                removedData += ", Make (" + item.MakeName + ") - "
+                removedData += TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID.toInt() == item.VehicleCategoryID }[0].VehCategoryName + " " + item.MakeName + " - "
             }
         }
-        removedData += "Removed Vehicle(s): " + vehcileCount
-//        removedData = removedData.removeSuffix(" - ")
+        removedData = "Removed Vehicle(s): [ " + vehcileCount + " ]"
+//        removedData = removedData.removeSuffix(" - ") + "]"
+//        addedData = addedData.removeSuffix(" - ") + "]"
 //        addedData = addedData.removeSuffix(" - ")
         totalDataChanges = addedData + " - " + removedData
+//        Utility.showUnifiedInformationDialog(requireContext(),  totalDataChanges)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 1, totalDataChanges),
             { response ->
                 requireActivity().runOnUiThread {

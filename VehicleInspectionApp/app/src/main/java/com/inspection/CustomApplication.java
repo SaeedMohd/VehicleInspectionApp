@@ -21,9 +21,11 @@ public class CustomApplication extends MultiDexApplication{
         super.onCreate();
         FirebaseApp.initializeApp(this);
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-        Bugfender.init(this, "c3n0CKCzaxaYJ5oAHXzTLc6tL0SFsHNz", BuildConfig.DEBUG, true);
+//        Bugfender.init(this, "c3n0CKCzaxaYJ5oAHXzTLc6tL0SFsHNz", BuildConfig.DEBUG, true);//saeed account
+        Bugfender.init(this, "00OCHvUa3uXcanjMPjqp5FMjWUl85ScI",BuildConfig.DEBUG, true);
+//        Bugfender.setNetworkLoggingEnabled(true);
         Bugfender.enableCrashReporting();
-//        Bugfender.enableUIEventLogging(this);
+        Bugfender.enableUIEventLogging(this);
 //        Bugfender.enableLogcatLogging();
 //        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 //            @Override

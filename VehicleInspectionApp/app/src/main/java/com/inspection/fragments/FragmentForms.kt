@@ -17,12 +17,15 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bugfender.sdk.Bugfender
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.inspection.MainActivity
 import com.inspection.R
 import com.inspection.Utils.Constants
+import com.inspection.Utils.getTodayVisitations
 import com.inspection.databinding.FragmentFormsBinding
 import com.inspection.databinding.FragmentVisitationFormBinding
+import com.inspection.model.TodayVisitationModel
 //import kotlinx.android.synthetic.main.fragment_forms.*
 import okhttp3.Call
 import okhttp3.Callback
@@ -57,9 +60,11 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentFormsBinding.bind(view)
+        var list: List<TodayVisitationModel> = getTodayVisitations(requireContext())
+        binding.todayVisitationTitle.text = "Today's Visitations\n(${list.size}) Visitations"
+
         binding.visitationPlanningButton.setOnClickListener {
             var service = activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
-
             var enabled = if (Constants.enableLocationTracking) service.isProviderEnabled(LocationManager.GPS_PROVIDER) else true
             FirebaseCrashlytics.getInstance().log("User Selected Visitation Planning Screen")
             if (!enabled) {
@@ -88,19 +93,6 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
                 })
 
                 dialog.show()
-//                var alertBuilder = AlertDialog.Builder(activity);
-//                alertBuilder.setCancelable(true);
-//                alertBuilder.setTitle("GPS Location is required")
-//                alertBuilder.setMessage("GPS location is required within this app. ");
-//                alertBuilder.setPositiveButton("Agree") { dialog, which ->
-//                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                    startActivity(intent);
-//                }
-//                alertBuilder.setNegativeButton("Disagree") { dialog, which ->
-//
-//                }
-//                val alert = alertBuilder.create();
-//                alert.show();
             } else {
                 Bugfender.i("Screen", "Visitation Planning")
                 (activity as MainActivity).supportActionBar!!.title = "Visitation Planning"
@@ -145,23 +137,95 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
                 })
 
                 dialog.show()
-//                var alertBuilder = AlertDialog.Builder(activity);
-//                alertBuilder.setCancelable(true);
-//                alertBuilder.setTitle("GPS Location is required")
-//                alertBuilder.setMessage("GPS location is required within this app. ");
-//                alertBuilder.setPositiveButton("Agree") { dialog, which ->
-//                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                    startActivity(intent);
-//                }
-//                alertBuilder.setNegativeButton("Disagree") { dialog, which ->
-//
-//                }
-//                val alert = alertBuilder.create();
-//                alert.show();
             } else {
                 (activity as MainActivity).supportActionBar!!.title = "APP / Ad Hoc Visitation"
                 var fragment = AppAdHockVisitationFilterFragment()
                 fragment!!.isVisitationPlanning = false
+                val fragmentManagerSC = fragmentManager
+                val ftSC = fragmentManagerSC!!.beginTransaction()
+                ftSC.replace(R.id.fragment, fragment)
+                ftSC.addToBackStack("frag")
+                ftSC.commit()
+            }
+        }
+
+        binding.pinnedVisitationButton.setOnClickListener {
+            Bugfender.i("Screen", "Pinned")
+            var service = activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+            var enabled = if (Constants.enableLocationTracking) service.isProviderEnabled(LocationManager.GPS_PROVIDER) else true
+            FirebaseCrashlytics.getInstance().log("User Selected Today's Visitations Screen")
+            if (!enabled) {
+                var alertBuilder = AlertDialog.Builder(requireContext());
+                val inflater = LayoutInflater.from(requireContext())
+                val dialogView = inflater.inflate(R.layout.decision_dialog, null)
+                alertBuilder.setView(dialogView)
+                val dialogMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
+                val dialogTitle = dialogView.findViewById<TextView>(R.id.tvTitle)
+                val btnPositiveAction = dialogView.findViewById<Button>(R.id.btnActionPositive)
+                val btnNegativeAction = dialogView.findViewById<Button>(R.id.btnActionNegative)
+                dialogTitle.setText("GPS Location is required")
+                dialogMessage.setText("GPS location is required within this app. If you disagree the app will be closed")
+                btnPositiveAction.setText("Agree")
+                btnNegativeAction.setText("Disagree")
+                val dialog = alertBuilder.create()
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//                dialog.setCancelable(false)
+                btnPositiveAction.setOnClickListener(View.OnClickListener { v: View? ->
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                    dialog.dismiss()
+                })
+                btnNegativeAction.setOnClickListener(View.OnClickListener { v: View? ->
+                    requireActivity().finish()
+                })
+
+                dialog.show()
+            } else {
+                (activity as MainActivity).supportActionBar!!.title = "Today's Visitations"
+                var fragment = TodayVisitationFragment()
+//                fragment!!.isVisitationPlanning = false
+                val fragmentManagerSC = fragmentManager
+                val ftSC = fragmentManagerSC!!.beginTransaction()
+                ftSC.replace(R.id.fragment, fragment)
+                ftSC.addToBackStack("frag")
+                ftSC.commit()
+            }
+        }
+
+        binding.completedVisitationsButton.setOnClickListener {
+            Bugfender.i("Screen", "Pinned")
+            var service = activity?.getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
+            var enabled = if (Constants.enableLocationTracking) service.isProviderEnabled(LocationManager.GPS_PROVIDER) else true
+            FirebaseCrashlytics.getInstance().log("User Selected Today's Visitations Screen")
+            if (!enabled) {
+                var alertBuilder = AlertDialog.Builder(requireContext());
+                val inflater = LayoutInflater.from(requireContext())
+                val dialogView = inflater.inflate(R.layout.decision_dialog, null)
+                alertBuilder.setView(dialogView)
+                val dialogMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
+                val dialogTitle = dialogView.findViewById<TextView>(R.id.tvTitle)
+                val btnPositiveAction = dialogView.findViewById<Button>(R.id.btnActionPositive)
+                val btnNegativeAction = dialogView.findViewById<Button>(R.id.btnActionNegative)
+                dialogTitle.setText("GPS Location is required")
+                dialogMessage.setText("GPS location is required within this app. If you disagree the app will be closed")
+                btnPositiveAction.setText("Agree")
+                btnNegativeAction.setText("Disagree")
+                val dialog = alertBuilder.create()
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//                dialog.setCancelable(false)
+                btnPositiveAction.setOnClickListener(View.OnClickListener { v: View? ->
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                    dialog.dismiss()
+                })
+                btnNegativeAction.setOnClickListener(View.OnClickListener { v: View? ->
+                    requireActivity().finish()
+                })
+
+                dialog.show()
+            } else {
+                (activity as MainActivity).supportActionBar!!.title = "Completed Visitations"
+                var fragment = CompletedVisitationsFragment()
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC!!.beginTransaction()
                 ftSC.replace(R.id.fragment, fragment)

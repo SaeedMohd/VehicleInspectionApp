@@ -16,6 +16,52 @@ open class MainClass{
 
 
 
+
+val defaultMap: Map<String, Any> = mapOf(
+    "tblPhone" to TblPhone().apply { PhoneID = "-1" },
+    "tblAddress" to TblAddress(),
+    "tblFacilityEmail" to TblFacilityEmail().apply { emailID = "-1" },
+    "tblAARPortalAdmin" to TblAARPortalAdmin().apply { CardReaders = "-1" },
+    "tblFacilityClosure" to TblFacilityClosure(),
+    "tblFacilityManagers" to TblFacilityManagers(),
+    "tblFacilityServiceProvider" to TblFacilityServiceProvider().apply { SrvProviderId="-1" },
+    "tblFacilityBillingHeader" to TblFacilityBillingHeader().apply { FACId=-1 },
+
+    "tblComments" to TblComments(),
+    "tblBusinessType" to TblBusinessType(),
+    "tblTerminationCodeType" to TblTerminationCodeType(),
+    "tblSurveySoftwares" to TblSurveySoftwares().apply { SoftwareSurveyNum = 0; FACID = 0 },
+    "tblFacilityServices" to TblFacilityServices().apply { FacilityServicesID = "-1" },
+    "tblAffiliations" to TblAffiliations().apply { AffiliationID = -1 },
+    "tblDeficiency" to TblDeficiency().apply { DefTypeID = "-1" },
+    "tblComplaintFiles" to TblComplaintFiles(),
+    "tblVisitationTracking" to TblVisitationTracking().apply { visitationID = "-1" },
+    "tblOfficeType" to TblOfficeType().apply { OfficeName = "" },
+
+    "tblPrograms" to TblPrograms().apply { ProgramID = "-1" },
+    "tblGeocodes" to TblGeocodes().apply { GeoCodeTypeID = -1 },
+    "tblFacilityPhotos" to TblFacilityPhotos(),
+    "tblHours" to TblHours(),
+    "Billing" to TblBilling().apply { BillingID = -1 },
+    "BillingPlan" to TblBillingPlan().apply { BillingPlanID = -1 },
+    "tblFacilityBillingDetail" to TblFacilityBillingDetail().apply { BillingPlanID = -1;FacBillId = -1;BillingPlanTypeID=0 },
+    "tblInvoiceInfo" to TblInvoiceInfo().apply { InvoiceId = -1 },
+    "VendorRevenue" to TblVendorRevenue().apply { VendorRevenueID = -1 },
+    "BillingHistory" to TblBillingHistory().apply { InvoiceId = -1 },
+    "tblPersonnel" to TblPersonnel().apply { PersonnelID = -1 },
+    "tblVehicleServices" to TblVehicleServices().apply { ScopeServiceID = -1;VehiclesTypeID=-1 },
+    "tblAARPortalTracking" to TblAARPortalTracking().apply { TrackingID = "-1" },
+    "tblPersonnelCertification" to TblPersonnelCertification(),
+    "BillingAdjustments" to TblBillingAdjustments().apply { AdjustmentId = -1 },
+    "tblFacVehicles" to TblFacVehicles().apply { VehicleID = -1 },
+    "tblPersonnelSigner" to TblPersonnelSigner().apply { PersonnelID = -1 },
+    "tblFacilityType" to TblFacilityType().apply { FacilityTypeName = "Independent" },
+    "Promotions" to TblPromotions().apply { PromoID = -1 },
+    "FacilityPhotos" to FacilityPhotos().apply { PhotoId = -1 },
+    "tblAAAPortalEmailFacilityRepTable" to TblAAAPortalEmailFacilityRepTable().apply { ContractSID = "-1" }
+
+
+)
 class TblFacilities {
     var isInputsValid = false
     var FACID = 0
@@ -49,6 +95,8 @@ class TblFacilities {
     var ContractTypeID = 0
     var officeID = 0
     var StatusComment = ""
+    var ACHParticipant = 0
+    var Eligible = true
 }
 
 class TblBusinessType {
@@ -510,7 +558,7 @@ class TblBillingHistory {
     var InvoiceStatusName = ""
     var BillingMonthNumber = 0
     var BillingMonth = ""
-    var BillBalanceDue = ""
+    var BillBalanceDue = 0.0
     var BillingAmount = 0.0
     var AmountReceived = ""
     var ReceiptDate = ""

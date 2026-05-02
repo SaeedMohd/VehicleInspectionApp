@@ -35,6 +35,8 @@ import com.inspection.model.*
 import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 
 
 /**
@@ -175,9 +177,9 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         val sdf = SimpleDateFormat("MM/dd/yyyy")
         val InsuranceExpDate = sdf.parse(InsuranceExpDateStr)
-        val InsuranceExpDatedays =  (InsuranceExpDate.getTime() - Date().getTime()) / 1000 / 60 / 60 / 24
+        val InsuranceExpDatedays =  (InsuranceExpDate.time - Date().time) / 1000 / 60 / 60 / 24
         val ARDExpDate = sdf.parse(ARDExpDateStr)
-        val ARDExpDatedays =  (ARDExpDate.getTime() - Date().getTime()) / 1000 / 60 / 60 / 24
+        val ARDExpDatedays =  (ARDExpDate.time - Date().time) / 1000 / 60 / 60 / 24
         binding.alertRIcon.isVisible = (InsuranceExpDatedays <= 0) || (ARDExpDatedays <= 0)
         binding.alertYIcon.isVisible = (InsuranceExpDatedays <= 180 || ARDExpDatedays <= 180) && !binding.alertRIcon.isVisible
         val animation: Animation =  AlphaAnimation(1.0f,0.0f)
@@ -187,7 +189,6 @@ class FacilityGeneralInformationFragment : Fragment() {
         animation.repeatMode = Animation.REVERSE //animation will start from end point once ended.
         binding.alertYIcon.startAnimation(animation) //to start animation
         binding.alertRIcon.startAnimation(animation) //to start animation
-
         if (ARDExpDatedays<=0){
             toolTipStr = "ARD Expiration Date has passed\n\n"
             binding.ARDexpTextview.setTextColor(Color.RED)
@@ -207,7 +208,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             binding.InsuranceExpDateTextview.setTextColor(Color.RED)
             binding.InsuranceExpDateTextview.startAnimation(animation) //to start animation
         } else if (InsuranceExpDatedays<=180) {
-            toolTipStr += "Insurance Expiration Date has passed\n\n"
+            toolTipStr += "Insurance Expiration Date is within 180 days\n\n"
             binding.InsuranceExpDateTextview.setTextColor(resources.getColor(R.color.dark_yellow))
             binding.InsuranceExpDateTextview.startAnimation(animation) //to start animation
         } else {
@@ -225,6 +226,20 @@ class FacilityGeneralInformationFragment : Fragment() {
         binding.alertYIcon.setOnClickListener({
             Utility.showUnifiedInformationDialog(requireContext(),toolTipStr)
         })
+        var defAlert = checkUnClearedDeficiencies()
+        if (defAlert.isNullOrEmpty()) {
+            binding.deficienciesText.visibility = View.GONE
+        } else {
+            defAlert = "Uncleared Deficiencies: $defAlert"
+            binding.deficienciesText.text = defAlert
+            binding.deficienciesText.visibility = View.VISIBLE
+//            binding.deficienciesText.startAnimation(animation)
+        }
+        if (checkDownStreamFlag()) {
+            binding.downStreamFlagText.visibility = View.GONE
+        } else {
+            binding.downStreamFlagText.visibility = View.VISIBLE
+        }
     }
 
     private fun setFieldsValues() {
@@ -296,7 +311,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             binding.assignedtoTextviewVal.text = tblFacilities[0].AssignedTo
             binding.dbaTextviewVal.text = tblFacilities[0].BusinessName
             binding.entityTextviewVal.text = tblFacilities[0].EntityName
-                if (tblBusinessType.size>0) {
+            if (tblBusinessType.size>0) {
                     binding.bustypeTextviewVal.setSelection(busTypeArray.indexOf(tblFacilities[0].BusTypeID.toString()))
                 } else {
                     binding.bustypeTextviewVal.setSelection(0)
@@ -439,7 +454,6 @@ class FacilityGeneralInformationFragment : Fragment() {
             Utility.showUnifiedConfirmationDialog(activity,  "Changes cancelled successfully")
         }
     }
-
     fun fillPortalTrackingTableView() {
 
         val layoutParam = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -657,9 +671,6 @@ class FacilityGeneralInformationFragment : Fragment() {
         }
     }
 
-
-
-
     fun ImplementBusinessRules() {
         binding.activeRadioButton.isClickable = false
         binding.inActiveRadioButton.isClickable = false
@@ -698,8 +709,6 @@ class FacilityGeneralInformationFragment : Fragment() {
         binding.initcodateTextviewVal.isEnabled=false
         binding.InsuranceExpDateTextviewVal.isEnabled=true
     }
-
-
     private fun setFieldsListeners(){
         binding.ARDexpTextviewVal.setOnClickListener {
             val c = Calendar.getInstance()
@@ -961,7 +970,7 @@ class FacilityGeneralInformationFragment : Fragment() {
             facValide=false
         }
 
-        if (binding.ARDexpTextviewVal.text.toString().toUpperCase().equals("SELECT DATE")) {
+        if (binding.ARDexpTextviewVal.text.toString().uppercase(getDefault()).equals("SELECT DATE")) {
             binding.ARDexpTextviewVal.setError("Required Field")
             facValide=false
         }
@@ -990,7 +999,6 @@ class FacilityGeneralInformationFragment : Fragment() {
         submitPaymentRequired=true
         refreshButtonsState()
     }
-
 
     fun setPaymentMethods() {
         binding.visaCheckbox.isChecked = (FacilityDataModel.getInstance().tblPaymentMethods.filter { s->s.PmtMethodID.toInt()==1 }.size>0)
@@ -1137,7 +1145,6 @@ class FacilityGeneralInformationFragment : Fragment() {
     }))
     }
 
-
     fun getPaymentDataChanges() : String {
         var strChanges = ""
         var strPrefix = "Payment method(s) ("
@@ -1253,7 +1260,6 @@ class FacilityGeneralInformationFragment : Fragment() {
         }
         return strChanges
     }
-
 
     fun submitPaymentMethods(){
 

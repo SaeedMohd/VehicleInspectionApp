@@ -149,6 +149,18 @@
                         android:textAlignment="center"
                         android:text="test" />
                 </TableRow>
+                <TableRow android:layout_marginTop="5dp">
+                <CheckBox
+                    android:id="@+id/todayVisCB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add To Today's Visitations"
+                    android:layout_column="0"
+                    android:textStyle="bold"
+                    android:textColor="@color/mainColor"
+                    android:layout_margin="5dp"
+                    app:buttonTint="@drawable/checkbox_bkg"/>
+                </TableRow>
             </TableLayout>
             <Button
                 android:id="@+id/loadBtn"

@@ -1022,6 +1022,7 @@ class FragmentARRAVLocation : Fragment() {
 
 
     fun emailFormatValidation(target: CharSequence): Boolean {
+        // issue reported for some emails
 
         if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches())
             emailValid = true else emailValid = false
@@ -1259,47 +1260,47 @@ class FragmentARRAVLocation : Fragment() {
             val satOpen = binding.satOpenSpinner.selectedItem.toString()
             // HAVE TO HANDLE CLOSED AND OR 00:00:01
 
-            if (sunClose != FacilityDataModelOrg.getInstance().tblHours[0].SunClose) {
+            if ((sunClose != FacilityDataModelOrg.getInstance().tblHours[0].SunClose) && (FacilityDataModelOrg.getInstance().tblHours[0].SunClose != "")) {
                 strChanges += "Sunday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SunClose + ") to (" + sunClose + ") - "
             }
-            if (monClose != FacilityDataModelOrg.getInstance().tblHours[0].MonClose) {
+            if ((monClose != FacilityDataModelOrg.getInstance().tblHours[0].MonClose) && (FacilityDataModelOrg.getInstance().tblHours[0].MonClose != "")) {
                 strChanges += "Monday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].MonClose + ") to (" + monClose + ") - "
             }
-            if (tueClose != FacilityDataModelOrg.getInstance().tblHours[0].TueClose) {
+            if ((tueClose != FacilityDataModelOrg.getInstance().tblHours[0].TueClose) && (FacilityDataModelOrg.getInstance().tblHours[0].TueClose != "")) {
                 strChanges += "Tuesday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].TueClose + ") to (" + tueClose + ") - "
             }
-            if (wedClose != FacilityDataModelOrg.getInstance().tblHours[0].WedClose) {
+            if ((wedClose != FacilityDataModelOrg.getInstance().tblHours[0].WedClose) && (FacilityDataModelOrg.getInstance().tblHours[0].WedClose != "")) {
                 strChanges += "Wednesday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].WedClose + ") to (" + wedClose + ") - "
             }
-            if (thuClose != FacilityDataModelOrg.getInstance().tblHours[0].ThuClose) {
+            if ((thuClose != FacilityDataModelOrg.getInstance().tblHours[0].ThuClose) && (FacilityDataModelOrg.getInstance().tblHours[0].ThuClose != "")) {
                 strChanges += "Thursday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].ThuClose + ") to (" + thuClose + ") - "
             }
-            if (friClose != FacilityDataModelOrg.getInstance().tblHours[0].FriClose) {
+            if ((friClose != FacilityDataModelOrg.getInstance().tblHours[0].FriClose) && (FacilityDataModelOrg.getInstance().tblHours[0].FriClose != "")) {
                 strChanges += "Friday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].FriClose + ") to (" + friClose + ") - "
             }
-            if (satClose != FacilityDataModelOrg.getInstance().tblHours[0].SatClose) {
+            if ((satClose != FacilityDataModelOrg.getInstance().tblHours[0].SatClose) && (FacilityDataModelOrg.getInstance().tblHours[0].SunClose != "")) {
                 strChanges += "Saturday closing time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SatClose + ") to (" + satClose + ") - "
             }
 
-            if (sunOpen != FacilityDataModelOrg.getInstance().tblHours[0].SunOpen) {
+            if ((sunOpen != FacilityDataModelOrg.getInstance().tblHours[0].SunOpen) && (FacilityDataModelOrg.getInstance().tblHours[0].SunOpen != "")) {
                 strChanges += "Sunday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SunOpen + ") to (" + sunOpen + ") - "
             }
-            if (monOpen != FacilityDataModelOrg.getInstance().tblHours[0].MonOpen) {
+            if ((monOpen != FacilityDataModelOrg.getInstance().tblHours[0].MonOpen) && (FacilityDataModelOrg.getInstance().tblHours[0].MonOpen != "")) {
                 strChanges += "Monday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].MonOpen + ") to (" + monOpen + ") - "
             }
-            if (tueOpen != FacilityDataModelOrg.getInstance().tblHours[0].TueOpen) {
+            if ((tueOpen != FacilityDataModelOrg.getInstance().tblHours[0].TueOpen) && (FacilityDataModelOrg.getInstance().tblHours[0].TueOpen != "")) {
                 strChanges += "Tuesday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].TueOpen + ") to (" + tueOpen + ") - "
             }
-            if (wedOpen != FacilityDataModelOrg.getInstance().tblHours[0].WedOpen) {
+            if ((wedOpen != FacilityDataModelOrg.getInstance().tblHours[0].WedOpen) && (FacilityDataModelOrg.getInstance().tblHours[0].WedOpen != "")) {
                 strChanges += "Wednesday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].WedOpen + ") to (" + wedOpen + ") - "
             }
-            if (thuOpen != FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen) {
+            if ((thuOpen != FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen) && (FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen != "")) {
                 strChanges += "Thursday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].ThuOpen + ") to (" + thuOpen + ") - "
             }
-            if (friOpen != FacilityDataModelOrg.getInstance().tblHours[0].FriOpen) {
+            if ((friOpen != FacilityDataModelOrg.getInstance().tblHours[0].FriOpen) && (FacilityDataModelOrg.getInstance().tblHours[0].FriOpen != "")) {
                 strChanges += "Friday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].FriOpen + ") to (" + friOpen + ") - "
             }
-            if (satOpen != FacilityDataModelOrg.getInstance().tblHours[0].SatOpen) {
+            if ((satOpen != FacilityDataModelOrg.getInstance().tblHours[0].SatOpen) && (FacilityDataModelOrg.getInstance().tblHours[0].SatOpen != "")) {
                 strChanges += "Saturday opening time changed from (" + FacilityDataModelOrg.getInstance().tblHours[0].SatOpen + ") to (" + satOpen + ") - "
             }
             if (binding.nightDropCheck.isChecked != FacilityDataModelOrg.getInstance().tblHours[0].NightDrop) {
@@ -1318,31 +1319,63 @@ class FragmentARRAVLocation : Fragment() {
     fun getLanguageChanges() : String {
         var strChanges = ""
         try {
-            if (FacilityDataModel.getInstance().tblLanguage.size != FacilityDataModelOrg.getInstance().tblLanguage.size) {
-                strChanges += "Facility Languages changed from ("
-                FacilityDataModelOrg.getInstance().tblLanguage.apply {
+//            if (FacilityDataModel.getInstance().tblLanguage.size != FacilityDataModelOrg.getInstance().tblLanguage.size) {
+//                strChanges += "Facility Languages changed from ("
+//                FacilityDataModelOrg.getInstance().tblLanguage.apply {
+//                    (0 until size).forEach {
+//                        strChanges += TypeTablesModel.getInstance().LanguageType.filter { s ->
+//                            s.LangTypeID.equals(
+//                                get(it).LangTypeID
+//                            )
+//                        }[0].LangTypeName + " - "
+//                    }
+//                }
+//                strChanges = strChanges.removeSuffix(" - ")
+//                strChanges += ") to ("
+//                FacilityDataModel.getInstance().tblLanguage.apply {
+//                    (0 until size).forEach {
+//                        strChanges += TypeTablesModel.getInstance().LanguageType.filter { s ->
+//                            s.LangTypeID.equals(
+//                                get(it).LangTypeID
+//                            )
+//                        }[0].LangTypeName + " - "
+//                    }
+//                }
+//                strChanges = strChanges.removeSuffix(" - ")
+//                strChanges += ")"
+//            }
+//            if (FacilityDataModel.getInstance().tblLanguage.size != FacilityDataModelOrg.getInstance().tblLanguage.size) {
+                strChanges += "Added ("
+                FacilityDataModel.getInstance().tblLanguage.apply {
                     (0 until size).forEach {
-                        strChanges += TypeTablesModel.getInstance().LanguageType.filter { s ->
-                            s.LangTypeID.equals(
-                                get(it).LangTypeID
-                            )
-                        }[0].LangTypeName + " - "
+                        if (FacilityDataModelOrg.getInstance().tblLanguage.filter { s->s.LangTypeID.equals(get(it).LangTypeID)}.isEmpty()) {
+                            strChanges += TypeTablesModel.getInstance().LanguageType.filter { s ->
+                                s.LangTypeID.equals(
+                                    get(it).LangTypeID
+                                )
+                            }[0].LangTypeName + " - "
+                        }
                     }
                 }
                 strChanges = strChanges.removeSuffix(" - ")
-                strChanges += ") to ("
-                FacilityDataModel.getInstance().tblLanguage.apply {
+                strChanges += ") "
+
+                strChanges += " Removed ("
+
+                FacilityDataModelOrg.getInstance().tblLanguage.apply {
                     (0 until size).forEach {
-                        strChanges += TypeTablesModel.getInstance().LanguageType.filter { s ->
-                            s.LangTypeID.equals(
-                                get(it).LangTypeID
-                            )
-                        }[0].LangTypeName + " - "
+                        if (FacilityDataModel.getInstance().tblLanguage.filter { s->s.LangTypeID.equals(get(it).LangTypeID)}.isEmpty()) {
+                            strChanges += TypeTablesModel.getInstance().LanguageType.filter { s ->
+                                s.LangTypeID.equals(
+                                    get(it).LangTypeID
+                                )
+                            }[0].LangTypeName + " - "
+                        }
                     }
                 }
                 strChanges = strChanges.removeSuffix(" - ")
                 strChanges += ")"
-            }
+//            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -1920,7 +1953,7 @@ class FragmentARRAVLocation : Fragment() {
                                         { response ->
                                             requireActivity().runOnUiThread {
                                                 if (response.toString().contains("returnCode>0<", false)) {
-                                                    HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Phones","",getPhoneChanges(1,phoneFacilityChangedIndex))
+                                                    HasChangedModel.getInstance().updateChangedData("Location and Contact Information","Facility Phones","",getPhoneChanges(1,phoneFacilityChangedIndex))
                                                     Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
                                                     FacilityDataModel.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = binding.newChangesPhoneNoText.text.toString()
                                                     FacilityDataModelOrg.getInstance().tblPhone[phoneFacilityChangedIndex].PhoneNumber = binding.newChangesPhoneNoText.text.toString()
@@ -2069,7 +2102,7 @@ class FragmentARRAVLocation : Fragment() {
                                         { response ->
                                             requireActivity().runOnUiThread {
                                                 if (response.toString().contains("returnCode>0<", false)) {
-                                                    HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Emails","",getEmailChanges(1,emailFacilityChangedIndex))
+                                                    HasChangedModel.getInstance().updateChangedData("Location and Contact Information","Facility Emails","",getEmailChanges(1,emailFacilityChangedIndex))
                                                     Utility.showSubmitAlertDialog(activity, true, "Facility Email")
                                                     FacilityDataModel.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = binding.newChangesEmailText.text.toString()
                                                     FacilityDataModelOrg.getInstance().tblFacilityEmail[emailFacilityChangedIndex].email = binding.newChangesEmailText.text.toString()
@@ -2610,7 +2643,7 @@ class FragmentARRAVLocation : Fragment() {
             { response ->
                 requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<",false)) {
-                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Emails","",getEmailChanges(0,0))
+                        HasChangedModel.getInstance().updateChangedData("Location and Contact Information","Facility Emails","",getEmailChanges(0,0))
                         Utility.showSubmitAlertDialog(activity, true, "Facility Email")
                         if (FacilityDataModel.getInstance().tblFacilityEmail.size==1 && FacilityDataModel.getInstance().tblFacilityEmail[0].emailID.equals("-1")){
                             FacilityDataModel.getInstance().tblFacilityEmail.removeAt(0)
@@ -2691,7 +2724,7 @@ class FragmentARRAVLocation : Fragment() {
             { response ->
                 requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<",false)) {
-                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility GeoCodes","",getGeoCodesChanges())
+                        HasChangedModel.getInstance().updateChangedData("Location and Contact Information","Facility GeoCodes","",getGeoCodesChanges())
                         if (FacilityDataModel.getInstance().tblGeocodes.filter { s->s.GeoCodeTypeID==geocodeTypeID_Map}.isNotEmpty()) {
                             FacilityDataModel.getInstance().tblGeocodes.filter { s -> s.GeoCodeTypeID == geocodeTypeID_Map }[0].LATITUDE =
                                 LATITUDE_Map
@@ -2796,7 +2829,7 @@ class FragmentARRAVLocation : Fragment() {
             { response ->
                 requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<",false)) {
-                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Hours","",getHoursChanges())
+                        HasChangedModel.getInstance().updateChangedData("Location and Contact Information","Facility Hours","",getHoursChanges())
                         FacilityDataModel.getInstance().tblHours[0].MonClose = monClose
                         FacilityDataModel.getInstance().tblHours[0].SunClose = sunClose
                         FacilityDataModel.getInstance().tblHours[0].SatClose = satClose
@@ -2868,7 +2901,7 @@ class FragmentARRAVLocation : Fragment() {
             { response ->
                 requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<",false)) {
-                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Languages","",getLanguageChanges())
+                        HasChangedModel.getInstance().updateChangedData("Location and Contact Information","Facility Languages","",getLanguageChanges())
                         Utility.showSubmitAlertDialog(activity, true, "Facility Languages")
                         (activity as FormsActivity).saveRequired = false
                         FacilityDataModelOrg.getInstance().tblLanguage.clear()
@@ -2926,7 +2959,7 @@ class FragmentARRAVLocation : Fragment() {
             { response ->
                 requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<", false)) {
-                        HasChangedModel.getInstance().updateChangedData("Location & Contact Information","Facility Phones","",getPhoneChanges(0,0))
+                        HasChangedModel.getInstance().updateChangedData("Location and Contact Information","Facility Phones","",getPhoneChanges(0,0))
                         Utility.showSubmitAlertDialog(activity, true, "Facility Phone")
                         if (FacilityDataModel.getInstance().tblPhone.size==1 && FacilityDataModel.getInstance().tblPhone[0].PhoneID.equals("-1")){
                             FacilityDataModel.getInstance().tblPhone.removeAt(0)
@@ -3266,20 +3299,65 @@ fun EditText.inputFilterDecimal(
 }
 
 class DecimalDigitsInputFilter(
-        maxDigitsIncludingPoint: Int, maxDecimalPlaces: Int, signed: Boolean
+    private val maxDigitsIncludingPoint: Int,
+    private val maxDecimalPlaces: Int,
+    private val signed: Boolean
 ) : InputFilter {
-        private val pattern: Pattern = Pattern.compile(
-                (if (signed) "-" else "")+"[0-9]{0," + (maxDigitsIncludingPoint - 1) + "}+((\\.[0-9]{0,"
-                    + (maxDecimalPlaces - 1) + "})?)||(\\.)?"
-    )
+
+    private val pattern: Pattern
+
+    init {
+        // Ensure safe values
+        val safeMaxDigits = maxDigitsIncludingPoint.coerceAtLeast(1)
+        val safeMaxDecimals = maxDecimalPlaces.coerceAtLeast(0)
+
+        // Integer digits = total - decimals
+        val maxIntegerDigits = (safeMaxDigits - safeMaxDecimals).coerceAtLeast(0)
+
+        pattern = Pattern.compile(
+            (if (signed) "-?" else "") +
+                    "[0-9]{0,$maxIntegerDigits}" +
+                    "(\\.[0-9]{0,$safeMaxDecimals})?"
+        )
+    }
 
     override fun filter(
-            p0: CharSequence?,p1: Int,p2: Int,p3: Spanned?,p4: Int,p5: Int
+        source: CharSequence?,
+        start: Int,
+        end: Int,
+        dest: Spanned?,
+        dstart: Int,
+        dend: Int
     ): CharSequence? {
-        p3?.apply {
-            val matcher: Matcher = pattern.matcher(p3)
-            return if (!matcher.matches()) "" else null
+
+        val newValue = StringBuilder(dest ?: "")
+            .replace(dstart, dend, source?.subSequence(start, end).toString())
+            .toString()
+
+        // Allow empty input
+        if (newValue.isEmpty() || newValue == "-") return null
+
+        val matcher = pattern.matcher(newValue)
+
+        return if (matcher.matches()) {
+            null   // ✅ accept input
+        } else {
+            ""     // ❌ reject input
         }
-        return null
     }
 }
+
+//class DecimalDigitsInputFilter(
+//        maxDigitsIncludingPoint: Int, maxDecimalPlaces: Int, signed: Boolean
+//) : InputFilter {
+//        private val pattern: Pattern = Pattern.compile(
+//                (if (signed) "-" else "")+"[0-9]{0," + (maxDigitsIncludingPoint - 1) + "}+((\\.[0-9]{0,"
+//                    + (maxDecimalPlaces - 1) + "})?)||(\\.)?"
+//    )
+//
+//    override fun filter(
+//            p0: CharSequence?,p1: Int,p2: Int,p3: Spanned?,p4: Int,p5: Int
+//    ): CharSequence? {
+//        p3?.apply {
+//            val matcher: Matcher = pattern.matcher(p3)
+//            return if (!matcher.matches()) "" else

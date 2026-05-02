@@ -182,7 +182,7 @@ class FragmentAARAVBillingHistory : Fragment() {
                     textView.layoutParams = rowLayoutParam4
                     textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
-                    textView.text = get(it).BillBalanceDue
+                    textView.text = get(it).BillBalanceDue.toString()
                     tableRow.addView(textView)
 
                     textView = TextView(context)

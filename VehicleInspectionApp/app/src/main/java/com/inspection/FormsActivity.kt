@@ -1,17 +1,5 @@
 package com.inspection
 
-//import android.support.design.widget.Snackbar
-//import com.inspection.adapter.MultipartRequest
-//import kotlinx.android.synthetic.main.activity_forms.*
-//import kotlinx.android.synthetic.main.app_bar_forms.*
-//import kotlinx.android.synthetic.main.fragment_aarav_location.*
-//import kotlinx.android.synthetic.main.fragment_aarav_personnel.*
-//import kotlinx.android.synthetic.main.fragment_aarav_photos.*
-//import kotlinx.android.synthetic.main.fragment_arrav_affliations.*
-//import kotlinx.android.synthetic.main.fragment_arrav_deficiency.*
-//import kotlinx.android.synthetic.main.fragment_arrav_facility_services.*
-//import kotlinx.android.synthetic.main.fragment_arrav_programs.*
-//import org.jetbrains.anko.runOnUiThread
 import android.Manifest.permission.*
 import android.content.Intent
 import android.content.pm.PackageManager

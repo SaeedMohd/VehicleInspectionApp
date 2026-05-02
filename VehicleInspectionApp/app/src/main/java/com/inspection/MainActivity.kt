@@ -40,7 +40,7 @@ import androidx.viewpager.widget.ViewPager
 import com.android.volley.*
 import com.android.volley.toolbox.Volley
 import com.bugfender.sdk.Bugfender
-import com.google.android.gms.plus.Plus
+//import com.google.android.gms.plus.Plus
 import com.google.android.material.snackbar.Snackbar
 import com.inspection.GCM.GcmBroadcastReceiver
 import com.inspection.GCM.GcmRegistration
@@ -581,9 +581,9 @@ class MainActivity : AppCompatActivity(), LocationListener, NetworkSpeedDetector
                     if (ApplicationPrefs.getInstance(mContext).getBooleanPref(getString(R.string.is_user_logged_in_with_google_plus))) {
                         if (LoginActivity.mGoogleApiClient != null) {
                             if (LoginActivity.mGoogleApiClient!!.isConnected) {
-                                Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient)
-                                Plus.AccountApi.revokeAccessAndDisconnect(LoginActivity.mGoogleApiClient)
-                                LoginActivity.mGoogleApiClient!!.disconnect()
+//                                Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient)
+//                                Plus.AccountApi.revokeAccessAndDisconnect(LoginActivity.mGoogleApiClient)
+//                                LoginActivity.mGoogleApiClient!!.disconnect()
                             }
                         }
 

@@ -28,8 +28,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.inspection.R
 //import kotlinx.android.synthetic.main.fragment_arrav_scope_of_service.*
-import org.json.JSONException
-import org.json.JSONObject
+
 import com.google.gson.GsonBuilder
 import com.inspection.FormsActivity
 import com.inspection.MainActivity

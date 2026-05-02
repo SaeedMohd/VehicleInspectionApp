@@ -197,6 +197,51 @@ class FragmentARRAVVehicleServices : Fragment() {
         return strChanges
     }
 
+    fun compareServices(orgServicesRaw: String, newServicesRaw: String): Pair<List<String>, List<String>> {
+        // Normalize and split services
+        val orgServices = orgServicesRaw
+            .split("-", "\n", ",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .toSet()
+
+        val newServices = newServicesRaw
+            .split("-", "\n", "-")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .toSet()
+
+        val added = newServices.subtract(orgServices).sorted()
+        val removed = orgServices.subtract(newServices).sorted()
+
+        return Pair(added, removed)
+    }
+
+    data class ServiceDiffCount(
+        val added: Int,
+        val removed: Int
+    )
+
+    fun compareServicesCount(orgServicesRaw: String, newServicesRaw: String): ServiceDiffCount {
+        Log.v("ORG -> ",orgServicesRaw)
+        Log.v("New -> ",newServicesRaw)
+        val orgServices = orgServicesRaw
+            .split("-", "\n", ",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .toSet()
+
+        val newServices = newServicesRaw
+            .split("-", "\n", ",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .toSet()
+
+        return ServiceDiffCount(
+            added = newServices.count { it !in orgServices },
+            removed = orgServices.count { it !in newServices }
+        )
+    }
 
     fun saveVehicleServiceChanges(gridType: String) {
         var vehiclesTypeId=""
@@ -204,19 +249,39 @@ class FragmentARRAVVehicleServices : Fragment() {
         var saveMessage=""
         var orgSelectedServices = ""
         var dataChanges = ""
+        var changesTag = ""
+        var selectedServicesFormatted = ""
         try {
             if (gridType.equals("0")) {
                 vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Autom") }[0].VehiclesTypeID
                 FacilityDataModelOrg.getInstance().tblVehicleServices.filter { s -> s.VehiclesTypeID == vehiclesTypeId.toInt() }.apply {
                     (0 until size).forEach {
                         Log.v("LAST ONE --- ", get(it).ServiceID.toString() + " - " + get(it).VehiclesTypeID);
-                        orgSelectedServices += TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.ServiceID == get(it).ServiceID }.filter { s -> s.VehiclesTypeID.toInt() == get(it).VehiclesTypeID }[0].ScopeServiceName + " - "
+                        orgSelectedServices += TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID == get(it).VehicleCategoryID  }[0].VehCategoryName + " " + TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.ServiceID == get(it).ServiceID }.filter { s -> s.VehiclesTypeID.toInt() == get(it).VehiclesTypeID }[0].ScopeServiceName + " - "
+                    }
+                }
+                for (i in 0..selectedVehicleServices.size-1){
+                    Log.v("SELECTED SERVICES --- ", selectedVehicleServices.get(i).toString())
+                    TypeTablesModel.getInstance().ScopeofServiceTypeByVehicleType.filter { s -> s.ServiceID.toString() == selectedVehicleServices.get(i).toString() }.apply {
+                        (0 until size).forEach {
+                            Log.v("SELECTED SERVICES NAME --- ", get(it).ScopeServiceName)
+                            Log.v("SELECTED CATEGORY NAME --- ", TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID == get(it).VehicleCategoryID  }[0].VehCategoryName)
+                            selectedServicesFormatted += TypeTablesModel.getInstance().VehiclesMakesCategoryType.filter { s -> s.VehCategoryID == get(it).VehicleCategoryID  }[0].VehCategoryName + " " + get(it).ScopeServiceName + " - "
+                        }
                     }
                 }
                 scopeServiceId = selectedVehicleServices.toString()
                 orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+                selectedServicesFormatted = selectedServicesFormatted.removeSuffix(" - ")
+                // Get Changes
+//                val (added, removed) = compareServices(orgSelectedServices, selectedServicesFormatted)
+                val diff = compareServicesCount(orgSelectedServices, selectedServicesFormatted)
+
                 saveMessage = "(Automobile)"
-                dataChanges = "Automobile Vehicle Services changed from " + orgSelectedServices + " to " + selectedVehicleServicesNames
+//                dataChanges = "Automobile Vehicle Services Changes from " + orgSelectedServices + " to " + selectedVehicleServicesNames
+                dataChanges += "Automobile Vehicle Services Changes: Added ( ${diff.added} ) - Removed ( ${diff.removed} )"
+                changesTag = "Automobile"
+                Log.v("DATA CHANGES --- ", dataChanges)
             } else if (gridType.equals("1")) {
                 vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Body") }[0].VehiclesTypeID
                 scopeServiceId = selectedAutoBodyServices.toString()
@@ -226,8 +291,12 @@ class FragmentARRAVVehicleServices : Fragment() {
                     }
                 }
                 orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+//                val (added, removed) = compareServices(orgSelectedServices, selectedAutoBodyServicesNames.joinToString(","))
+                val diff = compareServicesCount(orgSelectedServices, selectedServicesFormatted)
                 saveMessage = "(Auto Body)"
-                dataChanges = "Auto Body Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoBodyServicesNames
+//                dataChanges = "Auto Body Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoBodyServicesNames
+                dataChanges += "Auto Body Vehicle Services Changes: Added ( ${diff.added} ) - Removed ( ${diff.removed} )"
+                changesTag = "Auto Body"
             } else if (gridType.equals("2")) {
                 vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Marin") }[0].VehiclesTypeID
                 scopeServiceId = selectedMarineServices.toString()
@@ -237,8 +306,13 @@ class FragmentARRAVVehicleServices : Fragment() {
                     }
                 }
                 orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+//                val (added, removed) = compareServices(orgSelectedServices, selectedMarineServicesNames.joinToString(","))
                 saveMessage = "(Marine)"
-                dataChanges = "Marine Vehicle Services changed from " + orgSelectedServices + " to " + selectedMarineServicesNames
+                changesTag = "Marine"
+                val diff = compareServicesCount(orgSelectedServices, selectedServicesFormatted)
+                dataChanges += "Marine Vehicle Services Changes: Added ( ${diff.added} ) - Removed ( ${diff.removed} )"
+//                dataChanges = "Marine Vehicle Services changed from " + orgSelectedServices + " to " + selectedMarineServicesNames
+//                dataChanges += "Marine Vehicle Services Changes: Added " + added + " - Removed " + removed
             } else if (gridType.equals("3")) {
                 vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("RV") }[0].VehiclesTypeID
                 scopeServiceId = selectedRecreationServices.toString()
@@ -248,8 +322,13 @@ class FragmentARRAVVehicleServices : Fragment() {
                     }
                 }
                 orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+//                val (added, removed) = compareServices(orgSelectedServices, selectedRecreationServicesNames.joinToString(","))
                 saveMessage = "(RV)"
-                dataChanges = "Recreation Vehicle Services changed from " + orgSelectedServices + " to " + selectedRecreationServicesNames
+                changesTag = "RV"
+//                dataChanges = "Recreation Vehicle Services changed from " + orgSelectedServices + " to " + selectedRecreationServicesNames
+//                dataChanges += "Recreation Vehicle Services Changes: Added " + added + " - Removed " + removed
+                val diff = compareServicesCount(orgSelectedServices, selectedServicesFormatted)
+                dataChanges += "Recreation Vehicle Services Changes: Added ( ${diff.added} ) - Removed ( ${diff.removed} )"
             } else if (gridType.equals("4")) {
                 vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Auto Glass") }[0].VehiclesTypeID
                 scopeServiceId = selectedAutoGlassServices.toString()
@@ -259,8 +338,13 @@ class FragmentARRAVVehicleServices : Fragment() {
                     }
                 }
                 orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+//                val (added, removed) = compareServices(orgSelectedServices, selectedAutoGlassServicesNames.joinToString(","))
                 saveMessage = "(Auto Glass)"
-                dataChanges = "Auto Glass Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoGlassServicesNames
+                changesTag = "Auto Glass"
+//                dataChanges = "Auto Glass Vehicle Services changed from " + orgSelectedServices + " to " + selectedAutoGlassServicesNames
+//                dataChanges += "Recreation Vehicle Services Changes: Added " + added + " - Removed " + removed
+                val diff = compareServicesCount(orgSelectedServices, selectedServicesFormatted)
+                dataChanges += "Auto Glass Vehicle Services Changes: Added ( ${diff.added} ) - Removed ( ${diff.removed} )"
             } else if (gridType.equals("5")) {
                 vehiclesTypeId = TypeTablesModel.getInstance().VehiclesType.filter { s -> s.VehiclesTypeName.contains("Other") }[0].VehiclesTypeID
                 scopeServiceId = selectedOthersServices.toString()
@@ -270,8 +354,13 @@ class FragmentARRAVVehicleServices : Fragment() {
                     }
                 }
                 orgSelectedServices = orgSelectedServices.removeSuffix(" - ")
+//                val (added, removed) = compareServices(orgSelectedServices, selectedOthersServicesNames.joinToString(","))
                 saveMessage = "(Other Status)"
-                dataChanges = "Other Vehicle Services changed from " + orgSelectedServices + " to " + selectedOthersServicesNames
+                changesTag = "Other"
+//                dataChanges += "Other Vehicle Services changed from " + orgSelectedServices + " to " + selectedOthersServicesNames
+//                dataChanges += "Other Vehicle Services Changes: Added " + added + " - Removed " + removed
+                val diff = compareServicesCount(orgSelectedServices, selectedServicesFormatted)
+                dataChanges += "Other Vehicle Services Changes: Added ( ${diff.added} ) - Removed ( ${diff.removed} )"
             }
         }
         catch (e: Exception) {
@@ -281,12 +370,13 @@ class FragmentARRAVVehicleServices : Fragment() {
         scopeServiceId = scopeServiceId.replace("[","")
         scopeServiceId = scopeServiceId.replace("]","")
         Log.v("Vehcile Services --- ",Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}")
+        Utility.showUnifiedInformationDialog(requireContext(),  dataChanges)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}" + Utility.getLoggingParameters(activity, 0, dataChanges),
             { response ->
                 Log.v("Vehcile Services --- ","ad")
                 requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<",false)) {
-                        HasChangedModel.getInstance().updateChangedData("Vehicles Services","","", dataChanges)
+                        HasChangedModel.getInstance().updateChangedData("Vehicles Services",changesTag,"", dataChanges)
                         binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
                         binding.progressBarText.text = "Loading ..."
                         FacilityDataModelOrg.getInstance().tblVehicleServices.clear()

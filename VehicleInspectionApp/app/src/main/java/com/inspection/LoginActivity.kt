@@ -8,6 +8,7 @@ package com.inspection
 //import kotlinx.android.synthetic.main.dialog_forgot_password.*
 //import kotlinx.android.synthetic.main.dialog_user_register.*
 //import org.json.XML
+//import com.inspection.xml_utils.XmlParser
 import android.app.*
 import android.content.*
 import android.net.ConnectivityManager
@@ -44,24 +45,31 @@ import com.inspection.Utils.Constants.IDLE_TIMEOUT
 import com.inspection.Utils.Utility
 import com.inspection.Utils.checkInternetAndSpeed
 import com.inspection.Utils.toApiSubmitFormat
+import com.inspection.Utils.toDBFormat
 import com.inspection.databinding.ActivityLoginBinding
 import com.inspection.model.*
 import com.inspection.serverTasks.*
+import com.inspection.utils.XmlUtils
+import com.inspection.utils.XmlUtils.normalizeForModel
+import com.inspection.utils.XmlUtils.normalizeJsonArrays
+import com.inspection.utils.XmlUtils.xmlToJsonObject
 
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
+//import shaded.org.json.JSONObject
+//import org.json.JSONObject
+//import org.sha.json.XML
 
 //import org.json.XML
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
-import org.jsoup.parser.Parser
-import shaded.org.json.XML
 //import shaded.org.json.XML
 import java.io.IOException
 import java.net.URLEncoder
 import java.util.*
+import java.util.Locale
+import java.util.Locale.getDefault
 import java.util.concurrent.TimeUnit
+import kotlin.toString
 
 
 class LoginActivity : AppCompatActivity() ,NetworkSpeedDetector.NetworkSpeedListener {
@@ -446,35 +454,49 @@ class LoginActivity : AppCompatActivity() ,NetworkSpeedDetector.NetworkSpeedList
                             binding.recordsProgressView.visibility = View.GONE
                         }
                     } else {
-//                        var obj = convertXmlToJsonUsingGson(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
-//                        val document: Document = Jsoup.parse(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")), "", Parser.xmlParser())
-                        // Convert XML elements to a Map
-//                        val map: MutableMap<String, String> = HashMap()
-//                        for (element in document.children()) {
-//                            map[element.tagName()] = element.text()
-//                        }
-//                        var obj = Gson().toJson(map.get("responseXml"))
+//                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
+//                        var jsonObj = obj.getJSONObject("responseXml")
+//                        TypeTablesModel.setInstance(
+//                            Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java)
+//                        )
 
-                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
-//                    val startIndex = responseString.indexOf("<responseXml")
-//                    val endIndex = responseString.indexOf("<returnCode")
-//                    val xmlPart = responseString.substring(startIndex, endIndex)
-//                        val xmlBytes: ByteArray = xmlPart.getBytes(StandardCharsets.UTF_8)
-//                        val xmlMapper = XmlMapper()
-//                        val jsonNode: JsonNode = xmlMapper.readTree(xmlPart.toByteArray())
-//                    var obj = XmlMapper().readTree((responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode"))).toByteArray())
-                        var jsonObj = obj.getJSONObject("responseXml")
-//                        var jsonObj = obj.get("responseXml")
-                        TypeTablesModel.setInstance(Gson().fromJson(jsonObj.toString(), TypeTablesModel::class.java))
-//                        TypeTablesModel.setInstance(Gson().fromJson(obj.toString(), TypeTablesModel::class.java))
+                        val xmlPart = responseString.substring(
+                            responseString.indexOf("<responseXml"),
+                            responseString.indexOf("<returnCode")
+                        )
+
+                        val rootJson = xmlToJsonObject(xmlPart)
+                        Log.v("rootJson -> ", rootJson.toString())
+
+// IMPORTANT: Jsoup already removed wrapper
+                        val responseJson = rootJson
+
+                        Log.v("responseJson -> ", responseJson.toString())
+
+                        val normalized = normalizeForModel(
+                            responseJson,
+                            TypeTablesModel::class.java
+                        )
+
+                        Log.v("normalized -> ", normalized.toString())
+
+                        TypeTablesModel.setInstance(
+                            Gson().fromJson(normalized, TypeTablesModel::class.java)
+                        )
+
                         (0 until TypeTablesModel.getInstance().EmployeeList.size).forEach {
                             TypeTablesModel.getInstance().EmployeeList[it].FullName = TypeTablesModel.getInstance().EmployeeList[it].FirstName + " " + TypeTablesModel.getInstance().EmployeeList[it].LastName
                         }
                         specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
 
                         activity!!.runOnUiThread {
-                            if (specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(binding.loginEmailEditText.text.toString().toLowerCase()) }.size > 0) {
+                            if (specialistArrayModel.filter { s -> s.Email.lowercase(getDefault())
+                                    .equals(
+                                        binding.loginEmailEditText.text.toString()
+                                            .lowercase(getDefault())
+                                    ) }.size > 0) {
                                 ApplicationPrefs.getInstance(activity).loggedInUserEmail = binding.loginEmailEditText!!.text.toString()
+
                                 ApplicationPrefs.getInstance(activity).loggedInUserPass = binding.loginPasswordEditText!!.text.toString()
                                 ApplicationPrefs.getInstance(activity).loggedInUserID = ""
                                 ApplicationPrefs.getInstance(activity).loggedInUserFullName = ""
@@ -482,7 +504,8 @@ class LoginActivity : AppCompatActivity() ,NetworkSpeedDetector.NetworkSpeedList
                             } else {
 //                                ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].NTLogin
 //                                ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(loginEmailEditText.text.toString().toLowerCase()) }[0].FullName
-                                ApplicationPrefs.getInstance(activity).loggedInUserEmail = binding.loginEmailEditText!!.text.toString()
+                                ApplicationPrefs.getInstance(activity).loggedInUserEmail = binding.loginEmailEditText.text.toString()
+
                                 ApplicationPrefs.getInstance(activity).loggedInUserPass = binding.loginPasswordEditText!!.text.toString()
                                 ApplicationPrefs.getInstance(activity).loggedInIsSpecialist = "No"
                             }
@@ -541,39 +564,8 @@ class LoginActivity : AppCompatActivity() ,NetworkSpeedDetector.NetworkSpeedList
 //
 //    }
 
-    fun convertXmlToJsonUsingGson(xmlString: String?) : String {
-        try {
-            // Parse the XML string into a Jsoup Document
-            val document = Jsoup.parse(xmlString, "", Parser.xmlParser())
 
-            // Convert the root element to a JSON-compatible structure
-            val map: MutableMap<String, Any> = HashMap()
-            convertElementToMap(document.child(0), map)
 
-            // Convert the map to JSON using Gson
-            val gson = Gson()
-            val jsonString = gson.toJson(map)
-            return jsonString
-            println("JSON Output: $jsonString")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return ""
-        }
-    }
-
-    private fun convertElementToMap(element: Element, map: MutableMap<String, Any>) {
-        for (child in element.children()) {
-            // If the child has nested children, create a new map
-            if (child.children().size > 0) {
-                val childMap: MutableMap<String, Any> = HashMap()
-                convertElementToMap(child, childMap)
-                map[child.tagName()] = childMap
-            } else {
-                // Add the child as a key-value pair
-                map[child.tagName()] = child.text()
-            }
-        }
-    }
 
         private fun executeLogin() {
 //            Utility.showMessageDialog(activity, "Internet Speed", checkInternetAndSpeed(this))
@@ -585,6 +577,8 @@ class LoginActivity : AppCompatActivity() ,NetworkSpeedDetector.NetworkSpeedList
                     .putString("Session ID", ApplicationPrefs.getInstance(activity).sessionID)
                     .build()
             Bugfender.setDeviceString("User Email", binding.loginEmailEditText.text.toString())
+            Bugfender.setDeviceString("Login Time", Date().toDBFormat())
+            Bugfender.setDeviceString("App Version", BuildConfig.VERSION_NAME)
             FirebaseCrashlytics.getInstance().setCustomKeys(keysAndValues)
             checkInternetAndSpeed(this)
 //            FirebaseCrashlytics.getInstance().setCustomKey("Internet Speed", checkInternetAndSpeed(this))
