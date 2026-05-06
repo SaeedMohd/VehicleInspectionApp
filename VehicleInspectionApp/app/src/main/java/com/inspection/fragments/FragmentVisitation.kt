@@ -181,9 +181,12 @@ class FragmentVisitation : Fragment() {
 //        setFieldsListeners()
         fillTrackingData()
         setAlertColoring()
-        Bugfender.setDeviceString("ClubNo", FacilityDataModel.getInstance().clubCode)
-        Bugfender.setDeviceString("FacNum", FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString())
-        Bugfender.setDeviceString("FacName", FacilityDataModel.getInstance().tblFacilities[0].BusinessName)
+        Bugfender.i("ClubNo", FacilityDataModel.getInstance().clubCode)
+        Bugfender.i("FacNum", FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString())
+        Bugfender.i("FacName", FacilityDataModel.getInstance().tblFacilities[0].BusinessName)
+        Bugfender.removeDeviceKey("FacNum")
+        Bugfender.removeDeviceKey("ClubNo")
+        Bugfender.removeDeviceKey("FacName")
         // NetworkStatus Indicator [Start]
         val animation: Animation = AlphaAnimation(1.0f, 0.0f)
         animation.duration = 500 //1 second duration for each animation cycle
