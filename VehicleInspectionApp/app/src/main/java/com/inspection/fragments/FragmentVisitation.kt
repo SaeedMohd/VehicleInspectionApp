@@ -3044,11 +3044,10 @@ class FragmentVisitation : Fragment() {
                     isInputValid = false
                     binding.visitationReasonTextView.setError("Required field")
                 }
-            } else {
-                if (binding.facilityRepresentativeSignatureButton.text.toString() == "Add Signature" && binding.visitationMethodDropListId.selectedItem.toString().equals("In Person")) {
-                    isInputValid = false
-                    binding.facilityRepresentativeSignatureButton.setError("Required field")
-                }
+            }
+            if (binding.facilityRepresentativeSignatureButton.text.toString() == "Add Signature" && binding.visitationMethodDropListId.selectedItem.toString().equals("In Person")) {
+                isInputValid = false
+                binding.facilityRepresentativeSignatureButton.setError("Required field")
             }
 
             if (binding.facilityRepresentativesSpinner.selectedItem.toString().contains("please")) {
