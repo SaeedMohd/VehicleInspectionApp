@@ -34,7 +34,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import android.widget.TableRow
+import android.graphics.drawable.ColorDrawable
 import android.widget.TextView
 
 import androidx.annotation.ColorInt
@@ -282,218 +282,6 @@ class TodayVisitationFragment : Fragment(),
 
 
 
-    private fun showVoiceDialog(onSave: (String) -> Unit) {
-
-        val dialogView = layoutInflater.inflate(R.layout.dialog_voice_input, null)
-
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
-
-        dialog.show()
-
-        val tvSpeechText = dialogView.findViewById<TextView>(R.id.tvSpeechText)
-        val btnHold = dialogView.findViewById<LottieAnimationView>(R.id.btnHoldToTalk)
-        val lottieWave = dialogView.findViewById<LottieAnimationView>(R.id.lottieWave)
-        val listeningText = dialogView.findViewById<TextView>(R.id.listeningText)
-        val saveBtn = dialogView.findViewById<Button>(R.id.dialogSaveBtn)
-        val closeBtn = dialogView.findViewById<ImageView>(R.id.dialogCloseBtn)
-
-
-        closeBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        saveBtn.setOnClickListener {
-            dialog.dismiss()
-            onSave(tvSpeechText.text.toString())
-        }
-
-//        val saveImage = dialogView.findViewById<ImageView>(R.id.saveSpeechBtn)
-//        saveImage.setColorFilter(resources.getColor(R.color.mainColor,resources.newTheme()), PorterDuff.Mode.SRC_ATOP)
-
-
-        saveBtn.isEnabled = false
-        val recognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-        }
-
-        // Listener
-//        recognizer.setRecognitionListener(object : RecognitionListener {
-//            override fun onReadyForSpeech(p0: Bundle?) {
-////                lottieWave.visibility = View.VISIBLE
-////                lottieWave.playAnimation()
-//                listeningText.text = "Listening..."
-//                listeningText.visibility = View.VISIBLE
-//            }
-//
-//            override fun onRmsChanged(rmsdB: Float) {
-//                val scale = 1f + (rmsdB / 12f).coerceIn(0f, 2f)
-//                lottieWave.scaleX = scale
-//                lottieWave.scaleY = scale
-//            }
-//
-//            override fun onPartialResults(partialResults: Bundle?) {
-//                val text = partialResults
-//                    ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-//                    ?.firstOrNull()
-//
-//                if (!text.isNullOrEmpty()) {
-//                    tvSpeechText.text = text
-//                }
-//            }
-//
-//            override fun onResults(results: Bundle?) {
-//                val text = results
-//                    ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-//                    ?.firstOrNull()
-//
-//                if (!text.isNullOrEmpty()) {
-//                    finalText = text
-//                    tvSpeechText.text = finalText
-//                }
-//
-//                stopUI()
-//            }
-//
-//            override fun onError(error: Int) {
-//                stopUI()
-//            }
-//
-//            override fun onEndOfSpeech() {
-//                // do nothing; handled manually
-//            }
-//
-//            fun stopUI() {
-//                lottieWave.pauseAnimation()
-//                lottieWave.visibility = View.GONE
-//                listeningText.visibility = View.GONE
-//            }
-//
-//            override fun onBeginningOfSpeech() {}
-//            override fun onBufferReceived(p0: ByteArray?) {}
-//            override fun onEvent(p0: Int, p1: Bundle?) {}
-//        })
-
-        var isHolding = false
-        var isRestarting = false
-        var accumulatedText = ""
-        saveBtn.isEnabled = false
-        recognizer.setRecognitionListener(object : RecognitionListener {
-
-
-            override fun onReadyForSpeech(params: Bundle?) {
-                listeningText.text = "Listening..."
-                listeningText.visibility = View.GONE //Changed
-            }
-
-            override fun onRmsChanged(rmsdB: Float) {
-                val scale = 1f + (rmsdB / 12f).coerceIn(0f, 2f)
-                lottieWave.scaleX = scale
-                lottieWave.scaleY = scale
-            }
-
-            override fun onPartialResults(partialResults: Bundle?) {
-                val text = partialResults
-                    ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                    ?.firstOrNull()
-
-//                if (!text.isNullOrEmpty()) tvSpeechText.text = text
-                if (!text.isNullOrEmpty()) {
-                    tvSpeechText.text = accumulatedText + text
-                    saveBtn.isEnabled = tvSpeechText.text.toString().isNotEmpty()
-                }
-            }
-
-            override fun onResults(results: Bundle?) {
-                val text = results
-                    ?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                    ?.firstOrNull()
-
-//                if (!text.isNullOrEmpty()) tvSpeechText.text = text
-                if (!text.isNullOrEmpty()) {
-                    accumulatedText += "$text "
-                    tvSpeechText.text = accumulatedText
-                }
-                if (isHolding) {
-                    // 🔥 Restart AFTER recognizer finishes
-                    restartListening()
-                } else {
-                    stopUI()
-                }
-            }
-
-            override fun onError(error: Int) {
-                if (isHolding) {
-                    restartListening()
-                } else {
-                    stopUI()
-                }
-            }
-
-            override fun onEndOfSpeech() {
-                // ❗ Do NOTHING here — restarting here is too early
-            }
-
-            override fun onBeginningOfSpeech() {}
-            override fun onBufferReceived(buffer: ByteArray?) {}
-            override fun onEvent(eventType: Int, params: Bundle?) {}
-            private fun restartListening() {
-                if (isRestarting) return
-                isRestarting = true
-
-                Handler(Looper.getMainLooper()).postDelayed({
-                    try {
-                        recognizer.startListening(intent)
-                    } catch (_: Exception) {
-                    }
-                    isRestarting = false
-                }, 150)   // MUST delay or recognizer throws errors
-            }
-
-            fun stopUI() {
-                lottieWave.pauseAnimation()
-                lottieWave.visibility = View.GONE
-                listeningText.visibility = View.GONE
-            }
-
-        })
-
-
-        // HOLD TO TALK (WhatsApp style)
-        btnHold.setOnTouchListener { _, event ->
-            when (event.action) {
-
-                MotionEvent.ACTION_DOWN -> {
-                    isHolding = true
-                    accumulatedText = ""
-                    tvSpeechText.text = ""
-                    saveBtn.isEnabled = false
-                    vibrate(40)
-                    btnHold.playAnimation()
-                    recognizer.startListening(intent)
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    isHolding = false
-                    btnHold.pauseAnimation()
-                    recognizer.stopListening()
-                }
-            }
-            true
-        }
-
-        dialog.setOnDismissListener {
-            recognizer.destroy()
-        }
-    }
 
 
     override fun onCreateView(
@@ -518,11 +306,29 @@ class TodayVisitationFragment : Fragment(),
             binding.recordsProgressView.visibility = View.GONE
         }
         binding.clearBtn.setOnClickListener {
-            binding.progressBarText.text = "Loading ..."
-            binding.recordsProgressView.visibility = View.VISIBLE
-            saveTodayVisitations(requireContext(), ArrayList())
-            loadDataAndMap(true)
-            binding.recordsProgressView.visibility = View.GONE
+            val dialogView = layoutInflater.inflate(R.layout.decision_dialog, null)
+            val alertBuilder = AlertDialog.Builder(requireContext()).setView(dialogView)
+            val dialogTitle = dialogView.findViewById<TextView>(R.id.tvTitle)
+            val dialogMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
+            val btnPositiveAction = dialogView.findViewById<Button>(R.id.btnActionPositive)
+            val btnNegativeAction = dialogView.findViewById<Button>(R.id.btnActionNegative)
+            dialogTitle.text = "Clear Planned Visits"
+            dialogMessage.text = "This will remove all planned visits for today. Continue?"
+            btnPositiveAction.text = "Clear All"
+            btnNegativeAction.text = "Cancel"
+            val dialog = alertBuilder.create()
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCancelable(true)
+            btnPositiveAction.setOnClickListener {
+                dialog.dismiss()
+                binding.progressBarText.text = "Loading ..."
+                binding.recordsProgressView.visibility = View.VISIBLE
+                saveTodayVisitations(requireContext(), ArrayList())
+                loadDataAndMap(true)
+                binding.recordsProgressView.visibility = View.GONE
+            }
+            btnNegativeAction.setOnClickListener { dialog.dismiss() }
+            dialog.show()
         }
         visitsList = getTodayVisitations(requireContext()).toMutableList()
         if (clearETA) {
@@ -546,13 +352,10 @@ class TodayVisitationFragment : Fragment(),
     }
 
     override fun onVoiceClicked(facilityNumber: Int, clubCode: String) {
-//        speechRecognizer.startListening(speechIntent)
-//        currentListeningFacNo = facilityNumber
-//        currentListeningClubCode = clubCode
-        showVoiceDialog(onSave = { recognizedText ->
+        VoiceNoteBottomSheet.show(parentFragmentManager) { recognizedText ->
             updateVisitationNotes(requireContext(), facilityNumber, clubCode, recognizedText)
             loadDataAndMap(true)
-        })
+        }
     }
 
     override fun onVoiceStopClicked() {
@@ -579,6 +382,14 @@ class TodayVisitationFragment : Fragment(),
 //            }
 //        }
         visitsList = visitsList.sortedBy { it.order }.toMutableList()
+        if (visitsList.isEmpty()) {
+            binding.emptyStateView.visibility = View.VISIBLE
+            binding.listRecyclerView.visibility = View.GONE
+            binding.emptyStateLottie.playAnimation()
+        } else {
+            binding.emptyStateView.visibility = View.GONE
+            binding.listRecyclerView.visibility = View.VISIBLE
+        }
         binding.plannedVal.text = visitsList.size.toString()
         binding.completedVal.text =
             visitsList.filter { s -> s.status == "Completed" }.size.toString()
@@ -920,6 +731,16 @@ class TodayVisitationFragment : Fragment(),
                     .snippet(snippet)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             )
+
+            for (place in visitsList) {
+                if (place.latitude != 0.0 && place.etaLabel.isEmpty()) {
+                    place.etaLabel = "Calculating route…"
+                    updateVisitationETA(requireContext(), place.facNum.toString(), place.clubCode, "Calculating route…")
+                }
+            }
+            if (::placesAdapter.isInitialized) {
+                placesAdapter.notifyDataSetChanged()
+            }
 
             var completed = 0
             for (place in visitsList) {
@@ -2295,7 +2116,7 @@ class PlacesAdapter(
         val fac_no_text: TextView = itemView.findViewById(R.id.facNoVal)
         val club_no_text: TextView = itemView.findViewById(R.id.clubNoVal)
         val type_text: TextView = itemView.findViewById(R.id.typeVal)
-        val status_text: TextView = itemView.findViewById(R.id.statusVal)
+        val statusBadge: TextView = itemView.findViewById(R.id.statusBadge)
         val city_text: TextView = itemView.findViewById(R.id.cityVal)
         val fac_annual_text: TextView = itemView.findViewById(R.id.facAnnualMonthVal)
         val notes_text: EditText = itemView.findViewById(R.id.notesVal)
@@ -2308,11 +2129,11 @@ class PlacesAdapter(
         val cardRL : ConstraintLayout = itemView.findViewById(R.id.cardRL)
 
         val loadBtn: Button = itemView.findViewById(R.id.loadBtn)
-        val moveUpBtn: Button = itemView.findViewById(R.id.moveUpBtn)
-        val moveDownBtn: Button = itemView.findViewById(R.id.moveDownBtn)
+        val moveUpBtn: ImageButton = itemView.findViewById(R.id.moveUpBtn)
+        val moveDownBtn: ImageButton = itemView.findViewById(R.id.moveDownBtn)
 
-        val moveLastBtn: Button = itemView.findViewById(R.id.moveLastBtn)
-        val moveFirstBtn: Button = itemView.findViewById(R.id.moveFirstBtn)
+        val moveLastBtn: ImageButton = itemView.findViewById(R.id.moveLastBtn)
+        val moveFirstBtn: ImageButton = itemView.findViewById(R.id.moveFirstBtn)
 
         val startRecordingBtn: ImageButton = itemView.findViewById(R.id.recordBtn)
         val stopRecordingBtn: ImageButton = itemView.findViewById(R.id.stopBtn)
@@ -2340,26 +2161,37 @@ class PlacesAdapter(
         holder.fac_no_text.text = places[position].facNum.toString()
         holder.club_no_text.text = places[position].clubCode
         holder.type_text.text = places[position].type.toString()
-        holder.status_text.text = places[position].status
+        val isCompleted = places[position].status.equals("Completed", ignoreCase = true)
+        holder.statusBadge.text = if (isCompleted) "Completed" else "Planned"
+        holder.statusBadge.setBackgroundResource(
+            if (isCompleted) R.drawable.badge_completed else R.drawable.badge_planned
+        )
+        holder.cardRL.setBackgroundColor(
+            if (isCompleted) ContextCompat.getColor(holder.itemView.context, R.color.light_green)
+            else Color.WHITE
+        )
         holder.cardRL.setOnClickListener {
             cardListener.onCardClick(places[position])
         }
-        if (places[position].etaLabel.isNotEmpty()) {
-            holder.eta_text.text = places[position].etaLabel
-            holder.eta_row.isVisible = true
-        } else {
-            holder.eta_text.text = ""
-            holder.eta_row.isVisible = false
+        val etaLabel = places[position].etaLabel
+        when {
+            etaLabel.isEmpty() -> {
+                holder.eta_row.isVisible = false
+                holder.eta_text.text = ""
+            }
+            etaLabel == "Calculating route…" -> {
+                holder.eta_row.isVisible = true
+                holder.eta_text.text = "Calculating route…"
+            }
+            else -> {
+                holder.eta_row.isVisible = true
+                holder.eta_text.text = etaLabel
+            }
         }
         if (places[position].latitude != 0.0) {
             holder.loc_row.isVisible = true
         } else {
             holder.loc_row.isVisible = false
-        }
-        if (places[position].status.equals("Completed", ignoreCase = true)) {
-            holder.status_text.setTextColor(Color.parseColor("#26C3AA"))
-        } else {
-            holder.status_text.setTextColor(Color.BLUE)
         }
         holder.notes_text.setText(places[position].notes)
         holder.fac_annual_text.text = places[position].facAnnualMonth.monthNoToName()

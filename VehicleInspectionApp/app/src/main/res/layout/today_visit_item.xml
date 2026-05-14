@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -28,8 +27,23 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- ================= STATUS BADGE ================= -->
+
+        <TextView
+            android:id="@+id/statusBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="Planned"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/orderCircle"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- ================= FACILITY NAME ================= -->
 
@@ -38,12 +52,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/mainColor"
-            android:textStyle="bold"
             android:textSize="16sp"
+            android:textStyle="bold"
             android:textAlignment="center"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/statusBadge"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/orderCircle"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- ================= LEFT COLUMN ================= -->
 
@@ -51,53 +65,51 @@
             android:id="@+id/leftColumn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/facNameVal"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@id/rightColumn"
-            app:layout_constraintHorizontal_weight="1">
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/facNameVal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Facility Number:"
-                android:textSize="12sp"
-                android:textColor="@color/mainColor"/>
+                android:textColor="@color/mainColor"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/facNoVal"
-                android:textSize="12sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="City:"
-                android:textSize="12sp"
-                android:textColor="@color/mainColor"/>
+                android:textColor="@color/mainColor"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/cityVal"
-                android:textSize="12sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Type:"
-                android:textSize="12sp"
-
-                android:textColor="@color/mainColor"/>
+                android:textColor="@color/mainColor"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/typeVal"
-                android:textSize="12sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
+                android:layout_height="wrap_content"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- ================= RIGHT COLUMN ================= -->
@@ -106,54 +118,38 @@
             android:id="@+id/rightColumn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/facNameVal"
-            app:layout_constraintStart_toEndOf="@id/leftColumn"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1">
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/leftColumn"
+            app:layout_constraintTop_toBottomOf="@id/facNameVal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Club Code:"
-
-                android:textSize="12sp"
-                android:textColor="@color/mainColor"/>
+                android:textColor="@color/mainColor"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/clubNoVal"
-                android:textSize="12sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Facility Annual Month:"
-
-                android:textSize="12sp"
-                android:textColor="@color/mainColor"/>
+                android:textColor="@color/mainColor"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/facAnnualMonthVal"
                 android:layout_width="wrap_content"
-                android:textSize="12sp"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status:"
-                android:textSize="12sp"
-                android:textColor="@color/mainColor"/>
-
-            <TextView
-                android:id="@+id/statusVal"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp" />
-
         </LinearLayout>
 
         <!-- ================= ETA ROW ================= -->
@@ -163,9 +159,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/rightColumn"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/rightColumn">
 
             <TextView
                 android:id="@+id/etaLabel"
@@ -173,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/mainColor"
                 android:textSize="12sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- ================= LOCATION ROW ================= -->
@@ -183,9 +179,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/etaRow"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/etaRow">
 
             <TextView
                 android:id="@+id/locFoundLabel"
@@ -194,7 +190,7 @@
                 android:text="* Location Available"
                 android:textColor="@color/mainColor"
                 android:textSize="12sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- ================= NOTES ================= -->
@@ -205,142 +201,158 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/locFoundRow"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/locFoundRow">
 
             <EditText
                 android:id="@+id/notesVal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="12sp"
-                android:maxLines="5"/>
+                android:maxLines="5"
+                android:textSize="12sp" />
 
             <ImageButton
                 android:id="@+id/recordBtn"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/mic_icon"/>
+                android:background="@drawable/mic_icon" />
 
             <ImageButton
                 android:id="@+id/stopBtn"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
-                android:visibility="gone"
-                android:background="@drawable/hangup_call"/>
+                android:background="@drawable/hangup_call"
+                android:visibility="gone" />
         </LinearLayout>
 
-        <!-- ================= BUTTON ROW 1 ================= -->
+        <!-- ================= PRIMARY ACTION ROW (icon + label) ================= -->
 
         <LinearLayout
             android:id="@+id/buttonRow1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            android:layout_marginTop="4dp"
             android:weightSum="3"
-            app:layout_constraintTop_toBottomOf="@id/notesContainer"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/notesContainer">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/saveNotesBtn"
                 android:layout_width="0dp"
-                android:padding="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Save Notes"
-                android:textSize="12sp"
                 android:textColor="@color/white"
-                android:background="@drawable/new_btn_bkg"
-                app:backgroundTint="@null" />
+                android:textSize="11sp"
+                app:backgroundTint="@color/mainColor"
+                app:icon="@drawable/save_button"
+                app:iconGravity="textStart"
+                app:iconPadding="4dp"
+                app:iconTint="@color/white" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/removeBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:text="Remove"
-                android:textSize="12sp"
-                android:layout_marginStart="10dp"
                 android:textColor="@color/white"
-                android:background="@drawable/new_btn_bkg"
-                app:backgroundTint="@null" />
+                android:textSize="11sp"
+                app:backgroundTint="@color/mainColor"
+                app:icon="@drawable/delete_button"
+                app:iconGravity="textStart"
+                app:iconPadding="4dp"
+                app:iconTint="@color/white" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/loadBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:text="Load Facility"
-                android:textSize="12sp"
-                android:layout_marginStart="10dp"
                 android:textColor="@color/white"
-                android:background="@drawable/new_btn_bkg"
-                app:backgroundTint="@null" />
+                android:textSize="11sp"
+                app:backgroundTint="@color/mainColor"
+                app:icon="@drawable/maintenance_facility_icon"
+                app:iconGravity="textStart"
+                app:iconPadding="4dp"
+                app:iconTint="@color/white" />
         </LinearLayout>
 
-        <!-- ================= MOVE BUTTONS ================= -->
+        <!-- ================= MOVE BUTTONS ROW (icon-only) ================= -->
 
         <LinearLayout
             android:id="@+id/buttonRow2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="6dp"
+            android:orientation="horizontal"
             android:weightSum="4"
-            app:layout_constraintTop_toBottomOf="@id/buttonRow1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/buttonRow1">
 
-            <Button
+            <ImageButton
                 android:id="@+id/moveFirstBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Move\nFirst"
-                android:textColor="@color/white"
-                android:textSize="12sp"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_move_first"
                 android:background="@drawable/new_btn_bkg"
+                android:contentDescription="Move to first position"
                 app:backgroundTint="@null" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/moveUpBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Move\nUp"
-                android:layout_marginStart="10dp"
-                android:textSize="12sp"
-                android:textColor="@color/white"
+                android:layout_marginStart="6dp"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_move_up"
                 android:background="@drawable/new_btn_bkg"
+                android:contentDescription="Move up one position"
                 app:backgroundTint="@null" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/moveDownBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Move\nDown"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/white"
-                android:textSize="12sp"
+                android:layout_marginStart="6dp"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_move_down"
                 android:background="@drawable/new_btn_bkg"
+                android:contentDescription="Move down one position"
                 app:backgroundTint="@null" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/moveLastBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Move\nLast"
-                android:textSize="12sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/white"
+                android:layout_marginStart="6dp"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_move_last"
                 android:background="@drawable/new_btn_bkg"
+                android:contentDescription="Move to last position"
                 app:backgroundTint="@null" />
         </LinearLayout>
 
