@@ -152,16 +152,25 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
+        <!-- Barrier sits below whichever column is taller -->
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/columnsBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="leftColumn,rightColumn" />
+
         <!-- ================= ETA ROW ================= -->
 
         <LinearLayout
             android:id="@+id/etaRow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rightColumn">
+            app:layout_constraintTop_toBottomOf="@id/columnsBarrier">
 
             <TextView
                 android:id="@+id/etaLabel"
@@ -242,21 +251,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/notesContainer">
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/saveNotesBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:padding="0dp"
                 android:text="Save Notes"
                 android:textColor="@color/white"
-                android:textSize="11sp"
-                app:backgroundTint="@color/mainColor"
-                app:icon="@drawable/save_button"
-                app:iconGravity="textStart"
-                app:iconPadding="4dp"
-                app:iconTint="@color/white" />
+                android:textSize="12sp"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/removeBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -264,14 +271,11 @@
                 android:layout_weight="1"
                 android:text="Remove"
                 android:textColor="@color/white"
-                android:textSize="11sp"
-                app:backgroundTint="@color/mainColor"
-                app:icon="@drawable/delete_button"
-                app:iconGravity="textStart"
-                app:iconPadding="4dp"
-                app:iconTint="@color/white" />
+                android:textSize="12sp"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/loadBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -279,12 +283,9 @@
                 android:layout_weight="1"
                 android:text="Load Facility"
                 android:textColor="@color/white"
-                android:textSize="11sp"
-                app:backgroundTint="@color/mainColor"
-                app:icon="@drawable/maintenance_facility_icon"
-                app:iconGravity="textStart"
-                app:iconPadding="4dp"
-                app:iconTint="@color/white" />
+                android:textSize="12sp"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null" />
         </LinearLayout>
 
         <!-- ================= MOVE BUTTONS ROW (icon-only) ================= -->

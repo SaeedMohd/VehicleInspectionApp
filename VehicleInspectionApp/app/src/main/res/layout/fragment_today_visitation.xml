@@ -123,26 +123,28 @@
             </LinearLayout>
 
             <!-- Clear button -->
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/clearBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:text="Clear"
                 android:textColor="@color/white"
-                app:backgroundTint="@color/mainColor"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
             <!-- Reload button -->
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/reloadBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
                 android:text="Reload"
                 android:textColor="@color/white"
-                app:backgroundTint="@color/mainColor"
+                android:background="@drawable/new_btn_bkg"
+                app:backgroundTint="@null"
                 app:layout_constraintEnd_toStartOf="@id/clearBtn"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />

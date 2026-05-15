@@ -758,24 +758,22 @@ class TodayVisitationFragment : Fragment(),
                     specialistPostition!!,
                     LatLng(place.latitude, place.longitude)
                 ) { response ->
-                    Log.v("getETAUsingRoutesAPI", " Called for ${place.facNum} - ${place.clubCode}")
-                    var eta = ""
-                    if (response == "Unable to determine a route") {
-                       eta = response
-                    } else {
-                        eta = parseNewRoutesETA(response) ?: "N/A"
-                    }
-                    updateVisitationETA(
-                        requireContext(),
-                        place.facNum.toString(),
-                        place.clubCode,
-                        ((eta ?: ""))
-                    )
-//                    formatRouteInfo( eta ?: "0s")  // you can pass actual distance if needed
-                    Log.d("ETA", "ETA: $eta")
-                    completed++
-                    if (completed == visitsList.size) {
-                        requireActivity().runOnUiThread {
+                    requireActivity().runOnUiThread {
+                        Log.v("getETAUsingRoutesAPI", " Called for ${place.facNum} - ${place.clubCode}")
+                        val eta = if (response == "Unable to determine a route") {
+                            response
+                        } else {
+                            parseNewRoutesETA(response) ?: "N/A"
+                        }
+                        updateVisitationETA(
+                            requireContext(),
+                            place.facNum.toString(),
+                            place.clubCode,
+                            eta
+                        )
+                        Log.d("ETA", "ETA: $eta")
+                        completed++
+                        if (completed == visitsList.size) {
                             loadDataAndMap(true)
                         }
                     }
