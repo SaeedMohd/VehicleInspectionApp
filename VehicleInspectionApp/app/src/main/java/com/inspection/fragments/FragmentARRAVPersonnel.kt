@@ -23,11 +23,15 @@ import android.view.animation.LinearInterpolator
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.inspection.adapter.StagedCertificatesAdapter
+import com.inspection.model.StagedCertStatus
+import com.inspection.model.StagedCertificateEntry
 import com.google.gson.Gson
 import com.inspection.FormsActivity
 import com.inspection.R
@@ -188,6 +192,9 @@ class FragmentARRAVPersonnel : Fragment() {
     var hyperlinktxt: String = ""
     var validationMsg = ""
     var edithyperlinktxt: String = ""
+    private val stagedCertificates = ArrayList<StagedCertificateEntry>()
+    private var isSubmitting = false
+    private lateinit var stagedAdapter: StagedCertificatesAdapter
     private var firstSelection =
         false // Variable used as the first item in the personnelType drop down is selected by default when the ata is loaded
 
@@ -243,9 +250,7 @@ class FragmentARRAVPersonnel : Fragment() {
         }
 
         binding.exitCertificateDialogeBtnId.setOnClickListener {
-            (activity as FormsActivity).overrideBackButton = false
-            binding.addNewCertificateDialogue.visibility = View.GONE
-            binding.alphaBackgroundForPersonnelDialogs.visibility = View.GONE
+            if (!isSubmitting) closeCertificateDialog()
         }
 
         binding.exitCertificateGridBtnId.setOnClickListener {
@@ -261,6 +266,17 @@ class FragmentARRAVPersonnel : Fragment() {
         }
 
 
+        // --- Staged certificates RecyclerView setup ---
+        stagedAdapter = StagedCertificatesAdapter(stagedCertificates) { index ->
+            if (!isSubmitting) {
+                stagedCertificates.removeAt(index)
+                stagedAdapter.notifyItemRemoved(index)
+                binding.submitAllBtn.isEnabled = stagedCertificates.isNotEmpty()
+            }
+        }
+        binding.stagedCertificatesRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.stagedCertificatesRecyclerView.adapter = stagedAdapter
+
         binding.AddNewCertBtn.setOnClickListener {
             if (selectedPersonnelID.equals(0)) {
                 Utility.showValidationAlertDialog(
@@ -274,6 +290,8 @@ class FragmentARRAVPersonnel : Fragment() {
                 binding.newCertDescText.setText("")
                 binding.newCertStartDateBtn.setError(null)
                 binding.certTypeTextView.setError(null)
+                binding.submitAllBtn.isEnabled = stagedCertificates.isNotEmpty()
+                binding.closeCertDialogBtn.isEnabled = !isSubmitting
                 (activity as FormsActivity).overrideBackButton = true
                 binding.addNewCertificateDialogue.visibility = View.VISIBLE
                 binding.alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
@@ -841,117 +859,86 @@ class FragmentARRAVPersonnel : Fragment() {
 
         fillData()
 
-        binding.submitNewCertBtn.setOnClickListener {
-            if ((requireActivity() as FormsActivity).isNetworkAvailable) {
-                if (validateCertificationInputs()) {
-                    binding.addNewCertificateDialogue.visibility = View.GONE
-                    binding.alphaBackgroundForPersonnelDialogs.visibility = View.GONE
-                    (activity as FormsActivity).overrideBackButton = false
-                    binding.personnelLoadingText.text = "Saving ..."
-                    binding.personnelLoadingView.visibility = View.VISIBLE
+        // --- Add to List: stages a validated certificate entry without calling the API ---
+        binding.addToListBtn.setOnClickListener {
+            if (validateCertificationInputs()) {
+                val entry = StagedCertificateEntry()
+                entry.personnelId = selectedPersonnelID
 
-                    var item = TblPersonnelCertification()
-                    for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
-                        if (binding.newCertTypeSpinner.getSelectedItem().toString()
-                                .equals(fac.PersonnelCertName)
-                        )
-                            item.CertificationTypeId = fac.PersonnelCertID
+                for (fac in TypeTablesModel.getInstance().PersonnelCertificationType) {
+                    if (binding.newCertTypeSpinner.selectedItem.toString() == fac.PersonnelCertName) {
+                        entry.certificationTypeId = fac.PersonnelCertID
+                        entry.certificationTypeName = fac.PersonnelCertName
                     }
-
-                    item.CertificationDate =
-                        if (binding.newCertStartDateBtn.text.equals("SELECT DATE")) "" else binding.newCertStartDateBtn.text.toString()
-                            .appToApiSubmitFormatMMDDYYYY()
-                    item.ExpirationDate =
-                        if (binding.newCertEndDateBtn.text.equals("SELECT DATE")) "" else binding.newCertEndDateBtn.text.toString()
-                            .appToApiSubmitFormatMMDDYYYY()
-                    item.CertDesc =
-                        if (binding.newCertDescText.text.isNullOrEmpty()) "" else binding.newCertDescText.text.toString()
-                    item.PersonnelID = selectedPersonnelID
-
-                    var urlString =
-                        "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}&clubCode=${FacilityDataModel.getInstance().clubCode}&personnelId=${selectedPersonnelID}" +
-                                "&certId=&certificationTypeId=${item.CertificationTypeId}&certificationDate=${item.CertificationDate}&expirationDate=${item.ExpirationDate}" +
-                                "&certDesc=${item.CertDesc}&insertBy=${
-                                    ApplicationPrefs.getInstance(
-                                        activity
-                                    ).loggedInUserID
-                                }&insertDate=${Date().toApiSubmitFormat()}&updateBy=${
-                                    ApplicationPrefs.getInstance(
-                                        activity
-                                    ).loggedInUserID
-                                }&updateDate=${Date().toApiSubmitFormat()}&active=1"
-                    Log.v(
-                        "CERTIFICATION ADD --- ",
-                        Constants.UpdatePersonnelCertification + urlString
-                    )
-                    Volley.newRequestQueue(context).add(
-                        StringRequest(Request.Method.GET,
-                            Constants.UpdatePersonnelCertification + urlString + Utility.getLoggingParameters(
-                                activity,
-                                0,
-                                getCertificationChanges(0, selectedPersonnelID)
-                            ),
-                            Response.Listener { response ->
-                                requireActivity().runOnUiThread {
-                                    if (response.toString().contains("returnCode>0<", false)) {
-                                        HasChangedModel.getInstance().updateChangedData("Personnel","Certifications","",getCertificationChanges(0, selectedPersonnelID))
-                                        Utility.showSubmitAlertDialog(
-                                            activity,
-                                            true,
-                                            "Certification"
-                                        )
-                                        item.CertID = response.toString().substring(
-                                            response.toString().indexOf("<CertID") + 8,
-                                            response.toString().indexOf("</CertID")
-                                        )
-                                        FacilityDataModel.getInstance().tblPersonnelCertification.add(
-                                            item
-                                        )
-                                        FacilityDataModelOrg.getInstance().tblPersonnelCertification.add(
-                                            item
-                                        )
-                                        HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel =
-                                            true
-                                        HasChangedModel.getInstance()
-                                            .changeDoneForFacilityPersonnel()
-                                        fillCertificationTableView(selectedPersonnelID)
-                                        (activity as FormsActivity).saveDone = true
-                                        setAlertColoring()
-                                    } else {
-                                        var errorMessage = response.toString().substring(
-                                            response.toString().indexOf("<message") + 9,
-                                            response.toString().indexOf("</message")
-                                        )
-                                        Utility.showSubmitAlertDialog(
-                                            activity,
-                                            false,
-                                            "Certification (Error: " + errorMessage + " )"
-                                        )
-                                    }
-                                    binding.personnelLoadingView.visibility = View.GONE
-                                    binding.personnelLoadingText.text = "Loading ..."
-                                }
-                            },
-                            Response.ErrorListener {
-                                Utility.showSubmitAlertDialog(
-                                    activity,
-                                    false,
-                                    "Certification (Error: " + it.message + " )"
-                                )
-                                binding.personnelLoadingView.visibility = View.GONE
-                                binding.personnelLoadingText.text = "Loading ..."
-
-                            })
-                    )
-                } else {
-                    Utility.showValidationAlertDialog(activity, validationMsg)
                 }
+                entry.certificationDate = binding.newCertStartDateBtn.text.toString()
+                entry.expirationDate = binding.newCertEndDateBtn.text.toString()
+                entry.certDesc = binding.newCertDescText.text?.toString() ?: ""
+
+                stagedCertificates.add(entry)
+                stagedAdapter.notifyItemInserted(stagedCertificates.size - 1)
+
+                // Reset form fields for next entry
+                binding.newCertTypeSpinner.setSelection(0)
+                binding.newCertStartDateBtn.setText("SELECT DATE")
+                binding.newCertEndDateBtn.setText("SELECT DATE")
+                binding.newCertDescText.setText("")
+                binding.newCertStartDateBtn.setError(null)
+                binding.certTypeTextView.setError(null)
+                binding.expirationDateText.setError(null)
+
+                binding.submitAllBtn.isEnabled = true
             } else {
+                Utility.showValidationAlertDialog(activity, validationMsg)
+            }
+        }
+
+        // --- Submit All: validate all staged entries then call API sequentially ---
+        binding.submitAllBtn.setOnClickListener {
+            if (!(requireActivity() as FormsActivity).isNetworkAvailable) {
                 Utility.showInternetWarningDialog(
                     requireContext(),
                     (requireActivity() as FormsActivity).networkStatusErrorMsg
                 )
+                return@setOnClickListener
             }
+            if (!validateAllStagedEntries()) return@setOnClickListener
+
+            isSubmitting = true
+            stagedAdapter.setSubmitting(true)
+            binding.submitAllBtn.isEnabled = false
+            binding.addToListBtn.isEnabled = false
+            binding.closeCertDialogBtn.isEnabled = false
+            binding.retryFailedBtn.visibility = View.GONE
+            binding.personnelLoadingText.text = "Saving..."
+            binding.personnelLoadingView.visibility = View.VISIBLE
+
+            submitNextStagedCert(0)
+        }
+
+        // --- Close: dismiss dialog and clear staged list ---
+        binding.closeCertDialogBtn.setOnClickListener {
+            closeCertificateDialog()
+        }
+
+        // --- Retry Failed: reset failed entries to PENDING and re-submit ---
+        binding.retryFailedBtn.setOnClickListener {
+            for (entry in stagedCertificates) {
+                if (entry.status == StagedCertStatus.FAILED) {
+                    entry.status = StagedCertStatus.PENDING
+                    entry.errorMessage = ""
+                }
+            }
+            stagedAdapter.notifyDataSetChanged()
+            binding.retryFailedBtn.visibility = View.GONE
+
+            isSubmitting = true
+            stagedAdapter.setSubmitting(true)
+            binding.closeCertDialogBtn.isEnabled = false
+            binding.personnelLoadingText.text = "Saving..."
+            binding.personnelLoadingView.visibility = View.VISIBLE
+
+            submitNextStagedCert(0)
         }
 
         binding.submitNewPersnRecordBtn.setOnClickListener {
@@ -6349,6 +6336,213 @@ class FragmentARRAVPersonnel : Fragment() {
         }
 
         return cert.iscertInputValid
+    }
+
+    // Validates a single staged certificate entry against required-field rules
+    // and date-overlap with already-saved records for the same person + type.
+    fun validateCertificationInputs(entry: StagedCertificateEntry): Boolean {
+        if (entry.certificationTypeId.isBlank()) return false
+        if (entry.certificationDate.isBlank() || entry.certificationDate.uppercase() == "SELECT DATE") return false
+        if (entry.expirationDate.isBlank() || entry.expirationDate.uppercase() == "SELECT DATE") return false
+
+        val startDate = entry.certificationDate.toDateMMDDYYYY()
+        val endDate = entry.expirationDate.toDateMMDDYYYY()
+
+        for (saved in FacilityDataModel.getInstance().tblPersonnelCertification) {
+            if (saved.PersonnelID == entry.personnelId &&
+                saved.CertificationTypeId == entry.certificationTypeId
+            ) {
+                if (Utility.datesAreOverlapping(
+                        startDate, endDate,
+                        saved.CertificationDate.toDateDBFormat(),
+                        saved.ExpirationDate.toDateDBFormat()
+                    )
+                ) return false
+            }
+        }
+        return true
+    }
+
+    // Validates all staged entries collectively — required fields, saved-cert overlaps,
+    // and cross-list overlaps between pending entries of the same type for the same person.
+    fun validateAllStagedEntries(): Boolean {
+        val errors = StringBuilder()
+        for ((i, entry) in stagedCertificates.withIndex()) {
+            val label = "Entry ${i + 1} (${entry.certificationTypeName.ifEmpty { "Unknown" }})"
+            if (entry.certificationTypeId.isBlank()) {
+                errors.appendLine("$label: Certificate type is required.")
+                continue
+            }
+            if (entry.certificationDate.isBlank() || entry.certificationDate.uppercase() == "SELECT DATE") {
+                errors.appendLine("$label: Start date is required.")
+            }
+            if (entry.expirationDate.isBlank() || entry.expirationDate.uppercase() == "SELECT DATE") {
+                errors.appendLine("$label: Expiration date is required.")
+            }
+            // Overlap with saved records
+            if (!validateCertificationInputs(entry)) {
+                errors.appendLine("$label: Overlaps with an existing saved certificate of the same type.")
+            }
+        }
+        // Cross-list overlap check between staged entries
+        for (i in stagedCertificates.indices) {
+            for (j in i + 1 until stagedCertificates.size) {
+                val a = stagedCertificates[i]
+                val b = stagedCertificates[j]
+                if (a.personnelId == b.personnelId && a.certificationTypeId == b.certificationTypeId &&
+                    a.certificationTypeId.isNotBlank()
+                ) {
+                    if (Utility.datesAreOverlapping(
+                            a.certificationDate.toDateMMDDYYYY(), a.expirationDate.toDateMMDDYYYY(),
+                            b.certificationDate.toDateMMDDYYYY(), b.expirationDate.toDateMMDDYYYY()
+                        )
+                    ) {
+                        errors.appendLine(
+                            "Entry ${i + 1} and Entry ${j + 1} have overlapping date ranges for the same certificate type."
+                        )
+                    }
+                }
+            }
+        }
+        if (errors.isNotEmpty()) {
+            Utility.showValidationAlertDialog(activity, errors.toString().trimEnd())
+            return false
+        }
+        return true
+    }
+
+    // Sequential recursive submission: submits one staged entry, updates its status,
+    // then recurses to the next index. Skips already-SAVED entries (for retry path).
+    fun submitNextStagedCert(index: Int) {
+        if (index >= stagedCertificates.size) {
+            // All done
+            requireActivity().runOnUiThread {
+                isSubmitting = false
+                stagedAdapter.setSubmitting(false)
+                binding.closeCertDialogBtn.isEnabled = true
+                binding.personnelLoadingView.visibility = View.GONE
+                binding.personnelLoadingText.text = "Loading ..."
+
+                val savedCount = stagedCertificates.count { it.status == StagedCertStatus.SAVED }
+                val total = stagedCertificates.size
+                Toast.makeText(
+                    requireContext(),
+                    "$savedCount of $total certificate(s) saved.",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                val hasFailures = stagedCertificates.any { it.status == StagedCertStatus.FAILED }
+                binding.retryFailedBtn.visibility = if (hasFailures) View.VISIBLE else View.GONE
+            }
+            return
+        }
+
+        val entry = stagedCertificates[index]
+        if (entry.status == StagedCertStatus.SAVED) {
+            submitNextStagedCert(index + 1)
+            return
+        }
+
+        requireActivity().runOnUiThread {
+            entry.status = StagedCertStatus.SAVING
+            stagedAdapter.notifyItemChanged(index)
+        }
+
+        val certificationDate = entry.certificationDate.appToApiSubmitFormatMMDDYYYY()
+        val expirationDate = entry.expirationDate.appToApiSubmitFormatMMDDYYYY()
+        val urlString =
+            "${FacilityDataModel.getInstance().tblFacilities[0].FACNo}" +
+                    "&clubCode=${FacilityDataModel.getInstance().clubCode}" +
+                    "&personnelId=${entry.personnelId}" +
+                    "&certId=&certificationTypeId=${entry.certificationTypeId}" +
+                    "&certificationDate=${certificationDate}&expirationDate=${expirationDate}" +
+                    "&certDesc=${entry.certDesc}" +
+                    "&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}" +
+                    "&insertDate=${Date().toApiSubmitFormat()}" +
+                    "&updateBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}" +
+                    "&updateDate=${Date().toApiSubmitFormat()}&active=1"
+
+        Volley.newRequestQueue(context).add(
+            StringRequest(
+                Request.Method.GET,
+                Constants.UpdatePersonnelCertification + urlString + Utility.getLoggingParameters(
+                    activity, 0, getCertificationChanges(0, entry.personnelId)
+                ),
+                Response.Listener { response ->
+                    requireActivity().runOnUiThread {
+                        if (response.toString().contains("returnCode>0<", false)) {
+                            entry.status = StagedCertStatus.SAVED
+                            val item = TblPersonnelCertification()
+                            item.PersonnelID = entry.personnelId
+                            item.CertificationTypeId = entry.certificationTypeId
+                            item.CertificationDate = certificationDate
+                            item.ExpirationDate = expirationDate
+                            item.CertDesc = entry.certDesc
+                            item.CertID = try {
+                                response.toString().substring(
+                                    response.toString().indexOf("<CertID") + 8,
+                                    response.toString().indexOf("</CertID")
+                                )
+                            } catch (e: Exception) { "" }
+                            FacilityDataModel.getInstance().tblPersonnelCertification.add(item)
+                            FacilityDataModelOrg.getInstance().tblPersonnelCertification.add(item)
+                            HasChangedModel.getInstance().updateChangedData(
+                                "Personnel", "Certifications", "",
+                                getCertificationChanges(0, entry.personnelId)
+                            )
+                            HasChangedModel.getInstance().groupFacilityPersonnel[0].FacilityPersonnel = true
+                            HasChangedModel.getInstance().changeDoneForFacilityPersonnel()
+                            fillCertificationTableView(entry.personnelId)
+                            (activity as FormsActivity).saveDone = true
+                            setAlertColoring()
+                        } else {
+                            entry.status = StagedCertStatus.FAILED
+                            entry.errorMessage = try {
+                                response.toString().substring(
+                                    response.toString().indexOf("<message") + 9,
+                                    response.toString().indexOf("</message")
+                                )
+                            } catch (e: Exception) { "Server error" }
+                        }
+                        stagedAdapter.notifyItemChanged(index)
+                    }
+                    submitNextStagedCert(index + 1)
+                },
+                Response.ErrorListener { error ->
+                    requireActivity().runOnUiThread {
+                        entry.status = StagedCertStatus.FAILED
+                        entry.errorMessage = error.message ?: "Network error"
+                        stagedAdapter.notifyItemChanged(index)
+                    }
+                    submitNextStagedCert(index + 1)
+                }
+            ).apply {
+                retryPolicy = DefaultRetryPolicy(30_000, 0, 1.0f)
+            }
+        )
+    }
+
+    private fun closeCertificateDialog() {
+        stagedCertificates.clear()
+        stagedAdapter.notifyDataSetChanged()
+        isSubmitting = false
+        stagedAdapter.setSubmitting(false)
+        binding.submitAllBtn.isEnabled = false
+        binding.closeCertDialogBtn.isEnabled = false
+        binding.addToListBtn.isEnabled = true
+        binding.retryFailedBtn.visibility = View.GONE
+        binding.personnelLoadingView.visibility = View.GONE
+        // Reset form fields
+        binding.newCertTypeSpinner.setSelection(0)
+        binding.newCertStartDateBtn.setText("SELECT DATE")
+        binding.newCertEndDateBtn.setText("SELECT DATE")
+        binding.newCertDescText.setText("")
+        binding.newCertStartDateBtn.setError(null)
+        binding.certTypeTextView.setError(null)
+        binding.expirationDateText.setError(null)
+        (activity as FormsActivity).overrideBackButton = false
+        binding.addNewCertificateDialogue.visibility = View.GONE
+        binding.alphaBackgroundForPersonnelDialogs.visibility = View.GONE
     }
 
     fun edit_validateCertificationInputs(): Boolean {

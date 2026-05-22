@@ -913,177 +913,357 @@
 
     <ScrollView
         android:id="@+id/addNewCertificateDialogue"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:visibility="gone">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="28dp"
+            app:cardBackgroundColor="@color/white">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="Add New Certificate"
-                android:textSize="18dp" />
+                android:orientation="vertical">
 
+                <!-- ── HEADER (gradient) ── -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp">
 
-            <Button
-                android:id="@+id/submitNewCertBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="right"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/new_btn_bkg"
-                android:textColor="@color/white"
-                app:backgroundTint="@null"
-                android:text="Submit"
-                />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Add New Certificate"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.01" />
 
+                    <ImageButton
+                        android:id="@+id/exitCertificateDialogeBtnId"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_close_cert"
+                        android:contentDescription="Close" />
 
-            <ImageButton
-                android:id="@+id/exitCertificateDialogeBtnId"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="top|right"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/close" />
+                </LinearLayout>
 
-            <TableLayout
+                <!-- ── FORM SECTION ── -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#F8FAFF"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="12dp">
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="40dp">
-
-                <TableRow>
-
+                    <!-- Certification Category -->
                     <TextView
                         android:id="@+id/certCatTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Certification Category:*"
-                        android:textStyle="bold" />
+                        android:text="CERTIFICATION CATEGORY *"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#546878"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="8dp" />
 
-                    <Spinner
-                        android:id="@+id/newCertCatSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/CertCatEntries" />
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginBottom="20dp">
 
-                </TableRow>
+                        <Spinner
+                            android:id="@+id/newCertCatSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:background="@drawable/cert_input_background"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="42dp"
+                            android:entries="@array/CertCatEntries" />
 
-                <TableRow>
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginEnd="14dp"
+                            android:src="@drawable/cert_dropdown_arrow"
+                            android:importantForAccessibility="no" />
+
+                    </FrameLayout>
+
+                    <!-- Certification Type -->
                     <TextView
                         android:id="@+id/certTypeTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Certification Type:*"
-                        android:textStyle="bold" />
+                        android:text="CERTIFICATION TYPE *"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#546878"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="8dp" />
 
-                    <Spinner
-                        android:id="@+id/newCertTypeSpinner"
-                        android:layout_width="wrap_content"
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginBottom="20dp">
+
+                        <Spinner
+                            android:id="@+id/newCertTypeSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:background="@drawable/cert_input_background"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="42dp"
+                            android:entries="@array/contractTypesEntries" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginEnd="14dp"
+                            android:src="@drawable/cert_dropdown_arrow"
+                            android:importantForAccessibility="no" />
+
+                    </FrameLayout>
+
+                    <!-- Date row: Start + Expiration side by side -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:entries="@array/contractTypesEntries" />
-                </TableRow>
-                <TableRow>
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="20dp">
 
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="10dp">
+
+                            <TextView
+                                android:id="@+id/certDateTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="START DATE *"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:textColor="#546878"
+                                android:letterSpacing="0.08"
+                                android:layout_marginBottom="8dp" />
+
+                            <Button
+                                android:id="@+id/newCertStartDateBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="52dp"
+                                android:background="@drawable/cert_date_background"
+                                android:text="SELECT DATE"
+                                android:textColor="@color/mainColor"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                app:backgroundTint="@null" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="10dp">
+
+                            <TextView
+                                android:id="@+id/expirationDateText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="EXPIRATION DATE"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:textColor="#546878"
+                                android:letterSpacing="0.08"
+                                android:layout_marginBottom="8dp" />
+
+                            <Button
+                                android:id="@+id/newCertEndDateBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="52dp"
+                                android:background="@drawable/cert_date_background"
+                                android:text="SELECT DATE"
+                                android:textColor="@color/mainColor"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                app:backgroundTint="@null" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Comments -->
                     <TextView
-                        android:id="@+id/certDateTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        android:layout_marginTop="5dp"
-                        android:ems="8"
-                        android:text="Certification Date:*"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/newCertStartDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/transparent"
-                        android:gravity="center"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="3"
-                        android:layout_margin="5dp"
-                        android:layout_marginTop="5dp"
-                        android:id="@+id/expirationDateText"
-                        android:text="Expiration Date:"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/newCertEndDateBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="4"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Comments:"
-                        android:textStyle="bold" />
+                        android:text="COMMENTS"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#546878"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="8dp" />
 
                     <EditText
                         android:id="@+id/newCertDescText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/cert_input_background"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:lines="3"
+                        android:gravity="top|start"
+                        android:hint="Optional notes…"
+                        android:textStyle="normal"
+                        android:layout_marginBottom="24dp" />
+
+                    <!-- Add to List button -->
+                    <Button
+                        android:id="@+id/addToListBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:textColor="@color/white"
+                        android:text="＋  Add to List"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.02"
+                        android:layout_marginBottom="4dp"
+                        app:backgroundTint="@null" />
+
+                </LinearLayout>
+
+                <!-- ── DIVIDER ── -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E0E8F5"
+                    android:layout_marginTop="4dp" />
+
+                <!-- ── STAGED LIST SECTION ── -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#EEF4FF"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_span="3"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/textview_background"
-                        android:ems="16"
-                        android:lines="5"
-                        android:text=""
-                        android:textStyle="bold" />
-                </TableRow>
+                        android:text="STAGED CERTIFICATES"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/mainColor"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="12dp" />
 
-            </TableLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/stagedCertificatesRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="40dp"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+                <!-- ── DIVIDER ── -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E0E8F5" />
+
+                <!-- ── ACTION BUTTONS ── -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp">
+
+                    <Button
+                        android:id="@+id/closeCertDialogBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:minWidth="90dp"
+                        android:background="@drawable/btn_cert_outline"
+                        android:textColor="@color/mainColor"
+                        android:text="Close"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:enabled="false"
+                        android:layout_marginEnd="12dp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/submitAllBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:minWidth="120dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:textColor="@color/white"
+                        android:text="Submit All"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:enabled="false"
+                        app:backgroundTint="@null" />
+
+                </LinearLayout>
+
+                <!-- ── RETRY FAILED ── -->
+                <Button
+                    android:id="@+id/retryFailedBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/btn_cert_warning"
+                    android:textColor="@color/white"
+                    android:text="↺  Retry Failed"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="16dp"
+                    app:backgroundTint="@null" />
+
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
     </ScrollView>
 
