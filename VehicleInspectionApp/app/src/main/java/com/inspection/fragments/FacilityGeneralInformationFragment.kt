@@ -153,7 +153,7 @@ class FacilityGeneralInformationFragment : Fragment() {
 
         IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited = true
         // SAEED TO BE REVIEWED
-        requireActivity().findViewById<Button>(R.id.generalInformationButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 

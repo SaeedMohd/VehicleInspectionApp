@@ -77,7 +77,7 @@ class FragmentARRAVAffliations : Fragment() {
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].AffiliationsVisited = true
         // SAEED TO BE REVIEWED
 //        (activity as FormsActivity).AffiliationsButton.setTextColor(Color.parseColor("#26C3AA"))
-        requireActivity().findViewById<Button>(R.id.AffiliationsButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
         binding.editAfDetailsTextviewVal.tag = "0"

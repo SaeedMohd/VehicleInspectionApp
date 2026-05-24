@@ -99,7 +99,7 @@ class FragmentARRAVVehicles : Fragment() {
         _binding = FragmentArravvehiclesBinding.bind(view)
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited = true
         // SAEED TO BE REVIEWED
-        requireActivity().findViewById<Button>(R.id.vehiclesButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).vehiclesButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 

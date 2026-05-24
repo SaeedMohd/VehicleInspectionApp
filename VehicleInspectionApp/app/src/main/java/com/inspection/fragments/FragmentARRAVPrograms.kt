@@ -74,8 +74,7 @@ class FragmentARRAVPrograms : Fragment() {
         _binding = FragmentArravProgramsBinding.bind(view)
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].ProgramsVisited = true
         // SAEED TO BE REVIEWED
-        requireActivity().findViewById<Button>(R.id.programsButton)
-            .setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).programsButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 

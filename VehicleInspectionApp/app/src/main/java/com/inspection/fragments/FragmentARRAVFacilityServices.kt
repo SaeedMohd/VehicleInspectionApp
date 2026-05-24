@@ -65,7 +65,7 @@ class FragmentARRAVFacilityServices : Fragment() {
         _binding = FragmentArravFacilityServicesBinding.bind(view)
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].FacilityServicesVisited= true
 //        (activity as FormsActivity).facilityServicesButton.setTextColor(Color.parseColor("#26C3AA"))
-        requireActivity().findViewById<Button>(R.id.facilityServicesButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
         binding.exitFCServicesDialogeBtnId.setOnClickListener {
