@@ -1,69 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context="com.inspection.fragments.FragmentARRAVVehicles">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:textAllCaps="true"
-        android:text="Vehicles"
-        android:textSize="18dp"
-        android:textStyle="bold" />
-
-    <ListView
-        android:id="@+id/vehiclesListView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_centerVertical="true"
-        android:paddingTop="5dp"
-        android:background="@color/white"
-        android:visibility="gone"
-        android:layout_margin="10dp"
-        android:layout_below="@+id/titleTextView"
-        />
+        android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
-    <com.inspection.Utils.ExpandableHeightGridView
-        android:layout_margin="20dp"
-        android:id="@+id/vehicleMakeList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/titleTextView"
-        android:gravity="center"
-        android:horizontalSpacing="2dp"
-        android:isScrollContainer="false"
-        android:numColumns="4"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="20dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progressbarVehicles"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:max="100"
-        android:layout_alignTop="@id/vehiclesListView"
-        android:backgroundTint="@color/white"
-        android:indeterminateTint="#1a09d6"
-        android:layout_marginTop="-10dp"/>
+            <!-- Vehicles card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingBottom="12dp">
 
+                <!-- Header -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/titleTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Vehicles"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressbarVehicles"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:max="100"
+                    android:backgroundTint="@color/white"
+                    android:indeterminateTint="#1565C0"
+                    android:layout_marginTop="-2dp" />
+
+                <ListView
+                    android:id="@+id/vehiclesListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="@color/white"
+                    android:visibility="gone" />
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/vehicleMakeList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="4dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="12dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Loading overlay -->
     <RelativeLayout
         android:id="@+id/scopeOfServicesChangesDialogueLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:clickable="true"
         android:background="@color/mainColor"
+        android:clickable="true"
         android:visibility="gone">
 
         <ProgressBar
@@ -80,9 +115,8 @@
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"
-            android:textSize="26sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
-
 
     </RelativeLayout>
 

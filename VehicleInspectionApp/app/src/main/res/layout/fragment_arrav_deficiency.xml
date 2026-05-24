@@ -1,756 +1,651 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context=".fragments.FragmentARRAVDeficiency">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"
-        android:layout_margin="10dp"
-        android:paddingTop="5dp"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-
+        android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <!-- Deficiency card -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:layout_below="@+id/titleTextView"
-                android:orientation="horizontal"
-                android:id="@+id/subTitle">
-                <TextView
-                    android:id="@+id/deffTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deficiency"
-                    android:gravity="center"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    />
-            </RelativeLayout>
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingBottom="12dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                >
+                <!-- Header -->
+                <RelativeLayout
+                    android:id="@+id/subTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/deffTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Deficiency"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <!-- Filter row -->
                 <RadioGroup
                     android:id="@+id/loadDefRadioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"
                     android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/filteredDefRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:checked="true"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Deficiencies with no cleared date" />
+                    <RadioButton
+                        android:id="@+id/filteredDefRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:checked="true"
+                        android:text="Deficiencies with no cleared date"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                <RadioButton
-                    android:textStyle="bold"
-                    android:id="@+id/allDefRadioButton"
-                    android:layout_width="wrap_content"
-                    android:textSize="18sp"
-                    android:layout_height="wrap_content"
-                    android:text="All Deficiencies" />
+                    <RadioButton
+                        android:id="@+id/allDefRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All Deficiencies"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </RadioGroup>
 
+                <!-- Action buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
 
+                    <Button
+                        android:id="@+id/loadDefButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:background="@drawable/btn_cert_outline"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Load Deficiencies"
+                        android:textAllCaps="false"
+                        android:textColor="#4572CE"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
-            </RelativeLayout>
+                    <Button
+                        android:id="@+id/showNewDeffDialogueBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Add New Deficiency"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+                </LinearLayout>
 
-            <RelativeLayout
+                <!-- Deficiency table -->
+                <TableLayout
+                    android:id="@+id/DeffResultsTbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="4dp"
+                    android:showDividers="middle"
+                    android:stretchColumns="*">
+
+                    <TableRow
+                        android:background="@drawable/cert_header_bg"
+                        android:minHeight="36dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Deficiency"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="0.7"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Visitation Date"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_weight="0.7"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Entered Date"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="3"
+                            android:layout_weight="0.7"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Due Date"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="4"
+                            android:layout_weight="0.7"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Cleared Date"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="5"
+                            android:layout_weight="1.4"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Comments"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="6"
+                            android:layout_weight="0.6"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Options"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+                </TableLayout>
+
+            </LinearLayout>
+
+            <!-- Deficiency Actions card -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:background="@color/white"
-                android:orientation="horizontal"
-                >
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingBottom="12dp">
 
-                <Button
-                    android:id="@+id/loadDefButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/new_btn_bkg"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@null"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="  Load Deficiencies  "
-                    />
-
-                <Button
-                    android:id="@+id/showNewDeffDialogueBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/new_btn_bkg"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@null"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="Add New Deficiency"
-                    />
-
-            </RelativeLayout>
-
-
-            <TableLayout
-                android:id="@+id/DeffResultsTbl"
-                android:layout_width="match_parent"
-                android:showDividers="middle|beginning|end"
-                android:stretchColumns="*"
-                android:layout_height="wrap_content"
-                >
-                <TableRow
-                    android:background="@color/mainColor">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EEF4FB"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp">
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
+                        android:background="#1565C0" />
                     <TextView
-                        android:layout_width="0dp"
-                        android:text="Deficiency"
-                        android:textColor="@color/white"
-                        android:layout_column="0"
-                        android:textSize="14sp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_height="30dp"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1"
-                        />
-
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="0dp"
-                        android:text="Visitation Date"
-                        android:layout_column="1"
-                        android:layout_weight="0.7"
-                        android:textSize="14sp"
-                        android:layout_height="30dp"
-                        android:gravity="center_vertical"
-                        />
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:text="Entered Date"
-                        android:layout_column="2"
-                        android:layout_weight="0.7"
-                        android:textSize="14sp"
-                        android:gravity="center_vertical"
-                        />
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="0dp"
+                        android:id="@+id/deffTitle2"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Due Date"
-                        android:layout_column="3"
-                        android:layout_weight="0.7"
-                        android:textSize="14sp"
-                        android:gravity="center_vertical"
-                        />
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Cleared Date"
-                        android:layout_column="4"
-                        android:layout_weight="0.7"
-                        android:textSize="14sp"
-                        android:gravity="center_vertical"
-                        />
-                    <TextView
-                        android:textColor="@color/white"
-                        android:layout_width="0dp"
-                        android:text="Comments"
-                        android:layout_column="5"
-                        android:layout_weight="1.4"
-                        android:textSize="14sp"
-                        android:layout_height="30dp"
-                        android:gravity="center_vertical"
-                        />
+                        android:text="Deficiency Actions"
+                        android:textColor="#1A237E"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_column="6"
-                        android:layout_weight="0.6"
-                        android:textSize="14sp"
-                        android:layout_height="30dp"
-                        android:text="Options"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        />
+                <TableLayout
+                    android:id="@+id/actionsTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:showDividers="middle"
+                    android:stretchColumns="*">
 
-                </TableRow>
-            </TableLayout>
+                    <TableRow
+                        android:background="@drawable/cert_header_bg"
+                        android:minHeight="36dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Action"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Action Date"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Due Date"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+                </TableLayout>
 
-            <TextView
-                android:id="@+id/deffTitle2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:text="Deficiency Actions"
-                android:gravity="center"
-                android:textColor="@color/mainColor"
-                android:textSize="22sp"
-                />
-
-            <TableLayout
-                android:id="@+id/actionsTable"
-                android:layout_width="600dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content"
-                android:showDividers="middle|beginning|end"
-                android:stretchColumns="*">
-
-                <TableRow android:background="@color/mainColor" android:layout_height="30dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:height="30dp"
-                        android:layout_column="0"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Action"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Action Date"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Due Date"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                </TableRow>
-            </TableLayout>
+            </LinearLayout>
 
         </LinearLayout>
-
-
     </ScrollView>
 
-
+    <!-- Dim overlay -->
     <View
         android:id="@+id/visitationFormAlphaBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
         android:background="@color/mainColor"
-        android:visibility="gone"
-        />
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/signatureDialog"-->
-<!--        android:layout_width="500dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="10dp"-->
-<!--        android:elevation="15dp"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        android:visibility="gone"-->
-<!--        android:background="@color/light_gray">-->
+        android:visibility="gone" />
 
-<!--        <com.simplify.ink.InkView-->
-<!--            android:id="@+id/signatureInkView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="300dp"-->
-<!--            android:layout_alignParentTop="true"-->
-<!--            android:background="@color/white"-->
-<!--            />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/signatureConfirmButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            android:layout_below="@id/signatureInkView"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:paddingRight="10dp"-->
-<!--            android:paddingLeft="10dp"-->
-<!--            android:layout_marginRight="20dp"-->
-<!--            android:layout_marginBottom="5dp"-->
-<!--            android:background="@drawable/green_background_button"-->
-<!--            android:text="Confirm"-->
-<!--            android:textColor="@color/white" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/signatureCancelButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_below="@id/signatureInkView"-->
-<!--            android:layout_marginRight="10dp"-->
-<!--            android:paddingRight="10dp"-->
-<!--            android:paddingLeft="10dp"-->
-<!--            android:layout_marginBottom="5dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_toLeftOf="@id/signatureConfirmButton"-->
-<!--            android:background="@drawable/green_background_button"-->
-<!--            android:text="Cancel"-->
-<!--            android:textColor="@color/white" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/signatureClearButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_below="@id/signatureInkView"-->
-<!--            android:layout_marginRight="10dp"-->
-<!--            android:paddingRight="10dp"-->
-<!--            android:paddingLeft="10dp"-->
-<!--            android:layout_marginBottom="5dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:background="@drawable/green_background_button"-->
-<!--            android:layout_alignParentLeft="true"-->
-<!--            android:text="CLEAR"-->
-<!--            android:textColor="@color/white" />-->
-<!--    </RelativeLayout>-->
-
+    <!-- Add New Deficiency dialog -->
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        >
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/defeciencyCard"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp">
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
-            <TableLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/defeciencyCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                >
-            <TableRow>
-                <TextView
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Dialog header -->
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Add New Deficiency"
-                    android:textSize="20sp"
-                    android:textColor="@color/dark_gray"
-                    android:ems="12"
-                    android:layout_column="0"
-                    />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="5dp"
-                    android:text="SUBMIT"
-                    android:id="@+id/submitNewDeffNewBtn"
-                    android:ems="12"
-                    android:layout_column="2"
-                    android:background="@drawable/new_btn_bkg"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@null"
-                    android:layout_gravity="top|right"/>
-                <ImageButton
-                    android:layout_marginTop="25dp"
-                    android:id="@+id/exitDeffeciencyDialogeBtnId"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/close"
-                    android:layout_gravity="top|right"
-                    android:layout_column="2"
-                    />
-            </TableRow>
+                    android:layout_marginBottom="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Add New Deficiency"
+                        android:textColor="#1A237E"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                    <ImageButton
+                        android:id="@+id/exitDeffeciencyDialogeBtnId"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="Close" />
+                </RelativeLayout>
 
-                <TableRow android:layout_marginTop="20dp">
+                <!-- Deficiency -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Deficiency:*"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
-                <Spinner
-                    android:id="@+id/newDefSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ems="8"
-                    android:layout_column="1"
-                    />
-            </TableRow>
+                    android:layout_marginBottom="4dp"
+                    android:text="Deficiency *"
+                    android:textColor="#546878"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/cert_input_background">
+                    <Spinner
+                        android:id="@+id/newDefSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:popupBackground="@drawable/spinner_popup_bg"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="28dp" />
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription=""
+                        android:src="@drawable/ic_arrow_dropdown" />
+                </RelativeLayout>
 
-            <TableRow>
+                <!-- Visitation Date -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Visitation Date:*"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
+                    android:layout_marginBottom="4dp"
+                    android:text="Visitation Date *"
+                    android:textColor="#546878"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
                 <Button
                     android:id="@+id/newVisitationDateBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_column="1"
-                    android:background="@color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/cert_input_background"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
                     android:text="SELECT DATE"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-            </TableRow>
-<!--            <TableRow>-->
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_centerVertical="true"-->
-<!--                    android:text="Facility Representative's Signature (Deficiencies)"-->
-<!--                    android:textSize="15sp"-->
-<!--                    android:layout_column="0"-->
-<!--                    android:textStyle="bold" />-->
-<!--                <ImageView-->
-<!--                    android:id="@+id/facilityRepresentativeDeficienciesSignatureImageView"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:layout_height="60dp"-->
-<!--                    android:layout_column="1"-->
-<!--                    />-->
+                    android:textAllCaps="false"
+                    android:textColor="#4572CE"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
 
-<!--                <Button-->
-<!--                    android:id="@+id/facilityRepresentativeDeficienciesSignatureButton"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="30dp"-->
-<!--                    android:layout_centerVertical="true"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:background="@drawable/blue_background_button"-->
-<!--                    android:paddingLeft="15dp"-->
-<!--                    android:paddingRight="15dp"-->
-<!--                    android:layout_column="2"-->
-<!--                    android:text="Add Signature"-->
-<!--                    android:textColor="@color/white"-->
-<!--                    android:textSize="12dp" />-->
-<!--            </TableRow>-->
-<!--            <TableRow android:layout_marginTop="10dp">-->
-<!--                <TextView-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_centerVertical="true"-->
-<!--                    android:layout_column="0"-->
-<!--                    android:text="Signature Date"-->
-<!--                    android:textSize="15sp"-->
-<!--                    android:textStyle="bold" />-->
-<!--                <Button-->
-<!--                    android:id="@+id/signatureDateBtn"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_column="1"-->
-<!--                    android:background="@color/transparent"-->
-<!--                    android:text="SELECT DATE"-->
-<!--                    android:textColor="@color/blue"-->
-<!--                    android:textSize="12dp" />-->
-
-<!--            </TableRow>-->
-
-
-            <TableRow>
-
+                <!-- Cleared Date -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_margin="5dp"
-                    android:text="Cleared Date:"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
+                    android:layout_marginBottom="4dp"
+                    android:text="Cleared Date"
+                    android:textColor="#546878"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
                 <Button
                     android:id="@+id/newClearedDateBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_column="1"
-                    android:background="@color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/cert_input_background"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
                     android:text="SELECT DATE"
-                    android:textColor="@color/blue"
-                    android:textSize="12dp" />
-            </TableRow>
-            <LinearLayout>
+                    android:textAllCaps="false"
+                    android:textColor="#4572CE"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+
+                <!-- Comments -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Comments:"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
+                    android:layout_marginBottom="4dp"
+                    android:text="Comments"
+                    android:textColor="#546878"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
                 <EditText
                     android:id="@+id/comments_editTextVal"
-                    android:layout_marginTop="10dp"
-                    android:layout_below="@id/AssignedToll"
                     android:layout_width="match_parent"
-                    android:background="@drawable/item_solid_border"
                     android:layout_height="wrap_content"
-                    android:maxEms="250"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/cert_input_background"
+                    android:inputType="textMultiLine"
                     android:lines="3"
-                    android:layout_column="1"
+                    android:maxEms="250"
+                    android:padding="10dp"
+                    android:textSize="14sp" />
 
-                    />
+                <!-- Submit -->
+                <Button
+                    android:id="@+id/submitNewDeffNewBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/btn_cert_primary"
+                    android:text="SUBMIT"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+
             </LinearLayout>
-        </TableLayout>
-    </androidx.cardview.widget.CardView>
-    </ScrollView>
-
-
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        >
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/defeciencyCardEdit"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp">
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                >
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="Edit Deficiency"
-                        android:textSize="20sp"
-                        android:textColor="@color/dark_gray"
-                        android:ems="12"
-                        android:layout_column="0"
-                        />
-
-                    <Button
-                        android:id="@+id/submitNewDeffNewBtnEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:layout_column="2"
-                        android:layout_gravity="top|right"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/new_btn_bkg"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:ems="12"
-                        android:text="SUBMIT"
-                        />
-                    <ImageButton
-                        android:layout_marginTop="25dp"
-                        android:id="@+id/exitDeffeciencyDialogeBtnIdEdit"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/close"
-                        android:layout_gravity="top|right"
-                        android:layout_column="2"
-                        />
-                </TableRow>
-
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Deficiency:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Spinner
-                        android:id="@+id/newDefSpinnerEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:ems="8"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Visitation Date:*"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newVisitationDateBtnEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
-<!--                <TableRow>-->
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:text="Facility Representative's Signature (Deficiencies)"-->
-<!--                        android:layout_column="0"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:textStyle="bold" />-->
-<!--                </TableRow>-->
-<!--                <TableRow android:layout_marginTop="10dp">-->
-<!--                    <TextView-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:layout_column="0"-->
-<!--                        android:text="Signature Date"-->
-<!--                        android:textSize="15sp"-->
-<!--                        android:textStyle="bold" />-->
-<!--                    <Button-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:id="@+id/signatureDateBtnEdit"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_column="1"-->
-<!--                        android:background="@color/transparent"-->
-<!--                        android:text="SELECT DATE"-->
-<!--                        android:textColor="@color/blue"-->
-<!--                        android:textSize="12dp" />-->
-
-<!--                    <ImageView-->
-<!--                        android:id="@+id/facilityRepresentativeDeficienciesSignatureImageViewEdit"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:layout_height="60dp"-->
-<!--                        android:layout_column="1"-->
-<!--                        />-->
-
-<!--                    <Button-->
-<!--                        android:id="@+id/facilityRepresentativeDeficienciesSignatureButtonEdit"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="48dp"-->
-<!--                        android:layout_column="2"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:background="@drawable/blue_background_button"-->
-<!--                        android:paddingLeft="15dp"-->
-<!--                        android:paddingRight="15dp"-->
-<!--                        android:text="Add Signature"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        android:textSize="12dp" />-->
-
-
-<!--                </TableRow>-->
-
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Cleared Date:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <Button
-                        android:id="@+id/newClearedDateBtnEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_column="1"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                </TableRow>
-                <LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="Comments:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <EditText
-                        android:id="@+id/comments_editTextValEdit"
-                        android:layout_marginTop="10dp"
-                        android:layout_below="@id/AssignedToll"
-                        android:layout_width="match_parent"
-                        android:background="@drawable/item_solid_border"
-                        android:layout_height="wrap_content"
-                        android:maxEms="250"
-                        android:lines="3"
-                        android:layout_column="1"
-
-                        />
-                </LinearLayout>
-            </TableLayout>
         </androidx.cardview.widget.CardView>
     </ScrollView>
 
+    <!-- Edit Deficiency dialog -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/defeciencyCardEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Dialog header -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Edit Deficiency"
+                        android:textColor="#1A237E"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                    <ImageButton
+                        android:id="@+id/exitDeffeciencyDialogeBtnIdEdit"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="Close" />
+                </RelativeLayout>
+
+                <!-- Deficiency -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Deficiency *"
+                    android:textColor="#546878"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/cert_input_background">
+                    <Spinner
+                        android:id="@+id/newDefSpinnerEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:popupBackground="@drawable/spinner_popup_bg"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="28dp" />
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription=""
+                        android:src="@drawable/ic_arrow_dropdown" />
+                </RelativeLayout>
+
+                <!-- Visitation Date -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Visitation Date *"
+                    android:textColor="#546878"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/newVisitationDateBtnEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/cert_input_background"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="SELECT DATE"
+                    android:textAllCaps="false"
+                    android:textColor="#4572CE"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+
+                <!-- Cleared Date -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Cleared Date"
+                    android:textColor="#546878"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/newClearedDateBtnEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/cert_input_background"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="SELECT DATE"
+                    android:textAllCaps="false"
+                    android:textColor="#4572CE"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+
+                <!-- Comments -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Comments"
+                    android:textColor="#546878"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/comments_editTextValEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/cert_input_background"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:maxEms="250"
+                    android:padding="10dp"
+                    android:textSize="14sp" />
+
+                <!-- Submit -->
+                <Button
+                    android:id="@+id/submitNewDeffNewBtnEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/btn_cert_primary"
+                    android:text="SUBMIT"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
+    <!-- Loading overlay -->
     <RelativeLayout
         android:id="@+id/DeffLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:clickable="true"
         android:background="@color/mainColor"
+        android:clickable="true"
         android:visibility="gone">
 
         <ProgressBar
@@ -761,18 +656,16 @@
             android:progressTint="@color/white" />
 
         <TextView
+            android:id="@+id/progressBarText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/progressBarRecordsDef"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"
-            android:id="@+id/progressBarText"
-            android:textSize="26sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
-
     </RelativeLayout>
-
 
 </RelativeLayout>
