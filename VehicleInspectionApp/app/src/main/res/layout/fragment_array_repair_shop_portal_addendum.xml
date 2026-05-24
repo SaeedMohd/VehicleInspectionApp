@@ -6,1026 +6,818 @@
     android:background="@color/light_gray"
     tools:context="com.inspection.fragments.FacilityGeneralInformationFragment">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_gray"
-        android:orientation="vertical"
-        android:layout_margin="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp">
+        android:padding="12dp">
+
         <LinearLayout
+            android:id="@+id/mainViewLinearId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <!-- Hidden test button (keep for code compatibility) -->
+            <Button
+                android:id="@+id/testBtnId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test"
+                android:visibility="gone" />
+
+            <!-- ── Card 1: AAR/RSP Addendum ── -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="10dp"
+                android:elevation="4dp"
                 android:orientation="vertical"
-                >
+                android:padding="16dp">
 
-                <Button
+                <!-- Section header -->
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="test"
-                    android:visibility="gone"
-                    android:id="@+id/testBtnId"/>
-
-                <TextView
-                    android:id="@+id/titleTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:paddingTop="5dp"
-                    android:text="Repair Shop Portal Tracking"
-                    android:textAllCaps="true"
-                    android:visibility="gone"
+                    android:text="AAR/RSP Addendum"
                     android:textColor="@color/mainColor"
-                    android:textSize="26dp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="14dp"
+                    android:background="#E0E0E0" />
 
-                <RelativeLayout
-                    android:id="@+id/mainViewLinearId"
+                <!-- Row 1: Start Date | End Date -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Repair Shop Portal Tracking"
-                        android:textColor="@color/mainColor"
-                        android:textStyle="bold"
-                        android:textSize="22sp" />
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
 
-                </RelativeLayout>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="AAR/RSP Addendum"
-                    android:textColor="@color/mainColor"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
-
-                <!--<Button-->
-                <!--android:id="@+id/addNewAarButton"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="30dp"-->
-                <!--android:layout_marginBottom="10dp"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:background="@drawable/green_background_button"-->
-                <!--android:paddingLeft="15dp"-->
-                <!--android:paddingRight="15dp"-->
-                <!--android:text="Add new AAR Portal Tracking"-->
-                <!--android:textColor="@color/white" />-->
-
-                <TableLayout
-                    android:id="@+id/aaraddanTableLayout"
-                    android:layout_width="match_parent"
-                    android:layout_marginRight="20dp"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="*"
-                    >
-                    <TableRow android:layout_marginTop="10dp">
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Start Date"
-                            android:layout_marginLeft="10dp"
+                            android:textColor="#37474F"
+                            android:textSize="12sp"
                             android:textStyle="bold"
-                            android:layout_column="0"
-                            />
-                        <Button
-                            android:id="@+id/addstartDateButton"
+                            android:layout_marginBottom="4dp" />
+
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_column="1"
-                            android:layout_marginLeft="20dp"
-                            android:gravity="center"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
+                            android:background="@drawable/cert_input_background">
+
+                            <Button
+                                android:id="@+id/addstartDateButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:text="SELECT DATE"
+                                android:textAllCaps="false"
+                                android:textColor="#4572CE"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                app:backgroundTint="@null" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="End Date"
+                            android:textColor="#37474F"
+                            android:textSize="12sp"
                             android:textStyle="bold"
-                            android:layout_marginLeft="20dp"
-                            android:layout_column="2"
-                            />
-                        <Button
-                            android:id="@+id/addendDateButton"
+                            android:layout_marginBottom="4dp" />
+
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_column="3"
-                            android:gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
-                    </TableRow>
-                    <TableRow android:layout_marginTop="5dp">
+                            android:background="@drawable/cert_input_background">
+
+                            <Button
+                                android:id="@+id/addendDateButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:text="SELECT DATE"
+                                android:textAllCaps="false"
+                                android:textColor="#4572CE"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                app:backgroundTint="@null" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Row 2: Addendum Signed Date | Number of Card Readers -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
+
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Addendum Signed Date"
-                            android:layout_marginLeft="10dp"
+                            android:textColor="#37474F"
+                            android:textSize="12sp"
                             android:textStyle="bold"
-                            android:layout_column="0"
-                            />
-                        <Button
-                            android:id="@+id/addsignDateButton"
+                            android:layout_marginBottom="4dp" />
+
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_column="1"
-                            android:layout_marginLeft="20dp"
-                            android:gravity="center"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12dp" />
+                            android:background="@drawable/cert_input_background">
+
+                            <Button
+                                android:id="@+id/addsignDateButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:text="SELECT DATE"
+                                android:textAllCaps="false"
+                                android:textColor="#4572CE"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                app:backgroundTint="@null" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Number of Card Readers"
+                            android:textColor="#37474F"
+                            android:textSize="12sp"
                             android:textStyle="bold"
-                            android:layout_marginLeft="20dp"
-                            android:layout_column="2"
-                            />
+                            android:layout_marginBottom="4dp" />
+
                         <EditText
                             android:id="@+id/addnumberOfCardsReaderEditText"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
+                            android:background="@drawable/cert_input_background"
                             android:gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:layout_column="3"
                             android:inputType="number"
-                            android:background="@drawable/textview_background"
-                            />
-                        <Button
-                            android:id="@+id/addcancelButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginLeft="30dp"
-                            android:layout_column="4"
-                            android:enabled="false"
-                            android:background="@drawable/new_btn_bkg"
-                            android:textColor="@color/white"
-                            app:backgroundTint="@null"
-                            android:text="Cancel" />
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textColor="#1A237E"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
-                        <Button
-                            android:id="@+id/addsaveButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginLeft="15dp"
-                            android:layout_column="5"
-                            android:background="@drawable/new_btn_bkg"
-                            android:textColor="@color/white"
-                            app:backgroundTint="@null"
-                            android:enabled="false"
-                            android:text="Save" />
-                    </TableRow>
-                </TableLayout>
+                </LinearLayout>
 
-                <View android:layout_height="1dp"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/darker_gray"></View>
-
-                <RelativeLayout
+                <!-- Save / Cancel buttons -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
+                    android:gravity="end"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/addcancelButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:background="@drawable/btn_cert_outline"
+                        android:enabled="false"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="Cancel"
+                        android:textAllCaps="false"
+                        android:textColor="#4572CE"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/addsaveButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:enabled="false"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="Save"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- ── Card 2: RSP Tracking ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:layout_marginTop="12dp"
+                android:padding="16dp">
+
+                <!-- Section header -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_centerVertical="true"
                         android:text="RSP Tracking"
                         android:textColor="@color/mainColor"
-                        android:textStyle="bold"
-                        android:textSize="20sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/addNewAarButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/new_btn_bkg"
+                        android:layout_height="44dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="+ Add RSP Tracking"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:layout_alignParentRight="true"
-                        android:text="Add new RSP Tracking"
-                        />
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
                 </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#E0E0E0" />
 
                 <TableLayout
                     android:id="@+id/aarPortalTrackingTableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:divider="@drawable/divider_table_layout"
-                    >
+                    android:showDividers="middle"
+                    android:stretchColumns="*">
 
-                    <TableRow android:background="@color/mainColor">
+                    <TableRow
+                        android:background="@drawable/cert_header_bg"
+                        android:minHeight="40dp">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_weight="1"
-                            android:layout_marginLeft="10dp"
-                            android:text="Portal Inspection Date"
                             android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Portal Inspection Date"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
-                            />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="1"
                             android:layout_weight="1"
-                            android:text="Logged Into Portal"
                             android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Logged Into Portal"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="2"
                             android:layout_weight="1"
-                            android:text="Unacknowledged Tows"
                             android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Unacknowledged Tows"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_weight="1"
-                            android:text="In Progress Tows"
                             android:gravity="center"
+                            android:padding="8dp"
+                            android:text="In Progress Tows"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="4"
                             android:layout_weight="1"
-                            android:text="In Progress Walk-ins"
                             android:gravity="center"
+                            android:padding="8dp"
+                            android:text="In Progress Walk-ins"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="5"
-                            android:layout_weight="1"
-                            android:text="Update"
+                            android:layout_weight="0.6"
                             android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Update"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
                     </TableRow>
+
                 </TableLayout>
 
-
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
+    <!-- Dim overlay -->
     <View
         android:id="@+id/alphaBackgroundForRSPDialogs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.8"
+        android:alpha="0.6"
         android:background="@color/mainColor"
         android:visibility="gone" />
 
-    <!--<ScrollView-->
-    <!--android:id="@+id/addNewAAR_PortalTrackingCard"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerInParent="true"-->
-    <!--android:visibility="gone"-->
-    <!--android:clickable="true"-->
-    <!--android:layout_marginTop="5dp"-->
-    <!--android:layout_marginBottom="5dp">-->
-    <!--<androidx.cardview.widget.CardView-->
-    <!--android:layout_width="800dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--app:cardCornerRadius="5dp"-->
-    <!--app:cardElevation="10dp">-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:padding="40dp"-->
-    <!--android:weightSum="2">-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="15dp"-->
-    <!--android:layout_weight="1"-->
-    <!--android:orientation="vertical"-->
-    <!--android:padding="10dp">-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/program_name_textview"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_vertical"-->
-    <!--android:layout_weight="1"-->
-    <!--android:text="Start Date: "-->
-    <!--android:textStyle="bold" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/program_name_textview"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_vertical"-->
-    <!--android:layout_marginLeft="35dp"-->
-    <!--android:layout_weight="1"-->
-    <!--android:text="End Date: "-->
-    <!--android:textStyle="bold" />-->
-
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal">-->
-
-    <!--<Button-->
-    <!--android:id="@+id/startDateButton"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_column="1"-->
-    <!--android:layout_weight="1"-->
-    <!--android:background="@color/transparent"-->
-    <!--android:text="SELECT DATE"-->
-    <!--android:textColor="@color/blue"-->
-    <!--android:textSize="12dp" />-->
-
-    <!--<Button-->
-    <!--android:id="@+id/endDateButton"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_column="1"-->
-    <!--android:layout_marginLeft="30dp"-->
-    <!--android:layout_weight="1"-->
-    <!--android:background="@color/transparent"-->
-    <!--android:text="SELECT DATE"-->
-    <!--android:textColor="@color/blue"-->
-    <!--android:textSize="12dp" />-->
-
-
-    <!--</LinearLayout>-->
-
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_column="0"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:text="Addendum Signed Date: "-->
-    <!--android:textStyle="bold" />-->
-
-    <!--<Button-->
-    <!--android:id="@+id/addendumSignedDateButton"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_column="1"-->
-    <!--android:background="@color/transparent"-->
-    <!--android:text="Select Date"-->
-    <!--android:textColor="@color/blue"-->
-    <!--android:textSize="12dp" />-->
-
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:orientation="horizontal">-->
-
-    <!--<TextView-->
-
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/connumberll"-->
-    <!--android:layout_gravity="center_vertical"-->
-    <!--android:text="Number Of Cards Reader: "-->
-    <!--android:textStyle="bold" />-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/numberOfCardsReaderEditText"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:background="@drawable/textview_background"-->
-    <!--android:ems="2"-->
-    <!--android:gravity="center_horizontal"-->
-    <!--android:inputType="number"-->
-    <!--android:maxLength="2"-->
-    <!--android:text=""-->
-
-    <!--android:textStyle="bold" />-->
-
-
-    <!--</LinearLayout>-->
-
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1"-->
-    <!--android:orientation="vertical"-->
-    <!--android:padding="10dp">-->
-
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_column="0"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:text="Inspection Date: "-->
-    <!--android:textStyle="bold" />-->
-
-    <!--<Button-->
-    <!--android:id="@+id/inspectionDateButton"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_column="1"-->
-    <!--android:background="@color/transparent"-->
-    <!--android:text="Select Date"-->
-    <!--android:textColor="@color/blue"-->
-    <!--android:textSize="12dp" />-->
-
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="10dp"-->
-    <!--android:orientation="horizontal">-->
-
-    <!--<TextView-->
-
-    <!--android:id="@+id/program_name_textview"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Logged Into RSP:  "-->
-    <!--android:textStyle="bold" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/program_name_textview"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text=" No "-->
-    <!--android:textColor="@color/blue_krayola"-->
-    <!--android:textStyle="bold" />-->
-
-    <!--<Switch-->
-    <!--android:id="@+id/loggedIntoRspButton"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_toRightOf="@id/contract_number_textview"-->
-    <!--android:textColor="@color/blue_krayola" />-->
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text=" Yes"-->
-    <!--android:textColor="@color/blue_krayola"-->
-    <!--android:textStyle="bold" />-->
-
-
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:id="@+id/contypell"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/affliationdetails"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:weightSum="5">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/effective_date_textview"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/connumberll"-->
-    <!--android:layout_gravity="center_vertical"-->
-    <!--android:layout_weight="1"-->
-    <!--android:text="Number Of Unacknowledged Records: "-->
-    <!--android:textStyle="bold" />-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/numberOfUnacknowledgedRecordsEditText"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:layout_weight="1"-->
-    <!--android:background="@drawable/textview_background"-->
-    <!--android:gravity="center_horizontal"-->
-    <!--android:inputType="number"-->
-    <!--android:text=""-->
-    <!--android:textStyle="bold" />-->
-    <!--</LinearLayout>-->
-
-
-    <!--<LinearLayout-->
-    <!--android:id="@+id/contypell"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/affliationdetails"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:weightSum="5">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/effective_date_textview"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/connumberll"-->
-    <!--android:layout_gravity="center_vertical"-->
-    <!--android:layout_weight="1"-->
-    <!--android:text="Number Of In-Progress Two-Ins: "-->
-    <!--android:textStyle="bold" />-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/numberOfInProgressTwoIns"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:layout_weight="1"-->
-    <!--android:background="@drawable/textview_background"-->
-    <!--android:gravity="center_horizontal"-->
-    <!--android:inputType="number"-->
-    <!--android:text=""-->
-    <!--android:textStyle="bold" />-->
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:id="@+id/contypell"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/affliationdetails"-->
-    <!--android:layout_marginBottom="20dp"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:weightSum="5">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/effective_date_textview"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/connumberll"-->
-    <!--android:layout_gravity="center_vertical"-->
-    <!--android:layout_weight="1"-->
-    <!--android:text="Number Of In-Progress Walk-Ins: "-->
-    <!--android:textStyle="bold" />-->
-
-    <!--<EditText-->
-    <!--android:id="@+id/numberOfInProgressWalkIns"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:layout_weight="1"-->
-    <!--android:background="@drawable/textview_background"-->
-    <!--android:gravity="center_horizontal"-->
-    <!--android:inputType="number"-->
-    <!--android:text=""-->
-    <!--android:textStyle="bold" />-->
-    <!--</LinearLayout>-->
-
-
-    <!--</LinearLayout>-->
-
-
-    <!--</LinearLayout>-->
-    <!--</androidx.cardview.widget.CardView>-->
-    <!--</ScrollView>-->
-
+    <!-- ── Add RSP Tracking dialog ── -->
     <ScrollView
         android:id="@+id/Add_AAR_PortalTrackingEntryCard"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:clickable="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp">
+        android:layout_margin="20dp"
+        android:visibility="gone">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/white">
 
-            <TableLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                >
-                <TableRow>
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- Dialog header -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_centerVertical="true"
                         android:text="Add New RSP Tracking"
-                        android:textSize="20sp"
-                        android:textColor="@color/dark_gray"
-                        android:layout_column="0"
-                        />
+                        android:textColor="@color/mainColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
                     <Button
+                        android:id="@+id/submitNewAAR_PortalTracking"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="5dp"
-                        android:text="SUBMIT"
-                        android:id="@+id/submitNewAAR_PortalTracking"
-                        android:layout_column="1"
-                        android:background="@drawable/new_btn_bkg"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="36dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:layout_gravity="top|right"/>
-                    <ImageButton
-                        android:layout_marginTop="25dp"
-                        android:id="@+id/exitRSPDialogeBtnId"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/close"
-                        android:layout_gravity="top|right"
-                        android:layout_column="2"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="20dp">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_column="0"
-                        android:background="@android:color/darker_gray"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_column="1"
-                        android:background="@android:color/darker_gray"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_column="2"
-                        android:background="@android:color/darker_gray"/>
-                </TableRow>
-                <!--<TableRow android:layout_marginTop="20dp">-->
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="Start Date"-->
-                        <!--android:gravity="center"-->
-                        <!--android:layout_marginRight="10dp"-->
-                        <!--android:layout_column="0"-->
-                        <!--/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="End Date"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:gravity="center"-->
-                        <!--android:layout_column="1"-->
-                        <!--/>-->
-                <!--</TableRow>-->
-                <!--<TableRow android:layout_marginTop="5dp">-->
-                    <!--<Button-->
-                        <!--android:id="@+id/startDateButton"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="0"-->
-                        <!--android:gravity="center"-->
-                        <!--android:background="@color/transparent"-->
-                        <!--android:text="SELECT DATE"-->
-                        <!--android:layout_marginRight="10dp"-->
-                        <!--android:textColor="@color/blue"-->
-                        <!--android:textSize="12dp" />-->
-                    <!--<Button-->
-                        <!--android:id="@+id/endDateButton"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="1"-->
-                        <!--android:gravity="center"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:background="@color/transparent"-->
-                        <!--android:text="SELECT DATE"-->
-                        <!--android:textColor="@color/blue"-->
-                        <!--android:textSize="12dp" />-->
-                <!--</TableRow>-->
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
-                <TableRow android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Inspection Date"
-                        android:gravity="center"
-                        android:layout_column="0"
-                        android:layout_marginLeft="10dp"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Number of Unacknowledged Records"
-                        android:gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="5dp">
+                    <ImageButton
+                        android:id="@+id/exitRSPDialogeBtnId"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="@null" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Inspection Date -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inspection Date"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background">
+
                     <Button
                         android:id="@+id/inspectionDateButton"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_column="0"
-                        android:gravity="center"
-                        android:background="@color/transparent"
-                        android:text="SELECT DATE"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
                         android:enabled="false"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                    <EditText
-                        android:id="@+id/numberOfUnacknowledgedRecordsEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:inputType="number"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:layout_column="1"
-                        android:nextFocusDown="@id/numberOfInProgressTwoIns"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Number of In-Progress Tow-Ins"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center"
-                        android:layout_column="0"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Number of In-Progress Walk-Ins"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="5dp">
-                    <EditText
-                        android:id="@+id/numberOfInProgressTwoIns"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:layout_column="0"
-                        android:inputType="number"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center"
-                        android:nextFocusDown="@id/numberOfInProgressWalkIns"
-                        android:background="@drawable/textview_background"
-                        />
-                    <EditText
-                        android:id="@+id/numberOfInProgressWalkIns"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:inputType="number"
-                        android:layout_marginLeft="10dp"
-                        android:layout_column="1"
-                        android:gravity="center"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="20dp">
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/loggedIntoRspButton"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:layout_column="0"
-                        android:text="Logged Into RSP"
+                        android:text="SELECT DATE"
+                        android:textAllCaps="false"
+                        android:textColor="#4572CE"
+                        android:textSize="12sp"
                         android:textStyle="bold"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                </TableRow>
-            </TableLayout>
+                        app:backgroundTint="@null" />
+                </RelativeLayout>
+
+                <!-- Row: Unacknowledged | In Progress Tow-Ins -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Unacknowledged Records"
+                            android:textColor="#37474F"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp" />
+
+                        <EditText
+                            android:id="@+id/numberOfUnacknowledgedRecordsEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:nextFocusDown="@id/numberOfInProgressTwoIns"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textColor="#1A237E"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="In-Progress Tow-Ins"
+                            android:textColor="#37474F"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp" />
+
+                        <EditText
+                            android:id="@+id/numberOfInProgressTwoIns"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:nextFocusDown="@id/numberOfInProgressWalkIns"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textColor="#1A237E"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- In-Progress Walk-Ins -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="In-Progress Walk-Ins"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/numberOfInProgressWalkIns"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp" />
+
+                <!-- Logged Into RSP -->
+                <CheckBox
+                    android:id="@+id/loggedIntoRspButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Logged Into RSP"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:buttonTint="@drawable/checkbox_bkg" />
+
+            </LinearLayout>
+
         </androidx.cardview.widget.CardView>
     </ScrollView>
+
+    <!-- ── Edit RSP Tracking dialog ── -->
     <ScrollView
         android:id="@+id/edit_AAR_PortalTrackingEntryCard"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:clickable="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp">
+        android:layout_margin="20dp"
+        android:visibility="gone">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/white">
 
-            <TableLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                >
-                <TableRow>
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <!-- Dialog header -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_centerVertical="true"
                         android:text="Update RSP Tracking"
-                        android:textSize="20sp"
-                        android:textColor="@color/dark_gray"
-                        android:layout_column="0"
-                        />
+                        android:textColor="@color/mainColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
                     <Button
+                        android:id="@+id/edit_submitNewAAR_PortalTracking"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="5dp"
-                        android:text="SUBMIT"
-                        android:id="@+id/edit_submitNewAAR_PortalTracking"
-                        android:layout_column="1"
-                        android:background="@drawable/new_btn_bkg"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="36dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:layout_gravity="top|right"/>
-                    <ImageButton
-                        android:layout_marginTop="25dp"
-                        android:id="@+id/edit_exitRSPDialogeBtnId"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/close"
-                        android:layout_gravity="top|right"
-                        android:layout_column="2"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="20dp">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_column="0"
-                        android:background="@android:color/darker_gray"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_column="1"
-                        android:background="@android:color/darker_gray"/>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_column="2"
-                        android:background="@android:color/darker_gray"/>
-                </TableRow>
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
-                <TableRow android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Inspection Date"
-                        android:gravity="center"
-                        android:layout_column="0"
-                        android:layout_marginLeft="10dp"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Number of Unacknowledged Records"
-                        android:gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="5dp">
+                    <ImageButton
+                        android:id="@+id/edit_exitRSPDialogeBtnId"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="@null" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
+
+                <!-- Inspection Date -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inspection Date"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background">
+
                     <Button
                         android:id="@+id/edit_inspectionDateButton"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_column="0"
-                        android:gravity="center"
-                        android:background="@color/transparent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
                         android:text="SELECT DATE"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/blue"
-                        android:textSize="12dp" />
-                    <EditText
-                        android:id="@+id/edit_numberOfUnacknowledgedRecordsEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:inputType="number"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:nextFocusDown="@id/edit_numberOfInProgressTwoIns"
-                        android:layout_column="1"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-
-
-
-                <TableRow android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Number 0f In-Progress Tow-Ins"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center"
-                        android:layout_column="0"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Number 0f In-Progress Walk-Ins"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:layout_column="1"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="5dp">
-                    <EditText
-                        android:id="@+id/edit_numberOfInProgressTwoIns"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:layout_column="0"
-                        android:inputType="number"
-                        android:layout_marginRight="10dp"
-                        android:gravity="center"
-                        android:nextFocusDown="@id/edit_numberOfInProgressWalkIns"
-                        android:background="@drawable/textview_background"
-                        />
-                    <EditText
-                        android:id="@+id/edit_numberOfInProgressWalkIns"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:inputType="number"
-                        android:layout_marginLeft="10dp"
-                        android:layout_column="1"
-                        android:gravity="center"
-                        android:background="@drawable/textview_background"
-                        />
-                </TableRow>
-                <TableRow android:layout_marginTop="20dp">
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/edit_loggedIntoRspButton"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:layout_column="0"
-                        android:text="Logged Into RSP"
+                        android:textAllCaps="false"
+                        android:textColor="#4572CE"
+                        android:textSize="12sp"
                         android:textStyle="bold"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                </TableRow>
-            </TableLayout>
+                        app:backgroundTint="@null" />
+                </RelativeLayout>
+
+                <!-- Row: Unacknowledged | In Progress Tow-Ins -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Unacknowledged Records"
+                            android:textColor="#37474F"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp" />
+
+                        <EditText
+                            android:id="@+id/edit_numberOfUnacknowledgedRecordsEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:nextFocusDown="@id/edit_numberOfInProgressTwoIns"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textColor="#1A237E"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="In-Progress Tow-Ins"
+                            android:textColor="#37474F"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp" />
+
+                        <EditText
+                            android:id="@+id/edit_numberOfInProgressTwoIns"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:nextFocusDown="@id/edit_numberOfInProgressWalkIns"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textColor="#1A237E"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- In-Progress Walk-Ins -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="In-Progress Walk-Ins"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/edit_numberOfInProgressWalkIns"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp" />
+
+                <!-- Logged Into RSP -->
+                <CheckBox
+                    android:id="@+id/edit_loggedIntoRspButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Logged Into RSP"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:buttonTint="@drawable/checkbox_bkg" />
+
+            </LinearLayout>
+
         </androidx.cardview.widget.CardView>
     </ScrollView>
 
+    <!-- ── aaraddanTableLayout (keep ID for code) ── -->
+    <TableLayout
+        android:id="@+id/aaraddanTableLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <!-- Loading overlay -->
     <RelativeLayout
         android:id="@+id/RSP_LoadingView"
         android:layout_width="match_parent"
@@ -1043,18 +835,16 @@
             android:progressTint="@color/white" />
 
         <TextView
+            android:id="@+id/rspLoadingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rspLoadingText"
             android:layout_above="@id/progressBarRecordsSPA"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"
-            android:textSize="26sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
-
     </RelativeLayout>
-
 
 </RelativeLayout>
