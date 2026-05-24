@@ -1,197 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_item_ll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-        <androidx.cardview.widget.CardView
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="4dp"
+    android:paddingBottom="0dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/listBkg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="100dp"
-        tools:cardElevation="5dp"
-        android:id="@+id/listBkg"
-        android:layout_margin="10dp"
-        >
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="100dp"
-                android:rowCount="3"
-                android:columnCount="6"
-                android:visibility="gone"
-                android:padding="15dp">
-   </GridLayout>
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="5dp"
-                android:stretchColumns="*"
-                >
-                <TableRow android:layout_marginTop="5dp">
-                    <TextView
-                        android:id="@+id/facilityNoTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Facility Number:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        android:layout_margin="5dp"
-                        android:textColor="@color/black" />
-                    <TextView
-                        android:id="@+id/facilityNoValueTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:layout_column="1"
-                        android:layout_margin="5dp"
-                        android:text="test" />
+        app:cardCornerRadius="10dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/white">
 
-                </TableRow>
-                <TableRow android:layout_marginTop="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Left status color bar -->
+            <View
+                android:id="@+id/statusBar"
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:background="#4572CE" />
+
+            <!-- Card content -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingStart="11dp"
+                android:paddingEnd="11dp"
+                android:paddingTop="9dp"
+                android:paddingBottom="9dp">
+
+                <!-- Row 1: Facility name + Status chip + Type chip -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="7dp">
+
+                    <TextView
+                        android:id="@+id/facilityNameValueTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:maxLines="1" />
+
                     <TextView
                         android:id="@+id/facilityNameTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Facility Name:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        android:layout_margin="5dp"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/facilityNameValueTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_span="2"
-                        android:textAlignment="center"
-                        android:layout_column="1"
-                        android:layout_margin="5dp"
-                        android:text="test" />
-                </TableRow>
-                <TableRow android:layout_marginTop="5dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Facility City:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        android:layout_margin="5dp"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/cityValueTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:layout_column="1"
-                        android:layout_margin="5dp"
-                        android:text="test" />
-                </TableRow>
-                <TableRow android:layout_marginTop="5dp">
-                    <TextView
-                        android:id="@+id/initialContractDateTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        android:text="Initial Contract Date:"
-                        android:textStyle="bold"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/initialContractDateValueTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:textAlignment="center"
-                        android:layout_margin="5dp"
+                        android:visibility="gone"
                         android:text="" />
-                </TableRow>
 
-                <TableRow android:layout_marginTop="5dp">
+                    <!-- Status chip — styled by adapter -->
+                    <TextView
+                        android:id="@+id/visitationStatusValueTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:paddingStart="7dp"
+                        android:paddingEnd="7dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:text=""
+                        android:textColor="#4572CE"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/visitationStatusTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Status:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        android:layout_margin="5dp"
-                        android:textColor="@color/black" />
+                        android:visibility="gone"
+                        android:text="" />
+
+                    <!-- Type chip — styled by adapter -->
                     <TextView
-                        android:id="@+id/visitationStatusValueTextView"
+                        android:id="@+id/visitationTypeValueTextView"
                         android:layout_width="wrap_content"
-                        android:layout_column="1"
-                        android:layout_margin="5dp"
                         android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:text="test" />
+                        android:layout_marginStart="4dp"
+                        android:paddingStart="7dp"
+                        android:paddingEnd="7dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:text=""
+                        android:textColor="#263238"
+                        android:textSize="10sp" />
 
-
+                    <!-- Hidden label kept for code compatibility -->
                     <TextView
                         android:id="@+id/visitationTypeTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Type:"
-                        android:layout_column="2"
-                        android:textStyle="bold"
-                        android:layout_margin="5dp"
-                        android:textColor="@color/black" />
-                    <TextView
-                        android:id="@+id/visitationTypeValueTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_column="3"
-                        android:layout_margin="5dp"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:text="test" />
-                </TableRow>
-                <TableRow android:layout_marginTop="5dp">
-                <CheckBox
-                    android:id="@+id/todayVisCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add To Today's Visitations"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    android:textColor="@color/mainColor"
-                    android:layout_margin="5dp"
-                    app:buttonTint="@drawable/checkbox_bkg"/>
-                </TableRow>
-            </TableLayout>
-            <Button
-                android:id="@+id/loadBtn"
-                android:layout_height="50dp"
-                android:layout_width="wrap_content"
-                android:layout_gravity="top|right"
-                android:text="Load Visitation"
-                android:layout_column="3"
-                android:paddingRight="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:paddingLeft="20dp"
-                android:background="@drawable/new_btn_bkg"
-                android:textColor="@color/white"
-                app:backgroundTint="@null"
-                />
-            <Button
-                android:id="@+id/emailPDFBtn"
-                android:layout_height="50dp"
-                android:layout_width="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:text="EMAIL PDF"
-                android:layout_column="3"
-                android:paddingRight="20dp"
-                android:layout_marginRight="20dp"
-                android:paddingLeft="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/new_btn_bkg"
-                android:textColor="@color/white"
-                app:backgroundTint="@null"
-                />
-        </androidx.cardview.widget.CardView>
+                        android:visibility="gone"
+                        android:text="" />
 
-</RelativeLayout>
+                </LinearLayout>
+
+                <!-- Data row: Facility # — 85dp label column, value fills rest -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="2dp">
+
+                    <TextView
+                        android:id="@+id/facilityNoTextView"
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:text="Facility #"
+                        android:textColor="#8A9BB0"
+                        android:textSize="11sp" />
+                    <TextView
+                        android:id="@+id/facilityNoValueTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#263238"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <!-- Data row: City -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="2dp">
+
+                    <TextView
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:text="City"
+                        android:textColor="#8A9BB0"
+                        android:textSize="11sp" />
+                    <TextView
+                        android:id="@+id/cityValueTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#263238"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <!-- Data row: Inspection month / Date (under City, 85dp label) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/initialContractDateTextView"
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#8A9BB0"
+                        android:textSize="11sp"
+                        android:maxLines="2" />
+                    <TextView
+                        android:id="@+id/initialContractDateValueTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#263238"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#F0F4FF"
+                    android:layout_marginBottom="7dp" />
+
+                <!-- Actions row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/todayVisCB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Add to Today's Visitations"
+                        android:textColor="#4572CE"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:maxLines="2"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+
+                    <Button
+                        android:id="@+id/emailPDFBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Email PDF"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:textAllCaps="false"
+                        android:visibility="gone"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/loadBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="Load Visitation"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:textAllCaps="false"
+                        app:backgroundTint="@null" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEF2FB" />
+
+</LinearLayout>

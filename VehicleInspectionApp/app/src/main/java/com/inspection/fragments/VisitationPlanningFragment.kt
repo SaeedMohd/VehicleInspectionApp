@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 
 import android.os.Bundle
@@ -1599,6 +1600,62 @@ class VisitationPlanningFragment : Fragment() {
         return Color.BLUE
     }
 
+    fun getStatusBarColor(strValue: String): Int {
+        return when {
+            strValue.contains("Overdue") && strValue.contains("Progress") -> Color.parseColor("#FB8C00")
+            strValue.contains("Progress") -> Color.parseColor("#43A047")
+            strValue.contains("Overdue") -> Color.parseColor("#E53935")
+            strValue == "Completed" -> Color.parseColor("#1E88E5")
+            else -> Color.parseColor("#90A4AE")
+        }
+    }
+
+    private fun applyStatusChip(view: TextView, status: String) {
+        val d = GradientDrawable()
+        d.cornerRadius = 40f
+        when {
+            status.contains("Overdue") && status.contains("Progress") -> {
+                d.setColor(Color.parseColor("#FFF3E0")); view.setTextColor(Color.parseColor("#E65100"))
+            }
+            status.contains("Progress") -> {
+                d.setColor(Color.parseColor("#E8F5E9")); view.setTextColor(Color.parseColor("#2E7D32"))
+            }
+            status.contains("Overdue") -> {
+                d.setColor(Color.parseColor("#FFEBEE")); view.setTextColor(Color.parseColor("#C62828"))
+            }
+            status == "Completed" -> {
+                d.setColor(Color.parseColor("#E3F2FD")); view.setTextColor(Color.parseColor("#1565C0"))
+            }
+            else -> {
+                d.setColor(Color.parseColor("#F5F5F5")); view.setTextColor(Color.parseColor("#616161"))
+            }
+        }
+        view.background = d
+    }
+
+    private fun applyTypeChip(view: TextView, type: String) {
+        val d = GradientDrawable()
+        d.cornerRadius = 40f
+        when {
+            type.contains("Annual") -> {
+                d.setColor(Color.parseColor("#E8EAF6")); view.setTextColor(Color.parseColor("#3949AB"))
+            }
+            type.contains("Quarterly") -> {
+                d.setColor(Color.parseColor("#E8F5E9")); view.setTextColor(Color.parseColor("#2E7D32"))
+            }
+            type.contains("Deficien") -> {
+                d.setColor(Color.parseColor("#FFF3E0")); view.setTextColor(Color.parseColor("#E65100"))
+            }
+            type.contains("Ad Hoc") || type.contains("AdHoc") -> {
+                d.setColor(Color.parseColor("#F3E5F5")); view.setTextColor(Color.parseColor("#7B1FA2"))
+            }
+            else -> {
+                d.setColor(Color.parseColor("#E0E0E0")); view.setTextColor(Color.parseColor("#424242"))
+            }
+        }
+        view.background = d
+    }
+
     inner class VisitationPlanningAdapter : BaseAdapter {
 
         private var visitationPlanningModelList = VisitationsModel()
@@ -1622,7 +1679,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh = view.tag as VisitationPlanningViewHolder
             }
 
-            vh.loadBtn.text = "LOAD VISITATION"
+            vh.loadBtn.text = "Load Visitation"
             vh.emailPDFBtn.text = "EMAIL PDF"
             vh.emailPDFBtn.visibility = View.GONE
             if (position < visitationPlanningModelList.pendingVisitationsArray.size && visitationPlanningModelList.pendingVisitationsArray.size > 0) {
@@ -1670,12 +1727,12 @@ class VisitationPlanningFragment : Fragment() {
 //                } else {
 
                     if (visitationPlanningModelList.completedVisitationsArray.filter { s->s.FACNo==visitationPlanningModelList.pendingVisitationsArray[position].FACNo && s.ClubCode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode}.isNotEmpty()) {
-                        vh.initialContractDateTextView.text = "Last Visitation Date:"
+                        vh.initialContractDateTextView.text = "Last Visit:"
                         vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray.filter { s->s.FACNo==visitationPlanningModelList.pendingVisitationsArray[position].FACNo && s.ClubCode==visitationPlanningModelList.pendingVisitationsArray[position].ClubCode}[0].DatePerformed.apiToAppFormatMMDDYYYY()
                     } else {
 //                        vh.initialContractDateTextView.text = "Initial Contract Date:"
 //                        vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
-                        vh.initialContractDateTextView.text = "Annual Visitation Month:"
+                        vh.initialContractDateTextView.text = "Ann. Month:"
                         vh.initialContractDateValueTextView.text = visitationPlanningModelList.pendingVisitationsArray[position].FacilityAnnualInspectionMonth.toInt().monthNoToName()
                     }
 //                }
@@ -1714,7 +1771,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].DatePerformed.apiToAppFormatMMDDYYYY() + "  (ID: " + visitationPlanningModelList.completedVisitationsArray[position - visitationPlanningModelList.pendingVisitationsArray.size].visitationID + ")"
                 vh.visitationStatusValueTextView.text = "Completed"
                 vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
-                vh.initialContractDateTextView.text = "Visitation Date & ID:"
+                vh.initialContractDateTextView.text = "Date & ID:"
                 vh.visitationStatusTextView.text = "Status:"
                 vh.loadBtn.text = "VIEW  PDF"
                 vh.todayCB.isVisible = false
@@ -1800,7 +1857,7 @@ class VisitationPlanningFragment : Fragment() {
                 }
                 vh.visitationTypeValueTextView.text = "Deficiency"
                 vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
-                vh.initialContractDateTextView.text = "Deficiency Due Date:"
+                vh.initialContractDateTextView.text = "Due Date:"
                 vh.visitationTypeTextView.text = "Type:"
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
@@ -1834,7 +1891,10 @@ class VisitationPlanningFragment : Fragment() {
 //              } else {
 //                  vh.listBkg.visibility = View.VISIBLE
 //              }
-            vh.visitationStatusValueTextView.setTextColor(getTextColor(vh.visitationStatusValueTextView.text.toString()))
+            val statusText1 = vh.visitationStatusValueTextView.text.toString()
+            applyStatusChip(vh.visitationStatusValueTextView, statusText1)
+            applyTypeChip(vh.visitationTypeValueTextView, vh.visitationTypeValueTextView.text.toString())
+            vh.statusBar.setBackgroundColor(getStatusBarColor(statusText1))
             return view
         }
 
@@ -1892,7 +1952,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh = view.tag as VisitationPlanningViewHolder
             }
 
-            vh.loadBtn.text = "LOAD VISITATION"
+            vh.loadBtn.text = "Load Visitation"
             vh.emailPDFBtn.visibility = View.GONE
 
             vh.facilityNameValueTextView.text = visitationPlanningModelList.listArray[position].BusinessName
@@ -1909,7 +1969,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.visitationTypeValueTextView.text = visitationPlanningModelList.listArray[position].VisitationType
 //                vh.initialContractDateTextView.text = "Initial Contract Date:"
 //                vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].ContractInitialDate.apiToAppFormatMMDDYYYY()
-                vh.initialContractDateTextView.text = "Annual Visitation Month:"
+                vh.initialContractDateTextView.text = "Ann. Month:"
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].FacilityAnnualInspectionMonth.toInt().monthNoToName()
                 vh.todayCB.setOnCheckedChangeListener(null) // 🚫 Detach listener first
                 vh.todayCB.isVisible = true
@@ -1953,7 +2013,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].CompletionDate + "  (ID: " + visitationPlanningModelList.listArray[position].VisitationID + ")"
                 vh.visitationStatusValueTextView.text = "Completed"
                 vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
-                vh.initialContractDateTextView.text = "Visitation Date & ID :"
+                vh.initialContractDateTextView.text = "Date & ID:"
                 vh.visitationStatusTextView.text = "Status:"
                 vh.loadBtn.text = "VIEW  PDF"
                 vh.emailPDFBtn.text = "EMAIL PDF"
@@ -1982,7 +2042,7 @@ class VisitationPlanningFragment : Fragment() {
                 vh.initialContractDateValueTextView.text = visitationPlanningModelList.listArray[position].DueDate
                 vh.visitationTypeValueTextView.text = "Deficiency"
                 vh.visitationStatusValueTextView.setTextColor(Color.BLACK)
-                vh.initialContractDateTextView.text = "Deficiency Due Date:"
+                vh.initialContractDateTextView.text = "Due Date:"
                 vh.visitationTypeTextView.text = "Type:"
                 vh.visitationTypeValueTextView.visibility = View.VISIBLE
                 vh.visitationTypeTextView.visibility = View.VISIBLE
@@ -2038,7 +2098,10 @@ class VisitationPlanningFragment : Fragment() {
 //                  resultsCount.text = "Filtered Visitations --> ( " + totalVisitations +" )"
                 }
 
-            vh.visitationStatusValueTextView.setTextColor(getTextColor(vh.visitationStatusValueTextView.text.toString()))
+            val statusText2 = vh.visitationStatusValueTextView.text.toString()
+            applyStatusChip(vh.visitationStatusValueTextView, statusText2)
+            applyTypeChip(vh.visitationTypeValueTextView, vh.visitationTypeValueTextView.text.toString())
+            vh.statusBar.setBackgroundColor(getStatusBarColor(statusText2))
             return view
         }
 
@@ -4401,6 +4464,7 @@ class VisitationPlanningFragment : Fragment() {
         val emailPDFBtn: Button
         val listBkg: CardView
         val todayCB: CheckBox
+        val statusBar: View
 
         init {
             this.facilityNameValueTextView = view?.findViewById(R.id.facilityNameValueTextView) as TextView
@@ -4416,6 +4480,7 @@ class VisitationPlanningFragment : Fragment() {
             this.listBkg = view?.findViewById(R.id.listBkg) as CardView
             this.visitationCityView  = view?.findViewById(R.id.cityValueTextView) as TextView
             this.todayCB = view?.findViewById(R.id.todayVisCB) as CheckBox
+            this.statusBar = view?.findViewById(R.id.statusBar) as View
         }
 
     }

@@ -3,11 +3,14 @@ package com.inspection.Utils
 import android.app.Dialog
 import android.content.Context
 import android.database.DataSetObserver
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
@@ -41,13 +44,18 @@ class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         binding = SearchDialogBinding.inflate(layoutInflater)
-//        setContentView(R.layout.activity_forms)
         setContentView(binding.root)
-//        setContentView(R.layout.search_dialog)
+
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val halfWidth = (context?.resources?.displayMetrics?.widthPixels?.times(0.5))?.toInt()
+            ?: ViewGroup.LayoutParams.WRAP_CONTENT
+        window?.setLayout(halfWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        binding.closeDialogBtn.setOnClickListener { dismiss() }
 
         searchResultArrayList = arrayList
 
-        binding.searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList!!)
+        binding.searchDialogListView.adapter = ArrayAdapter<String>(context, R.layout.search_dialog_item, android.R.id.text1, searchResultArrayList!!)
 
         binding.searchDialogEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -60,7 +68,7 @@ class SearchDialog(context: Context?, var arrayList: ArrayList<String>) : Dialog
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchResultArrayList = ArrayList<String>(arrayList.filter { obj -> obj.contains(s.toString().trim(), true) })
-                binding.searchDialogListView.adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, searchResultArrayList!!)
+                binding.searchDialogListView.adapter = ArrayAdapter<String>(context, R.layout.search_dialog_item, android.R.id.text1, searchResultArrayList!!)
             }
         })
 
