@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/transparent"  android:state_checked="false"/>
-    <item android:drawable="@color/mainColor" android:state_checked="true"/>
+
+    <item android:state_checked="true">
+        <layer-list>
+            <item>
+                <shape>
+                    <gradient
+                        android:startColor="#B8CFF0"
+                        android:centerColor="#CCDAF5"
+                        android:endColor="#DCE8FA"
+                        android:angle="270" />
+                </shape>
+            </item>
+            <item android:width="3dp" android:gravity="start">
+                <shape>
+                    <solid android:color="#4572CE" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item>
+        <ripple android:color="#1A4572CE">
+            <item android:id="@android:id/mask">
+                <shape>
+                    <solid android:color="#EEF2FB" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+
 </selector>

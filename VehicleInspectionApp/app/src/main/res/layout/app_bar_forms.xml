@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/mainColor"
+            android:background="@drawable/cert_header_bg"
             app:popupTheme="@style/myAppTheme.PopupOverlay" >
             <ImageButton
                 android:id="@+id/internetIndicator"

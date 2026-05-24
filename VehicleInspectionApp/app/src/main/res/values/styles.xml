@@ -67,6 +67,12 @@
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
     </style>
 
+    <style name="DrawerMenuItemText" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
     <style name="TabTextNormal" parent="TextAppearance.AppCompat.Body2">
         <item name="android:textSize">13sp</item>
     </style>

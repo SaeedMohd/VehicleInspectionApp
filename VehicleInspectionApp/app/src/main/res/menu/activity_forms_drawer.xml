@@ -4,86 +4,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
-    <group
-        android:id="@+id/visitationGroup"
-        android:checkableBehavior="single">
+    <group android:id="@+id/mainGroup" android:checkableBehavior="single">
         <item
             android:id="@+id/visitation"
+            android:icon="@drawable/ic_nav_visitation"
             android:title="Visitation"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
-    </group>
-    <group
-        android:id="@+id/facilityGroup"
-        android:checkableBehavior="single">
         <item
             android:id="@+id/facility"
+            android:icon="@drawable/ic_nav_facility"
             android:title="Facility"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
-    </group>
-    <group
-        android:id="@+id/scopeOfServiceGroup"
-        android:checkableBehavior="single">
         <item
             android:id="@+id/scopeOfService"
+            android:icon="@drawable/ic_nav_scope"
             android:title="Scope of Services"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
-    </group>
-    <group
-        android:id="@+id/deficiencyGroup"
-        android:checkableBehavior="single">
         <item
             android:id="@+id/deficiency"
+            android:icon="@drawable/ic_nav_deficiency"
             android:title="Deficiency"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
-    </group>
-    <group
-        android:id="@+id/complaintsGroup"
-        android:checkableBehavior="single">
         <item
             android:id="@+id/complaints"
+            android:icon="@drawable/ic_nav_complaints"
             android:title="Complaints"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
-    </group>
-    <group
-        android:id="@+id/billingGroup"
-        android:checkableBehavior="single">
         <item
             android:id="@+id/billing"
+            android:icon="@drawable/ic_nav_billing"
             android:title="Billing"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
-    </group>
-    <group
-        android:id="@+id/surveysGroup"
-        android:checkableBehavior="single">
         <item
             android:id="@+id/surveys"
+            android:icon="@drawable/ic_nav_surveys"
             android:title="Surveys"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
-    </group>
-    <group
-        android:id="@+id/commentsGroup"
-        android:checkableBehavior="single"
-        android:visible="false">
         <item
             android:id="@+id/comments"
+            android:icon="@drawable/ic_nav_complaints"
             android:title="Comments"
+            android:visible="false"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
-    </group>
-    <group
-        android:id="@+id/photosGroup"
-        android:checkableBehavior="single">
         <item
             android:id="@+id/photos"
+            android:icon="@drawable/ic_nav_photos"
             android:title="Photos"
             app:actionLayout="@layout/menu_item_with_indicator"
             app:showAsAction="always"/>
     </group>
+
 </menu>

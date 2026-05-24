@@ -119,6 +119,7 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         toggle.syncState()
 
         binding.navView.setNavigationItemSelectedListener(this)
+        binding.navView.itemIconTintList = null
 //        toggle.onDrawerStateChanged() {
 //            Toast.makeText(this,"TEST",Toast.LENGTH_LONG)
 //        })
@@ -136,11 +137,13 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             navigationMenu.findItem(R.id.visitation).isVisible = false
             currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
             this.onNavigationItemSelected(navigationMenu.findItem(R.id.facility))
+            binding.navView.setCheckedItem(R.id.facility)
         } else {
             navigationMenu.findItem(R.id.visitation).isEnabled = true
             navigationMenu.findItem(R.id.visitation).isVisible = true
             currentFragment = fragmentsNames.Visitation.toString()
             this.onNavigationItemSelected(navigationMenu.findItem(R.id.visitation))
+            binding.navView.setCheckedItem(R.id.visitation)
         }
 
         networkSpeedDetector = NetworkSpeedDetector(this);
