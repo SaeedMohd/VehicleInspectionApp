@@ -14,7 +14,7 @@
     <style name="myAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/headerColor</item>
         <item name="colorPrimaryDark">@color/headerColor</item>
-        <item name="android:statusBarColor">@color/mainColor</item>
+        <item name="android:statusBarColor">#073763</item>
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="colorSurface">@color/gray</item>

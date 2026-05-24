@@ -1,293 +1,316 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background_image_dark">
+
+    <!-- Overlay kept for code compatibility -->
     <View
-        android:layout_width="match_parent"
         android:id="@+id/loginContentView"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/mainColor"
-        android:alpha="0.92"
-        />
+        android:background="@color/transparent"
+        android:alpha="0" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <!-- Version label -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:text="@string/app_version"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        <LinearLayout
-            android:id="@+id/loginLinearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:orientation="vertical"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true">
+                android:textSize="14sp"
+                android:alpha="0.7" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/envText"
-                android:text="PRODUCTION ENVIRONMENT"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
-                android:textColor="@color/white"/>
-            <EditText
-                android:id="@+id/loginEmailEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:ems="20"
-                android:background="@drawable/textview_background"
-                android:hint="Your Email"
-                android:inputType="textEmailAddress"
-                android:gravity="center"
-                />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/textview_background"
-                android:layout_height="40dp">
-            <EditText
-                android:id="@+id/loginPasswordEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:ems="18"
-                android:background="@drawable/textview_background"
-                android:hint="Your Password"
-                android:inputType="textPassword"
-                android:gravity="center"
-                />
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/showPassBtn"
-                    android:scaleType="fitCenter"
-                    android:padding="10dp"
-                    android:scaleY="0.7"
-                    android:scaleX="0.8"
-                    android:clickable="true"
-                    android:background="@drawable/eyeicon"
-                    />
-            </LinearLayout>
-
-
-
-            <Button
-                android:id="@+id/loginButton"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/green_background_button"
-                android:textColor="@color/white"
-                app:backgroundTint="@null"
-                android:layout_marginTop="20dp"
-                android:text="LOGIN"
-                android:gravity="center"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/white"
-                android:layout_marginTop="25dp"
-                android:alpha="0.6"
-                />
-
-            <Button
-                android:id="@+id/forgotPasswordButton"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/transparent"
-                android:backgroundTint="@null"
-                android:layout_marginTop="15dp"
-                android:text="FORGOT PASSWORD"
-                android:textColor="@color/white"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/white"
-                android:layout_marginTop="15dp"
-                android:alpha="0.6"
-                />
-
-            <Button
-                android:id="@+id/changePasswordButton"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/transparent"
-                android:layout_marginTop="15dp"
-                android:visibility="gone"
-                android:text="CHANGE PASSWORD"
-                android:textColor="@color/white"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/white"
-                android:visibility="gone"
-                android:layout_marginTop="15dp"
-                android:alpha="0.6"
-                />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/recordsProgressView"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:alpha="0.8"
-            android:clickable="true"
-            android:background="@color/mainColor"
-            android:visibility="gone">
-
-            <ProgressBar
-                android:id="@+id/progressBarRecords"
-                android:layout_width="wrap_content"
+            <!-- Login card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:progressTint="@color/white" />
+                app:cardCornerRadius="20dp"
+                app:cardElevation="16dp"
+                app:cardBackgroundColor="@color/white">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/progressBarRecords"
-                android:layout_centerHorizontal="true"
-                android:text="Logging In..."
-                android:textColor="@color/white"
-                android:textSize="26sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-        <ScrollView
-            android:id="@+id/changePassDialog"
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            android:clickable="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="10dp">
-
-                <TableLayout
+                <LinearLayout
+                    android:id="@+id/loginLinearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:weightSum="2"
-                    >
-                    <TableRow>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:text="Change Password Dialog"
-                            android:textSize="20sp"
-                            android:textColor="@color/dark_gray"
-                            android:layout_column="0"
-                            android:layout_weight="1"
-                            />
-                    </TableRow>
-                    <TableRow android:layout_marginTop="20dp">
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_column="0"
-                            android:layout_weight="1"
-                            android:background="@android:color/darker_gray"/>
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_column="1"
-                            android:layout_weight="1"
-                            android:background="@android:color/darker_gray"/>
-                    </TableRow>
-                    <TableRow android:layout_marginTop="20dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="New Password"
-                            android:layout_marginRight="10dp"
-                            android:gravity="left"
-                            android:layout_weight="1"
-                            android:layout_column="0"
-                            />
+                    android:orientation="vertical"
+                    android:paddingStart="28dp"
+                    android:paddingEnd="28dp"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="28dp">
+
+                    <!-- Environment label -->
+                    <TextView
+                        android:id="@+id/envText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PRODUCTION ENVIRONMENT"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="24dp"
+                        android:letterSpacing="0.05"
+                        android:textColor="#1565C0" />
+
+                    <!-- Email input -->
+                    <EditText
+                        android:id="@+id/loginEmailEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:background="@drawable/cert_input_background"
+                        android:hint="Your Email"
+                        android:inputType="textEmailAddress"
+                        android:gravity="center_vertical"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:textColor="#1A237E"
+                        android:textColorHint="#546878"
+                        android:textSize="15sp" />
+
+                    <!-- Password input row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/cert_input_background">
+
                         <EditText
-                            android:id="@+id/chgPasswordEditText"
+                            android:id="@+id/loginPasswordEditText"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text=""
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:hint="Your Password"
                             android:inputType="textPassword"
-                            android:layout_weight="1"
-                            android:layout_column="1"
-                            android:gravity="center"
-                            android:background="@drawable/textview_background"
-                            />
-                    </TableRow>
-                    <TableRow android:layout_marginTop="5dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="Confirm Password"
-                            android:layout_weight="1"
-                            android:layout_marginRight="10dp"
-                            android:gravity="left"
-                            android:layout_column="0"
-                            />
-                        <EditText
-                            android:id="@+id/chgPasswordConfirmEditText"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:inputType="textPassword"
-                            android:layout_column="1"
-                            android:gravity="center"
-                            android:background="@drawable/textview_background"
-                            />
-                    </TableRow>
-                    <TableRow android:layout_marginTop="20dp">
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:text="Change Password"
-                            android:id="@+id/chgPasswordButtoninDialog"
-                            android:layout_column="0"
-                            android:layout_weight="2"
-                            android:background="@drawable/new_btn_bkg"
-                            android:textColor="@color/white"
-                            app:backgroundTint="@null"
-                            android:layout_gravity="center"/>
-                    </TableRow>
-                </TableLayout>
+                            android:gravity="center_vertical"
+                            android:paddingStart="14dp"
+                            android:textColor="#1A237E"
+                            android:textColorHint="#546878"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/showPassBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="10dp"
+                            android:scaleType="fitCenter"
+                            android:clickable="true"
+                            android:src="@drawable/eyeicon" />
+
+                    </LinearLayout>
+
+                    <!-- Login button -->
+                    <Button
+                        android:id="@+id/loginButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@null"
+                        android:text="LOGIN"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:letterSpacing="0.05" />
+
+                    <!-- Thin divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#DDE6F5"
+                        android:layout_marginTop="20dp" />
+
+                    <!-- Forgot Password -->
+                    <Button
+                        android:id="@+id/forgotPasswordButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/transparent"
+                        android:backgroundTint="@null"
+                        android:layout_marginTop="4dp"
+                        android:text="FORGOT PASSWORD"
+                        android:textColor="#4572ce"
+                        android:textSize="13sp" />
+
+                    <!-- Change Password (hidden) -->
+                    <Button
+                        android:id="@+id/changePasswordButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@color/transparent"
+                        android:backgroundTint="@null"
+                        android:visibility="gone"
+                        android:text="CHANGE PASSWORD"
+                        android:textColor="#4572ce"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
             </androidx.cardview.widget.CardView>
-        </ScrollView>
-    </RelativeLayout>
+
+            <!-- Change password dialog (shown programmatically) -->
+            <ScrollView
+                android:id="@+id/changePassDialog"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:clickable="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="12dp"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/cert_header_bg"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:paddingTop="14dp"
+                            android:paddingBottom="14dp">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Change Password"
+                                android:textColor="@color/white"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="New Password"
+                                android:textColor="#546878"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="6dp" />
+
+                            <EditText
+                                android:id="@+id/chgPasswordEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:background="@drawable/cert_input_background"
+                                android:inputType="textPassword"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:textColor="#1A237E"
+                                android:textColorHint="#546878" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Confirm Password"
+                                android:textColor="#546878"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="14dp"
+                                android:layout_marginBottom="6dp" />
+
+                            <EditText
+                                android:id="@+id/chgPasswordConfirmEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:background="@drawable/cert_input_background"
+                                android:inputType="textPassword"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:textColor="#1A237E"
+                                android:textColorHint="#546878" />
+
+                            <Button
+                                android:id="@+id/chgPasswordButtoninDialog"
+                                android:layout_width="match_parent"
+                                android:layout_height="52dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/btn_cert_primary"
+                                android:textColor="@color/white"
+                                app:backgroundTint="@null"
+                                android:text="Change Password"
+                                android:textStyle="bold"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
     </ScrollView>
+
+    <!-- Full-screen loading overlay -->
+    <RelativeLayout
+        android:id="@+id/recordsProgressView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="@color/mainColor"
+        android:alpha="0.92"
+        android:visibility="gone"
+        android:elevation="10dp">
+
+        <ProgressBar
+            android:id="@+id/progressBarRecords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/progressBarRecords"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:text="Logging In..."
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <!-- Top snackbar -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -297,6 +320,7 @@
         android:visibility="gone"
         android:background="@color/transparent"
         android:padding="16dp">
+
         <TextView
             android:id="@+id/snackbar_text"
             android:layout_width="0dp"
@@ -313,6 +337,8 @@
             android:layout_gravity="end"
             android:src="@drawable/no_signal"
             app:tint="@color/white"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp" />
+
     </LinearLayout>
+
 </RelativeLayout>
