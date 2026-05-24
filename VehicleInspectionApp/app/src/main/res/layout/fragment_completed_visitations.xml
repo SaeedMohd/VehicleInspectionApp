@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray">
+    android:background="#F0F4FF">
 
     <!-- ================= SCROLLABLE CONTENT ================= -->
 
@@ -58,7 +58,7 @@
                             android:textSize="14sp"
                             android:textAlignment="viewStart"
                             android:padding="8dp"
-                            android:background="@drawable/textview_background"
+                            android:background="@drawable/cert_input_background"
                             android:hint="Select Specialist"
                             android:focusable="false"
                             android:drawableEnd="@drawable/downarrow"/>
@@ -69,8 +69,8 @@
                             android:layout_weight="1"
                             android:layout_height="48dp"
                             android:text="From"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue"/>
+                            android:background="@drawable/cert_input_background"
+                            android:textColor="#1565C0"/>
 
                         <Button
                             android:id="@+id/visitationToDateBtn"
@@ -78,8 +78,8 @@
                             android:layout_weight="1"
                             android:layout_height="48dp"
                             android:text="To"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue"/>
+                            android:background="@drawable/cert_input_background"
+                            android:textColor="#1565C0"/>
 
                         <Button
                             android:id="@+id/searchBtn"
@@ -88,8 +88,7 @@
                             android:layout_height="48dp"
                             android:text="Search"
                             android:textColor="@color/white"
-                            android:background="@drawable/new_btn_bkg"
-                            app:backgroundTint="@null" />
+                            android:background="@drawable/btn_cert_primary"/>
                     </LinearLayout>
 
                     <!-- Row 2 -->
@@ -106,8 +105,8 @@
                             android:layout_weight="1"
                             android:layout_height="48dp"
                             android:text="Today"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue"/>
+                            android:background="@drawable/cert_input_background"
+                            android:textColor="#1565C0"/>
 
                         <Button
                             android:id="@+id/currWeekBtn"
@@ -115,8 +114,8 @@
                             android:layout_weight="1"
                             android:layout_height="48dp"
                             android:text="Current Week"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue"/>
+                            android:background="@drawable/cert_input_background"
+                            android:textColor="#1565C0"/>
 
                         <Button
                             android:id="@+id/currMonthBtn"
@@ -124,8 +123,8 @@
                             android:layout_weight="1"
                             android:layout_height="48dp"
                             android:text="Current Month"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue"/>
+                            android:background="@drawable/cert_input_background"
+                            android:textColor="#1565C0"/>
 
                         <Button
                             android:id="@+id/currQtrBtn"
@@ -133,8 +132,8 @@
                             android:layout_weight="1"
                             android:layout_height="48dp"
                             android:text="Current Quarter"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue"/>
+                            android:background="@drawable/cert_input_background"
+                            android:textColor="#1565C0"/>
                     </LinearLayout>
 
                 </LinearLayout>
