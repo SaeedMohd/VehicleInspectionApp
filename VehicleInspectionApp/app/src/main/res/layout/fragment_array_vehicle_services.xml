@@ -1,585 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context="com.inspection.fragments.FacilityGeneralInformationFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"
-        android:layout_margin="10dp"
-        android:paddingTop="5dp"
-        android:orientation="vertical">
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:id="@+id/mainLayout"
-            android:background="@color/white"
-            android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <LinearLayout
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:id="@+id/autoMobilell"
-            android:background="#154c79"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Automobile"
-                android:textStyle="bold"
-                android:textColor="@color/dark_yellow"
-                android:textSize="22sp"
-                android:paddingLeft="10dp"
-                android:layout_marginTop="10dp"
-                />
-        </LinearLayout>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/first"
-            android:layout_below="@id/autoMobilell"
-            android:layout_width="match_parent"
-            android:layout_margin="10dp"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/firstRowColor"
-            >
+
+            <!-- Automobile card -->
             <LinearLayout
+                android:id="@+id/first"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="30dp"
-                android:background="@drawable/border"
-                android:orientation="vertical">
-                <RelativeLayout
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingBottom="16dp">
+
+                <!-- Card header -->
+                <LinearLayout
+                    android:id="@+id/autoMobilell"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Automobile"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Gasoline section -->
+                <RelativeLayout
                     android:id="@+id/gasll"
-                    android:paddingBottom="10dp"
-                    android:background="@drawable/fuelborder"
-                    android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/autoMobileGasolineTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Gasoline"
-                            android:textStyle="bold"
-                            android:textColor="#114DB7"
-                            android:textSize="22sp"
-                            android:paddingLeft="20dp"
-                            android:layout_marginTop="10dp"
-                            />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EEF4FB"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/autoMobileGasolineTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Gasoline"
+                        android:textColor="#1A237E"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <CheckBox
                         android:id="@+id/gasCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center_vertical"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:text="Check / Uncheck All"
-                        android:textColor="#114DB7"
-                        android:textSize="20sp"
-                        app:buttonTint="@drawable/checkbox_bkg"/>
+                        android:textColor="#1A237E"
+                        android:textSize="13sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
                 </RelativeLayout>
+
                 <com.inspection.Utils.ExpandableHeightGridView
-                    android:layout_margin="20dp"
                     android:id="@+id/gasolineServicesListView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:gravity="center"
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="5"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
+                    android:verticalSpacing="12dp" />
+
+                <!-- Hybrid section -->
                 <RelativeLayout
+                    android:id="@+id/hybridll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/hybridll"
-                    android:paddingBottom="10dp"
-                    android:background="@drawable/fuelborder"
-                    android:orientation="vertical">
+                    android:background="#EEF4FB"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
                     <TextView
                         android:id="@+id/autoMobileHybridTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_centerVertical="true"
                         android:text="Hybrid"
-                        android:textStyle="bold"
-                        android:textColor="#114DB7"
-                        android:textSize="22sp"
-                        android:paddingLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        />
+                        android:textColor="#1A237E"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                     <CheckBox
                         android:id="@+id/hybridCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center_vertical"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:text="Check / Uncheck All"
-                        android:textColor="#114DB7"
-                        android:textSize="20sp"
-                        app:buttonTint="@drawable/checkbox_bkg"/>
+                        android:textColor="#1A237E"
+                        android:textSize="13sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
                 </RelativeLayout>
+
                 <com.inspection.Utils.ExpandableHeightGridView
-                    android:layout_margin="20dp"
                     android:id="@+id/hybridServicesListView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:gravity="center"
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="5"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
+                    android:verticalSpacing="12dp" />
 
+                <!-- Diesel section -->
                 <RelativeLayout
+                    android:id="@+id/dieselll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:id="@+id/dieselll"
-                    android:background="@drawable/fuelborder"
-                    android:orientation="vertical">
+                    android:background="#EEF4FB"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
                     <TextView
                         android:id="@+id/autoMobileDieselTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_centerVertical="true"
                         android:text="Diesel"
-                        android:textStyle="bold"
-                        android:textColor="#114DB7"
-                        android:textSize="22sp"
-                        android:paddingLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        />
+                        android:textColor="#1A237E"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                     <CheckBox
                         android:id="@+id/dieselCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center_vertical"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:text="Check / Uncheck All"
-                        android:textColor="#114DB7"
-                        android:textSize="20sp"
-                        app:buttonTint="@drawable/checkbox_bkg"/>
+                        android:textColor="#1A237E"
+                        android:textSize="13sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
                 </RelativeLayout>
+
                 <com.inspection.Utils.ExpandableHeightGridView
-                    android:layout_margin="20dp"
                     android:id="@+id/dieselServicesListView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:gravity="center"
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="5"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
+                    android:verticalSpacing="12dp" />
 
+                <!-- Electric section -->
                 <RelativeLayout
+                    android:id="@+id/electricll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:id="@+id/electricll"
-                    android:background="@drawable/fuelborder"
-                    android:orientation="vertical">
+                    android:background="#EEF4FB"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
                     <TextView
                         android:id="@+id/autoMobileElectricTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_centerVertical="true"
                         android:text="Electric"
-                        android:textStyle="bold"
-                        android:textColor="#114DB7"
-                        android:textSize="22sp"
-                        android:paddingLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        />
+                        android:textColor="#1A237E"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                     <CheckBox
                         android:id="@+id/electricCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center_vertical"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:text="Check / Uncheck All"
-                        android:textColor="#114DB7"
-                        android:textSize="20sp"
-                        app:buttonTint="@drawable/checkbox_bkg"/>
+                        android:textColor="#1A237E"
+                        android:textSize="13sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
                 </RelativeLayout>
+
                 <com.inspection.Utils.ExpandableHeightGridView
-                    android:layout_margin="20dp"
                     android:id="@+id/electricServicesListView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:gravity="center"
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="5"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
+                    android:verticalSpacing="12dp" />
 
+                <!-- Hydrogen section -->
                 <RelativeLayout
+                    android:id="@+id/hydrogenll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:id="@+id/hydrogenll"
-                    android:background="@drawable/fuelborder"
-                    android:orientation="vertical">
+                    android:background="#EEF4FB"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
                     <TextView
                         android:id="@+id/autoMobileHydrogenTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_centerVertical="true"
                         android:text="Hydrogen"
-                        android:textStyle="bold"
-                        android:textColor="#114DB7"
-                        android:textSize="22sp"
-                        android:paddingLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        />
+                        android:textColor="#1A237E"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                     <CheckBox
                         android:id="@+id/hydrogenCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center_vertical"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:text="Check / Uncheck All"
-                        android:textColor="#114DB7"
-                        android:textSize="20sp"
-                        app:buttonTint="@drawable/checkbox_bkg"/>
+                        android:textColor="#1A237E"
+                        android:textSize="13sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
                 </RelativeLayout>
+
                 <com.inspection.Utils.ExpandableHeightGridView
-                    android:layout_margin="20dp"
                     android:id="@+id/hydrogenServicesListView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:gravity="center"
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="5"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
+                    android:verticalSpacing="12dp" />
 
+                <!-- CNG/LNG section -->
                 <RelativeLayout
+                    android:id="@+id/cngll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:id="@+id/cngll"
-                    android:background="@drawable/fuelborder"
-                    android:orientation="vertical">
+                    android:background="#EEF4FB"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
+
                     <TextView
                         android:id="@+id/autoMobileCNGTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+                        android:layout_centerVertical="true"
                         android:text="CNG/LNG"
-                        android:textStyle="bold"
-                        android:textColor="#114DB7"
-                        android:textSize="22sp"
-                        android:paddingLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        />
+                        android:textColor="#1A237E"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                     <CheckBox
                         android:id="@+id/cngCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center_vertical"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:text="Check / Uncheck All"
-                        android:textColor="#114DB7"
-                        android:textSize="20sp"
-                        app:buttonTint="@drawable/checkbox_bkg"/>
+                        android:textColor="#1A237E"
+                        android:textSize="13sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
                 </RelativeLayout>
+
                 <com.inspection.Utils.ExpandableHeightGridView
-                    android:layout_margin="20dp"
                     android:id="@+id/cngServicesListView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="5"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="12dp" />
+
+                <!-- Hidden grid (kept for code compatibility) -->
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/vehicleServicesListView"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:horizontalSpacing="2dp"
                     android:isScrollContainer="false"
                     android:numColumns="5"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="20dp" />
+                    android:verticalSpacing="12dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- Separator (kept for ID compatibility) -->
+            <View
+                android:id="@+id/second"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <!-- Auto Body card -->
+            <LinearLayout
+                android:id="@+id/third"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Auto Body"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <com.inspection.Utils.ExpandableHeightGridView
-                android:layout_margin="20dp"
-                android:visibility="gone"
-                android:id="@+id/vehicleServicesListView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:horizontalSpacing="2dp"
-                android:isScrollContainer="false"
-                android:numColumns="5"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="20dp" />
+                    android:id="@+id/languagesGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="12dp" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
+            <!-- Separator (kept for ID compatibility) -->
+            <View
+                android:id="@+id/fourth"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
 
-    <View
-        android:id="@+id/second"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_below="@+id/first"
-        android:background="@color/light_gray" />
-
-
-    <androidx.cardview.widget.CardView
-        android:layout_below="@+id/second"
-        android:id="@+id/third"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/firstRowColor"
-        >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="30dp"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:background="#154c79"
-            android:orientation="vertical">
-            <TextView
-
-                android:layout_width="wrap_content"
+            <!-- Marine card -->
+            <LinearLayout
+                android:id="@+id/fifth"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Auto Body"
-                android:textStyle="bold"
-                android:textColor="@color/dark_yellow"
-                android:textSize="22sp"
-                android:paddingLeft="10dp"
-                android:layout_marginTop="10dp"
-                />
-        </LinearLayout>
-    <TextView
+                android:layout_marginTop="12dp"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingBottom="16dp">
 
-            android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Auto Body"
-            android:textStyle="bold"
-            android:textColor="@color/mainColor"
-            android:textSize="22sp"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp">
 
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="30dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/border"
-            android:orientation="vertical">
-        <com.inspection.Utils.ExpandableHeightGridView
-            android:id="@+id/languagesGridView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:gravity="center"
-            android:horizontalSpacing="2dp"
-            android:isScrollContainer="false"
-            android:numColumns="4"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp" />
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Marine"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-    </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/MarineServicesListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="12dp" />
+            </LinearLayout>
 
-        <View
-            android:layout_below="@+id/third"
-            android:id="@+id/fourth"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/light_gray" />
+            <!-- Separator (kept for ID compatibility) -->
+            <View
+                android:id="@+id/sixth"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_below="@+id/fourth"
-        android:id="@+id/fifth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/firstRowColor"
-        >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="30dp"
-        android:background="@color/white"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:background="#154c79"
-            android:orientation="vertical">
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Marine"
-                android:textStyle="bold"
-                android:textColor="@color/dark_yellow"
-                android:textSize="22sp"
-                android:paddingLeft="10dp"
-                android:layout_marginTop="10dp"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="30dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/border"
-            android:orientation="vertical">
-        <com.inspection.Utils.ExpandableHeightGridView
-            android:id="@+id/MarineServicesListView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:horizontalSpacing="2dp"
-            android:isScrollContainer="false"
-            android:numColumns="4"
-            android:stretchMode="columnWidth"
-            android:layout_margin="20dp"
-            android:verticalSpacing="20dp" />
-        </LinearLayout>
-    </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-        <View
-            android:id="@+id/sixth"
-            android:layout_below="@+id/fifth"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/light_gray" />
-
-            <androidx.cardview.widget.CardView
+            <!-- RV card -->
+            <LinearLayout
                 android:id="@+id/seventh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/sixth"
-                app:cardBackgroundColor="@color/firstRowColor">
+                android:layout_marginTop="12dp"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="30dp"
-                    android:background="@color/white"
-                    android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:background="#154c79"
-                    android:orientation="vertical">
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp">
+
                     <TextView
-
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:text="RV"
-                        android:textStyle="bold"
-                        android:textColor="@color/dark_yellow"
-                        android:textSize="22sp"
-                        android:paddingLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        />
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
-                <LinearLayout
+
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/RecreationalServicesListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="30dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/border"
-                    android:orientation="vertical">
-                    <com.inspection.Utils.ExpandableHeightGridView
-                        android:id="@+id/RecreationalServicesListView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:gravity="center"
-                        android:horizontalSpacing="2dp"
-                        android:isScrollContainer="false"
-                        android:numColumns="4"
-                        android:stretchMode="columnWidth"
-                        android:verticalSpacing="20dp" />
-                </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                    android:layout_margin="12dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="12dp" />
+            </LinearLayout>
 
-
-        </RelativeLayout>
-
+            <!-- Cancel / Save action row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/mainLayout"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:background="@color/white"
-                android:elevation="5dp"
-                android:gravity="right|center_vertical"
+                android:elevation="4dp"
+                android:gravity="end|center_vertical"
                 android:orientation="horizontal"
-                android:padding="30dp">
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
 
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:background="@drawable/new_btn_bkg"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@null"
-                    android:text="Cancel" />
+                    android:layout_height="44dp"
+                    android:background="@drawable/btn_cert_outline"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Cancel"
+                    android:textColor="#1565C0"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="15dp"
-                    android:background="@drawable/new_btn_bkg"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/btn_cert_primary"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Save"
                     android:textColor="@color/white"
-                    app:backgroundTint="@null"
-                    android:text="Save" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-        </RelativeLayout>
+
+        </LinearLayout>
     </ScrollView>
+
+    <!-- Loading overlay -->
     <RelativeLayout
         android:id="@+id/scopeOfServicesChangesDialogueLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:clickable="true"
         android:background="@color/mainColor"
+        android:clickable="true"
         android:visibility="gone">
 
         <ProgressBar
@@ -590,19 +576,15 @@
             android:progressTint="@color/white" />
 
         <TextView
+            android:id="@+id/progressBarText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/progressBarRecordsVS"
             android:layout_centerHorizontal="true"
-            android:id="@+id/progressBarText"
             android:text="Loading..."
             android:textColor="@color/white"
-            android:textSize="26sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
-
-
     </RelativeLayout>
 
-
 </RelativeLayout>
-

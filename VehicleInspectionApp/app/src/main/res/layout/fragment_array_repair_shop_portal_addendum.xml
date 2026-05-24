@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context="com.inspection.fragments.FacilityGeneralInformationFragment">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_gray"
+        android:background="#F0F4FF"
         android:padding="12dp">
 
         <LinearLayout
@@ -40,8 +40,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="AAR/RSP Addendum"
-                    android:textColor="@color/mainColor"
-                    android:textSize="16sp"
+                    android:textColor="#1565C0"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <View
@@ -265,8 +265,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="RSP Tracking"
-                        android:textColor="@color/mainColor"
-                        android:textSize="16sp"
+                        android:textColor="#1565C0"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <Button
@@ -427,7 +427,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Add New RSP Tracking"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -635,7 +635,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Update RSP Tracking"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
