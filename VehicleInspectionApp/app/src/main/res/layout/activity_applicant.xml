@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         app:title="Applicant Shops Management"
-        android:background="@color/mainColor"
+        android:background="@drawable/cert_header_bg"
         app:titleTextColor="@color/white"
         app:titleCentered="false" />
 
