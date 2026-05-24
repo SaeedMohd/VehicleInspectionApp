@@ -119,7 +119,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
 
         IndicatorsDataModel.getInstance().tblBilling[0].VendorRevenueVisited = true
         // SAEED TO BE REVIEWED
-        requireActivity().findViewById<Button>(R.id.vendorRevenueButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).vendorRevenueButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }

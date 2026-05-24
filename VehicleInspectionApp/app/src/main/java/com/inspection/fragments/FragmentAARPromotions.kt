@@ -69,8 +69,7 @@ class FragmentAARPromotions : Fragment() {
         _binding = FragmentAarPromotionsBinding.bind(view)
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].PromotionsVisited = true
         // SAEED TO BE REVIEWED
-        requireActivity().findViewById<Button>(R.id.PromotionsButton)
-            .setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).PromotionsButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
         promotionListItems = TypeTablesModel.getInstance().PromoType

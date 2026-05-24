@@ -247,7 +247,7 @@ class FragmentARRAVLocation : Fragment() {
 
         IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited = true
         // SAEED TO BE REVIEWED
-        requireActivity().findViewById<Button>(R.id.contactInfoButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).contactInfoButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
         setServices()

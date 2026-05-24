@@ -233,8 +233,7 @@ class FragmentARRAVPersonnel : Fragment() {
 //        rspEmailId.setText(FacilityDataModel.getInstance().tblPersonnel[0].RSP_Email.toString())
         IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited = true
         // SAEED TO BE REVIEWED
-        requireActivity().findViewById<Button>(R.id.personnelButton)
-            .setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).personnelButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 

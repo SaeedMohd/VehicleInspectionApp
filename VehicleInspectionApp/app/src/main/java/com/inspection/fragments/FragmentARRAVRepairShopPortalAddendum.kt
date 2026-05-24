@@ -69,7 +69,7 @@ class FragmentARRAVRepairShopPortalAddendum : Fragment() {
         _binding = FragmentArrayRepairShopPortalAddendumBinding.bind(view)
         IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited = true
         // SAEED TO BE REVIEWED
-        requireActivity().findViewById<Button>(R.id.rspButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).rspButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 

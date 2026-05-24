@@ -135,7 +135,7 @@ class FragmentAARAVBillingPlans : Fragment() {
 
         IndicatorsDataModel.getInstance().tblBilling[0].BillingPlanVisited = true
 //        (activity as FormsActivity).billingPlanButton.setTextColor(Color.parseColor("#26C3AA"))
-        requireActivity().findViewById<Button>(R.id.billingPlanButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 

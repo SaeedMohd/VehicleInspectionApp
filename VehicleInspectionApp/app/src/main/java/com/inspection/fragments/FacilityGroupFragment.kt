@@ -1,266 +1,115 @@
 package com.inspection.fragments
 
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.TextView
+import com.google.android.material.tabs.TabLayout
 import com.inspection.FormsActivity
-
 import com.inspection.R
 import com.inspection.Utils.Utility
 import com.inspection.databinding.FacilityGroupLayoutBinding
-import com.inspection.databinding.FragmentArrayRepairShopPortalAddendumBinding
 import com.inspection.fragmentsNames
-import com.inspection.model.*
-import java.util.*
+import com.inspection.model.FacilityDataModel
+import com.inspection.model.IndicatorsDataModel
+import com.inspection.model.VisitationTypes
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [FragmentAARAVBilling.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [FragmentAARAVBilling.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-class FacilityGroupFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
-    private var revSourceArray = ArrayList<String>()
+class FacilityGroupFragment : Fragment(), HasTabIndicators {
 
     private var _binding: FacilityGroupLayoutBinding? = null
     private val binding get() = _binding!!
+    private var currentTabPosition = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.facility_group_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FacilityGroupLayoutBinding.bind(view)
-        binding.contactInfoButton.text = "Location & Contact Info"
-        var fragment = FacilityGeneralInformationFragment.newInstance(false)
-        requireFragmentManager().beginTransaction()
-                .replace(R.id.facilityGroupDetailsFragment, fragment)
-                .commit()
-        updateSelectedIndicator(R.id.generalInformationButton)
-        (activity as FormsActivity).currentFragment=fragmentsNames.FacilityGeneralInfo.toString()
+
+        listOf(
+            "General Information",
+            "RSP Tracking",
+            "Location & Contact Info",
+            "Personnel",
+            "Visitation Tracking"
+        ).forEach { addTab(binding.facilityTabLayout, it) }
+
+        (activity as FormsActivity).currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
         (activity as FormsActivity).saveRequired = false
+        navigateToTab(0)
 
-        binding.generalInformationButton.setOnClickListener {
-            if ((activity as FormsActivity).preventNavigation()) {
-                Utility.showSaveOrCancelAlertDialog(activity)
-            } else {
-                var fragment = FacilityGeneralInformationFragment.newInstance(false)
-                requireFragmentManager().beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment)
-                        .commit()
-                (activity as FormsActivity).currentFragment = fragmentsNames.FacilityGeneralInfo.toString()
-                (activity as FormsActivity).saveRequired = false
-                updateSelectedIndicator(R.id.generalInformationButton)
+        binding.facilityTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                if ((activity as FormsActivity).preventNavigation()) {
+                    Utility.showSaveOrCancelAlertDialog(activity)
+                    binding.facilityTabLayout.post {
+                        binding.facilityTabLayout.selectTab(binding.facilityTabLayout.getTabAt(currentTabPosition))
+                    }
+                    return
+                }
+                currentTabPosition = tab.position
+                navigateToTab(tab.position)
             }
-        }
-
-        binding.rspButton.setOnClickListener {
-            if ((activity as FormsActivity).preventNavigation()) {
-                Utility.showSaveOrCancelAlertDialog(activity)
-            } else {
-                var fragment = FragmentARRAVRepairShopPortalAddendum.newInstance("", "")
-                requireFragmentManager().beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment)
-                        .commit()
-                updateSelectedIndicator(R.id.rspButton)
-                (activity as FormsActivity).currentFragment=fragmentsNames.FacilityRSP.toString()
-                (activity as FormsActivity).saveRequired = false
-            }
-        }
-
-        binding.contactInfoButton.setOnClickListener {
-            if ((activity as FormsActivity).preventNavigation()) {
-                Utility.showSaveOrCancelAlertDialog(activity)
-            } else {
-                var fragment = FragmentARRAVLocation.newInstance(false)
-                requireFragmentManager().beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment, "FragmentARRAVLocation")
-                        .commit()
-                (activity as FormsActivity).currentFragment = fragmentsNames.FacilityContactInfo.toString()
-                (activity as FormsActivity).saveRequired = false
-                updateSelectedIndicator(R.id.contactInfoButton)
-            }
-        }
-
-        binding.personnelButton.setOnClickListener {
-            if ((activity as FormsActivity).preventNavigation()) {
-                Utility.showSaveOrCancelAlertDialog(activity)
-            } else {
-                var fragment = FragmentARRAVPersonnel.newInstance(false)
-                requireFragmentManager().beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment,"FragmentARRAVPersonnel")
-                        .commit()
-                (activity as FormsActivity).currentFragment=fragmentsNames.FacilityPersonnel.toString()
-                (activity as FormsActivity).saveRequired = false
-                updateSelectedIndicator(R.id.personnelButton)
-            }
-        }
-
-        binding.visitationTrackingButton.setOnClickListener {
-            if ((activity as FormsActivity).preventNavigation()) {
-                Utility.showSaveOrCancelAlertDialog(activity)
-            } else {
-                var fragment = VisitationTrackingSubFragment.newInstance("", "")
-                requireFragmentManager().beginTransaction()
-                        .replace(R.id.facilityGroupDetailsFragment, fragment)
-                        .commit()
-                (activity as FormsActivity).currentFragment=fragmentsNames.VisitationTracking.toString()
-                (activity as FormsActivity).saveRequired = false
-                updateSelectedIndicator(R.id.visitationTrackingButton)
-            }
-        }
-
-//        amendmentOrdersTrackingButton.setOnClickListener {
-//            if ((activity as FormsActivity).preventNavigation()) {
-//                Utility.showSaveOrCancelAlertDialog(activity)
-//            } else {
-//                var fragment = FragmentARRAVAmOrderTracking.newInstance("", "")
-//
-//                fragmentManager!!.beginTransaction()
-//                        .replace(R.id.facilityGroupDetailsFragment, fragment)
-//                        .commit()
-//                (activity as FormsActivity).currentFragment=fragmentsNames.FacilityAmedndmentsOrderTracking.toString()
-//                (activity as FormsActivity).saveRequired = false
-//                updateSelectedIndicator(R.id.amendmentOrdersTrackingButton)
-//            }
-//        }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
 
-    fun updateSelectedIndicator(selectedViewId: Int){
-        when(selectedViewId){
-            R.id.generalInformationButton->{
-                binding.generalInformationSelectedIndicator.visibility = View.VISIBLE
-                binding.rspSelectedIndicator.visibility = View.INVISIBLE
-                binding.contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                binding.personnelSelectedIndicator.visibility = View.INVISIBLE
-                binding.visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
-            }
-
-            R.id.rspButton->{
-                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                binding.rspSelectedIndicator.visibility = View.VISIBLE
-                binding.contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                binding.personnelSelectedIndicator.visibility = View.INVISIBLE
-                binding.visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
-            }
-            
-            R.id.contactInfoButton->{
-                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                binding.rspSelectedIndicator.visibility = View.INVISIBLE
-                binding.contactInfoSelectedIndicator.visibility = View.VISIBLE
-                binding.personnelSelectedIndicator.visibility = View.INVISIBLE
-                binding.visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
-            }
-            
-            R.id.personnelButton->{
-                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                binding.rspSelectedIndicator.visibility = View.INVISIBLE
-                binding.contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                binding.personnelSelectedIndicator.visibility = View.VISIBLE
-                binding.visitationTrackingSelectedIndicator.visibility = View.INVISIBLE
-            }
-
-            
-            R.id.visitationTrackingButton->{
-                binding.generalInformationSelectedIndicator.visibility = View.INVISIBLE
-                binding.rspSelectedIndicator.visibility = View.INVISIBLE
-                binding.contactInfoSelectedIndicator.visibility = View.INVISIBLE
-                binding.personnelSelectedIndicator.visibility = View.INVISIBLE
-                binding.visitationTrackingSelectedIndicator.visibility = View.VISIBLE
-//                amendmentOrdersTrackingButton.visibility = View.INVISIBLE
-            }
-            
-//            R.id.amendmentOrdersTrackingButton->{
-//                generalInformationSelectedIndicator.visibility = View.INVISIBLE
-//                rspSelectedIndicator.visibility = View.INVISIBLE
-//                contactInfoSelectedIndicator.visibility = View.INVISIBLE
-//                personnelSelectedIndicator.visibility = View.INVISIBLE
-////                amendmentOrdersTrackingSelectedIndicator.visibility = View.VISIBLE
-//            }
+    private fun navigateToTab(position: Int) {
+        val (fragment, tag, fragmentName) = when (position) {
+            0 -> Triple(FacilityGeneralInformationFragment.newInstance(false), null, fragmentsNames.FacilityGeneralInfo)
+            1 -> Triple(FragmentARRAVRepairShopPortalAddendum.newInstance("", ""), null, fragmentsNames.FacilityRSP)
+            2 -> Triple(FragmentARRAVLocation.newInstance(false), "FragmentARRAVLocation", fragmentsNames.FacilityContactInfo)
+            3 -> Triple(FragmentARRAVPersonnel.newInstance(false), "FragmentARRAVPersonnel", fragmentsNames.FacilityPersonnel)
+            4 -> Triple(VisitationTrackingSubFragment.newInstance("", ""), null, fragmentsNames.VisitationTracking)
+            else -> return
         }
-//        IndicatorsDataModel.getInstance().validateFacilitySectionVisited()
+        requireFragmentManager().beginTransaction()
+            .replace(R.id.facilityGroupDetailsFragment, fragment, tag)
+            .commit()
+        (activity as FormsActivity).currentFragment = fragmentName.toString()
+        (activity as FormsActivity).saveRequired = false
         refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
-
-
-    fun refreshTabIndicators() {
-        var indicatorImage: ImageView;
-//        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfo) facGIIndicator.setBackgroundResource(R.drawable.green_background_button) else facGIIndicator.setBackgroundResource(R.drawable.red_button_background)
-//        if (IndicatorsDataModel.getInstance().tblFacility[0].RSP) facRSPIndicator.setBackgroundResource(R.drawable.green_background_button) else facRSPIndicator.setBackgroundResource(R.drawable.red_button_background)
-//        if (IndicatorsDataModel.getInstance().tblFacility[0].Personnel) facPersonnelIndicator.setBackgroundResource(R.drawable.green_background_button) else facPersonnelIndicator.setBackgroundResource(R.drawable.red_button_background)
-//        if (IndicatorsDataModel.getInstance().tblFacility[0].Location) facLocationIndicator.setBackgroundResource(R.drawable.green_background_button) else facLocationIndicator.setBackgroundResource(R.drawable.red_button_background)
-        if (IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) binding.generalInformationButton.setTextColor(Color.parseColor("#26C3AA")) else binding.generalInformationButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) binding.rspButton.setTextColor(Color.parseColor("#26C3AA")) else binding.rspButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) binding.personnelButton.setTextColor(Color.parseColor("#26C3AA")) else binding.personnelButton.setTextColor(Color.parseColor("#A42600"))
-        if (IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc) binding.contactInfoButton.setTextColor(Color.parseColor("#26C3AA")) else binding.contactInfoButton.setTextColor(Color.parseColor("#A42600"))
-        binding.visitationTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
-//        amendmentOrdersTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
+    override fun refreshTabIndicators() {
+        val exempt = isExemptFromVisit()
+        setTabColor(0, exempt || IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited)
+        setTabColor(1, exempt || IndicatorsDataModel.getInstance().tblFacility[0].RSPVisited)
+        setTabColor(2, exempt || IndicatorsDataModel.getInstance().tblFacility[0].LocationVisited)
+        setTabColor(3, exempt || IndicatorsDataModel.getInstance().tblFacility[0].PersonnelVisited)
+        setTabColor(4, true)
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+    private fun isExemptFromVisit(): Boolean {
+        val type = FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType
+        return type == VisitationTypes.Deficiency || type == VisitationTypes.AdHoc
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentAARAVBilling.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                FragmentAARAVBilling().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
+    private fun addTab(tabLayout: TabLayout, text: String) {
+        val tab = tabLayout.newTab()
+        val tv = layoutInflater.inflate(R.layout.tab_group_item, null, false) as TextView
+        tv.text = text
+        tab.customView = tv
+        tabLayout.addTab(tab)
+    }
+
+    private fun setTabColor(index: Int, visited: Boolean) {
+        val color = if (visited) Color.parseColor("#26C3AA") else Color.parseColor("#A42600")
+        (binding.facilityTabLayout.getTabAt(index)?.customView as? TextView)?.setTextColor(color)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

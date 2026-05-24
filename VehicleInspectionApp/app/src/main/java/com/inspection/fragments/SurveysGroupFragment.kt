@@ -1,150 +1,86 @@
 package com.inspection.fragments
 
-import android.app.DatePickerDialog
-import android.content.Context
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.TextView
+import com.google.android.material.tabs.TabLayout
 import com.inspection.FormsActivity
-
 import com.inspection.R
-import com.inspection.databinding.FragmentVehiclesFragmentInScopeOfServicesViewBinding
 import com.inspection.databinding.SurveysGroupLayoutBinding
 import com.inspection.model.FacilityDataModel
 import com.inspection.model.IndicatorsDataModel
-import com.inspection.model.TypeTablesModel
 import com.inspection.model.VisitationTypes
-import java.text.SimpleDateFormat
-import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class SurveysGroupFragment : Fragment(), HasTabIndicators {
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [FragmentAARAVBilling.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [FragmentAARAVBilling.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-class SurveysGroupFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    private var revSourceList = ArrayList<TypeTablesModel.revenueSourceType>()
-    private var revSourceArray = ArrayList<String>()
     private var _binding: SurveysGroupLayoutBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.surveys_group_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = SurveysGroupLayoutBinding.bind(view)
-        binding.csiResultsButton.setTextColor(Color.parseColor("#26C3AA"))
-        binding.softwareButton.setTextColor(Color.parseColor("#26C3AA"))
-        binding.softwareButton.visibility = View.GONE
-        var fragment = FragmentCSIResult()
-        requireFragmentManager().beginTransaction()
-                .replace(R.id.facilityGroupDetailsFragment, fragment)
-                .commit()
-        updateSelectedIndicator(R.id.csiResultsButton)
 
-        binding.csiResultsButton.setOnClickListener {
-            var fragment = FragmentCSIResult()
-            requireFragmentManager().beginTransaction()
-                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-                    .commit()
-            updateSelectedIndicator(R.id.csiResultsButton)
-        }
+        addTab(binding.surveysTabLayout, "CSI Results")
 
-//        softwareButton.setOnClickListener {
-//            var fragment = FragmentAARAVSoftware.newInstance("", "")
-//            fragmentManager!!.beginTransaction()
-//                    .replace(R.id.facilityGroupDetailsFragment, fragment)
-//                    .commit()
-//            updateSelectedIndicator(R.id.softwareButton)
-//        }
+        navigateToTab(0)
 
+        binding.surveysTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                navigateToTab(tab.position)
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
 
-    fun updateSelectedIndicator(selectedViewId: Int){
-//        when(selectedViewId){
-//            R.id.csiResultsButton->{
-//                csiResultsSelectedIndicator.visibility = View.VISIBLE
-//                softwareSelectedIndicator.visibility = View.INVISIBLE
-//            }
-//
-//            R.id.softwareButton->{
-//                csiResultsSelectedIndicator.visibility = View.INVISIBLE
-//                softwareSelectedIndicator.visibility = View.VISIBLE
-//            }
-//        }
+    private fun navigateToTab(position: Int) {
+        val fragment = when (position) {
+            0 -> FragmentCSIResult()
+            else -> return
+        }
+        requireFragmentManager().beginTransaction()
+            .replace(R.id.facilityGroupDetailsFragment, fragment)
+            .commit()
         refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
-
-    fun refreshTabIndicators() {
-        if (FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.Deficiency || FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType == VisitationTypes.AdHoc || IndicatorsDataModel.getInstance().tblComplaints[0].visited) binding.csiResultsButton.setTextColor(Color.parseColor("#26C3AA")) else binding.csiResultsButton.setTextColor(Color.parseColor("#A42600"))
+    override fun refreshTabIndicators() {
+        val exempt = isExemptFromVisit()
+        setTabColor(0, exempt || IndicatorsDataModel.getInstance().tblComplaints[0].visited)
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+    private fun isExemptFromVisit(): Boolean {
+        val type = FacilityDataModel.getInstance().tblVisitationTracking[0].visitationType
+        return type == VisitationTypes.Deficiency || type == VisitationTypes.AdHoc
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentAARAVBilling.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                FragmentAARAVBilling().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
+    private fun addTab(tabLayout: TabLayout, text: String) {
+        val tab = tabLayout.newTab()
+        val tv = layoutInflater.inflate(R.layout.tab_group_item, null, false) as TextView
+        tv.text = text
+        tab.customView = tv
+        tabLayout.addTab(tab)
+    }
+
+    private fun setTabColor(index: Int, visited: Boolean) {
+        val color = if (visited) Color.parseColor("#26C3AA") else Color.parseColor("#A42600")
+        (binding.surveysTabLayout.getTabAt(index)?.customView as? TextView)?.setTextColor(color)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

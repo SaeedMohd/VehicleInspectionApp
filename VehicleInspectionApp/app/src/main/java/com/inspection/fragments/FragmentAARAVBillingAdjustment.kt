@@ -127,7 +127,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 
         IndicatorsDataModel.getInstance().tblBilling[0].BillingAdjustmentsVisited = true
 //        (activity as FormsActivity).billingAdjustmentButton.setTextColor(Color.parseColor("#26C3AA"))
-        requireActivity().findViewById<Button>(R.id.billingAdjustmentButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 

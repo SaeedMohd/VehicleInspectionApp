@@ -140,7 +140,7 @@ class FragmentARRAVScopeOfService : Fragment() {
 
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].GeneralInfoVisited= true
         // SAEED TO BE REVIEWED
-        requireActivity().findViewById<Button>(R.id.sosgeneralInformationButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).sosgeneralInformationButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
         (activity as FormsActivity).saveRequired = false

@@ -64,7 +64,7 @@ class FragmentAARAVBillingHistory : Fragment() {
         _binding = FragmentAaravBillinghistoryBinding.bind(view)
         fillBillingHistoryTableView()
         IndicatorsDataModel.getInstance().tblBilling[0].BillingHistoryVisited = true
-        requireActivity().findViewById<Button>(R.id.billingHistoryButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
 //        (activity as FormsActivity).billingHistoryButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }

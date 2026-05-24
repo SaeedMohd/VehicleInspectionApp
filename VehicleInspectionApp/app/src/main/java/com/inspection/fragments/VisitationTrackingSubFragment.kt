@@ -69,7 +69,7 @@ class VisitationTrackingSubFragment : Fragment() {
         IndicatorsDataModel.getInstance().tblFacility[0].VisitationTrackingVisited = true
         // SAEED TO BE REVIEWED
 //        (activity as FormsActivity).visitationTrackingButton.setTextColor(Color.parseColor("#26C3AA"))
-        requireActivity().findViewById<Button>(R.id.visitationTrackingButton).setTextColor(Color.parseColor("#26C3AA"))
+        (requireActivity().supportFragmentManager.findFragmentById(R.id.fragment) as? HasTabIndicators)?.refreshTabIndicators()
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
         fillVisitationTrackingTableView()
         binding.editAarsignsVal.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].AARSigns)
