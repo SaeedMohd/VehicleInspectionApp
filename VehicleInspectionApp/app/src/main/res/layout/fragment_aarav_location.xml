@@ -9,306 +9,324 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="match_parent"
         android:background="@color/light_gray"
-        android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp">
+        android:padding="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- ── Card 1: Location ── -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:elevation="4dp"
                 android:orientation="vertical"
-                android:padding="10dp">
-
+                android:padding="16dp">
 
                 <RelativeLayout
                     android:id="@+id/mainViewLinearId11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="15dp">
-
+                    android:layout_marginBottom="10dp">
 
                     <TextView
+                        android:id="@+id/locationLbl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_centerVertical="true"
                         android:text="Location"
-                        android:id="@+id/locationLbl"
                         android:textColor="@color/mainColor"
-                        android:textSize="22sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
+
                     <ImageButton
                         android:id="@+id/alertLocationYIcon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginEnd="50dp"
-                        android:layout_toRightOf="@id/locationLbl"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/locationLbl"
                         android:background="@android:drawable/ic_dialog_info"
                         android:backgroundTint="@color/dark_yellow"
                         android:visibility="gone" />
 
                     <ImageButton
                         android:id="@+id/alertLocationRIcon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="50dp"
-                        android:layout_toRightOf="@id/locationLbl"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/locationLbl"
                         android:background="@android:drawable/ic_dialog_info"
                         android:backgroundTint="@android:color/holo_red_dark"
                         android:visibility="visible" />
 
                 </RelativeLayout>
-                <!--<ScrollView-->
-                <!--android:id="@+id/scrollView1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal">-->
-                <!--<HorizontalScrollView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:scrollbars="horizontal"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--&gt;-->
-                <!--<LinearLayout-->
-                <!--android:id="@+id/LinearLayout1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:orientation="horizontal">-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#E0E0E0" />
+
                 <TableLayout
                     android:id="@+id/locationTbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbarAlwaysDrawHorizontalTrack="true"
-                    android:scrollbars="horizontal"
                     android:stretchColumns="*">
 
                     <TableRow
-                        android:layout_height="wrap_content"
-                        android:background="@color/mainColor">
+                        android:background="@drawable/cert_header_bg"
+                        android:minHeight="40dp">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="2dp"
+                            android:layout_gravity="center"
                             android:layout_weight="0.8"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Location Type"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="1"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="1.4"
-                            android:ems="8"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Address 1"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="2"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="1.4"
-                            android:ems="8"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Address 2"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="3"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="City"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="4"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Country"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="5"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="0.8"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="State"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="6"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Zip Code"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="7"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Latitude"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="8"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Longitude"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="9"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Branch Number"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="10"
-                            android:layout_gravity="center_vertical"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Branch Name"
                             android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
 
-<!--                        <TextView-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_column="11"-->
-<!--                            android:layout_gravity="center_vertical"-->
-<!--                            android:layout_weight="0.8"-->
-<!--                            android:text="Options"-->
-<!--                            android:textColor="@color/white"-->
-<!--                            android:textSize="10sp" />-->
                     </TableRow>
 
                 </TableLayout>
+
+            </LinearLayout>
+
+            <!-- ── Card 2: Geocode ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <RelativeLayout
                     android:id="@+id/mainViewLinearId22"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="15dp">
-
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:text="Geocode"
                         android:textColor="@color/mainColor"
-                        android:textSize="22sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#E0E0E0" />
 
                 <TableLayout
                     android:id="@+id/geocodeTbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="50dp"
-                    android:scrollbarAlwaysDrawHorizontalTrack="true"
-                    android:scrollbars="horizontal"
                     android:stretchColumns="*">
 
-                    <TableRow android:layout_height="wrap_content"
-                        android:background="@drawable/alt_row_color">
+                    <TableRow
+                        android:background="@drawable/cert_header_bg"
+                        android:minHeight="36dp">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_gravity="center_vertical"
                             android:layout_weight="1"
-                            android:paddingStart="10dp"
-                            android:textStyle="bold"
-                            android:textSize="14sp" />
+                            android:gravity="center"
+                            android:padding="6dp"
+                            android:text=""
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="1"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:textAlignment="center"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Latitude"
-                            android:textStyle="bold"
-                            android:textSize="12sp" />
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="2"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:layout_margin="10dp"
                             android:layout_weight="1"
-                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:padding="6dp"
                             android:text="Longitude"
-                            android:textSize="12sp" />
-                        <Button
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="3"
-                            android:layout_gravity="center_vertical"
                             android:layout_weight="1.5"
                             android:gravity="center"
-                            android:visibility="invisible"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue_krayola"
-                            android:textSize="14sp" />
+                            android:padding="6dp"
+                            android:text=""
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            android:visibility="invisible" />
 
                     </TableRow>
-                    <TableRow android:layout_height="wrap_content"
-                        android:background="@drawable/alt_row_color">
+
+                    <TableRow
+                        android:background="@drawable/alt_row_color"
+                        android:minHeight="44dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -316,69 +334,80 @@
                             android:layout_column="0"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
-                            android:paddingStart="10dp"
+                            android:padding="6dp"
                             android:text="Maps &amp; Driving Directions"
-                            android:textStyle="bold"
-                            android:textSize="12sp" />
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/editGeo1Lat"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_column="1"
                             android:layout_gravity="center_vertical"
+                            android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:inputType="numberDecimal"
+                            android:background="@drawable/cert_input_background"
                             android:gravity="center"
-                            android:layout_margin="10dp"
-                            android:textColor="@color/blue_krayola"
-                            android:background="@color/white"
-                            android:textSize="12sp"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             tools:ignore="SpeakableTextPresentCheck" />
 
                         <EditText
+                            android:id="@+id/editGeo1Long"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_column="2"
                             android:layout_gravity="center_vertical"
+                            android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
                             android:gravity="center"
-                            android:layout_margin="10dp"
-                            android:id="@+id/editGeo1Long"
                             android:inputType="numberDecimal|numberSigned"
-                            android:textColor="@color/blue_krayola"
-                            android:background="@color/white"
-                            android:textSize="12sp" />
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp" />
 
                         <Button
+                            android:id="@+id/btnUpdate1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1.5"
+                            android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:id="@+id/btnUpdate1"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue_krayola"
                             android:text="Set to current location"
-                            android:textSize="12sp" />
+                            android:textAllCaps="false"
+                            android:textColor="#4572CE"
+                            android:textSize="11sp"
+                            app:backgroundTint="@null" />
 
                         <Button
+                            android:id="@+id/btnOpen1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="4"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
+                            android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:id="@+id/btnOpen1"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue_krayola"
                             android:text="Open Location"
-                            android:textSize="12sp" />
+                            android:textAllCaps="false"
+                            android:textColor="#4572CE"
+                            android:textSize="11sp"
+                            app:backgroundTint="@null" />
+
                     </TableRow>
 
-                    <TableRow android:layout_height="wrap_content"
-                        android:background="@drawable/alt_row_color">
+                    <TableRow
+                        android:background="@drawable/alt_row_color"
+                        android:minHeight="44dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -386,69 +415,80 @@
                             android:layout_column="0"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
-                            android:paddingStart="10dp"
+                            android:padding="6dp"
                             android:text="Tow Truck Drop-Off"
-                            android:textStyle="bold"
-                            android:textSize="12sp" />
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/editGeo2Lat"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_column="1"
                             android:layout_gravity="center_vertical"
+                            android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:inputType="numberDecimal"
+                            android:background="@drawable/cert_input_background"
                             android:gravity="center"
-                            android:layout_margin="10dp"
-                            android:textColor="@color/blue_krayola"
-                            android:background="@color/white"
-                            android:textSize="12sp"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             tools:ignore="SpeakableTextPresentCheck" />
 
                         <EditText
+                            android:id="@+id/editGeo2Long"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_column="2"
                             android:layout_gravity="center_vertical"
+                            android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
                             android:gravity="center"
-                            android:layout_margin="10dp"
-                            android:id="@+id/editGeo2Long"
                             android:inputType="numberDecimal|numberSigned"
-                            android:textColor="@color/blue_krayola"
-                            android:background="@color/white"
-                            android:textSize="12sp" />
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp" />
 
                         <Button
+                            android:id="@+id/btnUpdate2"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1.5"
-                            android:visibility="visible"
+                            android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:id="@+id/btnUpdate2"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue_krayola"
                             android:text="Set to current location"
-                            android:textSize="12sp" />
+                            android:textAllCaps="false"
+                            android:textColor="#4572CE"
+                            android:textSize="11sp"
+                            app:backgroundTint="@null" />
+
                         <Button
+                            android:id="@+id/btnOpen2"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="4"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
+                            android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:id="@+id/btnOpen2"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue_krayola"
                             android:text="Open Location"
-                            android:textSize="12sp" />
+                            android:textAllCaps="false"
+                            android:textColor="#4572CE"
+                            android:textSize="11sp"
+                            app:backgroundTint="@null" />
+
                     </TableRow>
 
-                    <TableRow android:layout_height="wrap_content"
-                        android:background="@drawable/alt_row_color">
+                    <TableRow
+                        android:background="@drawable/alt_row_color"
+                        android:minHeight="44dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -456,180 +496,228 @@
                             android:layout_column="0"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
-                            android:paddingStart="10dp"
+                            android:padding="6dp"
                             android:text="Customer Waiting Area"
-                            android:textStyle="bold"
-                            android:textSize="12sp" />
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/editGeo3Lat"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_column="1"
                             android:layout_gravity="center_vertical"
+                            android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:inputType="numberDecimal"
+                            android:background="@drawable/cert_input_background"
                             android:gravity="center"
-                            android:layout_margin="10dp"
-                            android:textColor="@color/blue_krayola"
-                            android:background="@color/white"
-                            android:textSize="12sp"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             tools:ignore="SpeakableTextPresentCheck" />
 
                         <EditText
+                            android:id="@+id/editGeo3Long"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_column="2"
                             android:layout_gravity="center_vertical"
+                            android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
                             android:gravity="center"
-                            android:id="@+id/editGeo3Long"
                             android:inputType="numberDecimal|numberSigned"
-                            android:layout_margin="10dp"
-                            android:textColor="@color/blue_krayola"
-                            android:background="@color/white"
-                            android:textSize="12sp" />
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp" />
 
                         <Button
+                            android:id="@+id/btnUpdate3"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1.5"
+                            android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:visibility="visible"
-                            android:id="@+id/btnUpdate3"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue_krayola"
                             android:text="Set to current location"
-                            android:textSize="12sp" />
+                            android:textAllCaps="false"
+                            android:textColor="#4572CE"
+                            android:textSize="11sp"
+                            app:backgroundTint="@null" />
+
                         <Button
+                            android:id="@+id/btnOpen3"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="4"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
+                            android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:id="@+id/btnOpen3"
-                            android:background="@color/transparent"
-                            android:textColor="@color/blue_krayola"
                             android:text="Open Location"
-                            android:textSize="12sp" />
+                            android:textAllCaps="false"
+                            android:textColor="#4572CE"
+                            android:textSize="11sp"
+                            app:backgroundTint="@null" />
+
                     </TableRow>
 
                 </TableLayout>
-                <!--</LinearLayout>-->
-                <!--</HorizontalScrollView>-->
-                <!--</ScrollView>-->
+
+            </LinearLayout>
+
+            <!-- ── Card 3: Phone ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
                 <RelativeLayout
                     android:id="@+id/mainViewLinearId2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:text="Phone"
                         android:textColor="@color/mainColor"
-                        android:textSize="22sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/addNewPhoneButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/new_btn_bkg"
+                        android:layout_height="44dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="+ Add New Phone"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="Add New Phone"
-                        />
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
                 </RelativeLayout>
 
-                <!--android:showDividers="middle|beginning|end"-->
-                <!--android:divider="@drawable/divider_table_layout"-->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#E0E0E0" />
+
                 <TableLayout
                     android:id="@+id/phoneTbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:stretchColumns="0,1,2">
 
-                    <TableRow android:background="@color/mainColor">
+                    <TableRow
+                        android:background="@drawable/cert_header_bg"
+                        android:minHeight="40dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
-                            android:text="Phone Type"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_column="1"
-                            android:layout_weight="1"
-                            android:text="Phone Number"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_column="2"
-                            android:layout_marginEnd="4dp"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Phone Type"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Phone Number"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
                             android:text="Options"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                     </TableRow>
 
                 </TableLayout>
 
+            </LinearLayout>
+
+            <!-- ── Card 4: Email ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
                 <RelativeLayout
                     android:id="@+id/mainViewLinearId3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:text="E-mail"
                         android:textColor="@color/mainColor"
-                        android:textSize="22sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/addNewEmailButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="44dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/new_btn_bkg"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="+ Add New Email"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="Add New Email"
-                        />
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
                 </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#E0E0E0" />
 
                 <TableLayout
                     android:id="@+id/emailTbl"
@@ -637,162 +725,173 @@
                     android:layout_height="wrap_content"
                     android:stretchColumns="0,1,2">
 
-                    <TableRow android:background="@color/mainColor">
+                    <TableRow
+                        android:background="@drawable/cert_header_bg"
+                        android:minHeight="40dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_marginStart="10dp"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
                             android:text="Email Type"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_column="1"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
                             android:text="Email Address"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_column="2"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:padding="8dp"
                             android:text="Options"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
-
-                        <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:background="@null"-->
-                        <!--android:ems="5"-->
-                        <!--android:text="" />-->
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                     </TableRow>
 
-
                 </TableLayout>
+
+            </LinearLayout>
+
+            <!-- ── Card 5: Holidays ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
                     android:text="Holidays"
                     android:textColor="@color/mainColor"
-                    android:textSize="22sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#E0E0E0" />
+
                 <TableLayout
+                    android:id="@+id/holidaysTbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="100dp"
-                    android:id="@+id/holidaysTbl"
-                    android:stretchColumns="*"
-                    >
+                    android:stretchColumns="*">
 
-                    <TableRow android:background="@color/mainColor"
-                        >
+                    <TableRow
+                        android:background="@drawable/cert_header_bg"
+                        android:minHeight="40dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:gravity="center"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:text="Type"
                             android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
+                            android:text="Type"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_column="1"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
                             android:text="Start Date"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_column="2"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="8dp"
                             android:text="End Date"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:layout_weight="2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_column="3"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:padding="8dp"
                             android:text="Comments"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                     </TableRow>
 
                 </TableLayout>
+
+            </LinearLayout>
+
+            <!-- ── Card 6: Hours, Availability, Night Drop, Languages ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <RelativeLayout
                     android:id="@+id/mainViewLinearId31"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:text="Hours"
                         android:textColor="@color/mainColor"
-                        android:textSize="22sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
-
-                    <!--                <Button-->
-                    <!--                    android:id="@+id/copyHoursBtn"-->
-                    <!--                    android:layout_width="wrap_content"-->
-                    <!--                    android:layout_height="30dp"-->
-                    <!--                    android:layout_alignParentEnd="true"-->
-                    <!--                    android:layout_marginLeft="15dp"-->
-                    <!--                    android:layout_marginRight="15dp"-->
-                    <!--                    android:background="@drawable/green_background_button"-->
-                    <!--                    android:paddingLeft="15dp"-->
-                    <!--                    android:paddingRight="15dp"-->
-                    <!--                    android:text="Copy Hours"-->
-                    <!--                    android:textColor="@color/white" />-->
 
                 </RelativeLayout>
 
-                <!--            <TableLayout-->
-
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:paddingTop="30dp">-->
-
-                <!--                <TableRow>-->
-
-                <!--                    <TextView-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:text="Hours"-->
-                <!--                        android:textColor="@color/mainColor"-->
-                <!--                        android:textSize="18sp" />-->
-                <!--                </TableRow>-->
-                <!--            </TableLayout>-->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#E0E0E0" />
 
                 <TableLayout
                     android:id="@+id/openHoursTblId"
@@ -806,73 +905,97 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="2"
+                            android:padding="4dp"
                             android:text="DAY"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="1"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="2"
+                            android:gravity="center"
+                            android:padding="4dp"
                             android:text="SUN"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="2"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="2"
+                            android:gravity="center"
+                            android:padding="4dp"
                             android:text="MON"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="3"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="2"
+                            android:gravity="center"
+                            android:padding="4dp"
                             android:text="TUE"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="4"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="2"
+                            android:gravity="center"
+                            android:padding="4dp"
                             android:text="WED"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="5"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="2"
+                            android:gravity="center"
+                            android:padding="4dp"
                             android:text="THU"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="6"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="2"
+                            android:gravity="center"
+                            android:padding="4dp"
                             android:text="FRI"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_column="7"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="2"
+                            android:gravity="center"
+                            android:padding="4dp"
                             android:text="SAT"
+                            android:textColor="#1A237E"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
+
                     </TableRow>
 
                     <TableRow android:weightSum="16">
@@ -883,6 +1006,8 @@
                             android:layout_column="0"
                             android:layout_weight="2"
                             android:text="Open:"
+                            android:textColor="#37474F"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <Spinner
@@ -940,6 +1065,7 @@
                             android:layout_column="7"
                             android:layout_weight="2"
                             android:entries="@array/officeTimes" />
+
                     </TableRow>
 
                     <TableRow android:weightSum="16">
@@ -950,6 +1076,8 @@
                             android:layout_column="0"
                             android:layout_weight="2"
                             android:text="Closed:"
+                            android:textColor="#37474F"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <Spinner
@@ -991,6 +1119,7 @@
                             android:layout_column="5"
                             android:layout_weight="2"
                             android:entries="@array/officeTimes" />
+
                         <Spinner
                             android:id="@+id/friCloseSpinner"
                             android:layout_width="0dp"
@@ -1006,1320 +1135,982 @@
                             android:layout_column="7"
                             android:layout_weight="2"
                             android:entries="@array/officeTimes" />
+
                     </TableRow>
+
                 </TableLayout>
 
+                <!-- Copy Hours button -->
                 <RelativeLayout
                     android:id="@+id/mainViewLinearId32"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp">
+                    android:layout_marginTop="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=" "
                         android:textColor="@color/mainColor"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
+                        android:textSize="16sp"
                         tools:ignore="SpeakableTextPresentCheck" />
 
                     <Button
                         android:id="@+id/copyHoursBtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="44dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="15dp"
-                        android:background="@drawable/new_btn_bkg"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Copy Hours"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:text="   Copy Hours  "
-                        />
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
                 </RelativeLayout>
 
-                <TableLayout
+                <!-- Facility Availability -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="#E0E0E0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Facility Availability"
+                    android:textColor="@color/mainColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
 
-                    <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Facility is OPEN:"
+                        android:textColor="#37474F"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Facility Availability"
-                            android:textColor="@color/mainColor"
-                            android:textSize="22sp" />
-                    </TableRow>
+                    <Spinner
+                        android:id="@+id/facilityIsOpenSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:ems="8"
+                        android:entries="@array/officeTimes" />
 
-                    <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Effective Date:"
+                        android:textColor="#37474F"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_marginTop="5dp"
-                            android:text="Facility is OPEN:"
-                            android:textStyle="bold" />
-
-                        <Spinner
-                            android:id="@+id/facilityIsOpenSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_gravity="center"
-                            android:ems="8"
-                            android:entries="@array/officeTimes" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:layout_marginTop="5dp"
-                            android:text="Effective Date:"
-                            android:textStyle="bold" />
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/cert_input_background">
 
                         <Button
                             android:id="@+id/facilityIsOpenEffDateBtn"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="3"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/transparent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
                             android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12sp" />
+                            android:textAllCaps="false"
+                            android:textColor="#4572CE"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="4"
+                    </RelativeLayout>
 
-                            android:layout_marginTop="5dp"
-                            android:text="Expiration Date:"
-                            android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Expiration Date:"
+                        android:textColor="#37474F"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="@drawable/cert_input_background">
 
                         <Button
                             android:id="@+id/facilityIsOpenExpDateBtn"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="5"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/transparent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
                             android:text="SELECT DATE"
-                            android:textColor="@color/blue"
-                            android:textSize="12sp" />
-                    </TableRow>
+                            android:textAllCaps="false"
+                            android:textColor="#4572CE"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null" />
 
-                    <TableRow>
+                    </RelativeLayout>
 
-                        <CheckBox
-                            android:id="@+id/nightDropCheck"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_marginTop="5dp"
-                            android:text="Night Drop"
-                            app:buttonTint="@drawable/checkbox_bkg"
-                            android:textStyle="bold" />
-                    </TableRow>
+                </LinearLayout>
 
-                    <TableRow>
+                <!-- Night Drop -->
+                <CheckBox
+                    android:id="@+id/nightDropCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Night Drop"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:buttonTint="@drawable/checkbox_bkg" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_marginTop="5dp"
-                            android:text="Night Drop Instructions:"
-                            android:textStyle="bold" />
-                    </TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Night Drop Instructions:"
+                    android:textColor="#37474F"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
-                    <TableRow>
+                <EditText
+                    android:id="@+id/nightDropInstText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cert_input_background"
+                    android:ems="8"
+                    android:lines="4"
+                    android:padding="8dp"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp" />
 
-                        <EditText
-                            android:id="@+id/nightDropInstText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/textview_background"
-                            android:ems="8"
-                            android:lines="5"
-                            android:text="" />
+                <!-- Language Spoken -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="#E0E0E0" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Language Spoken"
+                    android:textColor="@color/mainColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                    </TableRow>
-
-                    <TableRow>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_marginTop="10dp"
-                            android:text="Language Spoken"
-                            android:textColor="@color/mainColor"
-                            android:textSize="22sp" />
-                    </TableRow>
-
-                    <TableRow>
-
-                        <com.inspection.Utils.ExpandableHeightGridView
-                            android:id="@+id/languagesGridView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:horizontalSpacing="2dp"
-                            android:isScrollContainer="false"
-                            android:numColumns="4"
-                            android:stretchMode="columnWidth"
-                            android:verticalSpacing="20dp" />
-
-                    </TableRow>
-                </TableLayout>
-
+                <com.inspection.Utils.ExpandableHeightGridView
+                    android:id="@+id/languagesGridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="2dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="4"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="20dp" />
 
             </LinearLayout>
 
+            <!-- ── Save / Cancel ── -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="12dp"
                 android:background="@color/white"
-                android:elevation="5dp"
+                android:elevation="4dp"
                 android:gravity="end|center_vertical"
                 android:orientation="horizontal"
-                android:padding="30dp">
+                android:padding="16dp">
 
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:background="@drawable/new_btn_bkg"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@null"
-                    android:text="Cancel" />
+                    android:layout_height="44dp"
+                    android:background="@drawable/btn_cert_outline"
+                    android:enabled="false"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="#4572CE"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
 
                 <Button
                     android:id="@+id/saveButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="15dp"
-                    android:background="@drawable/new_btn_bkg"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/btn_cert_primary"
+                    android:enabled="false"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Save"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
-                    app:backgroundTint="@null"
-                    android:text="Save" />
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
+    <!-- Dim overlay -->
     <View
         android:id="@+id/alphaBackgroundForDialogs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:alpha="0.8"
         android:background="@color/mainColor"
         android:clickable="true"
-        android:visibility="gone"
-        android:alpha="0.8"/>
+        android:visibility="gone" />
 
-    <!--<ScrollView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:layout_marginTop="5dp"-->
-        <!--android:layout_marginBottom="5dp"-->
-        <!--android:visibility="gone"-->
-        <!--android:id="@+id/addNewLocationDialog">-->
-        <!--<androidx.cardview.widget.CardView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:cardCornerRadius="5dp"-->
-                <!--app:cardElevation="10dp">-->
-
-
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:text="Add New Location"-->
-                <!--android:layout_gravity="top|left"-->
-                <!--android:textSize="18dp"-->
-                <!--/>-->
-
-
-            <!--<Button-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="30dp"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:layout_gravity="right"-->
-                <!--android:layout_marginRight="50dp"-->
-                <!--android:layout_marginLeft="50dp"-->
-                <!--android:text="Submit"-->
-                <!--android:id="@+id/locationSubmitButton"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:background="@drawable/green_background_button"-->
-                <!--/>-->
-
-
-            <!--<ImageButton-->
-                <!--android:layout_marginTop="25dp"-->
-                <!--android:id="@+id/exitAddLocationDialogeBtnId"-->
-                <!--android:layout_width="20dp"-->
-                <!--android:layout_marginRight="10dp"-->
-                <!--android:layout_height="20dp"-->
-                <!--android:background="@drawable/close"-->
-                <!--android:layout_gravity="top|right"-->
-                <!--/>-->
-
-            <!--<TableLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_marginTop="40dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:padding="40dp">-->
-
-                <!--<TableRow>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="0"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="Location Type:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<Spinner-->
-                        <!--android:id="@+id/newLocTypeSpinner"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="1"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:ems="8" />-->
-                <!--</TableRow>-->
-
-                <!--<TableRow>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="0"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="Address 1:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocAddr1Text"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="1"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:ems="8"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-                <!--</TableRow>-->
-
-                <!--<TableRow>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="0"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="Address 2:"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocAddr2Text"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="1"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:ems="8"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-                <!--</TableRow>-->
-
-                <!--<TableRow>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="0"-->
-
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="City:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocCityText"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="1"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:ems="8"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="2"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:ems="8"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="3"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="Country:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocCountryText"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="4"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:ems="8"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-                <!--</TableRow>-->
-
-                <!--<TableRow>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:id="@+id/stateTextView"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="0"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="State:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<Spinner-->
-                        <!--android:id="@+id/newStateSpinner"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="1"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:ems="8" />-->
-
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="3"-->
-
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="Zip Code:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocZipText"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="4"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-                    <!--&lt;!&ndash;<EditText&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:id="@+id/newLocZip4Text"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_marginTop="5dp"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:text=""&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_column="5"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:background="@drawable/textview_background"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:textStyle="bold"&ndash;&gt;-->
-                    <!--&lt;!&ndash;/>&ndash;&gt;-->
-                <!--</TableRow>-->
-
-                <!--<TableRow>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="0"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="Latitude:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocLatText"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="1"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:ems="8"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="3"-->
-
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="Longitude:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocLongText"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="4"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:ems="8"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-                <!--</TableRow>-->
-
-                <!--<TableRow>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="0"-->
-
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="Branch Number:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocBranchNoText"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="1"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:ems="8"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_column="3"-->
-
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:text="Branch Name:*"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/newLocBranchNameText"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_column="4"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:background="@drawable/textview_background"-->
-                        <!--android:ems="8"-->
-                        <!--android:text=""-->
-                        <!--android:textStyle="bold" />-->
-                <!--</TableRow>-->
-
-            <!--</TableLayout>-->
-
-        <!--</androidx.cardview.widget.CardView>-->
-    <!--</ScrollView>-->
-
-
+    <!-- ── Edit Location dialog ── -->
     <ScrollView
-        android:layout_width="wrap_content"
+        android:id="@+id/editLocationDialog"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:visibility="gone"
-        android:id="@+id/editLocationDialog">
+        android:layout_margin="20dp"
+        android:visibility="gone">
+
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="10dp">
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp">
 
-
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:text="Edit Location"
-                android:layout_gravity="top|left"
-                android:textSize="18dp"
-                />
+                android:orientation="vertical"
+                android:padding="20dp">
 
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="right"
-                android:layout_marginRight="50dp"
-                android:layout_marginLeft="50dp"
-                android:text="Submit"
-                android:id="@+id/locationSubmitButton"
-                android:background="@drawable/new_btn_bkg"
-                android:textColor="@color/white"
-                app:backgroundTint="@null"
-                />
-
-
-            <ImageButton
-                android:layout_marginTop="25dp"
-                android:id="@+id/exitEditLocationDialogeBtnId"
-                android:layout_width="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_height="20dp"
-                android:background="@drawable/close"
-                android:layout_gravity="top|right"
-                />
-
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_height="wrap_content"
-                android:padding="40dp">
-
-                <TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:layout_marginTop="5dp"
-                        android:text="Latitude:*"
+                        android:layout_centerVertical="true"
+                        android:text="Edit Location"
+                        android:textColor="@color/mainColor"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/newLocLatText"
+                    <Button
+                        android:id="@+id/locationSubmitButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_column="1"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/textview_background"
-                        android:ems="8"
-                        android:digits="0123456789."
-                        android:inputType="numberDecimal"
-                        android:text=""
-                        android:textStyle="bold" />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="36dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
-                        android:layout_marginTop="5dp"
-                        android:text="Longitude:*"
-                        android:textStyle="bold" />
+                    <ImageButton
+                        android:id="@+id/exitEditLocationDialogeBtnId"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="@null" />
 
-                    <EditText
-                        android:id="@+id/newLocLongText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_column="1"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/textview_background"
-                        android:ems="8"
-                        android:digits="0123456789."
-                        android:inputType="numberDecimal"
-                        android:text=""
-                        android:textStyle="bold" />
-                </TableRow>
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Latitude"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-            </TableLayout>
+                <EditText
+                    android:id="@+id/newLocLatText"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background"
+                    android:digits="0123456789.-"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Longitude"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/newLocLongText"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background"
+                    android:digits="0123456789.-"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
     </ScrollView>
 
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="800dp"
+    <!-- ── Add Phone dialog ── -->
+    <ScrollView
+        android:id="@+id/addNewPhoneDialog"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:cardCornerRadius="5dp"
-        android:id="@+id/addNewPhoneDialog"
-        app:cardElevation="10dp">
+        android:layout_margin="20dp"
+        android:visibility="gone">
 
-
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:text="Add Phone Number"
-            android:layout_gravity="top|left"
-            android:textSize="18dp"
-            />
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
-            android:text="Submit"
-            android:id="@+id/phoneSubmitButton"
-            android:background="@drawable/new_btn_bkg"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Add Phone Number"
+                        android:textColor="@color/mainColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-        <ImageButton
-            android:layout_marginTop="25dp"
-            android:id="@+id/exitAddPhoneDialogeBtnId"
-            android:layout_width="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="20dp"
-            android:background="@drawable/close"
-            android:layout_gravity="top|right"
-            />
+                    <Button
+                        android:id="@+id/phoneSubmitButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="36dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
+                    <ImageButton
+                        android:id="@+id/exitAddPhoneDialogeBtnId"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="@null" />
 
+                </RelativeLayout>
 
-        <TableLayout
-            android:layout_marginTop="40dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp">
-
-            <TableRow>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Phone Type:*"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
+                    android:layout_marginBottom="4dp"
+                    android:text="Phone Type *"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <Spinner
                     android:id="@+id/newPhoneTypeSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ems="8"
-                    android:layout_column="1"
-                    />
-            </TableRow>
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp" />
 
-            <!--<TableRow>-->
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
-
-                    <!--android:text="Description:"-->
-                    <!--android:layout_column="0"-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-                <!--<EditText-->
-                    <!--android:id="@+id/newPhoneDescText"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--android:text=""-->
-                    <!--android:ems="8"-->
-                    <!--android:layout_column="1"-->
-                    <!--android:background="@drawable/textview_background"-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-            <!--</TableRow>-->
-
-            <TableRow>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Phone Number:* "
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Phone Number *"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/newPhoneNoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background"
+                    android:gravity="center"
                     android:inputType="number"
                     android:maxLength="10"
-                    android:ems="8"
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
-            <!--<TableRow>-->
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp" />
 
-                    <!--android:text="Phone Extension:"-->
-                    <!--android:layout_column="0"-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-                <!--<EditText-->
-                    <!--android:id="@+id/newPhoneExtText"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--android:text=""-->
-                    <!--android:ems="8"-->
-                    <!--android:layout_column="1"-->
-                    <!--android:background="@drawable/textview_background"-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-            <!--</TableRow>-->
+            </LinearLayout>
 
-        </TableLayout>
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
 
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="800dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:cardCornerRadius="5dp"
+    <!-- ── Copy Hours dialog ── -->
+    <ScrollView
         android:id="@+id/copyHoursDialog"
-        app:cardElevation="10dp">
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:text="Copy Hours"
-        android:layout_gravity="top|left"
-        android:textSize="18dp"
-        />
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="50dp"
-        android:text="Copy"
-        android:id="@+id/copyButtonCV"
-        android:background="@drawable/new_btn_bkg"
-        android:textColor="@color/white"
-        app:backgroundTint="@null"
-        />
-
-
-    <ImageButton
-        android:layout_marginTop="25dp"
-        android:id="@+id/exitCopyDialogeBtnId"
-        android:layout_width="20dp"
-        android:layout_marginRight="10dp"
-        android:layout_height="20dp"
-        android:background="@drawable/close"
-        android:layout_gravity="top|right"
-        />
-
-
-
-    <TableLayout
-        android:layout_marginTop="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*"
-        android:padding="20dp">
-
-    <TableRow>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Copy From:*"
-            android:layout_column="0"
-            android:textStyle="bold"
-            />
-        <Spinner
-            android:id="@+id/fromDaySpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:ems="8"
-            android:layout_span="2"
-            android:entries="@array/days"
-            android:layout_column="1"
-            />
-    </TableRow>
-        <TableRow>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Copy To:*"
-            android:layout_column="0"
-            android:textStyle="bold"
-            />
-        </TableRow>
-        <TableRow>
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Sunday"
-                android:id="@+id/toSunCB"
-                android:layout_column="0"
-                android:textStyle="bold"
-                app:buttonTint="@drawable/checkbox_bkg"
-                />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Monday"
-                android:id="@+id/toMonCB"
-                app:buttonTint="@drawable/checkbox_bkg"
-                android:layout_column="1"
-                android:textStyle="bold"
-                />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Tuesday"
-                android:id="@+id/toTueCB"
-                android:layout_column="2"
-                android:textStyle="bold"
-                app:buttonTint="@drawable/checkbox_bkg"
-                />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Wednesday"
-                android:id="@+id/toWedCB"
-                android:layout_column="3"
-                android:textStyle="bold"
-                app:buttonTint="@drawable/checkbox_bkg"
-                />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Thursday"
-                android:id="@+id/toThuCB"
-                android:layout_column="4"
-                android:textStyle="bold"
-                />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Friday"
-                android:id="@+id/toFriCB"
-                android:layout_column="5"
-                android:textStyle="bold"
-                />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Saturday"
-                android:id="@+id/toSatCB"
-                android:layout_column="6"
-                android:textStyle="bold"
-                />
-        </TableRow>
-    </TableLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="800dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:cardCornerRadius="5dp"
-        android:id="@+id/editPhoneDialog"
-        app:cardElevation="10dp">
+        android:layout_margin="20dp"
+        android:visibility="gone">
 
-
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:text="Edit Phone Number"
-            android:layout_gravity="top|left"
-            android:textSize="18dp"
-            />
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
-            android:text="Submit"
-            android:id="@+id/phoneSaveChangesButton"
-            android:background="@drawable/new_btn_bkg"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Copy Hours"
+                        android:textColor="@color/mainColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-        <ImageButton
-            android:layout_marginTop="25dp"
-            android:id="@+id/exitUpdatePhoneDialogeBtnId"
-            android:layout_width="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="20dp"
-            android:background="@drawable/close"
-            android:layout_gravity="top|right"
-            />
+                    <Button
+                        android:id="@+id/copyButtonCV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="36dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Copy"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
+                    <ImageButton
+                        android:id="@+id/exitCopyDialogeBtnId"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="@null" />
 
-        <TableLayout
-            android:layout_marginTop="40dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp">
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
 
-            <!--<TableRow>-->
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
-
-                    <!--android:text="Description:"-->
-                    <!--android:layout_column="0"-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-                <!--<EditText-->
-                    <!--android:id="@+id/newPhoneDescText"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--android:text=""-->
-                    <!--android:ems="8"-->
-                    <!--android:layout_column="1"-->
-                    <!--android:background="@drawable/textview_background"-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-            <!--</TableRow>-->
-
-            <TableRow>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Copy From *"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                    android:text="Phone Number:* "
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
+                <Spinner
+                    android:id="@+id/fromDaySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:entries="@array/days" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Copy To *"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/toSunCB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sun"
+                        android:textColor="#1A237E"
+                        android:textSize="12sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+
+                    <CheckBox
+                        android:id="@+id/toMonCB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mon"
+                        android:textColor="#1A237E"
+                        android:textSize="12sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+
+                    <CheckBox
+                        android:id="@+id/toTueCB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tue"
+                        android:textColor="#1A237E"
+                        android:textSize="12sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+
+                    <CheckBox
+                        android:id="@+id/toWedCB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Wed"
+                        android:textColor="#1A237E"
+                        android:textSize="12sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+
+                    <CheckBox
+                        android:id="@+id/toThuCB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Thu"
+                        android:textColor="#1A237E"
+                        android:textSize="12sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+
+                    <CheckBox
+                        android:id="@+id/toFriCB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Fri"
+                        android:textColor="#1A237E"
+                        android:textSize="12sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+
+                    <CheckBox
+                        android:id="@+id/toSatCB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sat"
+                        android:textColor="#1A237E"
+                        android:textSize="12sp"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
+    <!-- ── Edit Phone dialog ── -->
+    <ScrollView
+        android:id="@+id/editPhoneDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:visibility="gone">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Edit Phone Number"
+                        android:textColor="@color/mainColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/phoneSaveChangesButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="36dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <ImageButton
+                        android:id="@+id/exitUpdatePhoneDialogeBtnId"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="@null" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Phone Number *"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/newChangesPhoneNoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background"
+                    android:gravity="center"
                     android:inputType="number"
                     android:maxLength="10"
-                    android:ems="8"
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
-            <!--<TableRow>-->
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp" />
 
-                    <!--android:text="Phone Extension:"-->
-                    <!--android:layout_column="0"-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-                <!--<EditText-->
-                    <!--android:id="@+id/newPhoneExtText"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="5dp"-->
-                    <!--android:text=""-->
-                    <!--android:ems="8"-->
-                    <!--android:layout_column="1"-->
-                    <!--android:background="@drawable/textview_background"-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-            <!--</TableRow>-->
+            </LinearLayout>
 
-        </TableLayout>
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="800dp"
+    <!-- ── Edit Email dialog ── -->
+    <ScrollView
+        android:id="@+id/editEmailDialog"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:cardCornerRadius="5dp"
-        android:id="@+id/editEmailDialog"
-        app:cardElevation="10dp">
+        android:layout_margin="20dp"
+        android:visibility="gone">
 
-
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:text="Edit Email Address"
-            android:layout_gravity="top|left"
-            android:textSize="18dp"
-            />
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
-            android:text="Submit"
-            android:id="@+id/emailSaveChangesButton"
-            android:background="@drawable/new_btn_bkg"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Edit Email Address"
+                        android:textColor="@color/mainColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-        <ImageButton
-            android:layout_marginTop="25dp"
-            android:id="@+id/exitUpdateEmailDialogeBtnId"
-            android:layout_width="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="20dp"
-            android:background="@drawable/close"
-            android:layout_gravity="top|right"
-            />
+                    <Button
+                        android:id="@+id/emailSaveChangesButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="36dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
+                    <ImageButton
+                        android:id="@+id/exitUpdateEmailDialogeBtnId"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="@null" />
 
-        <TableLayout
-            android:layout_marginTop="40dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp">
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
 
-            <!--<TableRow>-->
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-
-            <!--android:text="Description:"-->
-            <!--android:layout_column="0"-->
-            <!--android:textStyle="bold"-->
-            <!--/>-->
-            <!--<EditText-->
-            <!--android:id="@+id/newPhoneDescText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:text=""-->
-            <!--android:ems="8"-->
-            <!--android:layout_column="1"-->
-            <!--android:background="@drawable/textview_background"-->
-            <!--android:textStyle="bold"-->
-            <!--/>-->
-            <!--</TableRow>-->
-
-            <TableRow>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Email Address *"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                    android:text="Email Address:* "
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
                 <EditText
                     android:id="@+id/newChangesEmailText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="25"
-                    android:padding="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background"
+                    android:gravity="center"
                     android:inputType="textEmailAddress"
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
-            <!--<TableRow>-->
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
+                    android:padding="8dp"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp" />
 
-            <!--android:text="Phone Extension:"-->
-            <!--android:layout_column="0"-->
-            <!--android:textStyle="bold"-->
-            <!--/>-->
-            <!--<EditText-->
-            <!--android:id="@+id/newPhoneExtText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="5dp"-->
-            <!--android:text=""-->
-            <!--android:ems="8"-->
-            <!--android:layout_column="1"-->
-            <!--android:background="@drawable/textview_background"-->
-            <!--android:textStyle="bold"-->
-            <!--/>-->
-            <!--</TableRow>-->
+            </LinearLayout>
 
-        </TableLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="800dp"
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
+    <!-- ── Add Email dialog ── -->
+    <ScrollView
+        android:id="@+id/addNewEmailDialog"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:cardCornerRadius="5dp"
-        android:id="@+id/addNewEmailDialog"
-        app:cardElevation="10dp">
+        android:layout_margin="20dp"
+        android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/addDefficienyDialogeTitle"
-            android:text="Add New Email"
-            android:layout_gravity="top|left"
-            android:textSize="18dp"
-            />
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
-            android:text="Submit"
-            android:id="@+id/emailSubmitButton"
-            android:background="@drawable/new_btn_bkg"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:id="@+id/addDefficienyDialogeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Add New Email"
+                        android:textColor="@color/mainColor"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-        <ImageButton
-            android:layout_marginTop="25dp"
-            android:id="@+id/exitAddEmailDialogeBtnId"
-            android:layout_width="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_height="20dp"
-            android:background="@drawable/close"
-            android:layout_gravity="top|right"
-            />
+                    <Button
+                        android:id="@+id/emailSubmitButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="36dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
+                    <ImageButton
+                        android:id="@+id/exitAddEmailDialogeBtnId"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close"
+                        android:contentDescription="@null" />
 
+                </RelativeLayout>
 
-        <TableLayout
-            android:layout_marginTop="40dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#E0E0E0" />
 
-
-            <TableRow>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Email Type *"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                    android:text="Email Type:*"
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
                 <Spinner
                     android:id="@+id/newEmailTypeSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ems="8"
-                    android:layout_column="1"
-                    />
-            </TableRow>
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp" />
 
-            <TableRow>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Email Address:* "
-                    android:layout_column="0"
-                    android:textStyle="bold"
-                    />
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Email Address *"
+                    android:textColor="#37474F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/newEmailAddrText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:ems="25"
-                    android:padding="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_input_background"
+                    android:gravity="center"
                     android:inputType="textEmailAddress"
-                    android:layout_column="1"
-                    android:background="@drawable/textview_background"
-                    android:textStyle="bold"
-                    />
-            </TableRow>
+                    android:padding="8dp"
+                    android:textColor="#1A237E"
+                    android:textSize="13sp" />
 
-        </TableLayout>
-    </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
+    <!-- Loading overlay -->
     <RelativeLayout
         android:id="@+id/contactInfoLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:clickable="true"
         android:background="@color/mainColor"
+        android:clickable="true"
         android:visibility="gone">
 
         <ProgressBar
@@ -2330,8 +2121,8 @@
             android:progressTint="@color/white" />
 
         <TextView
-            android:layout_width="wrap_content"
             android:id="@+id/contactInfoLoadingText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/progressBarRecordsLoc"
             android:layout_centerHorizontal="true"
@@ -2340,6 +2131,6 @@
             android:textSize="26sp"
             android:textStyle="bold" />
 
-
     </RelativeLayout>
+
 </RelativeLayout>
