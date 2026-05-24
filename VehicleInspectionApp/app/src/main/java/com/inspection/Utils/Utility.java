@@ -348,17 +348,18 @@ public class Utility {
             AlertDialog dialog = builder.create();
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setCancelable(false);
-            okBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
+            okBtn.setOnClickListener(v -> dialog.dismiss());
             dialog.show();
+            android.view.Window winInternet = dialog.getWindow();
+            winInternet.setWindowAnimations(R.style.DialogPopAnimation);
+            int wInternet = (int) (320 * context.getResources().getDisplayMetrics().density);
+            winInternet.setLayout(wInternet, android.view.WindowManager.LayoutParams.WRAP_CONTENT);
+            winInternet.getDecorView().setPadding(0, 0, 0, 0);
 //        }
     }
 
     public static final void showUnifiedConfirmationDialog(Context context,
                                                        String message) {
-//        Drawable icon;
-//        int iconColor;
         if (message != null && message.trim().length() > 0) {
             Builder builder = new AlertDialog.Builder(context);
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -370,17 +371,18 @@ public class Utility {
             AlertDialog dialog = builder.create();
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setCancelable(false);
-            okBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
+            okBtn.setOnClickListener(v -> dialog.dismiss());
             dialog.show();
+            android.view.Window winConfirm = dialog.getWindow();
+            winConfirm.setWindowAnimations(R.style.DialogPopAnimation);
+            int wConfirm = (int) (320 * context.getResources().getDisplayMetrics().density);
+            winConfirm.setLayout(wConfirm, android.view.WindowManager.LayoutParams.WRAP_CONTENT);
+            winConfirm.getDecorView().setPadding(0, 0, 0, 0);
         }
     }
 
     public static final void showUnifiedErrorDialog(Context context,
                                                            String message) {
-//        Drawable icon;
-//        int iconColor;
         if (message != null && message.trim().length() > 0) {
             Builder builder = new AlertDialog.Builder(context);
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -392,10 +394,13 @@ public class Utility {
             AlertDialog dialog = builder.create();
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setCancelable(false);
-            okBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
+            okBtn.setOnClickListener(v -> dialog.dismiss());
             dialog.show();
+            android.view.Window winError = dialog.getWindow();
+            winError.setWindowAnimations(R.style.DialogPopAnimation);
+            int wError = (int) (320 * context.getResources().getDisplayMetrics().density);
+            winError.setLayout(wError, android.view.WindowManager.LayoutParams.WRAP_CONTENT);
+            winError.getDecorView().setPadding(0, 0, 0, 0);
         }
     }
 
@@ -488,10 +493,13 @@ public class Utility {
             AlertDialog dialog = builder.create();
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setCancelable(false);
-            okBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
+            okBtn.setOnClickListener(v -> dialog.dismiss());
             dialog.show();
+            android.view.Window winSteps = dialog.getWindow();
+            winSteps.setWindowAnimations(R.style.DialogPopAnimation);
+            int wSteps = (int) (320 * context.getResources().getDisplayMetrics().density);
+            winSteps.setLayout(wSteps, android.view.WindowManager.LayoutParams.WRAP_CONTENT);
+            winSteps.getDecorView().setPadding(0, 0, 0, 0);
         }
     }
 
@@ -512,32 +520,33 @@ public class Utility {
             AlertDialog dialog = builder.create();
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setCancelable(false);
-            okBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
+            okBtn.setOnClickListener(v -> dialog.dismiss());
             dialog.show();
+            android.view.Window winValidation = dialog.getWindow();
+            winValidation.setWindowAnimations(R.style.DialogPopAnimation);
+            int wValidation = (int) (320 * context.getResources().getDisplayMetrics().density);
+            winValidation.setLayout(wValidation, android.view.WindowManager.LayoutParams.WRAP_CONTENT);
+            winValidation.getDecorView().setPadding(0, 0, 0, 0);
         }
     }
 
     public static final void showUnifiedInformationDialog(Context context,
                                                            String message) {
-//        Drawable icon;
-//        int iconColor;
         if (message != null && message.trim().length() > 0) {
-            Builder builder = new AlertDialog.Builder(context);
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View dialogView = inflater.inflate(R.layout.information_dialog, null);
-            builder.setView(dialogView);
+            android.app.Dialog dialog = new android.app.Dialog(context, R.style.CompactDialog);
+            View dialogView = LayoutInflater.from(context).inflate(R.layout.information_dialog_v2, null);
+            dialog.setContentView(dialogView);
+            dialog.setCancelable(false);
             TextView dialogMessage = dialogView.findViewById(R.id.tvMessage);
             dialogMessage.setText(message);
             Button okBtn = dialogView.findViewById(R.id.btnAction);
-            AlertDialog dialog = builder.create();
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setCancelable(false);
-            okBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
+            okBtn.setOnClickListener(v -> dialog.dismiss());
             dialog.show();
+            android.view.Window window = dialog.getWindow();
+            window.setWindowAnimations(R.style.DialogPopAnimation);
+            int widthPx = (int) (320 * context.getResources().getDisplayMetrics().density);
+            window.setLayout(widthPx, android.view.WindowManager.LayoutParams.WRAP_CONTENT);
+            window.getDecorView().setPadding(0, 0, 0, 0);
         }
     }
 

@@ -97,8 +97,8 @@ class FacilityGeneralInformationFragment : Fragment() {
             termReasonArray .add(fac.TerminationCodeName)
         }
 
-        var termReasonAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, termReasonArray)
-        termReasonAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        var termReasonAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item_modern, termReasonArray)
+        termReasonAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.terminationReasonTextviewVal.adapter = termReasonAdapter
 
         busTypeList = TypeTablesModel.getInstance().BusinessType
@@ -107,8 +107,8 @@ class FacilityGeneralInformationFragment : Fragment() {
             busTypeArray .add(fac.BusTypeName)
         }
 
-        var busTypeAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, busTypeArray)
-        busTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        var busTypeAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item_modern, busTypeArray)
+        busTypeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.bustypeTextviewVal.adapter = busTypeAdapter
 
 
@@ -118,8 +118,8 @@ class FacilityGeneralInformationFragment : Fragment() {
             timeZoneArray .add(fac.TimezoneName)
         }
 
-        var tzdataAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, timeZoneArray)
-        tzdataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        var tzdataAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item_modern, timeZoneArray)
+        tzdataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.timeZoneSpinner.adapter = tzdataAdapter
 
         svcAvailabilityList = TypeTablesModel.getInstance().ServiceAvailabilityType
@@ -127,8 +127,8 @@ class FacilityGeneralInformationFragment : Fragment() {
         for (fac in svcAvailabilityList) {
             svcAvailabilityArray .add(fac.SrvAvaName)
         }
-        var svcAvldataAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item, svcAvailabilityArray)
-        svcAvldataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        var svcAvldataAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item_modern, svcAvailabilityArray)
+        svcAvldataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.availabilityTextviewVal.adapter = svcAvldataAdapter
 
         facTypeList = TypeTablesModel.getInstance().FacilityType
@@ -136,8 +136,8 @@ class FacilityGeneralInformationFragment : Fragment() {
         for (fac in facTypeList) {
             facTypeArray .add(fac.FacilityTypeName)
         }
-        var facilityTypedataAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item, facTypeArray)
-        facilityTypedataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        var facilityTypedataAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item_modern, facTypeArray)
+        facilityTypedataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.facilitytypeTextviewVal.adapter = facilityTypedataAdapter
 
 
@@ -147,8 +147,8 @@ class FacilityGeneralInformationFragment : Fragment() {
             contractTypeArray .add(fac.ContractTypeName)
         }
 
-        var contractTypesAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item, contractTypeArray )
-        contractTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        var contractTypesAdapter = ArrayAdapter<String>(requireActivity(), R.layout.spinner_item_modern, contractTypeArray )
+        contractTypesAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.contractTypeValueSpinner.adapter = contractTypesAdapter
 
         IndicatorsDataModel.getInstance().tblFacility[0].GeneralInfoVisited = true
@@ -418,6 +418,8 @@ class FacilityGeneralInformationFragment : Fragment() {
         binding.saveButton.setOnClickListener {
             if ((requireActivity() as FormsActivity).isNetworkAvailable) {
                 if (validateInputs()) {
+                    binding.saveButton.isEnabled = false
+                    binding.cancelButton.isEnabled = false
                     if (submitPaymentRequired) submitPaymentMethods()
                     if (submitGeneralInfoRequired) submitFacilityGeneralInfo()
                 }   else {
@@ -1123,6 +1125,7 @@ class FacilityGeneralInformationFragment : Fragment() {
                         (activity as FormsActivity).saveRequired = false
                         (activity as FormsActivity).saveDone = true
                         submitGeneralInfoRequired = false
+                        refreshButtonsState()
                         HasChangedModel.getInstance().checkGeneralInfoTblFacilitiesChange()
                         HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityTimeZone=true
                         HasChangedModel.getInstance().groupFacilityGeneralInfo[0].FacilityType=true

@@ -46,25 +46,36 @@
 
     <style name="myAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="CustomDatePickerStyle" parent="Widget.MaterialComponents.MaterialCalendar">
-<!--        <item name="android:background">@color/white</item>-->
-        <item name="android:textColorPrimary">@color/mainColor</item>
-        <item name="colorPrimaryDark">@color/mainColor</item>
-        <item name="android:calendarTextColor">@color/mainColor</item>
-        <item name="android:headerBackground">@color/cb_green</item>
-
-        <item name="android:datePickerMode">calendar</item> <!-- For dates in calendar view -->
+    <style name="CustomDatePickerStyle">
+        <item name="android:headerBackground">@color/mainColor</item>
+        <item name="android:datePickerMode">calendar</item>
     </style>
-    <style name="CustomDatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
-<!--        <item name="android:background">@color/white</item> &lt;!&ndash; Set desired background color &ndash;&gt;-->
-<!--        <item name="android:datePickerDialogTheme">@color/mainColor</item> &lt;!&ndash; Optional customizations &ndash;&gt;-->
-        <item name="colorPrimary">@color/white</item> <!-- Sets header background color -->
-        <item name="colorOnPrimary">@color/cb_green</item>
-        <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item> <!-- Optional customizations -->
+    <style name="CustomDatePickerDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/mainColor</item>
+        <item name="colorPrimaryVariant">@color/mainColor</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorControlActivated">@color/mainColor</item>
+        <item name="colorControlHighlight">#E8EDF8</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item>
     </style>
 
     <style name="FadeDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
+    </style>
+    <style name="DialogPopAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_scale_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_scale_out</item>
+    </style>
+
+    <style name="CompactDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowMinWidthMajor">0%</item>
+        <item name="android:windowMinWidthMinor">0%</item>
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 
     <style name="DrawerMenuItemText" parent="TextAppearance.MaterialComponents.Body1">
