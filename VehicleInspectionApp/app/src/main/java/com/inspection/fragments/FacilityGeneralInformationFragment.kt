@@ -504,40 +504,49 @@ class FacilityGeneralInformationFragment : Fragment() {
         FacilityDataModel.getInstance().tblAffiliateVendorFacilities.apply {
             (0 until size).forEach {
 //                if (!get(it).AffiliateVendorFacilityID.equals("-1")) {
+                    val rowMinH = (48 * resources.displayMetrics.density).toInt()
+                    val rowBg = if (it % 2 == 0) android.graphics.Color.parseColor("#F8F9FF") else android.graphics.Color.WHITE
+
                     var tableRow = TableRow(context)
                     tableRow.layoutParams = rowLayoutParamRow
-                    tableRow.minimumHeight = 30
-//                    tableRow.weightSum = 4.5F
+                    tableRow.minimumHeight = rowMinH
+                    tableRow.setBackgroundColor(rowBg)
 
                     val textView1 = TextView(context)
                     textView1.layoutParams = rowLayoutParam
                     textView1.gravity = Gravity.CENTER
-                    textView1.textSize = 14f
-                    textView1.minimumHeight = 30
+                    textView1.textSize = 13f
+                    textView1.minimumHeight = rowMinH
+                    textView1.setTextColor(android.graphics.Color.parseColor("#1A237E"))
                     textView1.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView1.setPadding(8, 0, 8, 0)
                     textView1.text = get(it).AffiliateVendorName
                     tableRow.addView(textView1)
 
                     val editView2 = EditText(context)
                     editView2.layoutParams = rowLayoutParam1
                     editView2.gravity = Gravity.CENTER
-                    editView2.textSize = 14f
-                    editView2.minimumHeight = 30
-                    editView2.setBackgroundColor(Color.WHITE)
+                    editView2.textSize = 13f
+                    editView2.minimumHeight = rowMinH
+                    editView2.setTextColor(android.graphics.Color.parseColor("#1A237E"))
+                    editView2.setBackgroundResource(R.drawable.cert_input_background)
                     editView2.inputType = InputType.TYPE_CLASS_NUMBER
                     editView2.setText(get(it).AffiliateVendor)
                     editView2.textAlignment = EditText.TEXT_ALIGNMENT_CENTER
+                    val dp6 = (6 * resources.displayMetrics.density).toInt()
+                    editView2.setPadding(dp6, dp6, dp6, dp6)
                     tableRow.addView(editView2)
 
                     val updateButton = Button(context)
                     updateButton.layoutParams = rowLayoutParam2
-                    updateButton.setTextColor(Color.BLUE)
+                    updateButton.setTextColor(android.graphics.Color.parseColor("#4572CE"))
                     updateButton.text = if (get(it).AffiliateVendor.isNullOrEmpty()) "ADD" else "EDIT"
                     updateButton.tag = if (get(it).AffiliateVendorFacilityID.isNullOrEmpty()) 0 else get(it).AffiliateVendorFacilityID
-                    updateButton.textSize = 14f
-                    updateButton.minimumHeight = 30
+                    updateButton.textSize = 13f
+                    updateButton.minimumHeight = rowMinH
                     updateButton.gravity = Gravity.CENTER
-                    updateButton.setBackgroundColor(Color.TRANSPARENT)
+                    updateButton.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                    updateButton.typeface = android.graphics.Typeface.DEFAULT_BOLD
                     tableRow.addView(updateButton)
 
                     updateButton.setOnClickListener {
@@ -591,13 +600,14 @@ class FacilityGeneralInformationFragment : Fragment() {
                     }
                     val deleteButton = Button(context)
                     deleteButton.layoutParams = rowLayoutParam3
-                    deleteButton.setTextColor(Color.BLUE)
+                    deleteButton.setTextColor(android.graphics.Color.parseColor("#C62828"))
                     deleteButton.text = if (get(it).AffiliateVendor.isNullOrEmpty()) "" else "DELETE"
                     deleteButton.tag = if (get(it).AffiliateVendorFacilityID.isNullOrEmpty()) 0 else get(it).AffiliateVendorFacilityID
-                    deleteButton.textSize = 14f
-                    deleteButton.minimumHeight = 30
+                    deleteButton.textSize = 13f
+                    deleteButton.minimumHeight = rowMinH
                     deleteButton.gravity = Gravity.CENTER
-                    deleteButton.setBackgroundColor(Color.TRANSPARENT)
+                    deleteButton.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                    deleteButton.typeface = android.graphics.Typeface.DEFAULT_BOLD
                     tableRow.addView(deleteButton)
 
 

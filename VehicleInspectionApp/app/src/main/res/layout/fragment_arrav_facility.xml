@@ -1772,9 +1772,8 @@
                 <TableLayout
                     android:id="@+id/trackingTableLayout"
                     android:layout_width="match_parent"
-                    android:layout_marginStart="80dp"
-                    android:layout_marginEnd="80dp"
                     android:divider="@drawable/divider_table_layout"
+                    android:showDividers="middle"
                     android:layout_height="wrap_content">
 
                     <TableRow
