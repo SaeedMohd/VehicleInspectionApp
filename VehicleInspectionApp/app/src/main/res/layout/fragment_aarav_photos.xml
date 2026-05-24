@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context=".fragments.FragmentAARAVPhotos">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,7 +16,7 @@
         android:paddingBottom="10dp"
         android:layout_margin="10dp"
         android:paddingTop="5dp"
-        android:background="@color/light_gray"
+        android:background="#F0F4FF"
         android:orientation="vertical">
 
         <LinearLayout
@@ -45,7 +45,7 @@
                         android:textStyle="bold"
                         android:textSize="22sp"
                         android:gravity="center"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1565C0"
                         />
 
                     <Button
@@ -95,9 +95,8 @@
                         />
                 </LinearLayout>
                 <Button
-                    android:background="@drawable/new_btn_bkg"
+                    android:background="@drawable/btn_cert_primary"
                     android:textColor="@color/white"
-                    app:backgroundTint="@null"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginBottom="10dp"
@@ -141,9 +140,9 @@
                 android:scrollbars="horizontal"
                 >
                 <TableRow
-                    android:background="@color/mainColor"
+                    android:background="@drawable/cert_header_bg"
                     android:layout_gravity="center_vertical"
-                    android:minHeight="30dp"
+                    android:minHeight="36dp"
                     android:layout_width="wrap_content"
                     >
                     <TextView
@@ -474,7 +473,7 @@
                         android:layout_column="1"
                         android:enabled="false"
                         android:layout_span="5"
-                        android:background="@drawable/textview_background"
+                        android:background="@drawable/cert_input_background"
                         />
                     <CheckBox
                         android:layout_width="wrap_content"
@@ -508,7 +507,7 @@
                         android:id="@+id/fileNameTitle"
                         android:textStyle="italic|bold"
                         android:layout_column="1"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:layout_span="6"
                         />
                 </TableRow>
@@ -531,7 +530,7 @@
                         android:maxLength="200"
                         android:layout_span="2"
                         android:layout_column="1"
-                        android:background="@drawable/textview_background"
+                        android:background="@drawable/cert_input_background"
                         android:textStyle="bold"
                         />
 
@@ -719,9 +718,9 @@
                         android:digits="abcdefghijklmnopqrstuvwxyz1234567890_-."
                         android:layout_column="1"
                         android:layout_span="5"
-                        android:background="@drawable/textview_background"
+                        android:background="@drawable/cert_input_background"
                         android:textStyle="italic"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         />
                     <!--                    <TextView-->
                     <!--                        android:layout_width="wrap_content"-->
@@ -769,7 +768,7 @@
                         android:maxLength="200"
                         android:layout_span="6"
                         android:layout_column="1"
-                        android:background="@drawable/textview_background"
+                        android:background="@drawable/cert_input_background"
                         />
 
                 </TableRow>

@@ -4,61 +4,32 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 xmlns:tools="http://schemas.android.com/tools"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-android:background="@color/light_gray"
+android:background="#F0F4FF"
 tools:context=".fragments.FragmentAARAVSoftware">
 
-<LinearLayout
+<ScrollView
     android:layout_width="match_parent"
-    android:id="@+id/facSW"
-    android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="left"
-        android:layout_weight="8"
-        android:text="Software"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:layout_gravity="left"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        />
-</LinearLayout>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/facSW"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp"
-    android:paddingBottom="10dp"
-    android:layout_margin="10dp"
-    android:paddingTop="5dp"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Software"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_margin="10dp"
-            android:textColor="#827908"
-            />
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Showing 1-2 of 2 Results"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_margin="10dp"
-            android:textColor="#800000"
-            />
+            android:layout_marginBottom="8dp"
+            android:text="Software"
+            android:textColor="#1565C0"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TableLayout
             android:id="@+id/commentsResultsTbl"
@@ -68,38 +39,48 @@ tools:context=".fragments.FragmentAARAVSoftware">
             android:divider="@drawable/divider_table_layout"
             >
             <TableRow
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Software ID"
-                    android:textStyle="bold"
-                    android:layout_column="0"
-                    android:ems="4"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    />
+                android:background="@drawable/cert_header_bg"
+                android:minHeight="36dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Date Completed"
-                    android:textStyle="bold"
-                    android:layout_column="1"
-                    android:ems="4"
+                    android:layout_column="0"
                     android:layout_weight="1"
-                    android:textAlignment="center"
-                    />
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Software ID"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Date Completed"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
             </TableRow>
         </TableLayout>
 
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add New Software"
             android:id="@+id/addNewBtn"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/btn_cert_primary"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="Add New Software"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -864,7 +845,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:text=""
                     android:ems="8"
                     android:layout_column="3"
-                    android:background="@drawable/textview_background"
+                    android:background="@drawable/cert_input_background"
                     android:textStyle="bold"
                     />
             </TableRow>
@@ -909,7 +890,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:text=""
                     android:ems="8"
                     android:layout_column="1"
-                    android:background="@drawable/textview_background"
+                    android:background="@drawable/cert_input_background"
                     android:textStyle="bold"
                     />
             </TableRow>
@@ -954,7 +935,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:text=""
                     android:ems="8"
                     android:layout_column="1"
-                    android:background="@drawable/textview_background"
+                    android:background="@drawable/cert_input_background"
                     android:textStyle="bold"
                     />
             </TableRow>
@@ -1008,7 +989,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:text=""
                     android:ems="8"
                     android:layout_column="2"
-                    android:background="@drawable/textview_background"
+                    android:background="@drawable/cert_input_background"
                     android:textStyle="bold"
                     />
             </TableRow>
@@ -1060,7 +1041,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                 android:text=""
                 android:ems="8"
                 android:layout_column="1"
-                android:background="@drawable/textview_background"
+                android:background="@drawable/cert_input_background"
                 android:textStyle="bold"
                 />
             </TableRow>
@@ -1083,7 +1064,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:text=""
                     android:ems="8"
                     android:layout_column="1"
-                    android:background="@drawable/textview_background"
+                    android:background="@drawable/cert_input_background"
                     android:textStyle="bold"
                     />
             </TableRow>
@@ -1127,7 +1108,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:text=""
                     android:ems="8"
                     android:layout_column="1"
-                    android:background="@drawable/textview_background"
+                    android:background="@drawable/cert_input_background"
                     android:textStyle="bold"
                     />
             </TableRow>
@@ -1168,7 +1149,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:text=""
                     android:ems="8"
                     android:layout_column="2"
-                    android:background="@drawable/textview_background"
+                    android:background="@drawable/cert_input_background"
                     android:textStyle="bold"
                     />
             </TableRow>
@@ -1300,7 +1281,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:text=""
                     android:ems="8"
                     android:layout_column="1"
-                    android:background="@drawable/textview_background"
+                    android:background="@drawable/cert_input_background"
                     android:textStyle="bold"
                     />
             </TableRow>
@@ -1557,7 +1538,7 @@ tools:context=".fragments.FragmentAARAVSoftware">
                     android:text=""
                     android:ems="8"
                     android:layout_column="3"
-                    android:background="@drawable/textview_background"
+                    android:background="@drawable/cert_input_background"
                     android:textStyle="bold"
                     />
             </TableRow>
@@ -1569,22 +1550,34 @@ tools:context=".fragments.FragmentAARAVSoftware">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save" />
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:paddingTop="12dp">
 
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel" />
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/btn_cert_outline"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Cancel"
+                android:textColor="#1565C0"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/btn_cert_primary"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Save"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
