@@ -1,538 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context="com.inspection.fragments.FacilityGeneralInformationFragment">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
+    <ScrollView
         android:id="@+id/lastseperator"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="5dp"
-        android:background="@color/light_gray"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="General Information"
-                android:textStyle="bold"
-                android:textColor="@color/mainColor"
-                android:textSize="22sp"
-                android:padding="10dp"
-                />
+            android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/progressbarScope"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:max="100"
-                android:visibility="invisible"
-                android:backgroundTint="@color/white"
-                android:indeterminateTint="#1a09d6"
-                android:layout_marginTop="-7dp"/>
-
+            <!-- Scope of Service card -->
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                >
-<!--                android:id="@+id/connumberll"-->
-                <RadioGroup
-                    android:id="@+id/laborRateRadioGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:paddingBottom="16dp">
 
-                    <RadioButton
-                        android:id="@+id/fixedLaborRadioButton"
+                <!-- Header -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:checked="true"
+                        android:layout_centerVertical="true"
+                        android:text="Scope of Service / General Information"
+                        android:textColor="@color/white"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:text="Fixed Labor Rate" />
+                        android:textStyle="bold" />
+                </RelativeLayout>
 
-                    <RadioButton
-                        android:textStyle="bold"
-                        android:id="@+id/laborRateMatrixRadioButton"
-                        android:layout_width="wrap_content"
-                        android:textSize="18sp"
-                        android:layout_height="wrap_content"
-                        android:text="Labor Rate Matrix" />
-
-
-                </RadioGroup>
-
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="3dp"
-                android:background="@color/light_gray" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="4"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                >
-<!--                android:id="@+id/connumberll"-->
-                <TextView
-                    android:id="@+id/fixedLaborRateTextView"
-                    android:layout_width="0dp"
+                <ProgressBar
+                    android:id="@+id/progressbarScope"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:text="Fixed Labor Rate ($): "
-                    android:layout_gravity="center_vertical"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/fixedLaborRateEditText"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="numberDecimal"
-                    android:digits="0123456789."
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center"
-                    android:background="@drawable/textview_background"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/diagnosticRateTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="18sp"
-                    android:text="Diagnostic Rate ($): "
-                    android:layout_gravity="center_vertical"
-                    android:textStyle="bold"
-                    />
+                    android:indeterminate="true"
+                    android:max="100"
+                    android:visibility="invisible"
+                    android:backgroundTint="@color/white"
+                    android:indeterminateTint="#1565C0"
+                    android:layout_marginTop="-2dp" />
 
-                <EditText
-                    android:id="@+id/diagnosticRateEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/textview_background"
-                    android:digits="0123456789."
-                    android:gravity="center"
-                    android:inputType="numberDecimal"
-                    android:textSize="18sp" />
-
-
-
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="3dp"
-                android:id="@+id/laborRateView"
-                android:background="@color/light_gray" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="4"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                android:id="@+id/laborRateLL">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="18sp"
-                    android:id="@+id/laborRateMatrixMinTextView"
-                    android:text="Labor Rate Matrix Min ($): "
-                    android:layout_gravity="center_vertical"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/laborRateMatrixMinEditText"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="10dp"
-                    android:inputType="numberDecimal"
-                    android:digits="0123456789."
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/textview_background"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="20dp"
-                    android:id="@+id/laborRateMatrixMaxTextView"
-                    android:textSize="18sp"
-                    android:text="Labor Rate Matrix Max ($): "
-                    android:layout_gravity="center_vertical"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/laborRateMatrixMaxEditText"
-                    android:layout_toRightOf="@id/contract_number_textview"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:inputType="numberDecimal"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:digits="0123456789."
-                    android:textSize="18sp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/textview_background"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="3dp"
-                android:background="@color/light_gray" />
-
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:weightSum="2"-->
-                <!--android:layout_below="@id/connumberll"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:id="@+id/contypell">-->
-                <!--<TextView-->
-                    <!--android:id="@+id/effective_date_textview"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@id/connumberll"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:text="Labor Rate Matrix Min ($): "-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-                <!--<EditText-->
-                    <!--android:id="@+id/laborRateMatrixMinEditText"-->
-
-                    <!--android:layout_below="@id/connumberll"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:background="@null"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:textSize="12dp"-->
-                    <!--android:inputType="numberDecimal"-->
-                    <!--android:digits="0123456789."-->
-                    <!--android:hint="Please enter labor rate min"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:layout_height="wrap_content" />-->
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:weightSum="2"-->
-                <!--android:layout_below="@id/contypell"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:id="@+id/officell">-->
-                <!--<TextView-->
-                    <!--android:id="@+id/expiration_date_textview"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@id/contypell"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:text="Labor Rate Matrix Max ($): "-->
-                    <!--android:textStyle="bold"-->
-                    <!--/>-->
-                <!--<EditText-->
-                    <!--android:id="@+id/laborRateMatrixMaxEditText"-->
-                    <!--android:layout_toRightOf="@id/office_textview"-->
-                    <!--android:layout_below="@id/contypell"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:background="@null"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:inputType="numberDecimal"-->
-                    <!--android:digits="0123456789."-->
-                    <!--android:textSize="12dp"-->
-                    <!--android:hint="Please enter labor rate max"-->
-                    <!--android:layout_height="wrap_content" />-->
-            <!--</LinearLayout>-->
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="4"
-                android:layout_below="@id/officell"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                >
-<!--                android:id="@+id/AssignedToll"-->
-                <TextView
-                    android:id="@+id/numberOfBaysTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="20dp"
-                    android:text="Number Of Bays: "
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    />
-
-                <EditText
-                    android:id="@+id/numberOfBaysEditText"
-                    android:layout_below="@id/contypell"
-                    android:layout_width="0dp"
-                    android:background="@drawable/textview_background"
-                    android:textSize="18sp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.5"
-                    android:inputType="number"
-                    android:gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:digits="0123456789"
-                    android:maxLength="2"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/numberOfLiftsTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="20dp"
-                    android:text="Number Of Lifts: "
-                    android:textStyle="bold"
-                    />
-
-                <EditText
-                    android:id="@+id/numberOfLiftsEditText"
-                    android:layout_below="@id/contypell"
-                    android:layout_width="0dp"
-                    android:background="@drawable/textview_background"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="18sp"
-                    android:layout_weight="0.5"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:layout_marginLeft="10dp"
-                    android:digits="0123456789"
-                    android:maxLength="2"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="3dp"
-                android:background="@color/light_gray" />
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="4"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:id="@+id/disountpercentageTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="20dp"
-                    android:text="Discount Percentage: "
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    />
-
-                <Spinner
-                    android:id="@+id/disountpercentageDropListId"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    />
-
-                <TextView
-                    android:id="@+id/maxdiscountamountTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="20dp"
-                    android:text="Max Discount Amount: "
-                    android:textStyle="bold"
-                    />
-
-                <EditText
-                    android:id="@+id/maxdDiscountAmountEditText"
-                    android:layout_below="@id/contypell"
-                    android:layout_width="0dp"
-                    android:background="@drawable/textview_background"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="18sp"
-                    android:layout_weight="0.5"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:layout_marginLeft="10dp"
-                    android:digits="0123456789"
-                    android:maxLength="3"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="3dp"
-                android:background="@color/light_gray" />
-
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="4"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                >
-<!--                android:id="@+id/AssignedToll"-->
-                <TextView
-                    android:id="@+id/comments_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Warranty Period: "
-                    android:textSize="18sp"
-                    android:layout_marginLeft="20dp"
-                    android:textStyle="bold"
-                    />
-
-                <Spinner
-                    android:id="@+id/warrantyPeriodVal"
-                    android:layout_below="@id/contypell"
-                    android:layout_width="0dp"
-                    android:text="test"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="18sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </LinearLayout>
-
-            <!--<Button-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="save"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:background="@drawable/green_background_button"-->
-                <!--android:id="@+id/saveBtnId"/>-->
-            <!--<Button-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="test"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:background="@drawable/green_background_button"-->
-                <!--android:id="@+id/testBtnId"/>-->
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="30dp"
-                app:cardElevation="5dp">
-
+                <!-- Labor Rate type selection -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="right"
-                    android:gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp">
+
+                    <RadioGroup
+                        android:id="@+id/laborRateRadioGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/fixedLaborRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp"
+                            android:checked="true"
+                            android:text="Fixed Labor Rate"
+                            android:textColor="#1A237E"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/laborRateMatrixRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Labor Rate Matrix"
+                            android:textColor="#1A237E"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#E8ECF0" />
+
+                <!-- Fixed Labor Rate + Diagnostic Rate -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/fixedLaborRateTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Fixed Labor Rate ($)"
+                            android:textColor="#546878"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/fixedLaborRateEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/cert_input_background"
+                            android:digits="0123456789."
+                            android:gravity="center_vertical|start"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#1A237E"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/diagnosticRateTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Diagnostic Rate ($)"
+                            android:textColor="#546878"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/diagnosticRateEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/cert_input_background"
+                            android:digits="0123456789."
+                            android:gravity="center_vertical|start"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#1A237E"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/laborRateView"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#E8ECF0" />
+
+                <!-- Labor Rate Matrix Min + Max -->
+                <LinearLayout
+                    android:id="@+id/laborRateLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/laborRateMatrixMinTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Labor Rate Matrix Min ($)"
+                            android:textColor="#546878"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/laborRateMatrixMinEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/cert_input_background"
+                            android:digits="0123456789."
+                            android:gravity="center_vertical|start"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#1A237E"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/laborRateMatrixMaxTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Labor Rate Matrix Max ($)"
+                            android:textColor="#546878"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/laborRateMatrixMaxEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/cert_input_background"
+                            android:digits="0123456789."
+                            android:gravity="center_vertical|start"
+                            android:inputType="numberDecimal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#1A237E"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#E8ECF0" />
+
+                <!-- Number of Bays + Number of Lifts -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/numberOfBaysTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Number of Bays"
+                            android:textColor="#546878"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/numberOfBaysEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/cert_input_background"
+                            android:digits="0123456789"
+                            android:gravity="center_vertical|start"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#1A237E"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/numberOfLiftsTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Number of Lifts"
+                            android:textColor="#546878"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/numberOfLiftsEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/cert_input_background"
+                            android:digits="0123456789"
+                            android:gravity="center_vertical|start"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#1A237E"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#E8ECF0" />
+
+                <!-- Discount Percentage + Max Discount Amount -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/disountpercentageTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Discount Percentage"
+                            android:textColor="#546878"
+                            android:textSize="13sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/cert_input_background">
+
+                            <Spinner
+                                android:id="@+id/disountpercentageDropListId"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/maxdiscountamountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Max Discount Amount"
+                            android:textColor="#546878"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/maxdDiscountAmountEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="@drawable/cert_input_background"
+                            android:digits="0123456789"
+                            android:gravity="center_vertical|start"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:textColor="#1A237E"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="#E8ECF0" />
+
+                <!-- Warranty Period -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/comments_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Warranty Period"
+                        android:textColor="#546878"
+                        android:textSize="13sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/cert_input_background">
+
+                        <Spinner
+                            android:id="@+id/warrantyPeriodVal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <!-- Cancel + Save action row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp">
 
                     <Button
                         android:id="@+id/cancelButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/new_btn_bkg"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@null"
+                        android:layout_height="44dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/btn_cert_outline"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
                         android:text="Cancel"
-                        />
-
+                        android:textColor="#1565C0"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/saveBtnId"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:background="@drawable/new_btn_bkg"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@null"
+                        android:layout_height="44dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
                         android:text="Save"
-                        android:layout_marginLeft="15dp"
-                        />
-
-
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
-
-            </androidx.cardview.widget.CardView>
-
-
-
+            </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
 
+    <!-- Loading overlay -->
     <RelativeLayout
         android:id="@+id/scopeOfServiceGeneralInfoLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:clickable="true"
         android:background="@color/mainColor"
+        android:clickable="true"
         android:visibility="gone">
 
         <ProgressBar
@@ -543,17 +517,15 @@
             android:progressTint="@color/white" />
 
         <TextView
+            android:id="@+id/progressBarText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/progressBarRecordsSoS"
             android:layout_centerHorizontal="true"
-            android:id="@+id/progressBarText"
             android:text="Loading..."
             android:textColor="@color/white"
-            android:textSize="26sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
-
-
     </RelativeLayout>
 
 </RelativeLayout>
