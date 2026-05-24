@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context=".fragments.FragmentARRAVPersonnel">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@color/white"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:paddingLeft="5dp"

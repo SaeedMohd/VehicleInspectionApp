@@ -14,7 +14,7 @@
         android:layout_margin="10dp"
 
         android:textStyle="bold"
-        android:textColor="@color/mainColor"
+        android:textColor="#1565C0"
         android:textSize="18sp"
         android:text="Promotions"
         android:id="@+id/title"/>
@@ -46,10 +46,13 @@
         android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="save"
-        android:background="@drawable/new_btn_bkg"
+        android:text="Save"
+        android:background="@drawable/btn_cert_primary"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:textColor="@color/white"
-        app:backgroundTint="@null"
+        android:textSize="13sp"
+        android:textStyle="bold"
         android:id="@+id/saveBtnId"/>
 
     <RelativeLayout
