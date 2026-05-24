@@ -205,7 +205,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
-            android:background="@drawable/button_black_background"
+            android:background="@drawable/btn_cert_primary"
             android:text="End"
             android:textColor="@color/white" />
 
@@ -216,7 +216,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
-            android:background="@drawable/button_black_background"
+            android:background="@drawable/btn_cert_primary"
             android:padding="5dp"
             android:text="Start New Safety Check"
             android:textColor="@color/white"
