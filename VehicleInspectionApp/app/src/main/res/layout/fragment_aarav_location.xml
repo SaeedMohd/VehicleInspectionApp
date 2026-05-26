@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context=".fragments.FragmentARRAVDeficiency">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_gray"
+        android:background="@android:color/transparent"
         android:padding="12dp">
 
         <LinearLayout
@@ -39,7 +39,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Location"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="8dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TableLayout
                     android:id="@+id/locationTbl"
@@ -252,7 +252,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Geocode"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -262,7 +262,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="8dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TableLayout
                     android:id="@+id/geocodeTbl"
@@ -592,7 +592,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Phone"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -617,7 +617,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="8dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TableLayout
                     android:id="@+id/phoneTbl"
@@ -692,7 +692,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="E-mail"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -717,7 +717,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="8dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TableLayout
                     android:id="@+id/emailTbl"
@@ -786,7 +786,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Holidays"
-                    android:textColor="@color/mainColor"
+                    android:textColor="#1A237E"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -794,7 +794,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="8dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TableLayout
                     android:id="@+id/holidaysTbl"
@@ -881,7 +881,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Hours"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -891,7 +891,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="8dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TableLayout
                     android:id="@+id/openHoursTblId"
@@ -1151,7 +1151,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=" "
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -1178,14 +1178,14 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="12dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Facility Availability"
-                    android:textColor="@color/mainColor"
+                    android:textColor="#1A237E"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -1315,14 +1315,14 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="12dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Language Spoken"
-                    android:textColor="@color/mainColor"
+                    android:textColor="#1A237E"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -1428,7 +1428,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Edit Location"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -1464,7 +1464,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1547,7 +1547,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Add Phone Number"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -1583,7 +1583,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1658,7 +1658,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Copy Hours"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -1694,7 +1694,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1834,7 +1834,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Edit Phone Number"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -1870,7 +1870,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1930,7 +1930,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Edit Email Address"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -1966,7 +1966,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2025,7 +2025,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="Add New Email"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#1A237E"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -2061,7 +2061,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="16dp"
-                    android:background="#E0E0E0" />
+                    android:background="#DDE6F5" />
 
                 <TextView
                     android:layout_width="wrap_content"

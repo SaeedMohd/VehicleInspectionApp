@@ -1,702 +1,766 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context="com.inspection.fragments.FragmentARRAVLocation">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="Location Information"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        />
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTextView"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
+        android:layout_height="match_parent"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:paddingTop="5dp"
-        android:background="@color/light_gray"
-        android:orientation="vertical">
+        android:clipToPadding="false">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="5dp"
-            >
+            android:orientation="vertical">
+
+            <!-- ProgressBar card -->
             <ProgressBar
                 android:id="@+id/progressbarLocation"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
-                android:max="100"
-                android:backgroundTint="@color/white"
-                android:indeterminateTint="#1a09d6"
-                android:layout_marginTop="-7dp"/>
-            <LinearLayout android:layout_width="fill_parent"
+                android:indeterminateTint="#1565C0"
+                android:layout_marginBottom="4dp" />
+
+            <!-- Physical Location card -->
+            <LinearLayout
+                android:id="@+id/location1ll"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:background="@color/light_gray"
-                android:id="@+id/location1ll">
-                <TextView
-                    android:layout_width="0dp"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_header_bg"
+                    android:gravity="center_vertical"
+                    android:paddingStart="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Physical Location"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Address 1 row -->
+                <LinearLayout
+                    android:id="@+id/loc1addr1ll"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Location Type:"
-                    android:textStyle="bold"
-                    />
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Address 1:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/phylocAddr1address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lines="2"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Address 2 row -->
+                <LinearLayout
+                    android:id="@+id/loc1addr2ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Address 2:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/phylocAddr2address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lines="2"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Latitude row -->
+                <LinearLayout
+                    android:id="@+id/loc1addr1latitudell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Latitude:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/phyloc1addr1latitude"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/cert_input_background"
+                        android:hint="Add latitude"
+                        android:inputType="numberDecimal|numberSigned"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textColorHint="#8A9BB0"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Longitude row -->
+                <LinearLayout
+                    android:id="@+id/loc1addr1longitudell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Longitude:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/phyloc1addr1longitude"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/cert_input_background"
+                        android:hint="Add longitude"
+                        android:inputType="numberDecimal|numberSigned"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textColorHint="#8A9BB0"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Branch Number row -->
+                <LinearLayout
+                    android:id="@+id/loc1addr1branchnoll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Branch No:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/phyloc1addr1branchno"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Branch Name row -->
+                <LinearLayout
+                    android:id="@+id/loc1addr1branchnamell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Branch Name:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/phyloc1addr1branchname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Hidden addr2 rows kept for code compatibility -->
+                <LinearLayout
+                    android:id="@+id/loc1addr2latitudell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp">
+
+                    <EditText
+                        android:id="@+id/phyloc1addr2latitude"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/cert_input_background"
+                        android:inputType="numberDecimal|numberSigned"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/loc1addr2longitudell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp">
+
+                    <EditText
+                        android:id="@+id/phyloc1addr2longitude"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/cert_input_background"
+                        android:inputType="numberDecimal|numberSigned"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/loc1addr2branchnoll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/phyloc1addr2branchno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/phyloc1addr2branchname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Mailing Location card -->
+            <LinearLayout
+                android:id="@+id/location2ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_header_bg"
+                    android:gravity="center_vertical"
+                    android:paddingStart="14dp">
+
+                    <TextView
+                        android:id="@+id/loc2AddrType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mailing Location"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Mail Address 1 -->
+                <LinearLayout
+                    android:id="@+id/loc2addr1ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Address 1:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mailAddr1address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lines="2"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Mail Address 2 -->
+                <LinearLayout
+                    android:id="@+id/loc2addr2ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Address 2:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mailAddr2address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lines="2"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Mail Branch Number -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Branch No:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mailaddr1branchno"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Mail Branch Name -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Branch Name:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mailaddr1branchname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Hidden rows for code compatibility -->
+                <LinearLayout
+                    android:id="@+id/loc2addr2branchnamell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/loc2addr2branchname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/loc2addr2branchno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Billing Location card -->
+            <LinearLayout
+                android:id="@+id/location3ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/cert_header_bg"
+                    android:gravity="center_vertical"
+                    android:paddingStart="14dp">
+
+                    <TextView
+                        android:id="@+id/loc3AddrType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Billing Location"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Bill Address 1 -->
+                <LinearLayout
+                    android:id="@+id/loc3addr1ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Address 1:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/billAddr1address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lines="2"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Bill Address 2 -->
+                <LinearLayout
+                    android:id="@+id/loc3addr2ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Address 2:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/billAddr2address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lines="2"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Bill Branch Number -->
+                <LinearLayout
+                    android:id="@+id/loc3addr1branchnoll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Branch No:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/billaddr1branchno"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#E8EDF8" />
+
+                <!-- Bill Branch Name -->
+                <LinearLayout
+                    android:id="@+id/loc3addr1branchnamell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="wrap_content"
+                        android:text="Branch Name:"
+                        android:textColor="#546878"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/billaddr1branchname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Hidden rows for code compatibility -->
+                <LinearLayout
+                    android:id="@+id/loc3addr2branchnoll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/loc3addr2branchno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/loc3addr2branchnamell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/loc3addr2branchname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="#1A237E"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <!-- Hidden type label kept for code compatibility -->
                 <TextView
                     android:id="@+id/loc1AddrType"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text="Physical Location"
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc1addr1ll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Address 1:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/phylocAddr1address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:lines="5"
-                    android:layout_marginTop="5dp"
                     android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
+                    android:visibility="gone" />
 
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc1addr1latitudell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Latitude:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/phyloc1addr1latitude"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:textSize="14dp"
-                    android:hint="Please add location latitude"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc1addr1longitudell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:text="Longitude:"
-                    />
-                <EditText
-                    android:id="@+id/phyloc1addr1longitude"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:textSize="14dp"
-                    android:layout_marginTop="5dp"
-                    android:hint="Please add location longitude"
-                    android:text=""
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc1addr1branchnoll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Number:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/phyloc1addr1branchno"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc1addr1branchnamell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Name:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/phyloc1addr1branchname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc1addr2ll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Address 2:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/phylocAddr2address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:lines="5"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:visibility="gone"
-                android:id="@+id/loc1addr2latitudell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Latitude:"
-                    android:textStyle="bold"
-                    />
-                <EditText
-                    android:id="@+id/phyloc1addr2latitude"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:textSize="14dp"
-                    android:hint="Please add location latitude"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:visibility="gone"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc1addr2longitudell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:text="Longitude:"
-                    />
-                <EditText
-                    android:id="@+id/phyloc1addr2longitude"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:textSize="14dp"
-                    android:layout_marginTop="5dp"
-                    android:hint="Please add location longitude"
-                    android:text=""
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:visibility="gone"
-                android:id="@+id/loc1addr2branchnoll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Number:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/phyloc1addr2branchno"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:visibility="gone"
-                >
-<!--                android:id="@+id/loc1addr2branchnamell"-->
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Name:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/phyloc1addr2branchname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:background="@color/light_gray"
-                android:id="@+id/location2ll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Location Type:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/loc2AddrType"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text="Mailing Location"
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc2addr1ll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Address 1:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/mailAddr1address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:lines="5"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                >
-<!--                android:id="@+id/loc2addr2branchnoll"-->
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Number:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/mailaddr1branchno"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                >
-<!--                android:id="@+id/loc1addr2branchnamell"-->
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Name:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/mailaddr1branchname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc2addr2ll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Address 2:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/mailAddr2address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:lines="5"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:visibility="gone"
-                android:paddingLeft="20dp"
-                >
-<!--                android:id="@+id/loc2addr2branchnoll"-->
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Number:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/loc2addr2branchno"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:visibility="gone"
-                android:id="@+id/loc2addr2branchnamell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Name:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/loc2addr2branchname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:background="@color/light_gray"
-                android:id="@+id/location3ll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Location Type:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/loc3AddrType"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text="Billing Location"
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc3addr1ll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Address 1:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/billAddr1address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:lines="5"
-                    android:layout_marginTop="5dp"
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc3addr1branchnoll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Number:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/billaddr1branchno"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc3addr1branchnamell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Name:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/billaddr1branchname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc3addr2ll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Address 2:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/billAddr2address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:lines="5"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:paddingLeft="20dp"
-                android:visibility="gone"
-                android:id="@+id/loc3addr2branchnoll">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Number:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/loc3addr2branchno"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:visibility="gone"
-                android:paddingLeft="20dp"
-                android:id="@+id/loc3addr2branchnamell">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="Branch Name:"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/loc3addr2branchname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:layout_marginTop="5dp"
-                    android:text=""
-                    android:textStyle="bold"
-                    />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
 </RelativeLayout>
