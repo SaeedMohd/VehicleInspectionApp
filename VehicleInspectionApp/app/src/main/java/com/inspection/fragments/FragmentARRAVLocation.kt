@@ -1893,7 +1893,7 @@ class FragmentARRAVLocation : Fragment() {
                     tableRow.addView(textView2)
 
                     val editPhoneBtn = TextView(context)
-                    editPhoneBtn.layoutParams = rowLayoutParam1
+                    editPhoneBtn.layoutParams = rowLayoutParam2
                     editPhoneBtn.setTextColor(Color.BLUE)
                     editPhoneBtn.text = "EDIT"
                     editPhoneBtn.textSize = 14f
@@ -1999,19 +1999,22 @@ class FragmentARRAVLocation : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
-        rowLayoutParam.marginStart =10
+        rowLayoutParam.width = 0
+        rowLayoutParam.marginStart = 10
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.width = 0
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.width = 0
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
 
