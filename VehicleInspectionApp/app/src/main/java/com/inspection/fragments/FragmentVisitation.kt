@@ -235,8 +235,8 @@ class FragmentVisitation : Fragment() {
         // SAEED TO BE REVIEWED
 //        (activity as FormsActivity).visitationsTitle.setTextColor(Color.parseColor("#26C3AA"))
 //        (activity as FormsActivity).visitationTitle.setTextColor(Color.parseColor("#26C3AA"))
-        requireActivity().findViewById<TextView>(R.id.visitationsTitle).setTextColor(Color.parseColor("#26C3AA"))
-        requireActivity().findViewById<TextView>(R.id.visitationTitle).setTextColor(Color.parseColor("#26C3AA"))
+        requireActivity().findViewById<TextView>(R.id.visitationsTitle).setTextColor(android.graphics.Color.WHITE)
+        requireActivity().findViewById<TextView>(R.id.visitationTitle).setTextColor(android.graphics.Color.WHITE)
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
         (activity as FormsActivity).saveRequired = false
         // SAVE IN PROGRESS
@@ -462,15 +462,15 @@ class FragmentVisitation : Fragment() {
                     Log.v("Reason ------------ ", get(it).VisitationReasonTypeID)
                     val tableRow = TableRow(context)
                     tableRow.layoutParams = rowLayoutParamRow
-                    tableRow.minimumHeight = 30
-                    if (it % 2 == 0) {
-                        tableRow.setBackgroundResource(R.drawable.alt_row_color)
-                    }
+                    tableRow.minimumHeight = 44
+                    tableRow.setBackgroundColor(if (it % 2 == 0) android.graphics.Color.WHITE else android.graphics.Color.parseColor("#EEF2FB"))
 
                     val textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
                     textView.gravity = Gravity.CENTER
-                    textView.textSize = 14f
+                    textView.textSize = 12f
+                    textView.setTextColor(android.graphics.Color.parseColor("#263238"))
+                    textView.setPadding(8, 0, 8, 0)
                     textView.minimumHeight = 30
                     textView.text = if (get(it).DatePerformed.apiToAppFormatMMDDYYYY().equals("01/01/1900")) "" else get(it).DatePerformed.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
@@ -478,7 +478,9 @@ class FragmentVisitation : Fragment() {
                     val textView1 = TextView(context)
                     textView1.layoutParams = rowLayoutParam1
                     textView1.gravity = Gravity.CENTER
-                    textView1.textSize = 14f
+                    textView1.textSize = 12f
+                    textView1.setTextColor(android.graphics.Color.parseColor("#263238"))
+                    textView1.setPadding(8, 0, 8, 0)
                     textView1.minimumHeight = 30
                     textView1.text = get(it).performedBy
                     tableRow.addView(textView1)
@@ -486,7 +488,9 @@ class FragmentVisitation : Fragment() {
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam1
                     textView2.gravity = Gravity.CENTER
-                    textView2.textSize = 14f
+                    textView2.textSize = 12f
+                    textView2.setTextColor(android.graphics.Color.parseColor("#263238"))
+                    textView2.setPadding(8, 0, 8, 0)
                     textView2.minimumHeight = 30
                     var visitationType = ""
                     if (get(it).VisitationTypeID.equals("1")) {
@@ -504,7 +508,9 @@ class FragmentVisitation : Fragment() {
                     val textView3 = TextView(context)
                     textView3.layoutParams = rowLayoutParam1
                     textView3.gravity = Gravity.CENTER
-                    textView3.textSize = 14f
+                    textView3.textSize = 12f
+                    textView3.setTextColor(android.graphics.Color.parseColor("#263238"))
+                    textView3.setPadding(8, 0, 8, 0)
                     textView3.minimumHeight = 30
                     textView3.text = if (get(it).VisitationMethodTypeID.equals("") || get(it).VisitationMethodTypeID.equals("0")) "" else TypeTablesModel.getInstance().VisitationMethodType.filter { s -> s.TypeID.toString().equals(get(it).VisitationMethodTypeID) }[0].TypeName
                     tableRow.addView(textView3)
@@ -512,7 +518,9 @@ class FragmentVisitation : Fragment() {
                     val textView4 = TextView(context)
                     textView4.layoutParams = rowLayoutParam1
                     textView4.gravity = Gravity.CENTER
-                    textView4.textSize = 14f
+                    textView4.textSize = 12f
+                    textView4.setTextColor(android.graphics.Color.parseColor("#263238"))
+                    textView4.setPadding(8, 0, 8, 0)
                     textView4.minimumHeight = 30
                     textView4.text = if (get(it).VisitationReasonTypeID.equals("") || get(it).VisitationReasonTypeID.equals("0")) "" else TypeTablesModel.getInstance().VisitationReasonType.filter { s -> s.VisitationReasonTypeID.toString().equals(get(it).VisitationReasonTypeID) }[0].VisitationReasonTypeName
                     tableRow.addView(textView4)
@@ -584,8 +592,8 @@ class FragmentVisitation : Fragment() {
             VisitationMethodArray.add(reason.TypeName)
         }
 
-        binding.visitationReasonDropListId.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, VisitationReasonArray)
-        binding.visitationMethodDropListId.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, VisitationMethodArray)
+        binding.visitationReasonDropListId.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item_modern, VisitationReasonArray).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
+        binding.visitationMethodDropListId.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item_modern, VisitationMethodArray).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
 
         binding.completeButton.isEnabled = IndicatorsDataModel.getInstance().validateAllScreensVisited()
         binding.facilityRepresentativeSignatureButton.isEnabled  = IndicatorsDataModel.getInstance().validateAllScreensVisited()
@@ -703,9 +711,9 @@ class FragmentVisitation : Fragment() {
                 facilitySpecialistNames.add(specialist.FirstName.lowercase().capitalize() + " " + specialist.LastName.lowercase().capitalize())
             }
 
-            binding.facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, facilityRepresentativeNames)
+            binding.facilityRepresentativesSpinner.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item_modern, facilityRepresentativeNames).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
             //   automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, CsiSpecialistSingletonModel.getInstance().csiSpecialists.map { s -> s.specialistname })
-            binding.automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, facilitySpecialistNames)
+            binding.automotiveSpecialistSpinner.adapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item_modern, facilitySpecialistNames).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
 
             facilityNameAndNumberRelationForSelection()
 //            automotiveSpecialistSpinner.setSelection(facilitySpecialistNames.indexOf(if (FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName.isNullOrBlank()) 0 else FacilityDataModel.getInstance().tblVisitationTracking[0].automotiveSpecialistName))
@@ -2832,11 +2840,10 @@ class FragmentVisitation : Fragment() {
 
     private fun fillDeficiencyTable() {
 
-        val rowLayoutParam = TableRow.LayoutParams()
-        rowLayoutParam.weight = 1F
-        rowLayoutParam.column = 0
-        rowLayoutParam.height = 40
-        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
+        val defColParam0 = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 3f).apply { column = 0; gravity = Gravity.CENTER }
+        val defColParam1 = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 3f).apply { column = 1; gravity = Gravity.CENTER }
+        val defColParam2 = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 2f).apply { column = 2; gravity = Gravity.CENTER }
+        val defColParam3 = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 2f).apply { column = 3; gravity = Gravity.CENTER }
         var tableRowColorSwitch = false
 
 
@@ -2846,42 +2853,43 @@ class FragmentVisitation : Fragment() {
                 if ((!get(it).DefTypeID.equals("-1")) && get(it).ClearedDate.isNullOrEmpty()) {
                     var tableRow = TableRow(context)
 
-                    if (tableRowColorSwitch) {
-                        tableRow.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.table_row_color))
-                    } else {
-                        tableRow.setBackgroundColor(Color.WHITE)
-                    }
-
-                    tableRowColorSwitch = !tableRowColorSwitch //Switching smartly :)
+                    tableRow.setBackgroundColor(if (tableRowColorSwitch) android.graphics.Color.parseColor("#EEF2FB") else android.graphics.Color.WHITE)
+                    tableRow.minimumHeight = 44
+                    tableRowColorSwitch = !tableRowColorSwitch
 
                     var textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.layoutParams = defColParam0
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 12f
+                    textView.setTextColor(android.graphics.Color.parseColor("#263238"))
+                    textView.setPadding(8, 10, 4, 10)
                     textView.text = if (TypeTablesModel.getInstance().AARDeficiencyType.filter { s -> s.DeficiencyTypeID.toString() == get(it).DefTypeID }.isNotEmpty()) TypeTablesModel.getInstance().AARDeficiencyType.filter { s -> s.DeficiencyTypeID.toString() == get(it).DefTypeID }[0].DeficiencyName else ""
-                    textView.setPadding(5)
-                    textView.gravity = Gravity.CENTER_VERTICAL
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.layoutParams = defColParam1
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 12f
+                    textView.setTextColor(android.graphics.Color.parseColor("#263238"))
+                    textView.setPadding(4, 10, 4, 10)
                     textView.text = get(it).Comments
-                    textView.setPadding(5)
-                    textView.setEms(8)
-                    textView.gravity = Gravity.CENTER_VERTICAL
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.layoutParams = defColParam2
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 12f
+                    textView.setTextColor(android.graphics.Color.parseColor("#263238"))
+                    textView.setPadding(4, 10, 4, 10)
                     textView.text = get(it).VisitationDate.apiToAppFormatMMDDYYYY()
-                    textView.gravity = Gravity.CENTER_VERTICAL
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.layoutParams = defColParam3
+                    textView.gravity = Gravity.CENTER
+                    textView.textSize = 12f
+                    textView.setTextColor(android.graphics.Color.parseColor("#263238"))
+                    textView.setPadding(4, 10, 8, 10)
                     textView.text = get(it).DueDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
@@ -2901,11 +2909,9 @@ class FragmentVisitation : Fragment() {
 
                 var tv: TextView = row.getChildAt(j) as TextView
                 if (i % alt_row != 0) {
-                    tv.setBackground(getResources().getDrawable(
-                            R.drawable.alt_row_color));
+                    tv.setBackgroundColor(android.graphics.Color.parseColor("#EEF2FB"))
                 } else {
-                    tv.setBackground(getResources().getDrawable(
-                            R.drawable.row_color));
+                    tv.setBackgroundColor(android.graphics.Color.WHITE)
                 }
 
             }

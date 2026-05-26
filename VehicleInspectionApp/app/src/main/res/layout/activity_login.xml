@@ -5,13 +5,12 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_background_image_dark">
 
-    <!-- Overlay kept for code compatibility -->
+    <!-- Light blue brand overlay -->
     <View
         android:id="@+id/loginContentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent"
-        android:alpha="0" />
+        android:background="#884572CE" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,7 +32,11 @@
                 android:text="@string/app_version"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:alpha="0.7" />
+                android:textStyle="bold"
+                android:shadowColor="#CC000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="4" />
 
             <!-- Login card -->
             <androidx.cardview.widget.CardView

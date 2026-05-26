@@ -1,35 +1,939 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
-    tools:context=".fragments.FragmentAARAVComments">
+    android:background="#EEF2FB">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@color/light_gray"
-        android:orientation="vertical"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="5dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_gray"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
 
-
+            <!-- ═══════════════════════════════════════════════════ -->
+            <!-- Card 1 · VISITATION DETAILS + FACILITY + SPECIALIST -->
+            <!-- ═══════════════════════════════════════════════════ -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="5dp">
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:background="@drawable/cert_header_bg"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="12dp">
+
+                        <TextView
+                            android:id="@+id/visitationTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Visitation Details"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <ImageButton
+                            android:id="@+id/alertVisitationYIcon"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:background="@android:drawable/ic_dialog_info"
+                            android:backgroundTint="@color/dark_yellow"
+                            android:contentDescription="Warning"
+                            android:visibility="gone" />
+
+                        <ImageButton
+                            android:id="@+id/alertVisitationRIcon"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="8dp"
+                            android:background="@android:drawable/ic_dialog_info"
+                            android:backgroundTint="@android:color/holo_red_dark"
+                            android:contentDescription="Alert"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <!-- Alert texts -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="6dp">
+
+                        <TextView
+                            android:id="@+id/billingAlertText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Invoice is past due. Please visit Billing Tab for more information."
+                            android:textColor="#C62828"
+                            android:textSize="12sp"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/deficienciesText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text=""
+                            android:textColor="#C62828"
+                            android:textSize="12sp"
+                            android:visibility="visible" />
+
+                        <TextView
+                            android:id="@+id/downStreamFlagText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Ineligible to appear in downstream apps"
+                            android:textColor="#C62828"
+                            android:textSize="12sp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <!-- Visitation Type chips — label 130dp, chips fill rest -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="6dp">
+
+                        <TextView
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:text="Visitation Type"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <RadioGroup
+                            android:id="@+id/vTypeRG"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/annualVisitationType"
+                                android:layout_width="0dp"
+                                android:layout_height="28dp"
+                                android:layout_weight="1"
+                                android:button="@null"
+                                android:background="@drawable/chip_filter_selector"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:text="Annual"
+                                android:textColor="@color/chip_text_selector"
+                                android:textSize="10sp" />
+
+                            <CheckBox
+                                android:id="@+id/quarterlyVisitationType"
+                                android:layout_width="0dp"
+                                android:layout_height="28dp"
+                                android:layout_weight="1"
+                                android:layout_marginStart="4dp"
+                                android:button="@null"
+                                android:background="@drawable/chip_filter_selector"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:text="Quarterly/Other"
+                                android:textColor="@color/chip_text_selector"
+                                android:textSize="10sp" />
+
+                            <CheckBox
+                                android:id="@+id/adhocVisitationType"
+                                android:layout_width="0dp"
+                                android:layout_height="28dp"
+                                android:layout_weight="1"
+                                android:layout_marginStart="4dp"
+                                android:button="@null"
+                                android:background="@drawable/chip_filter_selector"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:text="Ad Hoc"
+                                android:textColor="@color/chip_text_selector"
+                                android:textSize="10sp" />
+
+                            <CheckBox
+                                android:id="@+id/defVisitationType"
+                                android:layout_width="0dp"
+                                android:layout_height="28dp"
+                                android:layout_weight="1"
+                                android:layout_marginStart="4dp"
+                                android:button="@null"
+                                android:background="@drawable/chip_filter_selector"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:text="Deficiency"
+                                android:textColor="@color/chip_text_selector"
+                                android:textSize="10sp" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Date of Visitation — label 2/3, field 1/3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Date of Visitation"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/dateOfVisitationButton"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:clickable="false"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:text="SELECT DATE"
+                            android:textAllCaps="false"
+                            android:textColor="#4572CE"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Visitation Reason — label 2/3, spinner 1/3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:id="@+id/visitationReasonTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Visitation Reason"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background">
+
+                            <Spinner
+                                android:id="@+id/visitationReasonDropListId"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:popupBackground="@drawable/spinner_popup_bg"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="28dp"
+                                android:tooltipText="Please Select Reason" />
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="8dp"
+                                android:contentDescription=""
+                                android:src="@drawable/ic_arrow_dropdown" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Visit Method — label 2/3, spinner 1/3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:id="@+id/visitationMethodTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Visit Method"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background">
+
+                            <Spinner
+                                android:id="@+id/visitationMethodDropListId"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:popupBackground="@drawable/spinner_popup_bg"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="28dp"
+                                android:tooltipText="Please Select Method" />
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="8dp"
+                                android:contentDescription=""
+                                android:src="@drawable/ic_arrow_dropdown" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Data Changes Made? — label 130dp, radio fills rest -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:text="Data Changes Made?"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <RadioGroup
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/dataChangedYesRadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:text="Yes"
+                                android:textColor="#263238"
+                                android:textSize="13sp" />
+
+                            <RadioButton
+                                android:id="@+id/dataChangedNoRadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:enabled="false"
+                                android:text="No"
+                                android:textColor="#263238"
+                                android:textSize="13sp" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <!-- ── FACILITY sub-header ── -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:background="#EEF2FB"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="4dp"
+                        android:paddingStart="16dp">
+
+                        <View
+                            android:layout_width="3dp"
+                            android:layout_height="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/cert_header_bg" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:letterSpacing="0.06"
+                            android:text="FACILITY"
+                            android:textColor="#073763"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Club Code — label 2/3, input 1/3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Club Code"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/clubCodeEditVal"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:clickable="false"
+                            android:enabled="false"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Facility Number — label 2/3, input 1/3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Facility Number"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/facilityNumberEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Facility Name — label 2/3, input 1/3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Facility Name"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/facilityNameEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Facility Representative — label 2/3, spinner 1/3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:id="@+id/facilityRepresentativeTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Facility Rep"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background">
+
+                            <Spinner
+                                android:id="@+id/facilityRepresentativesSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:popupBackground="@drawable/spinner_popup_bg"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="28dp"
+                                android:tooltipText="please select a representative" />
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="8dp"
+                                android:contentDescription=""
+                                android:src="@drawable/ic_arrow_dropdown" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/signatureView"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Facility Rep Signature -->
+                    <RelativeLayout
+                        android:id="@+id/signatureRL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/repSigLbl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Facility Rep's Signature"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/facilityRepresentativeSignatureButton"
+                            android:layout_width="120dp"
+                            android:layout_height="36dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/btn_cert_primary"
+                            android:enabled="false"
+                            android:text="Add Signature"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            app:backgroundTint="@null" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="72dp"
+                            android:layout_below="@id/repSigLbl"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_toStartOf="@id/facilityRepresentativeSignatureButton"
+                            android:background="@drawable/sig_area_bg">
+
+                            <ImageView
+                                android:id="@+id/facilityRepresentativeSignatureImageView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="4dp"
+                                android:scaleType="fitCenter" />
+                        </FrameLayout>
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Email PDF checkbox + email address — checkbox 2/3, input 1/3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <CheckBox
+                            android:id="@+id/emailPdfCheckBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Email PDF"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+
+                        <EditText
+                            android:id="@+id/emailEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:hint="email"
+                            android:inputType="textEmailAddress"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:textColor="#263238"
+                            android:textColorHint="#8A9BB0"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- ── AUTOMOTIVE SPECIALIST sub-header ── -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:background="#EEF2FB"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="4dp"
+                        android:paddingStart="16dp">
+
+                        <View
+                            android:layout_width="3dp"
+                            android:layout_height="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/cert_header_bg" />
+
+                        <TextView
+                            android:id="@+id/automotiveSpecialistTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:letterSpacing="0.06"
+                            android:text="AUTOMOTIVE SPECIALIST"
+                            android:textColor="#073763"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Specialist Spinner — label 2/3, spinner 1/3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Specialist"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background">
+
+                            <Spinner
+                                android:id="@+id/automotiveSpecialistSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:popupBackground="@drawable/spinner_popup_bg"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="28dp" />
+
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="8dp"
+                                android:contentDescription=""
+                                android:src="@drawable/ic_arrow_dropdown" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
+
+                    <!-- Automotive Specialist Signature -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/specSigLbl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Specialist's Signature"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/automotiveSpecialistSignatureButton"
+                            android:layout_width="120dp"
+                            android:layout_height="36dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/btn_cert_primary"
+                            android:text="Add Signature"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            app:backgroundTint="@null" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="72dp"
+                            android:layout_below="@id/specSigLbl"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_toStartOf="@id/automotiveSpecialistSignatureButton"
+                            android:background="@drawable/sig_area_bg">
+
+                            <ImageView
+                                android:id="@+id/automotiveSpecialistSignatureImageView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="4dp"
+                                android:scaleType="fitCenter" />
+                        </FrameLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ═══════════════════════════════════ -->
+            <!-- Card 2 · VISITATION HISTORY         -->
+            <!-- ═══════════════════════════════════ -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:background="@drawable/cert_header_bg"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp">
+
+                        <TextView
+                            android:id="@+id/visitationsTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Visitation History"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TableLayout
+                        android:id="@+id/trackingTableLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@drawable/divider_table_layout"
+                        android:stretchColumns="*">
+
+                        <TableRow android:background="@drawable/cert_header_bg">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_column="0"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="4dp"
+                                android:text="Date"
+                                android:textColor="@color/white"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_column="1"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:text="Performed By"
+                                android:textColor="@color/white"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_column="2"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:text="Type"
+                                android:textColor="@color/white"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_column="3"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:text="Method"
+                                android:textColor="@color/white"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_column="4"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="8dp"
+                                android:text="Reason"
+                                android:textColor="@color/white"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+                        </TableRow>
+                    </TableLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- ═══════════════════════════════════ -->
+            <!-- Card 3 · DEFICIENCIES               -->
+            <!-- ═══════════════════════════════════ -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -38,1152 +942,614 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:orientation="horizontal"
+                        android:layout_height="44dp"
+                        android:background="@drawable/cert_header_bg"
                         android:gravity="center_vertical"
-                        android:layout_height="wrap_content">
+                        android:paddingStart="16dp">
+
                         <TextView
-                            android:id="@+id/visitationTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:text="Visitation"
-                            android:gravity="center"
-                            android:textColor="@color/mainColor"
-                            android:textSize="22sp"
-                            />
-                        <ImageButton
-                            android:id="@+id/alertVisitationYIcon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginEnd="50dp"
-                            android:layout_toRightOf="@id/personelLbl"
-                            android:background="@android:drawable/ic_dialog_info"
-                            android:backgroundTint="@color/dark_yellow"
-                            android:visibility="gone" />
-
-                        <ImageButton
-                            android:id="@+id/alertVisitationRIcon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="50dp"
-                            android:layout_toRightOf="@id/personelLbl"
-                            android:background="@android:drawable/ic_dialog_info"
-                            android:backgroundTint="@android:color/holo_red_dark"
-                            android:visibility="visible" />
+                            android:text="Deficiencies"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/billingAlertText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Invoice is past due. Please visit Billing Tab for more information."
-                        android:gravity="center"
-                        android:visibility="visible"
-                        android:textColor="@android:color/holo_red_dark"
-                        android:textSize="16sp"
-                        />
-                    <TextView
-                        android:id="@+id/deficienciesText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:gravity="center"
-                        android:visibility="visible"
-                        android:textColor="@android:color/holo_red_dark"
-                        android:textSize="16sp"
-                        />
-                    <TextView
-                        android:id="@+id/downStreamFlagText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Ineligible to appear in downstream apps"
-                        android:gravity="center"
-                        android:visibility="gone"
-                        android:textColor="@android:color/holo_red_dark"
-                        android:textSize="16sp"
-                        />
-                </LinearLayout>
-
-
-
-                    <!--<View-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dp"-->
-                        <!--android:background="@color/light_gray" />-->
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:text="Visitation Type"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <RadioGroup
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/vTypeRG"
-                            android:orientation="horizontal">
-
-                            <CheckBox
-                                android:id="@+id/annualVisitationType"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Annual"
-                                app:buttonTint="@drawable/checkbox_bkg"/>
-
-                            <CheckBox
-                                android:id="@+id/quarterlyVisitationType"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Quarterly/Other"
-                                app:buttonTint="@drawable/checkbox_bkg"/>
-
-                            <CheckBox
-                                android:id="@+id/adhocVisitationType"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Ad Hoc"
-                                app:buttonTint="@drawable/checkbox_bkg"/>
-
-                            <CheckBox
-                                android:id="@+id/defVisitationType"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Deficiency"
-                                app:buttonTint="@drawable/checkbox_bkg"/>
-                        </RadioGroup>
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:text="Date Of Visitation"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:id="@+id/dateOfVisitationButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:clickable="false"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:background="@color/transparent"
-                            android:text="SELECT DATE"
-                            android:textColor="@color/cb_green"
-                            android:textSize="12dp" />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:id="@+id/visitationReasonTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Visitation Reason"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <Spinner
-                            android:id="@+id/visitationReasonDropListId"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:tooltipText="Please Select Reason" />
-
-
-                    </RelativeLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Visit Method"
-                            android:id="@+id/visitationMethodTextView"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <Spinner
-                            android:id="@+id/visitationMethodDropListId"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:tooltipText="Please Select Method" />
-
-
-                    </RelativeLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="center_vertical"
-                            android:text="Data Changes Made?"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <RadioGroup
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/dataChangedYesRadioButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:enabled="false"
-                                android:text="Yes" />
-
-                            <RadioButton
-                                android:id="@+id/dataChangedNoRadioButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:enabled="false"
-                                android:text="No" />
-
-                        </RadioGroup>
-
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="center_vertical"
-                            android:text="Club Code"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/clubCodeEditVal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:enabled="false"
-                            android:clickable="false"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
-                            android:padding="5dp" />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Facility Number"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/facilityNumberEditText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
-                            android:padding="5dp"
-                            />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Facility Name"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/facilityNameEditText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
-                            android:padding="5dp"
-                            />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:id="@+id/facilityRepresentativeTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Facility Representative"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <Spinner
-                            android:id="@+id/facilityRepresentativesSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:tooltipText="please select a representative" />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:id="@+id/signatureView"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/signatureRL"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Facility Representative's Signature"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:id="@+id/facilityRepresentativeSignatureButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:paddingLeft="15dp"
-                            android:enabled="false"
-                            android:paddingRight="15dp"
-                            android:text="Add Signature"
-                            android:background="@drawable/new_btn_bkg"
-                            android:textColor="@color/white"
-                            app:backgroundTint="@null"
-                            android:textSize="12dp" />
-
-                        <ImageView
-                            android:id="@+id/facilityRepresentativeSignatureImageView"
-                            android:layout_width="120dp"
-                            android:layout_height="60dp"
-                            android:layout_toLeftOf="@id/facilityRepresentativeSignatureButton" />
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <CheckBox
-                            android:id="@+id/emailPdfCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_gravity="center_vertical"
-                            android:text="Email Visitation PDF to Facility"
-                            android:textSize="15sp"
-                            app:buttonTint="@drawable/checkbox_bkg"/>
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Facility Email"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/emailEditText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
-
-                            android:padding="5dp" />
-
-                    </RelativeLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/automotiveSpecialistTextView"
-                            android:layout_centerVertical="true"
-                            android:text="Automotive Specialist"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <Spinner
-                            android:id="@+id/automotiveSpecialistSpinner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true" />
-
-                    </RelativeLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/light_gray" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Automotive Specialist's Signature"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:id="@+id/automotiveSpecialistSignatureButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/new_btn_bkg"
-                            android:textColor="@color/white"
-                            app:backgroundTint="@null"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:text="Add Signature"
-                            android:textSize="12dp" />
-
-                        <ImageView
-                            android:id="@+id/automotiveSpecialistSignatureImageView"
-                            android:layout_width="120dp"
-                            android:layout_height="60dp"
-                            android:layout_toLeftOf="@id/automotiveSpecialistSignatureButton" />
-
-                    </RelativeLayout>
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                app:cardElevation="5dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                <TextView
-                    android:id="@+id/visitationsTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="Visitations"
-                    android:gravity="center"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp"
-                    />
-                <TableLayout
-                    android:id="@+id/trackingTableLayout"
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:divider="@drawable/divider_table_layout"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="*"
-                    >
-                    <TableRow
-                        android:background="@color/mainColor"
-                        >
-                        <TextView android:text="Date Performed"
-                            android:layout_width="0dp"
-                            android:textColor="@color/white"
-                            android:layout_column="0"
-                            android:textSize="14sp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_height="30dp"
-                            android:textStyle="bold"
-                            android:gravity="center"
-                            android:layout_weight="1"/>
-                        <TextView android:text="Performed By"
-                            android:layout_width="0dp"
-                            android:textColor="@color/white"
-                            android:layout_column="1"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:layout_weight="2"/>
-                        <TextView android:text="Visitation Type"
-                            android:layout_width="0dp"
-                            android:textColor="@color/white"
-                            android:layout_column="2"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:layout_weight="2"/>
-                        <TextView android:text="Visitation Method"
-                            android:layout_width="0dp"
-                            android:textColor="@color/white"
-                            android:layout_column="3"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:layout_weight="2"/>
-                        <TextView android:text="Visitation Reason"
-                            android:layout_width="0dp"
-                            android:textColor="@color/white"
-                            android:layout_column="4"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:layout_weight="2"/>
-                    </TableRow>
-                </TableLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                app:cardElevation="5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
 
                     <TableLayout
                         android:id="@+id/deficienciesTableLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_span="3"
                         android:divider="@drawable/divider_table_layout"
                         android:stretchColumns="*">
 
-                        <TableRow
-                            android:background="@color/mainColor"
-                            android:padding="5dp">
+                        <TableRow android:background="@drawable/cert_header_bg">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="40dp"
                                 android:layout_column="0"
-                                android:gravity="center_vertical"
+                                android:layout_weight="3"
+                                android:gravity="center"
+                                android:paddingStart="8dp"
+                                android:paddingEnd="4dp"
                                 android:text="Deficiency"
                                 android:textColor="@color/white"
-                                android:textStyle="bold" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="40dp"
-                                android:layout_column="0"
-                                android:gravity="center_vertical"
-                                android:text="Comments"
-                                android:ems="8"
-                                android:textColor="@color/white"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="40dp"
                                 android:layout_column="1"
-                                android:gravity="center_vertical"
-                                android:text="Inspection Date"
+                                android:layout_weight="3"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:text="Comments"
                                 android:textColor="@color/white"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="40dp"
                                 android:layout_column="2"
-                                android:gravity="center_vertical"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:text="Inspection Date"
+                                android:textColor="@color/white"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_column="3"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="8dp"
                                 android:text="Due Date"
                                 android:textColor="@color/white"
+                                android:textSize="11sp"
                                 android:textStyle="bold" />
                         </TableRow>
-
                     </TableLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/light_gray" />
+                        android:background="#E8EDF8" />
 
+                    <!-- Deficiencies Rep Signature -->
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
+                            android:id="@+id/defSigLbl"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Facility Representative's Signature (Deficiencies)"
-                            android:textSize="15sp"
+                            android:text="Facility Rep's Signature (Deficiencies)"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <Button
                             android:id="@+id/facilityRepresentativeDeficienciesSignatureButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/new_btn_bkg"
-                            android:textColor="@color/white"
-                            app:backgroundTint="@null"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:text="Add Signature"
-                            android:textSize="12dp" />
-
-                        <ImageView
-                            android:id="@+id/facilityRepresentativeDeficienciesSignatureImageView"
                             android:layout_width="120dp"
-                            android:layout_height="60dp"
-                            android:layout_toLeftOf="@id/facilityRepresentativeDeficienciesSignatureButton" />
+                            android:layout_height="36dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/btn_cert_primary"
+                            android:text="Add Signature"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            app:backgroundTint="@null" />
 
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="72dp"
+                            android:layout_below="@id/defSigLbl"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_toStartOf="@id/facilityRepresentativeDeficienciesSignatureButton"
+                            android:background="@drawable/sig_area_bg">
+
+                            <ImageView
+                                android:id="@+id/facilityRepresentativeDeficienciesSignatureImageView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="4dp"
+                                android:scaleType="fitCenter" />
+                        </FrameLayout>
                     </RelativeLayout>
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- ═══════════════════════════════════ -->
+            <!-- Card 4 · NOTES & COMPLIANCE         -->
+            <!-- ═══════════════════════════════════ -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                app:cardElevation="5dp">
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
+                        android:layout_height="44dp"
+                        android:background="@drawable/cert_header_bg"
+                        android:gravity="center_vertical"
+                        android:paddingStart="16dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
+                            android:text="Notes &amp; Compliance"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- AAR Sign -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:text="AAR Sign"
-                            android:textSize="15sp"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/aarSignEditText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:inputType="textCapSentences"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
-
-                            android:padding="5dp" />
-
-                    </RelativeLayout>
-
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="top"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:lines="3"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:paddingTop="8dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/light_gray" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
 
-                    <RelativeLayout
+                    <!-- Certificate of Approval -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
+                        android:gravity="top"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="130dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Certificate Of Approval"
-                            android:textSize="15sp"
+                            android:layout_marginTop="10dp"
+                            android:text="Certificate of Approval"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/certificateOfApprovalEditText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:inputType="textCapSentences"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
-
-                            android:padding="5dp" />
-
-                    </RelativeLayout>
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="top"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:lines="3"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:paddingTop="8dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/light_gray" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
 
-                    <RelativeLayout
+                    <!-- Member Benefits Poster -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
+                        android:gravity="top"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="130dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
+                            android:layout_marginTop="10dp"
                             android:text="Member Benefits Poster(s)"
-                            android:textSize="15sp"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/memberBenefitsPosterEditText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="top"
                             android:inputType="textMultiLine|textCapSentences"
-                            android:padding="5dp" />
-
-                    </RelativeLayout>
-
+                            android:lines="3"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:paddingTop="8dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/light_gray" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
 
-                    <RelativeLayout
+                    <!-- Quality Control Process -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
+                        android:gravity="top"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="130dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
                             android:text="Quality Control Process"
-                            android:textSize="15sp"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/qualityControlProcessEditText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
-                            android:gravity="left|top"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="top"
                             android:inputType="textMultiLine|textCapSentences"
-                            android:lines="6"
-                            android:padding="5dp" />
-
-                    </RelativeLayout>
+                            android:lines="5"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:paddingTop="8dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/light_gray" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
 
-                    <RelativeLayout
+                    <!-- Staff Training Process -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
+                        android:gravity="top"
+                        android:orientation="horizontal"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="130dp"
                             android:layout_height="wrap_content"
                             android:text="Staff Training Process"
-                            android:textSize="15sp"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/staffTrainingProcessEditText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
-                            android:gravity="left|top"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="top"
                             android:inputType="textMultiLine|textCapSentences"
-                            android:lines="6"
-                            android:padding="5dp" />
-
-                    </RelativeLayout>
-
+                            android:lines="5"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:paddingTop="8dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/light_gray" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
 
+                    <!-- Waive Visitation -->
                     <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:id="@+id/waiveCBRL"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp">
 
                         <CheckBox
                             android:id="@+id/waiveVisitationCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_column="0"
                             android:text="Waive Visitation?"
-                            android:textSize="15sp"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold"
-                            app:buttonTint="@drawable/checkbox_bkg"/>
-
+                            app:buttonTint="@drawable/checkbox_bkg" />
                     </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/light_gray" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
 
+                    <!-- Waiver Comments -->
                     <RelativeLayout
                         android:id="@+id/waiverConditionedEnablingLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:padding="10dp">
+                        android:layout_height="wrap_content"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/waiverCommentLbl"
+                            android:layout_width="130dp"
                             android:layout_height="wrap_content"
                             android:text="Waiver Comments"
-                            android:textSize="15sp"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/waiverCommentsEditText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:background="@drawable/textview_background"
-                            android:ems="20"
+                            android:layout_alignParentEnd="true"
+                            android:layout_toEndOf="@id/waiverCommentLbl"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="top"
                             android:lines="4"
-                            android:padding="5dp" />
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:paddingTop="8dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
                     </RelativeLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/light_gray" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
 
+                    <!-- Waiver Signature -->
                     <RelativeLayout
+                        android:id="@+id/waiveSignRL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/waiveSignRL"
-                        android:minHeight="60dp"
-                        android:padding="10dp">
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
+                            android:id="@+id/waiverSigLbl"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
                             android:text="Waiver Signature"
-                            android:textSize="15sp"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <Button
                             android:id="@+id/waiversSignatureButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/new_btn_bkg"
-                            android:textColor="@color/white"
-                            app:backgroundTint="@null"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:text="Add Signature"
-                            android:textSize="12dp" />
-
-                        <ImageView
-                            android:id="@+id/waiversSignatureImageView"
                             android:layout_width="120dp"
-                            android:layout_height="60dp"
-                            android:layout_toLeftOf="@id/waiversSignatureButton" />
+                            android:layout_height="36dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/btn_cert_primary"
+                            android:text="Add Signature"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            app:backgroundTint="@null" />
 
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="72dp"
+                            android:layout_below="@id/waiverSigLbl"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_toStartOf="@id/waiversSignatureButton"
+                            android:background="@drawable/sig_area_bg">
+
+                            <ImageView
+                                android:id="@+id/waiversSignatureImageView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="4dp"
+                                android:scaleType="fitCenter" />
+                        </FrameLayout>
                     </RelativeLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/light_gray" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#E8EDF8" />
 
-                    <RelativeLayout
+                    <!-- Visitation Comments -->
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:padding="10dp">
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:orientation="vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="12dp">
 
                         <TextView
+                            android:id="@+id/vcomments_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/vcomments_tv"
+                            android:layout_marginBottom="6dp"
                             android:text="Visitation Comments"
-                            android:textSize="15sp"
+                            android:textColor="#263238"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/visitationCommentsEditText"
-                            android:layout_width="wrap_content"
-                            android:layout_toEndOf="@id/vcomments_tv"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_alignParentEnd="true"
-                            android:background="@drawable/textview_background"
-                            android:ems="40"
-                            android:lines="6"
-                            android:gravity="left|top"
+                            android:background="@drawable/cert_input_background"
+                            android:gravity="top"
                             android:inputType="textMultiLine|textCapSentences"
+                            android:lines="6"
                             android:maxLength="1000"
-                            android:padding="5dp" />
-                    </RelativeLayout>
-                    
-                </LinearLayout>
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:paddingTop="8dp"
+                            android:textColor="#263238"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:padding="30dp"
-                app:cardElevation="5dp">
+            <!-- ═══════════════════════════════════ -->
+            <!-- Action Buttons                      -->
+            <!-- ═══════════════════════════════════ -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <Button
+                    android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="right"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center">
+                    android:layout_height="44dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/btn_cert_outline"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="#4572CE"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
 
-                    <Button
-                        android:id="@+id/cancelButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/new_btn_bkg"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:text="Cancel"
-                        />
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/btn_cert_primary"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
 
-                    <Button
-                        android:id="@+id/saveButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/new_btn_bkg"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:text="Save"
-                        />
-
-                    <Button
-                        android:id="@+id/completeButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:enabled="false"
-                        android:background="@drawable/new_btn_bkg"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:text="COMPLETE"
-                        />
-
-
-                </LinearLayout>
-
-
-            </androidx.cardview.widget.CardView>
-
+                <Button
+                    android:id="@+id/completeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:enabled="false"
+                    android:background="@drawable/btn_cert_primary"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Complete"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
+    <!-- Dim overlay -->
     <View
         android:id="@+id/visitationFormAlphaBackground"
         android:layout_width="match_parent"
@@ -1193,97 +1559,127 @@
         android:clickable="true"
         android:visibility="gone" />
 
-    <RelativeLayout
+    <!-- Signature Dialog -->
+    <androidx.cardview.widget.CardView
         android:id="@+id/signatureDialog"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@color/light_gray"
         android:elevation="15dp"
-        android:padding="10dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="12dp">
 
-        <com.simplify.ink.InkView
-            android:id="@+id/signatureInkView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_alignParentTop="true"
-            android:background="@color/white" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/signatureConfirmButton"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/signatureInkView"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/new_btn_bkg"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Confirm"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/dialog_header_top"
+                android:gravity="center_vertical"
+                android:paddingStart="18dp"
+                android:paddingEnd="10dp">
 
-        <Button
-            android:id="@+id/signatureCancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_below="@id/signatureInkView"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@id/signatureConfirmButton"
-            android:background="@drawable/new_btn_bkg"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Cancel"
-            />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Signature"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/signatureClearButton"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/signatureInkView"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/new_btn_bkg"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="CLEAR"
-            />
-        <Button
-            android:id="@+id/signatureLoadButton"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_below="@id/signatureInkView"
-            android:layout_toEndOf="@id/signatureClearButton"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/new_btn_bkg"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="LOAD RECENT"
-            />
-    </RelativeLayout>
+                <ImageButton
+                    android:id="@+id/signatureCancelButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Close"
+                    android:src="@drawable/ic_close_cert" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <com.simplify.ink.InkView
+                    android:id="@+id/signatureInkView"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:background="@drawable/sig_area_bg" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="12dp">
+
+                <Button
+                    android:id="@+id/signatureClearButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/btn_cert_outline"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="Clear"
+                    android:textAllCaps="false"
+                    android:textColor="#4572CE"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+
+                <Button
+                    android:id="@+id/signatureLoadButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/btn_cert_outline"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="Load Recent"
+                    android:textAllCaps="false"
+                    android:textColor="#4572CE"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/signatureConfirmButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/btn_cert_primary"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:text="Confirm"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Loading / Progress overlay -->
     <RelativeLayout
         android:id="@+id/dialogueLoadingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="1"
-        android:clickable="true"
         android:background="@color/transparent"
+        android:clickable="true"
         android:visibility="gone">
 
         <ProgressBar
@@ -1294,10 +1690,10 @@
             android:progressTint="@color/white" />
 
         <TextView
+            android:id="@+id/progressBarTextVal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/progressBarRecords"
-            android:id="@+id/progressBarTextVal"
             android:layout_centerHorizontal="true"
             android:text="Loading..."
             android:textColor="@color/white"
@@ -1305,94 +1701,72 @@
             android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:layout_height="match_parent"
             android:id="@+id/visitation_stepview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:layout_margin="5dp"
             android:elevation="20dp"
             android:visibility="gone"
-            android:background="@drawable/diagonal_gradient"
-            >
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="10dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="0dp"
-                android:background="@drawable/diagonal_gradient"
-                android:orientation="vertical"
-                >
-                <RelativeLayout
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/cert_header_bg"
+                    android:gravity="center_vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Complete Visitation Progress"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/netwrokStatusText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:gravity="center"
+                        android:text="Internet Status:"
+                        android:textColor="#80FF80"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/visitationStatusBtn"
+                        android:layout_width="160dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/btn_cert_primary"
+                        android:enabled="false"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:text="Close"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/stepsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_vertical"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="20dp"
-                        android:textColor="@color/darkBlue"
-                        android:textSize="22sp"
-                        android:text="Complete Visitation Progress"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_toStartOf="@id/visitationStatusBtn"
-                        android:id="@+id/netwrokStatusText"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="20dp"
-                        android:textColor="@color/cb_green"
-                        android:textSize="16sp"
-                        android:text="Internet Status:"
-                        />
-                    <Button
-                        android:background="@drawable/new_btn_bkg"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@null"
-                        android:layout_width="200dp"
-                        android:layout_height="40dp"
-                        android:layout_alignParentEnd="true"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="20dp"
-                        android:enabled="false"
-                        android:text="CLOSE"
-                        android:id="@+id/visitationStatusBtn"
-                        />
-                </RelativeLayout>
-                <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
-                    <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:background="@color/transparent"
-                    android:orientation="vertical">
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/stepsRecyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:clipToPadding="false"
-                            android:background="@color/transparent"
-                            android:backgroundTint="@color/transparent"
-                            android:scrollbars="vertical" />
-                </LinearLayout>
-                </LinearLayout>
+                    android:clipToPadding="false"
+                    android:padding="5dp"
+                    android:scrollbars="vertical" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
