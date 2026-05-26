@@ -33,7 +33,7 @@
                 android:text="Test"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -124,7 +124,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="test"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 app:layout_constraintTop_toTopOf="@id/business_status_label"
                 app:layout_constraintStart_toEndOf="@id/business_status_label"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:maxLines="2"
-                android:textColorLink="@color/mainColor"
+                android:textColorLink="#4572CE"
                 android:text="test"
                 app:layout_constraintTop_toTopOf="@id/website_label"
                 app:layout_constraintStart_toEndOf="@id/website_label"
@@ -172,7 +172,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="test"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 app:layout_constraintTop_toTopOf="@id/status_label"
                 app:layout_constraintStart_toEndOf="@id/status_label"
                 app:layout_constraintEnd_toStartOf="@id/view_matches" />
@@ -184,7 +184,7 @@
                 android:src="@android:drawable/ic_search_category_default"
                 app:layout_constraintTop_toTopOf="@id/status_label"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:tint="@color/mainColor" />
+                tools:tint="#4572CE" />
 
 
             <LinearLayout
@@ -221,7 +221,7 @@
                     android:clickable="true"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:backgroundTint="@color/mainColor"
+                    android:backgroundTint="#4572CE"
                     android:background="@drawable/save_icon"
                     android:focusable="true" />
                 <ImageButton
@@ -243,7 +243,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Saved"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 app:buttonTint="@drawable/checkbox_bkg"
                 app:layout_constraintTop_toBottomOf="@id/notesLL"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -253,7 +253,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Visited"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 app:buttonTint="@drawable/checkbox_bkg"
                 app:layout_constraintTop_toTopOf="@id/savedCB"
                 app:layout_constraintStart_toEndOf="@id/savedCB" />
@@ -265,7 +265,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/savedCB"
                 app:layout_constraintStart_toStartOf="parent"

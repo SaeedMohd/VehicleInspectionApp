@@ -51,7 +51,7 @@
             android:id="@+id/facNameVal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/mainColor"
+            android:textColor="#1A237E"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textAlignment="center"
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Facility Number:"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 android:textSize="12sp" />
 
             <TextView
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="City:"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 android:textSize="12sp" />
 
             <TextView
@@ -102,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Type:"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 android:textSize="12sp" />
 
             <TextView
@@ -129,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Club Code:"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 android:textSize="12sp" />
 
             <TextView
@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Facility Annual Month:"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 android:textSize="12sp" />
 
             <TextView
@@ -176,7 +176,7 @@
                 android:id="@+id/etaLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 android:textSize="12sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -197,7 +197,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="* Location Available"
-                android:textColor="@color/mainColor"
+                android:textColor="#1A237E"
                 android:textSize="12sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -260,7 +260,7 @@
                 android:text="Save Notes"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 app:backgroundTint="@null" />
 
             <Button
@@ -272,7 +272,7 @@
                 android:text="Remove"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 app:backgroundTint="@null" />
 
             <Button
@@ -284,7 +284,7 @@
                 android:text="Load Facility"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 app:backgroundTint="@null" />
         </LinearLayout>
 
@@ -310,7 +310,7 @@
                 android:minHeight="48dp"
                 android:padding="12dp"
                 android:src="@drawable/ic_move_first"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 android:contentDescription="Move to first position"
                 app:backgroundTint="@null" />
 
@@ -324,7 +324,7 @@
                 android:minHeight="48dp"
                 android:padding="12dp"
                 android:src="@drawable/ic_move_up"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 android:contentDescription="Move up one position"
                 app:backgroundTint="@null" />
 
@@ -338,7 +338,7 @@
                 android:minHeight="48dp"
                 android:padding="12dp"
                 android:src="@drawable/ic_move_down"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 android:contentDescription="Move down one position"
                 app:backgroundTint="@null" />
 
@@ -352,7 +352,7 @@
                 android:minHeight="48dp"
                 android:padding="12dp"
                 android:src="@drawable/ic_move_last"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 android:contentDescription="Move to last position"
                 app:backgroundTint="@null" />
         </LinearLayout>

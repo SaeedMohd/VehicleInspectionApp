@@ -3,18 +3,18 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context="com.inspection.fragments.FragmentARRAVAmOrderTracking">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleTextView"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
         android:paddingBottom="10dp"
         android:paddingTop="5dp"
-        android:background="@color/light_gray"
+        android:background="@android:color/transparent"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,20 +33,20 @@
                     android:layout_height="wrap_content"
                     android:text="Amendments Orders Tracking"
                     android:gravity="center"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp"
+                    android:textColor="#1A237E"
+                    android:textSize="18sp"
                     />
 
                 <Button
-                    android:background="@drawable/new_btn_bkg"
+                    android:background="@drawable/btn_cert_primary"
                     android:textColor="@color/white"
                     app:backgroundTint="@null"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:layout_marginBottom="20dp"
                     android:id="@+id/showNewAarCardButton"
                     android:text="Add New AO Tracking"
@@ -64,7 +64,7 @@
 
 
                 <TableRow
-                    android:background="@color/mainColor">
+                    android:background="#4572CE">
                     <TextView android:text="AO ID"
                         android:layout_width="100dp"
                         android:textAlignment="center"
@@ -96,8 +96,8 @@
                 android:layout_below="@id/aarPortalTrackingTableLayout"
                 android:id="@+id/btnslayout"
                 android:weightSum="3"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
                 android:orientation="horizontal">
                 <Button
                     android:id="@+id/editBtn"
@@ -115,20 +115,20 @@
                     android:layout_height="wrap_content"
                     android:text="EVENTS"
                     android:gravity="center"
-                    android:textColor="@color/mainColor"
-                    android:textSize="22sp"
+                    android:textColor="#1A237E"
+                    android:textSize="18sp"
                     />
 
                 <Button
-                    android:background="@drawable/new_btn_bkg"
+                    android:background="@drawable/btn_cert_primary"
                     android:textColor="@color/white"
                     app:backgroundTint="@null"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:layout_marginBottom="20dp"
                     android:text="Add New Event"
                     android:id="@+id/showNewEventDialogue"
@@ -147,7 +147,7 @@
 
 
                 <TableRow
-                    android:background="@color/mainColor">
+                    android:background="#4572CE">
                     <TextView android:text="AO ID"
                         android:layout_width="100dp"
                         android:textAlignment="center"
@@ -185,8 +185,8 @@
                 android:layout_below="@id/aarPortalTrackingTableLayout"
                 android:id="@+id/btnslayout2"
                 android:weightSum="2"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
                 android:orientation="horizontal">
              </LinearLayout>
 
@@ -198,7 +198,7 @@
         android:id="@+id/alphaBackgroundForAOT_Dialogs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/mainColor"
+        android:background="#1A237E"
         android:clickable="true"
         android:visibility="gone"
         android:alpha="0.8"/>
@@ -216,9 +216,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="Add New AO TRACKING"
-            android:layout_gravity="top|left"
+            android:layout_gravity="top|start"
             android:textSize="18dp"
             />
 
@@ -227,12 +227,12 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
             android:text="Submit"
             android:id="@+id/submitNewAOTButton"
-            android:background="@drawable/new_btn_bkg"
+            android:background="@drawable/btn_cert_primary"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             />
@@ -242,7 +242,7 @@
             android:layout_marginTop="25dp"
             android:id="@+id/exitNewAO_DialogeBtnId"
             android:layout_width="20dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_height="20dp"
             android:background="@drawable/close"
             android:layout_gravity="top|right"
@@ -253,7 +253,7 @@
             android:padding="40dp"
             android:orientation="vertical">
 
-        <LinearLayout android:layout_width="fill_parent"
+        <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="5"
             android:orientation="horizontal"
@@ -274,7 +274,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="fill_parent"
+        <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="5"
             android:orientation="horizontal"
@@ -314,9 +314,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="Add New Event"
-            android:layout_gravity="top|left"
+            android:layout_gravity="top|start"
             android:textSize="18dp"
             />
 
@@ -325,12 +325,12 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
             android:text="Submit"
             android:id="@+id/submitNewEventButton"
-            android:background="@drawable/new_btn_bkg"
+            android:background="@drawable/btn_cert_primary"
             android:textColor="@color/white"
             app:backgroundTint="@null"
             />
@@ -340,7 +340,7 @@
             android:layout_marginTop="25dp"
             android:id="@+id/exitEventDialogeBtnId"
             android:layout_width="20dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_height="20dp"
             android:background="@drawable/close"
             android:layout_gravity="top|right"
@@ -353,7 +353,7 @@
             android:padding="40dp"
             android:orientation="vertical">
 
-            <LinearLayout android:layout_width="fill_parent"
+            <LinearLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="7"
                 android:orientation="horizontal"
@@ -370,14 +370,14 @@
                     android:id="@+id/event_date_textviewVal"
                     android:layout_width="0dp"
                     android:text="select date"
-                    android:textColor="@color/blue_krayola"
+                    android:textColor="#4572CE"
                     android:background="@null"
                     android:layout_weight="4"
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <LinearLayout android:layout_width="fill_parent"
+            <LinearLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="5"
                 android:orientation="horizontal"
@@ -409,7 +409,7 @@
         android:layout_height="match_parent"
         android:alpha="0.8"
         android:clickable="true"
-        android:background="@color/mainColor"
+        android:background="#1A237E"
         android:visibility="gone"
         android:focusable="true">
 

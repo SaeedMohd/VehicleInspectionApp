@@ -32,7 +32,7 @@
                 android:textStyle="bold"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 app:backgroundTint="@null" />
 
             <!-- Content Table -->
@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:text="Club Code"
                         android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textColor="#546878" />
 
                     <TextView
                         android:id="@+id/adHocClubCodeValueTextView"
@@ -66,7 +66,7 @@
                         android:text="Contract Status"
                         android:layout_marginEnd="20dp"
                         android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textColor="#546878" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/adHocCoStatusValueTextView"
@@ -76,7 +76,7 @@
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="@color/white"
-                        app:chipBackgroundColor="@color/mainColor"
+                        app:chipBackgroundColor="#4572CE"
                         app:chipCornerRadius="12dp"
                         app:chipMinHeight="28dp"
                         app:chipStartPadding="8dp"
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:text="Facility Name:"
                         android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textColor="#546878" />
 
                     <TextView
                         android:id="@id/facilityNameValueTextView"
@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:text="Facility Number"
                         android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textColor="#546878" />
 
                     <TextView
                         android:id="@+id/facilityNumberValueTextView"
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:text="Facility City:"
                         android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textColor="#546878" />
 
                     <TextView
                         android:id="@+id/cityValueTextView"
@@ -149,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:text="Add To Today's Visitations"
                         android:textStyle="bold"
-                        android:textColor="@color/mainColor"
+                        android:textColor="#4572CE"
                         app:buttonTint="@drawable/checkbox_bkg" />
                 </TableRow>
 
