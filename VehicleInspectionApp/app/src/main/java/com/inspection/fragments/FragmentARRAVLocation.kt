@@ -1876,7 +1876,7 @@ class FragmentARRAVLocation : Fragment() {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
 //                    textView.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.setTextColor(Color.BLACK)
                     textView.minimumHeight=30
@@ -1885,7 +1885,7 @@ class FragmentARRAVLocation : Fragment() {
 
                     val textView2 = TextView(context)
                     textView2.layoutParams = rowLayoutParam1
-                    textView2.gravity = Gravity.CENTER_VERTICAL
+                    textView2.gravity = Gravity.CENTER
                     textView2.textSize = 14f
                     textView2.setTextColor(Color.BLACK)
                     textView2.minimumHeight=30
@@ -2025,7 +2025,7 @@ class FragmentARRAVLocation : Fragment() {
 
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30
@@ -2034,7 +2034,7 @@ class FragmentARRAVLocation : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.text = get(it).email
                     textView.minimumHeight = 30
                     textView.textSize = 14f
@@ -2042,7 +2042,7 @@ class FragmentARRAVLocation : Fragment() {
                     tableRow.addView(textView)
 
                     textView = TextView(context)
-                    textView.layoutParams = rowLayoutParam1
+                    textView.layoutParams = rowLayoutParam2
                     textView.setTextColor(Color.BLUE)
                     textView.text = "EDIT"
                     textView.textSize = 14f
@@ -2190,7 +2190,7 @@ class FragmentARRAVLocation : Fragment() {
         rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
-        rowLayoutParam3.weight = 1F
+        rowLayoutParam3.weight = 2F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0

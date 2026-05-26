@@ -1017,6 +1017,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:text="Open:"
                             android:textColor="#37474F"
                             android:textSize="11sp"
@@ -1028,6 +1029,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="1"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1036,6 +1038,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="2"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1044,6 +1047,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1052,6 +1056,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="4"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1060,6 +1065,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="5"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1068,6 +1074,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="6"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1076,6 +1083,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="7"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                     </TableRow>
@@ -1087,6 +1095,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:text="Closed:"
                             android:textColor="#37474F"
                             android:textSize="11sp"
@@ -1098,6 +1107,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="1"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1106,6 +1116,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="2"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1114,6 +1125,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="3"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1122,6 +1134,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="4"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1130,6 +1143,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="5"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1138,6 +1152,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="6"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                         <Spinner
@@ -1146,6 +1161,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="7"
                             android:layout_weight="2"
+                            android:gravity="center"
                             android:entries="@array/officeTimes" />
 
                     </TableRow>
