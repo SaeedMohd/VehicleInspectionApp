@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Speech Recognition"
-            android:textColor="@color/mainColor"
+            android:textColor="#1A237E"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
             android:id="@+id/dialogSaveBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/new_btn_bkg"
+            android:background="@drawable/btn_cert_primary"
             android:enabled="false"
             android:padding="10dp"
             android:text="Save Notes"

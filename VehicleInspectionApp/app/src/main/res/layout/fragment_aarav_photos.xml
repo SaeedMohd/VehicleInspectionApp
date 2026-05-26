@@ -10,8 +10,8 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="5dp"
-        android:paddingLeft="5dp"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
         android:id="@+id/mainScroll"
         android:paddingBottom="10dp"
         android:layout_margin="10dp"
@@ -49,17 +49,17 @@
                         />
 
                     <Button
-                        android:background="@drawable/new_btn_bkg"
+                        android:background="@drawable/btn_cert_primary"
                         android:textColor="@color/white"
                         app:backgroundTint="@null"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_marginBottom="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
+                        android:layout_marginEnd="20dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
                         android:text="Add New Photo"
                         android:id="@+id/addNewPhoto"
                         />
@@ -101,9 +101,9 @@
                     android:layout_height="40dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
+                    android:layout_marginEnd="20dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="Reload Photos"
                     android:id="@+id/reloadPhoto"
                     />
@@ -151,7 +151,7 @@
                         android:text="Thumbnail"
                         android:textStyle="bold"
                         android:layout_column="0"
-                        android:layout_marginLeft="0dp"
+                        android:layout_marginStart="0dp"
                         android:textSize="14sp"
                         android:gravity="center"
                         android:textColor="@color/white"
@@ -165,7 +165,7 @@
                         android:layout_column="1"
                         android:textSize="14sp"
                         android:gravity="center"
-                        android:layout_marginLeft="0dp"
+                        android:layout_marginStart="0dp"
                         android:textColor="@color/white"
                         />
 
@@ -298,7 +298,7 @@
     <View
         android:id="@+id/photosLoadingView"
         android:alpha="0.8"
-        android:background="@color/mainColor"
+        android:background="#1A237E"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -322,7 +322,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|left"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:text="Add New Photo"
@@ -334,10 +334,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="right"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 android:textColor="@color/white"
                 app:backgroundTint="@null"
                 android:text="Submit"
@@ -349,7 +349,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="top|right"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/close" />
 
@@ -365,8 +365,8 @@
             <!--android:background="@drawable/green_background_button"-->
             <!--android:textColor="@color/white"-->
             <!--android:text="        Submit        "-->
-            <!--android:paddingRight="15dp"-->
-            <!--android:paddingLeft="15dp"-->
+            <!--android:paddingEnd="15dp"-->
+            <!--android:paddingStart="15dp"-->
             <!--/>-->
 
             <!--<Button-->
@@ -378,8 +378,8 @@
             <!--android:layout_marginTop="15dp"-->
             <!--android:textColor="@color/white"-->
             <!--android:text="Capture Photo"-->
-            <!--android:paddingRight="15dp"-->
-            <!--android:paddingLeft="15dp"-->
+            <!--android:paddingEnd="15dp"-->
+            <!--android:paddingStart="15dp"-->
             <!--android:layout_alignParentLeft="true"-->
             <!--/>-->
 
@@ -392,19 +392,19 @@
             <!--android:layout_below="@id/newPhotoInputFieldsTableLayout"-->
             <!--android:textColor="@color/white"-->
             <!--android:text="     Pick Photo   "-->
-            <!--android:paddingRight="15dp"-->
-            <!--android:paddingLeft="15dp"-->
-            <!--android:layout_toRightOf="@id/addNewPhotoCapturePhotoButton"-->
-            <!--android:layout_marginLeft="10dp"-->
+            <!--android:paddingEnd="15dp"-->
+            <!--android:paddingStart="15dp"-->
+            <!--android:layout_toEndOf="@id/addNewPhotoCapturePhotoButton"-->
+            <!--android:layout_marginStart="10dp"-->
             <!--/>-->
             <!--<ImageView-->
             <!--android:layout_width="120dp"-->
             <!--android:layout_height="120dp"-->
-            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentEnd="true"-->
             <!--android:layout_below="@id/newPhotoInputFieldsTableLayout"-->
             <!--android:id="@+id/loadedImage"-->
             <!--android:scaleType="fitXY"-->
-            <!--android:layout_marginRight="50dp"-->
+            <!--android:layout_marginEnd="50dp"-->
             <!--android:background="@drawable/black_border"-->
             <!--/>-->
             <!--</LinearLayout>-->
@@ -421,27 +421,27 @@
                         android:id="@+id/addNewPhotoCapturePhotoButton"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:background="@drawable/new_btn_bkg"
+                        android:background="@drawable/btn_cert_primary"
                         android:textColor="@color/white"
                         app:backgroundTint="@null"
                         android:layout_column="0"
                         android:text="Capture Photo"
-                        android:paddingRight="15dp"
-                        android:paddingLeft="15dp"
+                        android:paddingEnd="15dp"
+                        android:paddingStart="15dp"
                         />
 
                     <Button
                         android:id="@+id/addNewPhotoPickPhotoButton"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:background="@drawable/new_btn_bkg"
+                        android:background="@drawable/btn_cert_primary"
                         android:textColor="@color/white"
                         app:backgroundTint="@null"
                         android:layout_column="1"
                         android:text="     Pick Photo   "
-                        android:paddingRight="15dp"
-                        android:paddingLeft="15dp"
-                        android:layout_marginLeft="10dp"
+                        android:paddingEnd="15dp"
+                        android:paddingStart="15dp"
+                        android:layout_marginStart="10dp"
                         />
                     <ImageView
                         android:layout_width="120dp"
@@ -658,7 +658,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|left"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:text="Edit Photo"
@@ -670,10 +670,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="right"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 android:textColor="@color/white"
                 app:backgroundTint="@null"
                 android:text="Submit"
@@ -685,7 +685,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="top|right"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/close" />
 
@@ -861,7 +861,7 @@
         android:layout_width="600dp"
         android:layout_height="400dp"
         android:layout_centerInParent="true"
-        android:background="@color/light_gray"
+        android:background="#F0F4FF"
         android:padding="10dp"
         android:visibility="gone">
 
@@ -877,11 +877,11 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/new_btn_bkg"
+            android:background="@drawable/btn_cert_primary"
             android:textColor="@color/white"
             app:backgroundTint="@null"
-            android:paddingRight="15dp"
-            android:paddingLeft="15dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
             android:layout_marginTop="10dp"
             android:text="Close"
             android:layout_below="@id/photosPreviewImageView"
@@ -913,7 +913,7 @@
         <ImageView
             android:id="@+id/closeImageView"
             android:layout_width="20dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="top|right"
             android:layout_height="20dp"
@@ -932,7 +932,7 @@
         android:layout_height="match_parent"
         android:alpha="0.8"
         android:clickable="true"
-        android:background="@color/mainColor"
+        android:background="#1A237E"
         android:visibility="gone">
 
         <ProgressBar

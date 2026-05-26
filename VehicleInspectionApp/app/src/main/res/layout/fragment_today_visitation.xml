@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="#F0F4FF"
     tools:context=".fragments.TodayVisitationFragment">
 
     <!-- Loading overlay (unchanged) -->
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.8"
-        android:background="@color/mainColor"
+        android:background="#1A237E"
         android:clickable="true"
         android:elevation="30dp"
         android:visibility="gone">
@@ -129,7 +129,7 @@
                 android:layout_height="48dp"
                 android:text="Clear"
                 android:textColor="@color/white"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 app:backgroundTint="@null"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -143,7 +143,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="Reload"
                 android:textColor="@color/white"
-                android:background="@drawable/new_btn_bkg"
+                android:background="@drawable/btn_cert_primary"
                 app:backgroundTint="@null"
                 app:layout_constraintEnd_toStartOf="@id/clearBtn"
                 app:layout_constraintTop_toTopOf="parent"
@@ -158,7 +158,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/topSavedll"
         android:layout_margin="8dp"
-        android:background="@color/light_gray"
+        android:background="#F0F4FF"
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:padding="4dp"
@@ -195,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="No visits planned for today"
-                    android:textColor="@color/mainColor"
+                    android:textColor="#1A237E"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>

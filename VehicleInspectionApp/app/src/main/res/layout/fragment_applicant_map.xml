@@ -121,7 +121,7 @@
                     android:stepSize="1"
                     android:value="1"
                     app:labelBehavior="gone"
-                    app:trackColor="@color/mainColor"
+                    app:trackColor="#4572CE"
                     android:layout_marginStart="10dp"/>
                 <EditText
                     android:layout_width="100dp"
@@ -202,7 +202,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Search"
                     android:textColor="@color/white"
-                    android:background="@drawable/new_btn_bkg"
+                    android:background="@drawable/btn_cert_primary"
                     app:backgroundTint="@null"/>
             </LinearLayout>
         </LinearLayout>
