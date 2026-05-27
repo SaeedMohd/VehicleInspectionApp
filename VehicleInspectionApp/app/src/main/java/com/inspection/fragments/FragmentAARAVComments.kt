@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -145,21 +146,29 @@ class FragmentAARAVComments : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER
         rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
         rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
         rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
+        rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER
         rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         var dateTobeFormated = ""
@@ -175,26 +184,26 @@ class FragmentAARAVComments : Fragment() {
                     }
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER
                     textView.text = if (get(it).CommentTypeID == 0) "" else TypeTablesModel.getInstance().CommentsType.filter { s -> s.CommentTypeID.toInt() == get(it).CommentTypeID }[0].CommentTypeName
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER
                     textView.text = "Test" // get(it).FAC_Addr1
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER
                     TableRow.LayoutParams()
                     textView.text = get(it).insertDate.apiToAppFormatMMDDYYYY()
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER
                     textView.text = get(it).Comment
 
                     tableRow.addView(textView)

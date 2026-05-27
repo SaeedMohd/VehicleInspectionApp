@@ -148,7 +148,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
         rowLayoutParam.leftMargin = 10
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam.gravity = Gravity.CENTER
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
@@ -156,42 +156,42 @@ class FragmentAARAVBillingAdjustment : Fragment() {
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
-        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
-        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam2.gravity = Gravity.CENTER
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
-        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam3.gravity = Gravity.CENTER
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 0.7F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
-        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam4.gravity = Gravity.CENTER
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
-        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam5.gravity = Gravity.CENTER
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
         rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam6.width = 0
-        rowLayoutParam6.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam6.gravity = Gravity.CENTER
 
 
 
@@ -214,7 +214,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.text = get(it).AdjustmentId.toString()
                     tableRow.addView(textView)
@@ -228,7 +228,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     TableRow.LayoutParams()
                     textView.text = get(it).Type
@@ -236,7 +236,7 @@ class FragmentAARAVBillingAdjustment : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
 //                    textView.text = TypeTablesModel.getInstance().AdjustmentDescriptionType.filter { s->s.AdjustmentDescId==get(it).DescriptionId }[0].Description
                     textView.text = get(it).Description

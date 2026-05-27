@@ -390,7 +390,7 @@ class FragmentARRAVComplaints : Fragment() {
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam.gravity = Gravity.CENTER
         rowLayoutParam.leftMargin = 10
 
         rowLayoutParam.width = 0
@@ -399,35 +399,35 @@ class FragmentARRAVComplaints : Fragment() {
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam1.gravity = Gravity.CENTER
         rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam2.gravity = Gravity.CENTER
         rowLayoutParam2.width = 0
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam3.gravity = Gravity.CENTER
         rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1.5F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam4.gravity = Gravity.CENTER
         rowLayoutParam4.width = 0
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam5.gravity = Gravity.CENTER
         rowLayoutParam5.width = 0
 
         val rowLayoutParamRow = TableRow.LayoutParams()
@@ -443,42 +443,42 @@ class FragmentARRAVComplaints : Fragment() {
 
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.text = get(it).ComplaintID
                     textView.textSize = 14f
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.text = get(it).FirstName
                     textView.textSize = 14f
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.text = get(it).LastName
                     textView.textSize = 14f
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.text = get(it).ReceivedDate.apiToAppFormatMMDDYYYY()
                     textView.textSize = 14f
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam4
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.text = get(it).ComplaintReasonName
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam5
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.text = get(it).ComplaintResolutionName
                     tableRow.addView(textView)

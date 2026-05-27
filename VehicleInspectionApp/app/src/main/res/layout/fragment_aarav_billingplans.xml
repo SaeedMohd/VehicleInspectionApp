@@ -121,7 +121,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginEnd="12dp"
                     android:layout_marginTop="8dp"
-                    android:stretchColumns="*">
+                    android:shrinkColumns="*">
 
                     <TableRow
                         android:background="@drawable/cert_header_bg"
@@ -132,7 +132,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_weight="1.5"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             android:padding="8dp"
                             android:text="Category"
                             android:textColor="@color/white"
@@ -144,7 +144,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="1"
                             android:layout_weight="2"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             android:padding="8dp"
                             android:text="Name"
                             android:textColor="@color/white"
@@ -156,7 +156,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="2"
                             android:layout_weight="0.7"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             android:padding="8dp"
                             android:text="Frequency"
                             android:textColor="@color/white"

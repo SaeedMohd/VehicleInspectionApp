@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -276,14 +277,20 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
 
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking.apply {
 
@@ -292,19 +299,19 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
                 var textView = TextView(context)
                 textView.layoutParams = rowLayoutParam
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER
                 textView.text = get(it).AOID
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam1
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER
                 textView.text = get(it).AOTEmployee
                 tableRow.addView(textView)
 
                 textView = TextView(context)
                 textView.layoutParams = rowLayoutParam2
-                textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                textView.gravity = Gravity.CENTER
                 TableRow.LayoutParams()
                 for (fac in TypeTablesModel.getInstance().tblAmendmentOrderTrackingSubReasonsType) {
                     if (get(it).ReasonID.equals(fac.AmendmentSubReasonID))
@@ -430,14 +437,20 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
 
         FacilityDataModel.getInstance().tblAmendmentOrderTracking[FacilityDataModel.getInstance().tblAmendmentOrderTracking.size - 1].apply {
 
@@ -446,19 +459,19 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = AOID
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = AOTEmployee
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             TableRow.LayoutParams()
             for (fac in TypeTablesModel.getInstance().tblAmendmentOrderTrackingSubReasonsType) {
                 if (ReasonID.equals(fac.AmendmentSubReasonID))
@@ -502,17 +515,25 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
-  val rowLayoutParam3 = TableRow.LayoutParams()
+        rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
+        val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
+        rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER
 
                 FacilityDataModel.getInstance().tblAmendmentOrderTracking.apply {
 
@@ -523,26 +544,26 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER
                     textView.text = get(it).AOID
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER
                     textView.text = get(it).EventID
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER
                     TableRow.LayoutParams()
                     textView.text = ""
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
-                    textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                    textView.gravity = Gravity.CENTER
                     TableRow.LayoutParams()
                     for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
                         if (get(it).EventTypeID.equals(fac.AmendmentEventID))
@@ -561,18 +582,26 @@ class FragmentARRAVAmOrderTracking : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
 
-  val rowLayoutParam3 = TableRow.LayoutParams()
+        val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
+        rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER
 
         FacilityDataModel.getInstance().tblAmendmentOrderTracking[FacilityDataModel.getInstance().tblAmendmentOrderTracking.size - 1].apply {
 
@@ -581,25 +610,25 @@ class FragmentARRAVAmOrderTracking : Fragment() {
 
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = AOID
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = EventID
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             TableRow.LayoutParams()
               textView.text = ""
             tableRow.addView(textView)
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             TableRow.LayoutParams()
             for (fac in TypeTablesModel.getInstance().AmendmentOrderTrackingEventsType) {
                 if (EventTypeID.equals(fac.AmendmentEventID))

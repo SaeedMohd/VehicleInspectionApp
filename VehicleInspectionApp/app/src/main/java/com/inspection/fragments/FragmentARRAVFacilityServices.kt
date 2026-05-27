@@ -316,21 +316,21 @@ class FragmentARRAVFacilityServices : Fragment() {
         rowLayoutParam.weight = 3F
         rowLayoutParam.column = 0
         rowLayoutParam.leftMargin = 10
-        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam.gravity = Gravity.CENTER
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1.5F
         rowLayoutParam1.column = 1
-        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam1.gravity = Gravity.CENTER
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1.5F
         rowLayoutParam2.column = 2
-        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam2.gravity = Gravity.CENTER
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
 
@@ -338,14 +338,14 @@ class FragmentARRAVFacilityServices : Fragment() {
         rowLayoutParam3.weight = 3F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam3.gravity = Gravity.CENTER
         rowLayoutParam3.width = 0
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam4.gravity = Gravity.CENTER
         rowLayoutParam4.width = 0
 
         val rowLayoutParamRow = TableRow.LayoutParams()
@@ -362,7 +362,7 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                     var textView1 = TextView(context)
                     textView1.layoutParams = rowLayoutParam
-                    textView1.gravity = Gravity.CENTER_VERTICAL
+                    textView1.gravity = Gravity.CENTER
                     textView1.textSize = 14f
                     textView1.setTextColor(Color.BLACK)
                     textView1.minimumHeight = 30
@@ -376,7 +376,7 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30
@@ -395,7 +395,7 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam2
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30
@@ -415,7 +415,7 @@ class FragmentARRAVFacilityServices : Fragment() {
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam3
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.setTextColor(Color.BLACK)
                     textView.minimumHeight = 30

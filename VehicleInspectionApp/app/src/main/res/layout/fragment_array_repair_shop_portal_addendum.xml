@@ -299,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:divider="@drawable/divider_table_layout"
                     android:showDividers="middle"
-                    android:stretchColumns="*">
+                    android:shrinkColumns="*">
 
                     <TableRow
                         android:background="@drawable/cert_header_bg"

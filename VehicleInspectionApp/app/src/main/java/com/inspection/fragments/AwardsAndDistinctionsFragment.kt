@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import android.view.Gravity
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
@@ -81,21 +82,29 @@ class AwardsAndDistinctionsFragment : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER
         rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
         rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
         rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
+        rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER
         rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
 
 //        FacilityDataModel.getInstance().tbl.apply {
@@ -108,26 +117,26 @@ class AwardsAndDistinctionsFragment : Fragment() {
             }
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = "Test" // get(it).FAC_Addr1
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             TableRow.LayoutParams()
             textView.text = "Test" // get(it).FAC_Addr2
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = "Test" // get(it).CITY
             tableRow.addView(textView)
 

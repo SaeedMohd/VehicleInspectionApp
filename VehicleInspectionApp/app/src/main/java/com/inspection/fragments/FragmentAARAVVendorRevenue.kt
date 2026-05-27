@@ -149,7 +149,7 @@ class FragmentAARAVVendorRevenue : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.leftMargin = 10
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam.gravity = Gravity.CENTER
         rowLayoutParam.width = 0
 
 
@@ -158,35 +158,35 @@ class FragmentAARAVVendorRevenue : Fragment() {
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
-        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
-        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam2.gravity = Gravity.CENTER
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 0.7F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
-        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam3.gravity = Gravity.CENTER
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
-        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam4.gravity = Gravity.CENTER
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 0.7F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
-        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam5.gravity = Gravity.CENTER
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -205,14 +205,14 @@ class FragmentAARAVVendorRevenue : Fragment() {
                 if (get(it).VendorRevenueID>0) {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.text = get(it).VendorRevenueID.toString();
                     tableRow.addView(textView)
 
                     textView = TextView(context)
                     textView.layoutParams = rowLayoutParam1
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.text = get(it).RevenueSourceName
 //                    try {

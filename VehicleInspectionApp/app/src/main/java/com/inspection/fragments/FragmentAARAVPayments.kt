@@ -199,7 +199,7 @@ class FragmentAARAVPayments : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam.leftMargin = 10
-        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam.gravity = Gravity.CENTER
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
@@ -207,42 +207,42 @@ class FragmentAARAVPayments : Fragment() {
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
-        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
-        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam2.gravity = Gravity.CENTER
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
-        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam3.gravity = Gravity.CENTER
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
-        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam4.gravity = Gravity.CENTER
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
-        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam5.gravity = Gravity.CENTER
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
         rowLayoutParam6.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam6.width = 0
-        rowLayoutParam6.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam6.gravity = Gravity.CENTER
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -260,7 +260,7 @@ class FragmentAARAVPayments : Fragment() {
                 if (!get((it)).InvoiceId.equals("-1")) {
                     var textView = TextView(context)
                     textView.layoutParams = rowLayoutParam
-                    textView.gravity = Gravity.CENTER_VERTICAL
+                    textView.gravity = Gravity.CENTER
                     textView.textSize = 14f
                     textView.text = get(it).InvoiceNumber
                     tableRow.addView(textView)
@@ -320,36 +320,50 @@ class FragmentAARAVPayments : Fragment() {
         val rowLayoutParam = TableRow.LayoutParams()
         rowLayoutParam.weight = 1F
         rowLayoutParam.column = 0
+        rowLayoutParam.width = 0
+        rowLayoutParam.gravity = Gravity.CENTER
         rowLayoutParam.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam1 = TableRow.LayoutParams()
         rowLayoutParam1.weight = 1F
         rowLayoutParam1.column = 1
+        rowLayoutParam1.width = 0
+        rowLayoutParam1.gravity = Gravity.CENTER
         rowLayoutParam1.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 1F
         rowLayoutParam2.column = 2
+        rowLayoutParam2.width = 0
+        rowLayoutParam2.gravity = Gravity.CENTER
         rowLayoutParam2.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 1F
         rowLayoutParam3.column = 3
+        rowLayoutParam3.width = 0
+        rowLayoutParam3.gravity = Gravity.CENTER
         rowLayoutParam3.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1F
         rowLayoutParam4.column = 4
+        rowLayoutParam4.width = 0
+        rowLayoutParam4.gravity = Gravity.CENTER
         rowLayoutParam4.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 1F
         rowLayoutParam5.column = 5
+        rowLayoutParam5.width = 0
+        rowLayoutParam5.gravity = Gravity.CENTER
         rowLayoutParam5.height = TableLayout.LayoutParams.WRAP_CONTENT
 
         val rowLayoutParam6 = TableRow.LayoutParams()
         rowLayoutParam6.weight = 1F
         rowLayoutParam6.column = 6
+        rowLayoutParam6.width = 0
+        rowLayoutParam6.gravity = Gravity.CENTER
         rowLayoutParam6.height = TableLayout.LayoutParams.WRAP_CONTENT
 
 
@@ -370,44 +384,44 @@ class FragmentAARAVPayments : Fragment() {
             }
             var textView = TextView(context)
             textView.layoutParams = rowLayoutParam
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = "Test" // getLocationTypeName(get(it).LocationTypeID)
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam1
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = "Test" // get(it).FAC_Addr1
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam2
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             TableRow.LayoutParams()
             textView.text = "Test" // get(it).FAC_Addr2
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam3
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = "Test" // get(it).CITY
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam4
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = "Test" // get(it).CITY
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam5
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = "Test" // get(it).CITY
             tableRow.addView(textView)
 
             textView = TextView(context)
             textView.layoutParams = rowLayoutParam6
-            textView.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+            textView.gravity = Gravity.CENTER
             textView.text = "Test" // get(it).CITY
             tableRow.addView(textView)
 

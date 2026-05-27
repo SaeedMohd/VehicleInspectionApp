@@ -548,7 +548,7 @@ class FragmentARRAVDeficiency : Fragment() {
         rowLayoutParam.column = 0
         rowLayoutParam.leftMargin = 10
         rowLayoutParam.height = TableRow.LayoutParams.WRAP_CONTENT
-        rowLayoutParam.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam.gravity = Gravity.CENTER
         rowLayoutParam.width = 0
 
         val rowLayoutParam1 = TableRow.LayoutParams()
@@ -556,42 +556,42 @@ class FragmentARRAVDeficiency : Fragment() {
         rowLayoutParam1.column = 1
         rowLayoutParam1.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam1.width = 0
-        rowLayoutParam1.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam1.gravity = Gravity.CENTER
 
         val rowLayoutParam2 = TableRow.LayoutParams()
         rowLayoutParam2.weight = 0.7F
         rowLayoutParam2.column = 2
         rowLayoutParam2.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam2.width = 0
-        rowLayoutParam2.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam2.gravity = Gravity.CENTER
 
         val rowLayoutParam30 = TableRow.LayoutParams()
         rowLayoutParam30.weight = 0.7F
         rowLayoutParam30.column = 3
         rowLayoutParam30.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam30.width = 0
-        rowLayoutParam30.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam30.gravity = Gravity.CENTER
 
         val rowLayoutParam3 = TableRow.LayoutParams()
         rowLayoutParam3.weight = 0.7F
         rowLayoutParam3.column = 4
         rowLayoutParam3.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam3.width = 0
-        rowLayoutParam3.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam3.gravity = Gravity.CENTER
 
         val rowLayoutParam4 = TableRow.LayoutParams()
         rowLayoutParam4.weight = 1.4F
         rowLayoutParam4.column = 5
         rowLayoutParam4.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam4.width = 0
-        rowLayoutParam4.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam4.gravity = Gravity.CENTER
 
         val rowLayoutParam5 = TableRow.LayoutParams()
         rowLayoutParam5.weight = 0.6F
         rowLayoutParam5.column = 6
         rowLayoutParam5.height = TableRow.LayoutParams.WRAP_CONTENT
         rowLayoutParam5.width = 0
-        rowLayoutParam5.gravity = Gravity.CENTER_VERTICAL
+        rowLayoutParam5.gravity = Gravity.CENTER
 
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = TableLayout.LayoutParams.WRAP_CONTENT
@@ -657,7 +657,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
                         val textView30 = TextView(context)
                         textView30.layoutParams = rowLayoutParam30
-                        textView30.gravity = Gravity.CENTER_VERTICAL
+                        textView30.gravity = Gravity.CENTER
                         textView30.textSize = 14f
                         textView30.minimumHeight = 30
 
@@ -674,7 +674,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
                         val textView3 = TextView(context)
                         textView3.layoutParams = rowLayoutParam3
-                        textView3.gravity = Gravity.CENTER_VERTICAL
+                        textView3.gravity = Gravity.CENTER
                         textView3.textSize = 14f
                         textView3.minimumHeight = 30
 
@@ -691,7 +691,7 @@ class FragmentARRAVDeficiency : Fragment() {
 
                         val textView4 = TextView(context)
                         textView4.layoutParams = rowLayoutParam4
-                        textView4.gravity = Gravity.CENTER_VERTICAL
+                        textView4.gravity = Gravity.CENTER
                         textView4.textSize = 14f
                         textView4.minimumHeight = 30
 
