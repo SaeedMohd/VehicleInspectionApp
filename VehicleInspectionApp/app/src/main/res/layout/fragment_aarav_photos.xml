@@ -95,18 +95,21 @@
                         />
                 </LinearLayout>
                 <Button
-                    android:background="@drawable/btn_cert_primary"
-                    android:textColor="@color/white"
+                    android:id="@+id/reloadPhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/btn_cert_primary"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:text="Reload Photos"
-                    android:id="@+id/reloadPhoto"
-                    />
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
 
             </LinearLayout>
 
