@@ -122,9 +122,10 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
             vehicleTypeArray.add(fac.VehiclesTypeName)
         }
 
-        var vehicleTypeAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item, vehicleTypeArray)
-        vehicleTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        var vehicleTypeAdapter = ArrayAdapter<String>(requireContext(), R.layout.spinner_item_modern, vehicleTypeArray)
+        vehicleTypeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         binding.vehicleTypeSpinner.adapter = vehicleTypeAdapter
+        binding.vehicleTypeSpinner.setPopupBackgroundResource(R.drawable.spinner_popup_bg)
         binding.vehicleTypeSpinner.setSelection(vehicleTypeArray.indexOf("Automobile"))
 
         IndicatorsDataModel.getInstance().tblScopeOfServices[0].VehiclesVisited= true
@@ -408,39 +409,44 @@ class VehiclesFragmentInScopeOfServicesView : Fragment() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateFacilityVehicles+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&VehicleID=${selectedVehicles.toString().removePrefix("[").removeSuffix("]").replace(" ","")}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}&insertDate=${Date().toApiSubmitFormat()}" + Utility.getLoggingParameters(activity, 1, totalDataChanges),
             { response ->
                 requireActivity().runOnUiThread {
-                    if (response.toString().contains("returnCode>0<",false)) {
-                        HasChangedModel.getInstance().updateChangedData("Vehicles","","", totalDataChanges)
-                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                        binding.progressBarText.text = "Loading ..."
+                    if (response.toString().contains("returnCode>0<", false)) {
+                        HasChangedModel.getInstance().updateChangedData("Vehicles", "", "", totalDataChanges)
                         FacilityDataModelOrg.getInstance().tblFacVehicles.clear()
-                        for (i in 0..FacilityDataModel.getInstance().tblFacVehicles.size-1) {
+                        for (i in 0..FacilityDataModel.getInstance().tblFacVehicles.size - 1) {
                             var vehicleServiceItem = TblFacVehicles()
-                            vehicleServiceItem.FACID= FacilityDataModel.getInstance().tblFacVehicles[i].FACID
+                            vehicleServiceItem.FACID = FacilityDataModel.getInstance().tblFacVehicles[i].FACID
                             vehicleServiceItem.VehicleID = FacilityDataModel.getInstance().tblFacVehicles[i].VehicleID
-                            vehicleServiceItem.insertBy= FacilityDataModel.getInstance().tblFacVehicles[i].insertBy
-                            vehicleServiceItem.updateBy= FacilityDataModel.getInstance().tblFacVehicles[i].updateBy
+                            vehicleServiceItem.insertBy = FacilityDataModel.getInstance().tblFacVehicles[i].insertBy
+                            vehicleServiceItem.updateBy = FacilityDataModel.getInstance().tblFacVehicles[i].updateBy
                             vehicleServiceItem.insertDate = FacilityDataModel.getInstance().tblFacVehicles[i].insertDate
-                            vehicleServiceItem.updateDate= FacilityDataModel.getInstance().tblFacVehicles[i].updateDate
+                            vehicleServiceItem.updateDate = FacilityDataModel.getInstance().tblFacVehicles[i].updateDate
                             FacilityDataModelOrg.getInstance().tblFacVehicles.add(vehicleServiceItem)
                         }
-                        Utility.showSubmitAlertDialog(activity, true, "Vehicles")
-                        (activity as FormsActivity).saveRequired = false
-                        refreshButtonsState()
                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicles()
                         HasChangedModel.getInstance().changeDoneForSoSVehicles()
+                        onSaveComplete(true)
                     } else {
-                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                        Utility.showSubmitAlertDialog(activity, false, "Vehicles (Error: "+ errorMessage+" )")
-                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                        binding.progressBarText.text = "Loading ..."
+                        val errorMessage = response.toString().substring(response.toString().indexOf("<message") + 9, response.toString().indexOf("</message"))
+                        onSaveComplete(false, "Error: $errorMessage")
                     }
                 }
             },
             {
-            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-            binding.progressBarText.text = "Loading ..."
-        Utility.showSubmitAlertDialog(activity,false,"Vehicles (Error: "+it.message+" )")
-    }))
+                onSaveComplete(false, "Error: ${it.message}")
+            }))
+    }
+
+    private fun onSaveComplete(success: Boolean, errorMsg: String = "") {
+        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+        binding.progressBarText.text = "Loading ..."
+        (activity as FormsActivity).saveRequired = false
+        refreshButtonsState()
+        if (success) {
+            (activity as FormsActivity).saveDone = true
+            Utility.showSubmitAlertDialog(activity, true, "Vehicles")
+        } else {
+            Utility.showSubmitAlertDialog(activity, false, "Vehicles ($errorMsg)")
+        }
     }
 
 

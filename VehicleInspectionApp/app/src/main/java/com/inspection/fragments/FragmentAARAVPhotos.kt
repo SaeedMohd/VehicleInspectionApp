@@ -460,7 +460,7 @@ class FragmentAARAVPhotos : Fragment() {
 
 
         IndicatorsDataModel.getInstance().tblPhotos[0].visited = true
-        binding.photosTitle.setTextColor(Color.parseColor("#26C3AA"))
+//        binding.photosTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
     }
 
@@ -1072,6 +1072,8 @@ class FragmentAARAVPhotos : Fragment() {
         val rowLayoutParamRow = TableRow.LayoutParams()
         rowLayoutParamRow.height = 80
 
+        var rowIndex = 0
+
         FacilityDataModel.getInstance().FacilityPhotos.apply {
             (0 until size).forEach {
                 if (get(it).PhotoId > -1) {
@@ -1081,6 +1083,17 @@ class FragmentAARAVPhotos : Fragment() {
                     if (get(it).FileName.isNullOrEmpty())
                         tableRow.minimumHeight = if (get(it).FileName.isNullOrEmpty()) 30 else 60
                     tableRow.setPadding(0, 4, 0, 4)
+                    tableRow.setBackgroundColor(if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#EEF2FB"))
+
+                    val indicatorView = TextView(context)
+                    indicatorView.layoutParams = rowLayoutParam
+                    indicatorView.gravity = Gravity.CENTER
+                    indicatorView.minimumHeight = 30
+                    indicatorView.text = "●"
+                    indicatorView.textSize = 22f
+                    indicatorView.setTextColor(Color.parseColor("#9E9E9E"))
+                    indicatorView.setMinWidth(100.dpToPx(requireContext()))
+                    tableRow.addView(indicatorView)
 
                     val imageView = ImageView(context)
                     imageView.layoutParams = rowLayoutParam
@@ -1158,6 +1171,7 @@ class FragmentAARAVPhotos : Fragment() {
                     checkBox1.isClickable = false
                     checkBox1.textSize = 14f
                     checkBox1.isChecked = (get(it).ApprovalRequested == "true")
+                    checkBox1.buttonTintList = ContextCompat.getColorStateList(requireContext(), R.color.checkbox_navy)
                     tableRow.addView(checkBox1)
 
                     val checkBox2 = CheckBox(context)
@@ -1167,6 +1181,7 @@ class FragmentAARAVPhotos : Fragment() {
                     checkBox2.isChecked = (get(it).Approved == "true")
                     checkBox2.isClickable = false
                     checkBox2.textSize = 14f
+                    checkBox2.buttonTintList = ContextCompat.getColorStateList(requireContext(), R.color.checkbox_navy)
                     tableRow.addView(checkBox2)
 
                     val textView5 = TextView(context)
@@ -1321,6 +1336,7 @@ class FragmentAARAVPhotos : Fragment() {
 
                     }
                     binding.photosTableLayout.addView(tableRow)
+                    rowIndex++
                 }
             }
 //            binding.photoLoadingView.visibility = View.GONE
@@ -1335,10 +1351,18 @@ class FragmentAARAVPhotos : Fragment() {
                     if (get(it).filename.isNullOrEmpty())
                         tableRow.minimumHeight = if (get(it).filename.isNullOrEmpty()) 30 else 60
                     tableRow.setPadding(0, 4, 0, 4)
+                    tableRow.setBackgroundColor(if (rowIndex % 2 == 0) Color.WHITE else Color.parseColor("#EEF2FB"))
 
-//                    if (it % 2 == 0) {
-//                        tableRow.setBackgroundResource(R.drawable.alt_row_color)
-//                    }
+                    val indicatorViewPrg = TextView(context)
+                    indicatorViewPrg.layoutParams = rowLayoutParam
+                    indicatorViewPrg.gravity = Gravity.CENTER
+                    indicatorViewPrg.minimumHeight = 30
+                    indicatorViewPrg.text = "●"
+                    indicatorViewPrg.textSize = 22f
+                    indicatorViewPrg.setTextColor(Color.parseColor("#49C566"))
+                    indicatorViewPrg.setMinWidth(100.dpToPx(requireContext()))
+                    tableRow.addView(indicatorViewPrg)
+
                     val imageView = ImageView(context)
                     imageView.layoutParams = rowLayoutParam
                     imageView.setPadding(5, 5, 5, 5)
@@ -1410,6 +1434,7 @@ class FragmentAARAVPhotos : Fragment() {
                     checkBox1.isClickable = false
                     checkBox1.textSize = 14f
                     checkBox1.isChecked = get(it).approvalrequested
+                    checkBox1.buttonTintList = ContextCompat.getColorStateList(requireContext(), R.color.checkbox_navy)
                     tableRow.addView(checkBox1)
 
                     val checkBox2 = CheckBox(context)
@@ -1419,6 +1444,7 @@ class FragmentAARAVPhotos : Fragment() {
                     checkBox2.isChecked = get(it).approved
                     checkBox2.isClickable = false
                     checkBox2.textSize = 14f
+                    checkBox2.buttonTintList = ContextCompat.getColorStateList(requireContext(), R.color.checkbox_navy)
                     tableRow.addView(checkBox2)
 
                     val textView5 = TextView(context)
@@ -1536,6 +1562,7 @@ class FragmentAARAVPhotos : Fragment() {
 //
 //                    }
                     binding.photosTableLayout.addView(tableRow)
+                    rowIndex++
                 }
             }
 

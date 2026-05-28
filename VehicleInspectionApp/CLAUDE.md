@@ -99,5 +99,5 @@ Release keystore is `VehicleHealthMonitor.keystore`, configured directly in `app
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `specs/002-bulk-certificate-add/plan.md`.
+at `specs/003-app-ui-modernization/plan.md`.
 <!-- SPECKIT END -->

@@ -1,86 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="10dp"
-    android:layout_marginTop="40dp"
-    android:background="@drawable/dialog_bkg"
-    android:backgroundTint="@color/white"
-    android:layout_centerInParent="true"
     android:elevation="20dp"
     app:cardCornerRadius="16dp"
-    >
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    app:cardElevation="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:padding="20dp">
+        android:orientation="vertical">
 
-        <!-- Icon for No Internet -->
-        <ImageView
-            android:id="@+id/ivIcon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/rounded_blue_bkg"
-            android:padding="5dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/question_mark"
-            app:tint="#4572CE" />
-
-        <!-- Title Text -->
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ivIcon"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:text="Error!"
-            android:textColor="#1A237E"
-            android:textSize="18sp" />
-
-        <!-- Message Text -->
-        <TextView
-            android:id="@+id/tvMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvTitle"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="24dp"
-            android:text="Please wait till Internet connection is stablemmns,\ndn,smdnf,m.sd,amd.a,smd.,am"
-            android:textColor="#1A237E"
-            android:textSize="16sp" />
-
-        <!-- Action Button -->
+        <!-- Header -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/tvMessage"
-            >
-            <Button
-                android:id="@+id/btnActionPositive"
-                android:layout_width="120dp"
+            android:background="@drawable/cert_header_bg"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
+
+            <ImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="#4572CE"
-                android:text="OK"
-                android:textColor="#FFFFFF" />
-            <Button
-                android:id="@+id/btnActionNegative"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/alertColor"
-                android:text="OK"
-                android:textColor="#FFFFFF" />
+                android:text="Confirm"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
-    </RelativeLayout>
+
+        <!-- Body -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:lineSpacingMultiplier="1.4"
+                android:text="Are you sure you want to proceed?"
+                android:textColor="#546878"
+                android:textSize="14sp" />
+
+            <!-- Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnActionNegative"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/btn_cert_outline"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="#4572CE"
+                    android:textSize="13sp"
+                    app:backgroundTint="@null" />
+
+                <Button
+                    android:id="@+id/btnActionPositive"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/btn_cert_primary"
+                    android:text="OK"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    app:backgroundTint="@null" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

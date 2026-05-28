@@ -22,6 +22,7 @@ class ScopeOfServiceGroupFragment : Fragment(), HasTabIndicators {
     private var _binding: ScopeOfServiceGroupLayoutBinding? = null
     private val binding get() = _binding!!
     private var currentTabPosition = 0
+    private var isRevertingTab = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +51,13 @@ class ScopeOfServiceGroupFragment : Fragment(), HasTabIndicators {
 
         binding.sosTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
+                if (isRevertingTab) {
+                    isRevertingTab = false
+                    return
+                }
                 if ((activity as FormsActivity).preventNavigation()) {
                     Utility.showSaveOrCancelAlertDialog(activity)
+                    isRevertingTab = true
                     binding.sosTabLayout.post {
                         binding.sosTabLayout.selectTab(binding.sosTabLayout.getTabAt(currentTabPosition))
                     }

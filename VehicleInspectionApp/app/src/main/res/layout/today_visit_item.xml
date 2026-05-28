@@ -13,146 +13,202 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardRL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:layout_height="wrap_content">
 
-        <!-- ================= ORDER CIRCLE ================= -->
-
-        <TextView
-            android:id="@+id/orderCircle"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="@drawable/circle_drawable"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- ================= STATUS BADGE ================= -->
-
-        <TextView
-            android:id="@+id/statusBadge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:text="Planned"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/orderCircle"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- ================= FACILITY NAME ================= -->
-
-        <TextView
-            android:id="@+id/facNameVal"
+        <!-- ===== CARD HEADER (no own background — inherits cardRL so Completed green shows through) ===== -->
+        <RelativeLayout
+            android:id="@+id/cardHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="#1A237E"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toStartOf="@id/statusBadge"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <!-- ================= LEFT COLUMN ================= -->
+            <TextView
+                android:id="@+id/facNameVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/statusBadge"
+                android:textColor="#1A237E"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/statusBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/orderCircle"
+                android:layout_marginEnd="8dp"
+                android:text="Planned"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/orderCircle"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/circle_drawable"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- Divider under header -->
+        <View
+            android:id="@+id/headerDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#DDDDDD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardHeader" />
+
+        <!-- ===== DATA COLUMNS ===== -->
         <LinearLayout
             android:id="@+id/leftColumn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toStartOf="@id/rightColumn"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/facNameVal">
+            app:layout_constraintTop_toBottomOf="@id/headerDivider">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Facility Number:"
-                android:textColor="#1A237E"
-                android:textSize="12sp" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/facNoVal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No: "
+                    android:textColor="#1A237E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="City:"
-                android:textColor="#1A237E"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/facNoVal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#546878"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/cityVal"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp" />
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Type:"
-                android:textColor="#1A237E"
-                android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="City: "
+                    android:textColor="#1A237E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/typeVal"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/cityVal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#546878"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp" />
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Type: "
+                    android:textColor="#1A237E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/typeVal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#546878"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
-
-        <!-- ================= RIGHT COLUMN ================= -->
 
         <LinearLayout
             android:id="@+id/rightColumn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toEndOf="@id/leftColumn"
-            app:layout_constraintTop_toBottomOf="@id/facNameVal">
+            app:layout_constraintTop_toBottomOf="@id/headerDivider">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Club Code:"
-                android:textColor="#1A237E"
-                android:textSize="12sp" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/clubNoVal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Club: "
+                    android:textColor="#1A237E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Facility Annual Month:"
-                android:textColor="#1A237E"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/clubNoVal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#546878"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/facAnnualMonthVal"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp" />
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Annual: "
+                    android:textColor="#1A237E"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/facAnnualMonthVal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#546878"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Barrier sits below whichever column is taller -->
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/columnsBarrier"
             android:layout_width="wrap_content"
@@ -160,13 +216,14 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="leftColumn,rightColumn" />
 
-        <!-- ================= ETA ROW ================= -->
-
+        <!-- ===== ETA ROW ===== -->
         <LinearLayout
             android:id="@+id/etaRow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -176,17 +233,18 @@
                 android:id="@+id/etaLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#1A237E"
+                android:textColor="#4572CE"
                 android:textSize="12sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- ================= LOCATION ROW ================= -->
-
+        <!-- ===== LOCATION ROW ===== -->
         <LinearLayout
             android:id="@+id/locFoundRow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -197,35 +255,55 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="* Location Available"
-                android:textColor="#1A237E"
+                android:textColor="#4572CE"
                 android:textSize="12sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- ================= NOTES ================= -->
+        <!-- Divider before notes -->
+        <View
+            android:id="@+id/notesDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="#DDDDDD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/locFoundRow" />
 
+        <!-- ===== NOTES ===== -->
         <LinearLayout
             android:id="@+id/notesContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/locFoundRow">
+            app:layout_constraintTop_toBottomOf="@id/notesDivider">
 
             <EditText
                 android:id="@+id/notesVal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/cert_input_background"
+                android:hint="Notes..."
                 android:maxLines="5"
+                android:padding="8dp"
+                android:textColor="#1A237E"
+                android:textColorHint="#9E9E9E"
                 android:textSize="12sp" />
 
             <ImageButton
                 android:id="@+id/recordBtn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:background="@drawable/mic_icon" />
 
@@ -238,13 +316,14 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <!-- ================= PRIMARY ACTION ROW (icon + label) ================= -->
-
+        <!-- ===== ACTION BUTTONS ROW ===== -->
         <LinearLayout
             android:id="@+id/buttonRow1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:orientation="horizontal"
             android:weightSum="3"
             app:layout_constraintEnd_toEndOf="parent"
@@ -254,49 +333,55 @@
             <Button
                 android:id="@+id/saveNotesBtn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:padding="0dp"
                 android:text="Save Notes"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:background="@drawable/btn_cert_primary"
                 app:backgroundTint="@null" />
 
             <Button
                 android:id="@+id/removeBtn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="4dp"
                 android:layout_weight="1"
                 android:text="Remove"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:background="@drawable/btn_cert_primary"
                 app:backgroundTint="@null" />
 
             <Button
                 android:id="@+id/loadBtn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="4dp"
                 android:layout_weight="1"
                 android:text="Load Facility"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:background="@drawable/btn_cert_primary"
                 app:backgroundTint="@null" />
         </LinearLayout>
 
-        <!-- ================= MOVE BUTTONS ROW (icon-only) ================= -->
-
+        <!-- ===== MOVE ARROWS — bare icons, no background ===== -->
         <LinearLayout
             android:id="@+id/buttonRow2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal"
+            android:gravity="center"
             android:weightSum="4"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/buttonRow1">
@@ -304,57 +389,42 @@
             <ImageButton
                 android:id="@+id/moveFirstBtn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_weight="1"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                android:padding="12dp"
                 android:src="@drawable/ic_move_first"
-                android:background="@drawable/btn_cert_primary"
-                android:contentDescription="Move to first position"
-                app:backgroundTint="@null" />
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:contentDescription="Move to first position" />
 
             <ImageButton
                 android:id="@+id/moveUpBtn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_weight="1"
-                android:layout_marginStart="6dp"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                android:padding="12dp"
                 android:src="@drawable/ic_move_up"
-                android:background="@drawable/btn_cert_primary"
-                android:contentDescription="Move up one position"
-                app:backgroundTint="@null" />
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:contentDescription="Move up one position" />
 
             <ImageButton
                 android:id="@+id/moveDownBtn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_weight="1"
-                android:layout_marginStart="6dp"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                android:padding="12dp"
                 android:src="@drawable/ic_move_down"
-                android:background="@drawable/btn_cert_primary"
-                android:contentDescription="Move down one position"
-                app:backgroundTint="@null" />
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:contentDescription="Move down one position" />
 
             <ImageButton
                 android:id="@+id/moveLastBtn"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_weight="1"
-                android:layout_marginStart="6dp"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
-                android:padding="12dp"
                 android:src="@drawable/ic_move_last"
-                android:background="@drawable/btn_cert_primary"
-                android:contentDescription="Move to last position"
-                app:backgroundTint="@null" />
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:contentDescription="Move to last position" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -110,6 +110,8 @@ class FragmentARRAVVehicleServices : Fragment() {
     var cngVehicleType = "11"
     private var _binding: FragmentArrayVehicleServicesBinding? = null
     private val binding get() = _binding!!
+    private var pendingSaveCount = 0
+    private val saveErrors = mutableListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -168,6 +170,15 @@ class FragmentARRAVVehicleServices : Fragment() {
         }
         binding.saveButton.setOnClickListener {
             if ((requireActivity() as FormsActivity).isNetworkAvailable) {
+                pendingSaveCount = 0
+                saveErrors.clear()
+                if (selectedVehicleServicesChanged) pendingSaveCount++
+                if (selectedAutoBodyServicesChanged) pendingSaveCount++
+                if (selectedMarineServicesChanged) pendingSaveCount++
+                if (selectedRecreationServicesChanged) pendingSaveCount++
+                if (selectedAutoGlassServicesChanged) pendingSaveCount++
+                if (selectedOthersServicesChanged) pendingSaveCount++
+                if (pendingSaveCount == 0) return@setOnClickListener
                 binding.progressBarText.text = "Saving ..."
                 binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.VISIBLE
                 if (selectedVehicleServicesChanged) saveVehicleServiceChanges("0")
@@ -370,15 +381,12 @@ class FragmentARRAVVehicleServices : Fragment() {
         scopeServiceId = scopeServiceId.replace("[","")
         scopeServiceId = scopeServiceId.replace("]","")
         Log.v("Vehcile Services --- ",Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}")
-        Utility.showUnifiedInformationDialog(requireContext(),  dataChanges)
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.UpdateVehicleServices+ FacilityDataModel.getInstance().tblFacilities[0].FACNo+"&clubcode=${FacilityDataModel.getInstance().clubCode}&vehiclesTypeId=${vehiclesTypeId}&scopeServiceId=${scopeServiceId}&insertBy=${ApplicationPrefs.getInstance(activity).loggedInUserID}" + Utility.getLoggingParameters(activity, 0, dataChanges),
             { response ->
                 Log.v("Vehcile Services --- ","ad")
                 requireActivity().runOnUiThread {
                     if (response.toString().contains("returnCode>0<",false)) {
                         HasChangedModel.getInstance().updateChangedData("Vehicles Services",changesTag,"", dataChanges)
-                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                        binding.progressBarText.text = "Loading ..."
                         FacilityDataModelOrg.getInstance().tblVehicleServices.clear()
                         for (i in 0..FacilityDataModel.getInstance().tblVehicleServices.size-1) {
                             var vehicleServiceItem = TblVehicleServices()
@@ -391,25 +399,34 @@ class FragmentARRAVVehicleServices : Fragment() {
                             vehicleServiceItem.insertDate = FacilityDataModel.getInstance().tblVehicleServices[i].insertDate
                             FacilityDataModelOrg.getInstance().tblVehicleServices.add(vehicleServiceItem)
                         }
-                        (activity as FormsActivity).saveDone = true
-                        Utility.showSubmitAlertDialog(activity, true, "Vehicle Services ${saveMessage}")
-                        (activity as FormsActivity).saveRequired = false
-                        refreshButtonsState()
                         HasChangedModel.getInstance().checkIfChangeWasDoneforSoSVehicleServices()
                         HasChangedModel.getInstance().changeDoneForSoSVehicleServices()
+                        onSectionSaveComplete(true, saveMessage)
                     } else {
-                        var errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
-                        Utility.showSubmitAlertDialog(activity, false, "Vehicle Services ${saveMessage} (Error: "+ errorMessage+" )")
-                        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-                        binding.progressBarText.text = "Loading ..."
+                        val errorMessage = response.toString().substring(response.toString().indexOf("<message")+9,response.toString().indexOf("</message"))
+                        onSectionSaveComplete(false, "$saveMessage (Error: $errorMessage)")
                     }
                 }
             },
             {
-            binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
-            binding.progressBarText.text = "Loading ..."
-        Utility.showSubmitAlertDialog(activity,false,"Vehicle Services ${saveMessage} (Error: "+it.message+" )")
-    }))
+                onSectionSaveComplete(false, "$saveMessage (Error: ${it.message})")
+            }))
+    }
+
+    private fun onSectionSaveComplete(success: Boolean, label: String) {
+        if (!success) saveErrors.add(label)
+        pendingSaveCount--
+        if (pendingSaveCount > 0) return
+        binding.scopeOfServicesChangesDialogueLoadingView.visibility = View.GONE
+        binding.progressBarText.text = "Loading ..."
+        (activity as FormsActivity).saveRequired = false
+        refreshButtonsState()
+        if (saveErrors.isEmpty()) {
+            (activity as FormsActivity).saveDone = true
+            Utility.showSubmitAlertDialog(activity, true, "Vehicle Services")
+        } else {
+            Utility.showSubmitAlertDialog(activity, false, "Vehicle Services – Error saving: ${saveErrors.joinToString(", ")}")
+        }
     }
     fun refreshButtonsState(){
         binding.saveButton.isEnabled = (activity as FormsActivity).saveRequired

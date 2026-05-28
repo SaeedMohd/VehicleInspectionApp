@@ -167,7 +167,6 @@ class VisitationPlanningFragment : Fragment() {
 
         binding.visitationYearFilterSpinner.onItemSelectedListener = spinnersOnItemSelectListener
 
-        binding.progressBarRecords.indeterminateDrawable.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
 
         binding.searchVisitaionsButton.setOnClickListener({
             reloadVisitationsList()
