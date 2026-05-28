@@ -596,7 +596,7 @@
                     android:textColor="#1A237E"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    app:buttonTint="@drawable/checkbox_bkg" />
+                    app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
             </LinearLayout>
 
@@ -803,7 +803,7 @@
                     android:textColor="#1A237E"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    app:buttonTint="@drawable/checkbox_bkg" />
+                    app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
             </LinearLayout>
 

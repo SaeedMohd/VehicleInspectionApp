@@ -631,7 +631,7 @@
                         android:text="AAR"
                         android:textColor="#546878"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     <EditText
                         android:id="@+id/aarEditText"
                         android:layout_width="0dp"
@@ -661,7 +661,7 @@
                         android:text="AAB"
                         android:textColor="#546878"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     <EditText
                         android:id="@+id/aabEditText"
                         android:layout_width="0dp"
@@ -691,7 +691,7 @@
                         android:text="AAG"
                         android:textColor="#546878"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     <EditText
                         android:id="@+id/aagEditText"
                         android:layout_width="0dp"
@@ -721,7 +721,7 @@
                         android:text="COG"
                         android:textColor="#546878"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     <EditText
                         android:id="@+id/cogEditText"
                         android:layout_width="0dp"
@@ -751,7 +751,7 @@
                         android:text="COR"
                         android:textColor="#546878"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     <EditText
                         android:id="@+id/corEditText"
                         android:layout_width="0dp"
@@ -781,7 +781,7 @@
                         android:text="ERS"
                         android:textColor="#546878"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     <EditText
                         android:id="@+id/ersEditText"
                         android:layout_width="0dp"
@@ -811,7 +811,7 @@
                         android:text="MPR"
                         android:textColor="#546878"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     <EditText
                         android:id="@+id/mprEditText"
                         android:layout_width="0dp"
@@ -841,7 +841,7 @@
                         android:text="PSP"
                         android:textColor="#546878"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     <EditText
                         android:id="@+id/pspEditText"
                         android:layout_width="0dp"
@@ -1522,7 +1522,7 @@
                         android:padding="5dp"
                         android:text="American Express"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/cash_checkbox"
@@ -1534,7 +1534,7 @@
                         android:padding="5dp"
                         android:text="Cash"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/check_checkbox"
@@ -1546,7 +1546,7 @@
                         android:padding="5dp"
                         android:text="Check"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/debit_checkbox"
@@ -1559,7 +1559,7 @@
                         android:text="Debit"
                         android:textSize="14sp"
                         app:layout_wrapBefore="true"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/discover_checkbox"
@@ -1571,7 +1571,7 @@
                         android:padding="5dp"
                         android:text="Discover"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/goodyear_checkbox"
@@ -1583,7 +1583,7 @@
                         android:padding="5dp"
                         android:text="Goodyear Credit Card"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/mastercard_checkbox"
@@ -1596,7 +1596,7 @@
                         android:text="Master Card"
                         android:textSize="14sp"
                         app:layout_wrapBefore="true"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/paypal_checkbox"
@@ -1608,7 +1608,7 @@
                         android:padding="5dp"
                         android:text="PayPal"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/visa_checkbox"
@@ -1620,7 +1620,7 @@
                         android:padding="5dp"
                         android:text="Visa"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/zelle_checkbox"
@@ -1632,7 +1632,7 @@
                         android:padding="5dp"
                         android:text="Zelle"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/venmo_checkbox"
@@ -1644,7 +1644,7 @@
                         android:padding="5dp"
                         android:text="Venmo"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/apple_checkbox"
@@ -1656,7 +1656,7 @@
                         android:padding="5dp"
                         android:text="Apple Pay"
                         android:textSize="14sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                 </com.google.android.flexbox.FlexboxLayout>
 
                 <TextView
@@ -1753,7 +1753,7 @@
                         android:textColor="#546878"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -8,7 +8,7 @@
         android:id="@+id/itemCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:buttonTint="@drawable/checkbox_bkg"
+        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false"
         />
 
     <!--<TextView-->

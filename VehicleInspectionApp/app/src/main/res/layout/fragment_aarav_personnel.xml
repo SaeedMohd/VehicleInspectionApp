@@ -479,7 +479,7 @@
                                 android:textAlignment="center"
                                 android:textColor="#546878"
                                 android:textSize="13sp"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                         </TableRow>
 
@@ -560,7 +560,7 @@
                                 android:textAlignment="center"
                                 android:textColor="#546878"
                                 android:textSize="13sp"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                         </TableRow>
 
                         <TableRow
@@ -645,7 +645,7 @@
                                 android:textAlignment="center"
                                 android:textColor="#546878"
                                 android:textSize="13sp"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                         </TableRow>
 
                         <TableRow
@@ -731,7 +731,7 @@
                                 android:textAlignment="center"
                                 android:textColor="#546878"
                                 android:textSize="13sp"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                         </TableRow>
 
                         <TableRow
@@ -808,7 +808,7 @@
                                 android:textAlignment="center"
                                 android:textColor="#546878"
                                 android:textSize="13sp"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                         </TableRow>
                     </TableLayout>
 
@@ -1963,7 +1963,7 @@
                                 android:layout_margin="5dp"
                                 android:layout_marginTop="5dp"
                                 android:text="Contract Signer"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                             <CheckBox
                                 android:id="@+id/newACSCheck"
@@ -1972,7 +1972,7 @@
                                 android:layout_margin="5dp"
                                 android:layout_marginTop="5dp"
                                 android:text="Primary Mail Recipients"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                             <CheckBox
                                 android:id="@+id/newReportCheck"
@@ -1981,7 +1981,7 @@
                                 android:layout_margin="5dp"
                                 android:layout_marginTop="5dp"
                                 android:text="Report Recipient"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                             <CheckBox
                                 android:id="@+id/newComplaintContact"
@@ -1990,7 +1990,7 @@
                                 android:layout_margin="5dp"
                                 android:layout_marginTop="5dp"
                                 android:text="Complaint Contact"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                             <CheckBox
                                 android:id="@+id/newNotificationCheck"
@@ -1999,7 +1999,7 @@
                                 android:layout_margin="5dp"
                                 android:layout_marginTop="5dp"
                                 android:text="Notification Recipients"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                             <!-- Address section -->
                             <LinearLayout
@@ -2796,7 +2796,7 @@
                                 android:layout_margin="5dp"
                                 android:layout_marginTop="5dp"
                                 android:text="Contract Signer"
-                                app:buttonTint="@drawable/checkbox_bkg" />
+                                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                             <CheckBox
                                 android:id="@+id/edit_newACSCheck"

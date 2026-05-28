@@ -199,7 +199,7 @@
                             android:checked="true"
                             android:text="Create New Visitation"
                             android:textColor="#546878"
-                            app:buttonTint="@drawable/checkbox_bkg" />
+                            app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                         <Button
                             android:id="@+id/adHocSearchButton"

@@ -596,7 +596,7 @@
                             android:text="Has ACH Issues"
                             android:textColor="#546878"
                             android:textSize="13sp"
-                            app:buttonTint="@drawable/checkbox_bkg" />
+                            app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     </LinearLayout>
                 </LinearLayout>
 

@@ -84,7 +84,7 @@
                         android:text="Check / Uncheck All"
                         android:textColor="#1A237E"
                         android:textSize="13sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                 </RelativeLayout>
 
                 <com.inspection.Utils.ExpandableHeightGridView
@@ -135,7 +135,7 @@
                         android:text="Check / Uncheck All"
                         android:textColor="#1A237E"
                         android:textSize="13sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                 </RelativeLayout>
 
                 <com.inspection.Utils.ExpandableHeightGridView
@@ -186,7 +186,7 @@
                         android:text="Check / Uncheck All"
                         android:textColor="#1A237E"
                         android:textSize="13sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                 </RelativeLayout>
 
                 <com.inspection.Utils.ExpandableHeightGridView
@@ -237,7 +237,7 @@
                         android:text="Check / Uncheck All"
                         android:textColor="#1A237E"
                         android:textSize="13sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                 </RelativeLayout>
 
                 <com.inspection.Utils.ExpandableHeightGridView
@@ -288,7 +288,7 @@
                         android:text="Check / Uncheck All"
                         android:textColor="#1A237E"
                         android:textSize="13sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                 </RelativeLayout>
 
                 <com.inspection.Utils.ExpandableHeightGridView
@@ -339,7 +339,7 @@
                         android:text="Check / Uncheck All"
                         android:textColor="#1A237E"
                         android:textSize="13sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                 </RelativeLayout>
 
                 <com.inspection.Utils.ExpandableHeightGridView

@@ -164,7 +164,7 @@
                         android:textColor="#4572CE"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <Button
                         android:id="@+id/loadFacilityButton"

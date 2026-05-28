@@ -214,7 +214,7 @@
                         android:textSize="11sp"
                         android:textStyle="bold"
                         android:maxLines="2"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <Button
                         android:id="@+id/emailPDFBtn"

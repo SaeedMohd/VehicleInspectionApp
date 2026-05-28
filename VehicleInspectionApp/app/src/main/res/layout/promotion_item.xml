@@ -27,6 +27,6 @@
         android:textSize="15sp"
         android:layout_marginLeft="5dp"
         android:layout_marginBottom="5dp"
-        app:buttonTint="@drawable/checkbox_bkg"
+        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false"
         />
 </RelativeLayout>

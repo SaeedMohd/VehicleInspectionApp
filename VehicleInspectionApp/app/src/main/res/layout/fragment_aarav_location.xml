@@ -1314,7 +1314,7 @@
                     android:textColor="#1A237E"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    app:buttonTint="@drawable/checkbox_bkg" />
+                    app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1762,7 +1762,7 @@
                         android:text="Sun"
                         android:textColor="#1A237E"
                         android:textSize="12sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/toMonCB"
@@ -1772,7 +1772,7 @@
                         android:text="Mon"
                         android:textColor="#1A237E"
                         android:textSize="12sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/toTueCB"
@@ -1782,7 +1782,7 @@
                         android:text="Tue"
                         android:textColor="#1A237E"
                         android:textSize="12sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/toWedCB"
@@ -1792,7 +1792,7 @@
                         android:text="Wed"
                         android:textColor="#1A237E"
                         android:textSize="12sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/toThuCB"
@@ -1802,7 +1802,7 @@
                         android:text="Thu"
                         android:textColor="#1A237E"
                         android:textSize="12sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/toFriCB"
@@ -1812,7 +1812,7 @@
                         android:text="Fri"
                         android:textColor="#1A237E"
                         android:textSize="12sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                     <CheckBox
                         android:id="@+id/toSatCB"
@@ -1822,7 +1822,7 @@
                         android:text="Sat"
                         android:textColor="#1A237E"
                         android:textSize="12sp"
-                        app:buttonTint="@drawable/checkbox_bkg" />
+                        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                 </LinearLayout>
 

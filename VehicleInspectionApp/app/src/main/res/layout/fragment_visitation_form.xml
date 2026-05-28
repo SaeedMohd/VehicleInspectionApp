@@ -664,7 +664,7 @@
                             android:textColor="#263238"
                             android:textSize="13sp"
                             android:textStyle="bold"
-                            app:buttonTint="@drawable/checkbox_bkg" />
+                            app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
 
                         <EditText
                             android:id="@+id/emailEditText"
@@ -1338,7 +1338,7 @@
                             android:textColor="#263238"
                             android:textSize="13sp"
                             android:textStyle="bold"
-                            app:buttonTint="@drawable/checkbox_bkg" />
+                            app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false" />
                     </RelativeLayout>
 
                     <View

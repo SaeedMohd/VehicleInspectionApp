@@ -244,7 +244,7 @@
                 android:layout_height="wrap_content"
                 android:text="Saved"
                 android:textColor="#1A237E"
-                app:buttonTint="@drawable/checkbox_bkg"
+                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false"
                 app:layout_constraintTop_toBottomOf="@id/notesLL"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -254,7 +254,7 @@
                 android:layout_height="wrap_content"
                 android:text="Visited"
                 android:textColor="#1A237E"
-                app:buttonTint="@drawable/checkbox_bkg"
+                app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false"
                 app:layout_constraintTop_toTopOf="@id/savedCB"
                 app:layout_constraintStart_toEndOf="@id/savedCB" />
 

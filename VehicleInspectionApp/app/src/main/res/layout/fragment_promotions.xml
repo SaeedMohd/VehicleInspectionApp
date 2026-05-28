@@ -30,7 +30,7 @@
         android:layout_marginTop="10dp"
         android:text="AAA 2015 Swipe And Win"
         android:textStyle="bold"
-        app:buttonTint="@drawable/checkbox_bkg"/>
+        app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false"/>
   <CheckBox
         android:id="@+id/wifiAvailableCheckBox"
         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
         android:layout_marginTop="10dp"
         android:text="AAA 2015 Swipe And Win!"
         android:textStyle="bold"
-      app:buttonTint="@drawable/checkbox_bkg"/>
+      app:buttonTint="@color/checkbox_navy" app:checkedIconTint="@color/white" app:useMaterialThemeColors="false"/>
     </LinearLayout>
     <Button
         android:layout_below="@+id/secondLevel"
