@@ -460,7 +460,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
                     </LinearLayout>
 
                     <!-- Saved As -->
@@ -548,7 +550,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
 
                         <CheckBox
                             android:id="@+id/commCheck"
@@ -560,7 +564,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
 
                         <CheckBox
                             android:id="@+id/envCheck"
@@ -572,7 +578,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
                     </LinearLayout>
 
                     <!-- Checkboxes row 2 -->
@@ -592,7 +600,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
 
                         <CheckBox
                             android:id="@+id/irasCheck"
@@ -604,7 +614,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
 
                         <CheckBox
                             android:id="@+id/rspCheck"
@@ -616,7 +628,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
                     </LinearLayout>
 
                     <!-- Hidden profile check -->
@@ -630,7 +644,9 @@
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:visibility="gone"
-                        android:button="@drawable/checkbox_navy" />
+                        app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
 
                     <!-- Divider -->
                     <View
@@ -759,7 +775,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
                     </LinearLayout>
 
                     <!-- Description -->
@@ -817,7 +835,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
 
                         <CheckBox
                             android:id="@+id/editCommCHeck"
@@ -828,7 +848,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
 
                         <CheckBox
                             android:id="@+id/editEnvCheck"
@@ -839,7 +861,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
                     </LinearLayout>
 
                     <!-- Checkboxes row 2 -->
@@ -858,7 +882,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
 
                         <CheckBox
                             android:id="@+id/editIrasCheck"
@@ -869,7 +895,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
 
                         <CheckBox
                             android:id="@+id/editRspCheck"
@@ -880,7 +908,9 @@
                             android:textColor="#546878"
                             android:textSize="12sp"
                             android:textStyle="bold"
-                            android:button="@drawable/checkbox_navy" />
+                            app:buttonTint="@color/checkbox_navy"
+                            app:checkedIconTint="@color/white"
+                            app:useMaterialThemeColors="false" />
                     </LinearLayout>
 
                     <!-- Divider -->
