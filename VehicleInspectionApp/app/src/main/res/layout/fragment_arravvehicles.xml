@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Vehicles card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,17 +48,18 @@
                         android:textStyle="bold" />
                 </RelativeLayout>
 
+                <!-- Loading progress bar -->
                 <ProgressBar
                     android:id="@+id/progressbarVehicles"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="4dp"
                     android:indeterminate="true"
-                    android:max="100"
-                    android:backgroundTint="@color/white"
-                    android:indeterminateTint="#1565C0"
-                    android:layout_marginTop="-2dp" />
+                    android:indeterminateTint="#4572CE"
+                    android:layout_marginTop="-1dp"
+                    android:visibility="gone" />
 
+                <!-- Vehicle list -->
                 <ListView
                     android:id="@+id/vehiclesListView"
                     android:layout_width="match_parent"
@@ -68,8 +68,9 @@
                     android:paddingEnd="12dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:background="@color/white"
-                    android:visibility="gone" />
+                    android:divider="@drawable/divider_table_layout"
+                    android:dividerHeight="1dp"
+                    android:background="@color/white" />
 
                 <com.inspection.Utils.ExpandableHeightGridView
                     android:id="@+id/vehicleMakeList"
@@ -84,7 +85,8 @@
                     android:isScrollContainer="false"
                     android:numColumns="4"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="12dp" />
+                    android:verticalSpacing="12dp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
