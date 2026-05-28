@@ -311,341 +311,357 @@
         />
     <ScrollView
         android:id="@+id/addNewPhotoDialog"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:visibility="gone">
+
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="10dp">
-            <!--        android:id="@+id/addNewPhotoDialog"-->
-            <TextView
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="Add New Photo"
-                android:textSize="18dp" />
+                android:orientation="vertical">
 
+                <!-- Header -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="12dp">
 
-            <Button
-                android:id="@+id/addNewPhotoConfirmButton"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/btn_cert_primary"
-                android:paddingStart="24dp"
-                android:paddingEnd="24dp"
-                android:text="Submit"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                app:backgroundTint="@null" />
-
-
-            <ImageButton
-                android:id="@+id/addNewPhotoCancelButton"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="top|right"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/close" />
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:id="@+id/btnsLL"-->
-            <!--android:layout_height="wrap_content">-->
-            <!--<Button-->
-            <!--android:id="@+id/addNewPhotoConfirmButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_marginTop="15dp"-->
-            <!--android:background="@drawable/green_background_button"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:text="        Submit        "-->
-            <!--android:paddingEnd="15dp"-->
-            <!--android:paddingStart="15dp"-->
-            <!--/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/addNewPhotoCapturePhotoButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:background="@drawable/green_background_button"-->
-            <!--android:layout_below="@id/newPhotoInputFieldsTableLayout"-->
-            <!--android:layout_marginTop="15dp"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:text="Capture Photo"-->
-            <!--android:paddingEnd="15dp"-->
-            <!--android:paddingStart="15dp"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--/>-->
-
-            <!--<Button-->
-            <!--android:id="@+id/addNewPhotoPickPhotoButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_marginTop="15dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:background="@drawable/green_background_button"-->
-            <!--android:layout_below="@id/newPhotoInputFieldsTableLayout"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:text="     Pick Photo   "-->
-            <!--android:paddingEnd="15dp"-->
-            <!--android:paddingStart="15dp"-->
-            <!--android:layout_toEndOf="@id/addNewPhotoCapturePhotoButton"-->
-            <!--android:layout_marginStart="10dp"-->
-            <!--/>-->
-            <!--<ImageView-->
-            <!--android:layout_width="120dp"-->
-            <!--android:layout_height="120dp"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_below="@id/newPhotoInputFieldsTableLayout"-->
-            <!--android:id="@+id/loadedImage"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:layout_marginEnd="50dp"-->
-            <!--android:background="@drawable/black_border"-->
-            <!--/>-->
-            <!--</LinearLayout>-->
-
-            <TableLayout
-                android:id="@+id/newPhotoInputFieldsTableLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="40dp">
-                >
-                <TableRow android:layout_marginTop="20dp">
-                    <Button
-                        android:id="@+id/addNewPhotoCapturePhotoButton"
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_column="0"
-                        android:background="@drawable/btn_cert_primary"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="Capture Photo"
-                        android:textAllCaps="false"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Add New Photo"
                         android:textColor="@color/white"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="@null" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/addNewPhotoPickPhotoButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_column="1"
-                        android:layout_marginStart="10dp"
-                        android:background="@drawable/btn_cert_primary"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="Pick Photo"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="@null" />
-                    <ImageView
-                        android:layout_width="120dp"
-                        android:layout_height="150dp"
-                        android:id="@+id/loadedImage"
-                        android:layout_column="4"
-                        android:layout_span="3"
-                        android:scaleType="fitXY"
-                        android:background="@drawable/black_border"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="File Name:"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        />
-                    <EditText
-                        android:id="@+id/fileNameText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890_-."
-                        android:layout_column="1"
-                        android:enabled="false"
-                        android:layout_span="5"
-                        android:background="@drawable/cert_input_background"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/approvalReqCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:enabled="false"
-                        android:text="Approval Requested"
-                        android:textStyle="bold"
-                        android:layout_column="5"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
+                    <ImageButton
+                        android:id="@+id/addNewPhotoCancelButton"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close" />
+                </RelativeLayout>
 
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="Saved As:"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:id="@+id/fileNameTitle"
-                        android:textStyle="italic|bold"
-                        android:layout_column="1"
-                        android:textColor="#1A237E"
-                        android:layout_span="6"
-                        />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="File Description:"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        />
-                    <EditText
-                        android:id="@+id/fileDescText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:enabled="false"
-                        android:maxLength="200"
-                        android:layout_span="2"
-                        android:layout_column="1"
-                        android:background="@drawable/cert_input_background"
-                        android:textStyle="bold"
-                        />
+                <!-- Content -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@color/white">
 
-                </TableRow>
-                <TableRow>
+                    <!-- Photo buttons + preview -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal">
+
+                            <Button
+                                android:id="@+id/addNewPhotoCapturePhotoButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/btn_cert_primary"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:text="Capture Photo"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                app:backgroundTint="@null" />
+
+                            <Button
+                                android:id="@+id/addNewPhotoPickPhotoButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:background="@drawable/btn_cert_primary"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:text="Pick Photo"
+                                android:textAllCaps="false"
+                                android:textColor="@color/white"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                app:backgroundTint="@null" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/loadedImage"
+                            android:layout_width="120dp"
+                            android:layout_height="150dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/black_border"
+                            android:scaleType="fitXY" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="#EEF2FB" />
+
+                    <!-- File Name + Approval -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="110dp"
+                            android:text="File Name:"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/fileNameText"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:digits="abcdefghijklmnopqrstuvwxyz1234567890_-."
+                            android:enabled="false"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textSize="13sp" />
+
+                        <CheckBox
+                            android:id="@+id/approvalReqCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:enabled="false"
+                            android:text="Approval Requested"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+                    </LinearLayout>
+
+                    <!-- Saved As -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="110dp"
+                            android:text="Saved As:"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/fileNameTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#1A237E"
+                            android:textSize="13sp"
+                            android:textStyle="italic|bold" />
+                    </LinearLayout>
+
+                    <!-- Description -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="110dp"
+                            android:text="File Description:"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/fileDescText"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:enabled="false"
+                            android:maxLength="200"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Downstream Apps label -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Downstream\nApps:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/clubCHeck"
+                        android:layout_marginBottom="8dp"
+                        android:text="Downstream Apps:"
+                        android:textColor="#546878"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <!-- Checkboxes row 1 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:enabled="false"
-                        android:text="Club Hub/MRM"
-                        android:textStyle="bold"
-                        android:layout_column="1"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/commCheck"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="4dp">
+
+                        <CheckBox
+                            android:id="@+id/clubCHeck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="Club Hub/MRM"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+
+                        <CheckBox
+                            android:id="@+id/commCheck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="eComm"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+
+                        <CheckBox
+                            android:id="@+id/envCheck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="Envision"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+                    </LinearLayout>
+
+                    <!-- Checkboxes row 2 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:enabled="false"
-                        android:text="eComm"
-                        android:textStyle="bold"
-                        android:layout_column="2"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <CheckBox
+                            android:id="@+id/modCheck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="MOD"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+
+                        <CheckBox
+                            android:id="@+id/irasCheck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="IRAS"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+
+                        <CheckBox
+                            android:id="@+id/rspCheck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:text="RSP"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+                    </LinearLayout>
+
+                    <!-- Hidden profile check -->
                     <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/envCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:enabled="false"
-                        android:layout_margin="5dp"
-                        android:text="Envision"
-                        android:textStyle="bold"
-                        android:layout_column="3"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/modCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="MOD"
-                        android:enabled="false"
-                        android:textStyle="bold"
-                        android:layout_column="4"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/irasCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="IRAS"
-                        android:enabled="false"
-                        android:textStyle="bold"
-                        android:layout_column="5"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/rspCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="RSP"
-                        android:textStyle="bold"
-                        android:enabled="false"
-                        android:layout_column="6"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                </TableRow>
-                <TableRow>
-                    <CheckBox
-                        android:layout_width="wrap_content"
                         android:id="@+id/profileCheck"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
                         android:enabled="true"
                         android:text="Set as Shop Profile Image"
+                        android:textColor="#546878"
+                        android:textSize="12sp"
                         android:textStyle="bold"
-                        android:layout_column="1"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                </TableRow>
-            </TableLayout>
+                        android:visibility="gone"
+                        app:buttonTint="@drawable/checkbox_bkg" />
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="#EEF2FB" />
+
+                    <!-- Submit button -->
+                    <Button
+                        android:id="@+id/addNewPhotoConfirmButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="end"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+                </LinearLayout>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
     </ScrollView>
 
@@ -654,214 +670,249 @@
 
     <ScrollView
         android:id="@+id/editPhotoDialog"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:visibility="gone">
+
         <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
+            app:cardCornerRadius="12dp"
             app:cardElevation="10dp">
-            <!--            android:id="@+id/addNewPhotoDialog"-->
-            <TextView
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:text="Edit Photo"
-                android:textSize="18dp" />
+                android:orientation="vertical">
 
+                <!-- Header -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@drawable/cert_header_bg"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="12dp">
 
-            <Button
-                android:id="@+id/editPhotoConfirmButton"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="right"
-                android:layout_marginStart="50dp"
-                android:layout_marginEnd="50dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/btn_cert_primary"
-                android:textColor="@color/white"
-                app:backgroundTint="@null"
-                android:text="Submit"
-                />
-
-
-            <ImageButton
-                android:id="@+id/editPhotoCancelButton"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="top|right"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="25dp"
-                android:background="@drawable/close" />
-
-            <TableLayout
-                android:id="@+id/editPhotoInputFieldsTableLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="40dp">
-                >
-
-                <TableRow>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="File Name:"
-                        android:textStyle="bold"
-                        android:layout_column="0"
-                        android:layout_margin="5dp"
-                        />
-                    <EditText
-                        android:id="@+id/editFileNameText"
-                        android:layout_width="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Edit Photo"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/editPhotoCancelButton"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/close" />
+                </RelativeLayout>
+
+                <!-- Content -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:background="@color/white">
+
+                    <!-- File Name + Approval -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:enabled="false"
-                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890_-."
-                        android:layout_column="1"
-                        android:layout_span="5"
-                        android:background="@drawable/cert_input_background"
-                        android:textStyle="italic"
-                        android:textColor="#1A237E"
-                        />
-                    <!--                    <TextView-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_marginTop="5dp"-->
-                    <!--                        android:text=""-->
-                    <!--                        android:id="@+id/editFileNameTitle"-->
-                    <!--                        android:textStyle="bold"-->
-                    <!--                        android:layout_column="3"-->
-                    <!--                        android:layout_span="2"-->
-                    <!--                        android:layout_margin="5dp"-->
-                    <!--                        />-->
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/editApprovalReqCheck"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="110dp"
+                            android:text="File Name:"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editFileNameText"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:digits="abcdefghijklmnopqrstuvwxyz1234567890_-."
+                            android:enabled="false"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textColor="#1A237E"
+                            android:textSize="13sp"
+                            android:textStyle="italic" />
+
+                        <CheckBox
+                            android:id="@+id/editApprovalReqCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="Approval Requested"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+                    </LinearLayout>
+
+                    <!-- Description -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Approval Requested"
-                        android:textStyle="bold"
-                        android:layout_column="6"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
 
-                </TableRow>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="110dp"
+                            android:text="File Description:"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
+                        <EditText
+                            android:id="@+id/editFileDescText"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/cert_input_background"
+                            android:maxLength="200"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
-                <TableRow>
+                    <!-- Downstream Apps label -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:textStyle="bold"
-                        android:text="File Description:"
-                        android:layout_column="0"
-                        />
-                    <EditText
-                        android:id="@+id/editFileDescText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:maxLength="200"
-                        android:layout_span="6"
-                        android:layout_column="1"
-                        android:background="@drawable/cert_input_background"
-                        />
+                        android:layout_marginBottom="8dp"
+                        android:text="Downstream Apps:"
+                        android:textColor="#546878"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Checkboxes row 1 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Downstream\nApps:"
-                        android:layout_column="0"
-                        android:textStyle="bold"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/editClubCHeck"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="4dp">
+
+                        <CheckBox
+                            android:id="@+id/editClubCHeck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Club Hub/MRM"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+
+                        <CheckBox
+                            android:id="@+id/editCommCHeck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="eComm"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+
+                        <CheckBox
+                            android:id="@+id/editEnvCheck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Envision"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+                    </LinearLayout>
+
+                    <!-- Checkboxes row 2 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Club Hub/MRM"
-                        android:textStyle="bold"
-                        android:layout_column="1"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                    <CheckBox
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <CheckBox
+                            android:id="@+id/editModCheck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="MOD"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+
+                        <CheckBox
+                            android:id="@+id/editIrasCheck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="IRAS"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+
+                        <CheckBox
+                            android:id="@+id/editRspCheck"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="RSP"
+                            android:textColor="#546878"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            app:buttonTint="@drawable/checkbox_bkg" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="#EEF2FB" />
+
+                    <!-- Submit button -->
+                    <Button
+                        android:id="@+id/editPhotoConfirmButton"
                         android:layout_width="wrap_content"
-                        android:id="@+id/editCommCHeck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="eComm"
+                        android:layout_height="40dp"
+                        android:layout_gravity="end"
+                        android:background="@drawable/btn_cert_primary"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
                         android:textStyle="bold"
-                        android:layout_column="2"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/editEnvCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="Envision"
-                        android:textStyle="bold"
-                        android:layout_column="3"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/editModCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="MOD"
-                        android:textStyle="bold"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        android:layout_column="4"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/editIrasCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="IRAS"
-                        android:textStyle="bold"
-                        android:layout_column="5"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:id="@+id/editRspCheck"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_margin="5dp"
-                        android:text="RSP"
-                        android:textStyle="bold"
-                        android:layout_column="6"
-                        app:buttonTint="@drawable/checkbox_bkg"
-                        />
-                </TableRow>
-            </TableLayout>
+                        app:backgroundTint="@null" />
+                </LinearLayout>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
     </ScrollView>
 
