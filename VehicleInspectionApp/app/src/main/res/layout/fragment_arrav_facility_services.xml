@@ -59,9 +59,11 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:text="Add New Facility Service"
+                        android:textAllCaps="false"
                         android:textColor="#1565C0"
                         android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
                 </RelativeLayout>
 
                 <!-- Services table -->

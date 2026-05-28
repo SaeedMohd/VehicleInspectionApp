@@ -88,7 +88,6 @@ class FragmentARRAVDeficiency : Fragment() {
         IndicatorsDataModel.getInstance().tblDeffeciencies[0].visited =
             FacilityDataModel.getInstance().tblDeficiency.filter { s -> s.ClearedDate.isNullOrEmpty() }
                 .isEmpty()
-        binding.deffTitle.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
         binding.exitDeffeciencyDialogeBtnId.setOnClickListener {
