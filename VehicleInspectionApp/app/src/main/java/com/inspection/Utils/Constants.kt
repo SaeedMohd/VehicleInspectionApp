@@ -102,6 +102,8 @@ object Constants {
     val uploadPhoto = permanentURL + "uploadPhoto?fileNameToSave="
     val getFacilityData = permanentURL + "getFacilityData?facnum=%d&clubcode=%s"
     val getCompletedVisitations = permanentURL + "getPDFCompletedVisitations?specialist="
+    val generatePDF = permanentURL + "generatePDF?"
+    val getAccountLastSynced = permanentURL + "getAccountLastSynced?facNum="
     val getPDFStats = permanentURL + "getPDFStats?specialist="
 
     val IDLE_TIMEOUT = if (BuildConfig.FLAVOR.equals("uat")) 30 * 60 * 1000L else 20 * 60 * 1000L // 15 minutes

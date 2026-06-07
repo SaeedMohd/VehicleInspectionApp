@@ -15,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.TableRow
@@ -25,6 +24,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -138,6 +138,56 @@ class CompletedVisitationsFragment : Fragment(),
         // 🔥 CRASH FIX
         chart.setTouchEnabled(false)
         chart.highlightValues(null)
+    }
+
+    override fun sendCompletedPDF(specialistEmail: String,facNo: String, facName: String, type: String,visitationID:String) {
+        binding.progressBarText.text = "Loading ..."
+        binding.recordsProgressView.visibility = View.VISIBLE
+        var urlString = "facNo=${facNo}&facName=${facName}&type=${type}"
+        Log.v("SEND PDF", Constants.sendCompletedPDF + visitationID + "&email=${specialistEmail}&specialistEmail=${specialistEmail}&" + urlString)
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.sendCompletedPDF + visitationID + "&email=${specialistEmail}&specialistEmail=${specialistEmail}&" + urlString,
+            { response ->
+                Log.v("Send PDF Response ", "" + response)
+                requireActivity().runOnUiThread {
+                    binding.recordsProgressView.visibility = View.GONE
+                    Utility.showUnifiedConfirmationDialog(activity,  "PDF for Visitation Number ${Constants.visitationIDForPDF} has been sent to $specialistEmail")
+                    Constants.specialistEmailForPDF = ""
+                }
+            }, {
+                Log.v("Send PDF Error ", "" + it.message)
+                it.printStackTrace()
+                binding.recordsProgressView.visibility = View.GONE
+            })).setRetryPolicy(DefaultRetryPolicy(
+            30000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+//        }
+    }
+
+    override fun onGenerateAndEmailPDF(facNo: String, clubCode: String, visitationId: String) {
+        binding.progressBarText.text = "Loading ..."
+        binding.recordsProgressView.visibility = View.VISIBLE
+        val url = Constants.generatePDF + "facNum=${facNo}&clubCode=${clubCode}&visitationId=${visitationId}"
+        Log.v("GENERATE PDF", url)
+        Volley.newRequestQueue(context).add(StringRequest(Request.Method.POST, url,
+            { response ->
+                Log.v("Generate PDF Response", response)
+                requireActivity().runOnUiThread {
+                    binding.recordsProgressView.visibility = View.GONE
+                    if (response.contains("Success", ignoreCase = true)) {
+                        Utility.showUnifiedConfirmationDialog(activity, "PDF generated and emailed successfully for Visitation ID $visitationId")
+                    } else {
+                        Utility.showUnifiedErrorDialog(activity, "Failed to generate PDF for Visitation ID $visitationId")
+                    }
+                }
+            }, {
+                Log.v("Generate PDF Error", "" + it.message)
+                it.printStackTrace()
+                binding.recordsProgressView.visibility = View.GONE
+            })).setRetryPolicy(DefaultRetryPolicy(
+            30000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
     }
 
     override fun onOpenPDF(pdfName: String) {
@@ -527,6 +577,7 @@ class CompletedVisitationsFragment : Fragment(),
 
     }
 
+
     fun setupGraphs() {
         if (binding.typeRadioBtn.isChecked) {
             binding.pieChart.isVisible = true
@@ -652,6 +703,8 @@ class VisitationsAdapter(
 
     interface OpenPDFListener {
         fun onOpenPDF(pdfName: String)
+        fun sendCompletedPDF(specialistEmail: String, facNo: String, facName: String, type: String, visitationID: String)
+        fun onGenerateAndEmailPDF(facNo: String, clubCode: String, visitationId: String)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -667,6 +720,8 @@ class VisitationsAdapter(
         val date_text: TextView = itemView.findViewById(R.id.dateVal)
         val method_text: TextView = itemView.findViewById(R.id.methodVal)
         val link_text: TextView = itemView.findViewById(R.id.idURL)
+        val email_pdf_text: TextView = itemView.findViewById(R.id.emailPDFBtn)
+        val generate_email_pdf_text: TextView = itemView.findViewById(R.id.generateEmailPDFBtn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -688,23 +743,36 @@ class VisitationsAdapter(
         holder.date_text.text = dbUtcToLocal(visitations[position].insertdate)
         holder.method_text.text = visitations[position].visitationmethod
 
+        val item = visitations[position]
         var awsFileName = ""
-        if ( visitations[position].facid.isNotEmpty()) {
-            Log.v("FACID--> ", visitations[position].facid)
-            awsFileName = visitations[position].facid + "_101_" + visitations[position].visitationid + "_" + visitations[position].visitationid + "_VisitationDetails_ForSpecialist.pdf"
+        if (item.facid.isNotEmpty()) {
+            Log.v("FACID--> ", item.facid)
+            awsFileName = item.facid + "_101_" + item.visitationid + "_" + item.visitationid + "_VisitationDetails_ForSpecialist.pdf"
+
+            val pdfReady = item.pdfgenerated != 0
             holder.link_text.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-            holder.link_text.visibility = View.VISIBLE
+            holder.link_text.visibility = if (pdfReady) View.VISIBLE else View.GONE
+            holder.email_pdf_text.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            holder.email_pdf_text.visibility = if (pdfReady && item.specialistemail.isNotEmpty()) View.VISIBLE else View.GONE
+            holder.generate_email_pdf_text.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            holder.generate_email_pdf_text.visibility = if (!pdfReady) View.VISIBLE else View.GONE
         } else {
             Log.v("NO FACID--> ", "HERE")
             holder.link_text.visibility = View.GONE
+            holder.email_pdf_text.visibility = View.GONE
+            holder.generate_email_pdf_text.visibility = View.GONE
         }
 
         holder.link_text.setOnClickListener {
             onOpenPDF.onOpenPDF(awsFileName)
-//                val url = "https://www.google.com"
-//                val intent = Intent(Intent.ACTION_VIEW)
-//                intent.data = Uri.parse(url)
-//                startActivity(context,intent, null)
+        }
+
+        holder.email_pdf_text.setOnClickListener {
+            onOpenPDF.sendCompletedPDF(item.specialistemail, item.facno, item.facName, item.visitationtype.toString(), item.visitationid)
+        }
+
+        holder.generate_email_pdf_text.setOnClickListener {
+            onOpenPDF.onGenerateAndEmailPDF(item.facno, item.clubcode, item.visitationid)
         }
 
     }
@@ -721,5 +789,7 @@ class VisitationsAdapter(
     }
 
     override fun getItemCount() = visitations.size
+
+
 
 }

@@ -64,6 +64,9 @@ class FacilityGeneralInformationFragment : Fragment() {
         return inflater!!.inflate(R.layout.fragment_arrav_facility, container, false)
     }
 
+    private var automationStatus: Int = -1
+    private var automationDisplayDate: String = ""
+
     private var submitPaymentRequired = false
     private var submitGeneralInfoRequired = false
     private var contractTypeList = ArrayList<TypeTablesModel.contractType>()
@@ -140,7 +143,6 @@ class FacilityGeneralInformationFragment : Fragment() {
         facilityTypedataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.facilitytypeTextviewVal.adapter = facilityTypedataAdapter
 
-
         contractTypeList = TypeTablesModel.getInstance().ContractType
         contractTypeArray .clear()
         for (fac in contractTypeList) {
@@ -157,11 +159,120 @@ class FacilityGeneralInformationFragment : Fragment() {
 //        (activity as FormsActivity).generalInformationButton.setTextColor(Color.parseColor("#26C3AA"))
         (activity as FormsActivity).refreshMenuIndicatorsForVisitedScreens()
 
-
         setFieldsValues()
         ImplementBusinessRules()
         setFieldsListeners()
         setAlertColoring()
+        loadAutomationStatus()
+    }
+
+    private fun loadAutomationStatus() {
+        val facNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
+        val clubCode = FacilityDataModel.getInstance().clubCode
+        val url = Constants.getAccountLastSynced + facNo + "&clubCode=" + clubCode
+        Log.d("AUTOMATION_STATUS", "Request URL: $url")
+        Volley.newRequestQueue(context).add(
+            StringRequest(Request.Method.GET, url, { response ->
+                Log.d("AUTOMATION_STATUS", "Raw response: $response")
+                requireActivity().runOnUiThread {
+                    try {
+                        val arr = org.json.JSONArray(response)
+                        Log.d("AUTOMATION_STATUS", "Array length: ${arr.length()}")
+                        if (arr.length() == 0) {
+                            Log.d("AUTOMATION_STATUS", "Empty array → Never Automated")
+                            showAutomationStatus(-1, "")
+                        } else {
+                            val obj = arr.getJSONObject(0)
+                            Log.d("AUTOMATION_STATUS", "First object: $obj")
+                            val lastUpdated = obj.optString("lastupdated", "")
+                            Log.d("AUTOMATION_STATUS", "lastupdated value: '$lastUpdated'")
+                            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                            val date = sdf.parse(lastUpdated)
+                            Log.d("AUTOMATION_STATUS", "Parsed date: $date")
+                            val tenDaysAgo = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -10) }.time
+                            Log.d("AUTOMATION_STATUS", "Ten days ago: $tenDaysAgo")
+                            if (date == null || date.before(tenDaysAgo)) {
+                                Log.d("AUTOMATION_STATUS", "Status → Issue (date null or older than 10 days)")
+                                showAutomationStatus(0, lastUpdated)
+                            } else {
+                                Log.d("AUTOMATION_STATUS", "Status → Good")
+                                showAutomationStatus(1, lastUpdated)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e("AUTOMATION_STATUS", "Parse error: ${e.message}", e)
+                        binding.automationLoadingIndicator.visibility = View.GONE
+                        binding.rspAutomationCard.visibility = View.GONE
+                    }
+                }
+            }, { error ->
+                Log.e("AUTOMATION_STATUS", "Network error: ${error.message} | networkResponse: ${error.networkResponse?.statusCode}")
+                requireActivity().runOnUiThread {
+                    binding.automationLoadingIndicator.visibility = View.GONE
+                    binding.rspAutomationCard.visibility = View.GONE
+                }
+            })
+        )
+    }
+
+    private fun showAutomationStatus(status: Int, lastUpdated: String) {
+        automationStatus = status
+        binding.automationLoadingIndicator.visibility = View.GONE
+        binding.automationContent.visibility = View.VISIBLE
+        val displayDate = if (lastUpdated.isNotEmpty()) {
+            try {
+                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                SimpleDateFormat("MM/dd/yyyy", Locale.US).format(sdf.parse(lastUpdated)!!)
+            } catch (e: Exception) { lastUpdated }
+        } else ""
+        automationDisplayDate = displayDate
+
+        when (status) {
+            -1 -> {
+                binding.automationStatusValue.text = "Never Automated"
+                binding.automationStatusValue.setTextColor(Color.RED)
+                binding.lastSyncDateRow.visibility = View.GONE
+                binding.reEstablishAutomationButton.text = "Click Here to Automate"
+                binding.reEstablishAutomationButton.visibility = View.GONE
+            }
+            0 -> {
+                binding.automationStatusValue.text = "Issue"
+                binding.automationStatusValue.setTextColor(Color.RED)
+                binding.lastSyncDateValue.text = displayDate
+                binding.lastSyncDateRow.visibility = View.VISIBLE
+                binding.reEstablishAutomationButton.text = "Re-Establish Automation"
+                binding.reEstablishAutomationButton.visibility = View.GONE
+            }
+            else -> {
+                binding.automationStatusValue.text = "Good"
+                binding.automationStatusValue.setTextColor(Color.parseColor("#2E7D32"))
+                binding.lastSyncDateValue.text = displayDate
+                binding.lastSyncDateRow.visibility = View.VISIBLE
+                binding.reEstablishAutomationButton.visibility = View.GONE
+            }
+        }
+
+        binding.automationHelpButton.setOnClickListener { showAutomationHelpDialog() }
+    }
+
+    private fun showAutomationHelpDialog() {
+        val message = when (automationStatus) {
+            -1 -> "It appears that your shop has not yet connected to the AAA Repair Shop Portal (RSP) Automation and CSI survey process.\n\n" +
+                    "Connecting the automation allows you to automatically receive repair order data and enables the CSI survey process to help gather customer feedback."
+            0 -> "We noticed it has been a few days since we last received data for the AAA Repair Shop Portal (RSP) Automation and the CSI survey process.\n\n" +
+                    "Reconnecting the process can pull in social media reviews of your choice like Google, Yelp and others.\n\n" +
+                    "The last repair order date we received is $automationDisplayDate."
+            else -> "Your AAA Repair Shop Portal (RSP) Automation and CSI survey process are currently connected and running smoothly.\n\n" +
+                    "Social media reviews from platforms such as Google, Yelp, and others are being collected as configured.\n\n" +
+                    "The most recent repair order was successfully received on $automationDisplayDate.\n\n" +
+                    "No action is required at this time."
+        }
+
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("RSP Automation Status")
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
     }
 
     private fun setAlertColoring() {

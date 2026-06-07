@@ -40,4 +40,5 @@ gen-external-apklibs
 ### Java ###
 *.class
 
-app/release
+app/releaseweb-api-inspectionuat/
+web-api-inspectionprod/

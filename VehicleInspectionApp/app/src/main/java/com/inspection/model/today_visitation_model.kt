@@ -42,6 +42,8 @@ class CompletedVisitationModel {
     var status: String = ""
     var facid: String = ""
     var visitationtype : VisitationTypes = VisitationTypes.Annual
+    var specialistemail = ""
+    var pdfgenerated: Int = 1
 }
 
 class VisitationsStats(
