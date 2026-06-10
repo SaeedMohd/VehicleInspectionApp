@@ -2148,11 +2148,13 @@ class FragmentVisitation : Fragment() {
         if ((activity as FormsActivity).imageWaiveSignature != null)
             saveBmpAsFile((activity as FormsActivity).imageWaiveSignature, "W", visitationType)
 
+        // Capture before the Runnable starts — fragment may detach while polling loop is running.
+        val formsActivity = activity as? FormsActivity ?: return
         val handler = Handler(Looper.getMainLooper())
 
         val conditionCheck = object : Runnable {
             override fun run() {
-                binding.netwrokStatusText.text = (activity as FormsActivity).networkStatus
+                binding.netwrokStatusText.text = formsActivity.networkStatus
                 if (imgCounter == 0) {
                     // Perform your action
                     Log.d("Condition", "Condition met!")
@@ -2487,11 +2489,13 @@ class FragmentVisitation : Fragment() {
         if ((activity as FormsActivity).imageWaiveSignature != null)
             saveBmpAsFile((activity as FormsActivity).imageWaiveSignature, "W", visitationType)
 
+        // Capture before the Runnable starts — fragment may detach while polling loop is running.
+        val formsActivity = activity as? FormsActivity ?: return
         val handler = Handler(Looper.getMainLooper())
 
         val conditionCheck = object : Runnable {
             override fun run() {
-                binding.netwrokStatusText.text = (activity as FormsActivity).networkStatus
+                binding.netwrokStatusText.text = formsActivity.networkStatus
                 if (imgCounter == 0) {
                     // Perform your action
                     Log.d("Condition", "Condition met!")
