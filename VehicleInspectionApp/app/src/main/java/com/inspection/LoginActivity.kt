@@ -70,6 +70,8 @@ import java.util.Locale
 import java.util.Locale.getDefault
 import java.util.concurrent.TimeUnit
 import kotlin.toString
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 
 
 class LoginActivity : AppCompatActivity() ,NetworkSpeedDetector.NetworkSpeedListener {
@@ -367,6 +369,63 @@ class LoginActivity : AppCompatActivity() ,NetworkSpeedDetector.NetworkSpeedList
 //        }
 //    }
 
+    private fun checkRemoteConfigVersion() {
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        val fetchInterval = if (BuildConfig.DEBUG) 0L else 3600L
+        val settings = FirebaseRemoteConfigSettings.Builder()
+            .setMinimumFetchIntervalInSeconds(fetchInterval)
+            .build()
+        remoteConfig.setConfigSettingsAsync(settings)
+        remoteConfig.setDefaultsAsync(mapOf(
+            "latest_version_code" to 0L,
+            "latest_version_name" to ""
+        ))
+        android.util.Log.d("RC_VERSION", "Fetching Remote Config — installed versionCode=${BuildConfig.VERSION_CODE} versionName=${BuildConfig.VERSION_NAME}")
+        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                android.util.Log.w("RC_VERSION", "fetchAndActivate failed: ${task.exception?.message}")
+                return@addOnCompleteListener
+            }
+            val remoteVersionCode = remoteConfig.getLong("latest_version_code").toInt()
+            val remoteVersionName = remoteConfig.getString("latest_version_name")
+            android.util.Log.d("RC_VERSION", "Fetched — latest_version_code=$remoteVersionCode latest_version_name='$remoteVersionName'")
+            android.util.Log.d("RC_VERSION", "Comparison — remote($remoteVersionCode) > installed(${BuildConfig.VERSION_CODE}) = ${remoteVersionCode > BuildConfig.VERSION_CODE}")
+            if (remoteVersionCode > BuildConfig.VERSION_CODE) {
+                android.util.Log.d("RC_VERSION", "Showing update dialog")
+                showUpdateAvailableDialog(remoteVersionName)
+            } else {
+                android.util.Log.d("RC_VERSION", "No update dialog — app is up to date")
+            }
+        }
+    }
+
+    private fun showUpdateAvailableDialog(versionName: String) {
+        if (isFinishing || isDestroyed) return
+        val message: CharSequence = if (versionName.isNotBlank()) {
+            val prefix = "Version "
+            val suffix = " is now available. Please update the app to get the latest features and improvements."
+            android.text.SpannableStringBuilder(prefix + versionName + suffix).apply {
+                val start = prefix.length
+                val end = start + versionName.length
+                setSpan(android.text.style.StyleSpan(android.graphics.Typeface.BOLD), start, end, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                setSpan(android.text.style.ForegroundColorSpan(android.graphics.Color.parseColor("#1565C0")), start, end, android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        } else {
+            "A new version of the app is available. Please update to get the latest features and improvements."
+        }
+        val dialog = android.app.Dialog(this, R.style.CompactDialog)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_update_available, null)
+        dialog.setContentView(dialogView)
+        dialog.setCancelable(true)
+        dialogView.findViewById<android.widget.TextView>(R.id.tvMessage).text = message
+        dialogView.findViewById<android.widget.Button>(R.id.btnAction).setOnClickListener { dialog.dismiss() }
+        dialog.show()
+        dialog.window?.setWindowAnimations(R.style.DialogPopAnimation)
+        val widthPx = (320 * resources.displayMetrics.density).toInt()
+        dialog.window?.setLayout(widthPx, android.view.WindowManager.LayoutParams.WRAP_CONTENT)
+        dialog.window?.decorView?.setPadding(0, 0, 0, 0)
+    }
+
     fun getAppVersion() {
 //        FirebaseCrashlytics.getInstance().setCustomKey("Details", "Get App Version Step")
         var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
@@ -427,6 +486,7 @@ class LoginActivity : AppCompatActivity() ,NetworkSpeedDetector.NetworkSpeedList
         }
         lastActiveTime = now
         super.onResume()
+        checkRemoteConfigVersion()
     }
 
         fun getTypeTables() {

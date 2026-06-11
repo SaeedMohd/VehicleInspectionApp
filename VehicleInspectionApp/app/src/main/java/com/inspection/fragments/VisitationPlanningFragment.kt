@@ -2084,7 +2084,7 @@ class VisitationPlanningFragment : Fragment() {
                     getFullFacilityDataFromAAA(visitationPlanningModelList.listArray[position].FACNo.toInt(), visitationPlanningModelList.listArray[position].ClubCode,false,VisitationTypes.Deficiency)
                 }
             }
-            if (vh.visitationTypeValueTextView.isVisible) {
+        if (vh.visitationTypeValueTextView.isVisible) {
                 if (vh.visitationTypeValueTextView.text.contains("Deficiency")) vh.listBkg.setBackgroundColor(Color.rgb(255, 229, 204))
                 else if (vh.visitationTypeValueTextView.text.contains("Annual")) vh.listBkg.setBackgroundColor((Color.WHITE))
                 else if (vh.visitationTypeValueTextView.text.contains("Quarterly")) vh.listBkg.setBackgroundColor(Color.rgb(255, 229, 204))

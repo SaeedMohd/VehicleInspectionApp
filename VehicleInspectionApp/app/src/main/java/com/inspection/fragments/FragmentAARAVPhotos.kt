@@ -486,17 +486,17 @@ class FragmentAARAVPhotos : Fragment() {
         binding.photoLoadingView.visibility = View.VISIBLE
 
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getFacilityPhotos + FacilityDataModel.getInstance().tblFacilities[0].FACNo + "&clubCode=${FacilityDataModel.getInstance().clubCode}",
-                Response.Listener { response ->
-                    requireActivity().runOnUiThread {
-                        tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
+            { response ->
+                requireActivity().runOnUiThread {
+                    tblFacilityPhotos = Gson().fromJson(response.toString(), Array<PRGFacilityPhotos>::class.java).toCollection(ArrayList())
 //                        Utility.showMessageDialog(context,"ajshd","COUNT ---> "+tblFacilityPhotos.size)
-                        fillPhotosTableView()
-                    }
-                }, Response.ErrorListener {
-            Log.v("Loading error", "" + it.message)
-                binding.photoLoadingView.visibility = View.GONE
-            it.printStackTrace()
-        }))
+                    fillPhotosTableView()
+                }
+            }, {
+        Log.v("Loading error", "" + it.message)
+            binding.photoLoadingView.visibility = View.GONE
+        it.printStackTrace()
+    }))
     }
 
     fun getPhotosS3Urls() {
