@@ -167,50 +167,49 @@ class FacilityGeneralInformationFragment : Fragment() {
     }
 
     private fun loadAutomationStatus() {
+        val ctx = context ?: return
         val facNo = FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString()
         val clubCode = FacilityDataModel.getInstance().clubCode
         val url = Constants.getAccountLastSynced + facNo + "&clubCode=" + clubCode
         Log.d("AUTOMATION_STATUS", "Request URL: $url")
-        Volley.newRequestQueue(context).add(
+        Volley.newRequestQueue(ctx).add(
             StringRequest(Request.Method.GET, url, { response ->
+                if (!isAdded || _binding == null) return@StringRequest
                 Log.d("AUTOMATION_STATUS", "Raw response: $response")
-                requireActivity().runOnUiThread {
-                    try {
-                        val arr = org.json.JSONArray(response)
-                        Log.d("AUTOMATION_STATUS", "Array length: ${arr.length()}")
-                        if (arr.length() == 0) {
-                            Log.d("AUTOMATION_STATUS", "Empty array → Never Automated")
-                            showAutomationStatus(-1, "")
+                try {
+                    val arr = org.json.JSONArray(response)
+                    Log.d("AUTOMATION_STATUS", "Array length: ${arr.length()}")
+                    if (arr.length() == 0) {
+                        Log.d("AUTOMATION_STATUS", "Empty array → Never Automated")
+                        showAutomationStatus(-1, "")
+                    } else {
+                        val obj = arr.getJSONObject(0)
+                        Log.d("AUTOMATION_STATUS", "First object: $obj")
+                        val lastUpdated = obj.optString("lastupdated", "")
+                        Log.d("AUTOMATION_STATUS", "lastupdated value: '$lastUpdated'")
+                        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
+                        val date = sdf.parse(lastUpdated)
+                        Log.d("AUTOMATION_STATUS", "Parsed date: $date")
+                        val tenDaysAgo = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -10) }.time
+                        Log.d("AUTOMATION_STATUS", "Ten days ago: $tenDaysAgo")
+                        if (date == null || date.before(tenDaysAgo)) {
+                            Log.d("AUTOMATION_STATUS", "Status → Issue (date null or older than 10 days)")
+                            showAutomationStatus(0, lastUpdated)
                         } else {
-                            val obj = arr.getJSONObject(0)
-                            Log.d("AUTOMATION_STATUS", "First object: $obj")
-                            val lastUpdated = obj.optString("lastupdated", "")
-                            Log.d("AUTOMATION_STATUS", "lastupdated value: '$lastUpdated'")
-                            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
-                            val date = sdf.parse(lastUpdated)
-                            Log.d("AUTOMATION_STATUS", "Parsed date: $date")
-                            val tenDaysAgo = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -10) }.time
-                            Log.d("AUTOMATION_STATUS", "Ten days ago: $tenDaysAgo")
-                            if (date == null || date.before(tenDaysAgo)) {
-                                Log.d("AUTOMATION_STATUS", "Status → Issue (date null or older than 10 days)")
-                                showAutomationStatus(0, lastUpdated)
-                            } else {
-                                Log.d("AUTOMATION_STATUS", "Status → Good")
-                                showAutomationStatus(1, lastUpdated)
-                            }
+                            Log.d("AUTOMATION_STATUS", "Status → Good")
+                            showAutomationStatus(1, lastUpdated)
                         }
-                    } catch (e: Exception) {
-                        Log.e("AUTOMATION_STATUS", "Parse error: ${e.message}", e)
-                        binding.automationLoadingIndicator.visibility = View.GONE
-                        binding.rspAutomationCard.visibility = View.GONE
                     }
+                } catch (e: Exception) {
+                    Log.e("AUTOMATION_STATUS", "Parse error: ${e.message}", e)
+                    _binding?.automationLoadingIndicator?.visibility = View.GONE
+                    _binding?.rspAutomationCard?.visibility = View.GONE
                 }
             }, { error ->
+                if (!isAdded || _binding == null) return@StringRequest
                 Log.e("AUTOMATION_STATUS", "Network error: ${error.message} | networkResponse: ${error.networkResponse?.statusCode}")
-                requireActivity().runOnUiThread {
-                    binding.automationLoadingIndicator.visibility = View.GONE
-                    binding.rspAutomationCard.visibility = View.GONE
-                }
+                _binding?.automationLoadingIndicator?.visibility = View.GONE
+                _binding?.rspAutomationCard?.visibility = View.GONE
             })
         )
     }

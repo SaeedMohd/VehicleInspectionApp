@@ -1122,7 +1122,7 @@
                                 android:letterSpacing="0.08"
                                 android:layout_marginBottom="8dp" />
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/newCertStartDateBtn"
                                 android:layout_width="match_parent"
                                 android:layout_height="52dp"
@@ -1131,8 +1131,7 @@
                                 android:textColor="#1A237E"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:gravity="center"
-                                app:backgroundTint="@null" />
+                                android:gravity="center" />
 
                         </LinearLayout>
 
@@ -1154,7 +1153,7 @@
                                 android:letterSpacing="0.08"
                                 android:layout_marginBottom="8dp" />
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/newCertEndDateBtn"
                                 android:layout_width="match_parent"
                                 android:layout_height="52dp"
@@ -1163,8 +1162,7 @@
                                 android:textColor="#1A237E"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:gravity="center"
-                                app:backgroundTint="@null" />
+                                android:gravity="center" />
 
                         </LinearLayout>
 
@@ -3274,7 +3272,7 @@
                                 android:letterSpacing="0.08"
                                 android:layout_marginBottom="8dp" />
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/edit_newCertStartDateBtn"
                                 android:layout_width="match_parent"
                                 android:layout_height="52dp"
@@ -3283,8 +3281,7 @@
                                 android:textColor="#1A237E"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:gravity="center"
-                                app:backgroundTint="@null" />
+                                android:gravity="center" />
 
                         </LinearLayout>
 
@@ -3306,7 +3303,7 @@
                                 android:letterSpacing="0.08"
                                 android:layout_marginBottom="8dp" />
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/edit_newCertEndDateBtn"
                                 android:layout_width="match_parent"
                                 android:layout_height="52dp"
@@ -3315,8 +3312,7 @@
                                 android:textColor="#1A237E"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
-                                android:gravity="center"
-                                app:backgroundTint="@null" />
+                                android:gravity="center" />
 
                         </LinearLayout>
 
