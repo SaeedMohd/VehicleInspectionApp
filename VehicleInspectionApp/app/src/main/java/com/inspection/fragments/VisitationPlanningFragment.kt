@@ -511,27 +511,30 @@ class VisitationPlanningFragment : Fragment() {
             binding.recordsProgressView.visibility = View.VISIBLE
 
 
+            val ctx = context ?: return
+            val act = activity ?: return
             var clientBuilder = OkHttpClient().newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
 //            var client = OkHttpClient()
             var client = clientBuilder.build()
 //                    .newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
-            var request = okhttp3.Request.Builder().url(Constants.getVisitations + parametersString+Utility.getLoggingParameters(activity, 0, "Search Visitations ...")).build()
+            var request = okhttp3.Request.Builder().url(Constants.getVisitations + parametersString+Utility.getLoggingParameters(act, 0, "Search Visitations ...")).build()
 
-            Log.v("******get visitation", Constants.getVisitations+parametersString+Utility.getLoggingParameters(activity, 0, "Search Visitations ..."))
+            Log.v("******get visitation", Constants.getVisitations+parametersString+Utility.getLoggingParameters(act, 0, "Search Visitations ..."))
 
 //            FirebaseCrashlytics.getInstance().setCustomKey("Details", parametersString.toString())
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     Log.v("failure http", "failed with exception : " + e!!.message)
-                    requireActivity().runOnUiThread {
-//                        Utility.showMessageDialog(activity, "Retrieve Data Error", e.message)
-                        Utility.showUnifiedErrorDialog(activity,"Error while retrieving Visitations - " + e.message)
+                    act.runOnUiThread {
+                        if (!isAdded || _binding == null) return@runOnUiThread
+                        Utility.showUnifiedErrorDialog(act,"Error while retrieving Visitations - " + e.message)
                         binding.recordsProgressView.visibility = View.INVISIBLE
                     }
                 }
 
                 override fun onResponse(call: Call, response: okhttp3.Response) {
+                    if (!isAdded || _binding == null) return
 
                     var responseString = response!!.body!!.string()
                     //  activity!!.toast("success!!!")
@@ -539,72 +542,50 @@ class VisitationPlanningFragment : Fragment() {
                     Log.v("GET VISITATIONS", responseString)
 //                    FirebaseCrashlytics.getInstance().setCustomKey("Details", "Load Visitation --> ${responseString}")
                     if (responseString.toString().contains("returnCode>1<",false) || !responseString.toString().contains("returnCode>",false)) {
-                        requireActivity().runOnUiThread {
-//                            if (responseString.toString().contains("message", false))
-//                                Utility.showMessageDialog(activity, "Retrieve Data Error", responseString.substring(responseString.indexOf("<message") + 9, responseString.indexOf("</message")))
-//                            else
-//                            Utility.showMessageDialog(activity, "Retrieve Data Error", responseString)
-                            Utility.showUnifiedErrorDialog(
-                                activity,
-                                "Error while retrieving Visitations - " + responseString
-                            )
+                        act.runOnUiThread {
+                            if (!isAdded || _binding == null) return@runOnUiThread
+                            Utility.showUnifiedErrorDialog(act, "Error while retrieving Visitations - " + responseString)
                             binding.recordsProgressView.visibility = View.GONE
                             binding.visitationfacilityListView.visibility = View.VISIBLE
                             visitationsModel.pendingVisitationsArray.clear()
                             visitationsModel.completedVisitationsArray.clear()
                             visitationsModel.deficienciesArray.clear()
-
-                            var visitationPlanningAdapter =
-                                VisitationPlanningAdapter(context, visitationsModel)
-                            binding.visitationfacilityListView.adapter = visitationPlanningAdapter
+                            binding.visitationfacilityListView.adapter = VisitationPlanningAdapter(ctx, visitationsModel)
                             totalVisitations = 0
                         }
                     } else if (!responseString.contains("<responseXml>",false)) {
-                        requireActivity().runOnUiThread {
-                            Utility.showUnifiedInformationDialog(activity,"No Visitations Found with the applied filters ...");
+                        act.runOnUiThread {
+                            if (!isAdded || _binding == null) return@runOnUiThread
+                            Utility.showUnifiedInformationDialog(act, "No Visitations Found with the applied filters ...")
                             binding.recordsProgressView.visibility = View.GONE
                             binding.visitationfacilityListView.visibility = View.VISIBLE
                             visitationsModel.pendingVisitationsArray.clear()
                             visitationsModel.completedVisitationsArray.clear()
                             visitationsModel.deficienciesArray.clear()
-
-                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                            binding.visitationfacilityListView.adapter = visitationPlanningAdapter
+                            binding.visitationfacilityListView.adapter = VisitationPlanningAdapter(ctx, visitationsModel)
                             totalVisitations = 0
                         }
                     } else {
-//                    var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("&lt;responseXml"), responseString.indexOf("&lt;returnCode")).replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&"))
-//                        var obj = XML.toJSONObject(responseString.substring(responseString.indexOf("<responseXml"), responseString.indexOf("<returnCode")))
                         val xmlPart = responseString.substring(
                             responseString.indexOf("<responseXml"),
                             responseString.indexOf("<returnCode")
                         )
-//                            .replace("&amp;", "&")
                         Log.v("xmlPart -> ", xmlPart)
                         val rootJson = xmlToJsonObject(xmlPart)
                         Log.v("rootJson -> ", rootJson.toString())
-
-                        // IMPORTANT: Jsoup already removed wrapper
                         val responseJson = rootJson
-
                         Log.v("responseJson -> ", responseJson.toString())
-
-                        val normalized = normalizeForModel(
-                            responseJson,
-                            TypeTablesModel::class.java
-                        )
+                        val normalized = normalizeForModel(responseJson, TypeTablesModel::class.java)
                         if (responseString.toString().equals("{\"responseXml\":\"\"}")) {
-                            activity!!.runOnUiThread {
+                            act.runOnUiThread {
+                                if (!isAdded || _binding == null) return@runOnUiThread
                                 visitationsModel.listArray.clear()
                                 binding.visitationfacilityListView.adapter = null
                                 binding.recordsProgressView.visibility = View.GONE
                                 binding.visitationfacilityListView.visibility = View.VISIBLE
-//                                Utility.showMessageDialog(requireContext(), "Information", "No available visitations to show")
-                                Utility.showUnifiedInformationDialog(requireContext(),"No available visitations to show")
+                                Utility.showUnifiedInformationDialog(ctx, "No available visitations to show")
                             }
                         } else {
-//                            var jsonObj = obj.getJSONObject("responseXml")
-//                            val jsonObj = JSONObject(obj.toString())
                             visitationsModel = parseVisitationsData(normalized)
                             // Remove Test Shops as Per Richard Email
                             visitationsModel.pendingVisitationsArray.removeIf { s-> s.FACNo == "22214" && s.ClubCode == "004" }
@@ -615,85 +596,62 @@ class VisitationPlanningFragment : Fragment() {
                             visitationsModel.pendingVisitationsArray.removeIf { s-> s.FACNo == "22217" && s.ClubCode == "252" }
                             visitationsModel.pendingVisitationsArray.removeIf { s-> s.FACNo == "22218" && s.ClubCode == "601" }
                             visitationsModel.pendingVisitationsArray.removeIf { s-> s.FACNo == "22221" && s.ClubCode == "018" }
-                            Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGCompletedVisitations,
+                            Volley.newRequestQueue(act).add(StringRequest(Request.Method.GET, Constants.getPRGCompletedVisitations,
                                     { response ->
-                                        activity!!.runOnUiThread {
-                                            if (!response.toString().replace(" ", "").equals("[]")) {
-                                                PRGDataModel.getInstance().tblPRGCompletedVisitations = Gson().fromJson(response.toString(), Array<PRGCompletedVisitations>::class.java).toCollection(ArrayList())
-                                            } else {
-                                                var item = PRGCompletedVisitations()
-                                                item.recordid = -1
-                                                PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
-                                            }
-                                            activity!!.runOnUiThread {
-                                                Volley.newRequestQueue(activity).add(StringRequest(Request.Method.GET, Constants.getPRGVisitationsLog,
-                                                    { response ->
-                                                        activity!!.runOnUiThread {
-                                                            if (!response.toString().replace(" ", "").equals("[]")) {
-                                                                PRGDataModel.getInstance().tblPRGVisitationsLog = Gson().fromJson(response.toString(), Array<PRGVisitationsLog>::class.java).toCollection(ArrayList())
-                                                            } else {
-                                                                var item = PRGVisitationsLog()
-                                                                item.recordid = -1
-                                                                PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
-                                                            }
-                                                            activity!!.runOnUiThread {
-                                                                binding.recordsProgressView.visibility = View.GONE
-                                                                binding.visitationfacilityListView.visibility = View.VISIBLE
-                                                                // New Logic
-
-
-                                                                FillVisitationList()
-                                                                if (binding.cityGroupCheckBox.isChecked)
-                                                                    visitationsModel.listArray.sortWith(compareBy({it.city}, {it.BusinessName}))
-
-
-                                                                //
-//                                                            var visitationPlanningAdapter = VisitationPlanningAdapter(context, visitationsModel)
-                                                                var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel,binding.addAllCheckBox.isChecked)
-                                                                binding.visitationfacilityListView.adapter = visitationPlanningAdapter
-                                                                totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-//                                                            Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
-                                                                binding.resultsCount.text = "Filtered Visitations --> ( " + totalVisitations + " )"
-                                                            }
-
-                                                        }
-                                                    },
-                                                    {
-                                                Log.v("Loading PRG Data error", "" + it.message)
-                                                var item = PRGVisitationsLog()
-                                                item.recordid = -1
-                                                PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
-                                                activity!!.runOnUiThread {
+                                        if (!isAdded || _binding == null) return@StringRequest
+                                        if (!response.toString().replace(" ", "").equals("[]")) {
+                                            PRGDataModel.getInstance().tblPRGCompletedVisitations = Gson().fromJson(response.toString(), Array<PRGCompletedVisitations>::class.java).toCollection(ArrayList())
+                                        } else {
+                                            var item = PRGCompletedVisitations()
+                                            item.recordid = -1
+                                            PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
+                                        }
+                                        Volley.newRequestQueue(act).add(StringRequest(Request.Method.GET, Constants.getPRGVisitationsLog,
+                                            { response ->
+                                                if (!isAdded || _binding == null) return@StringRequest
+                                                if (!response.toString().replace(" ", "").equals("[]")) {
+                                                    PRGDataModel.getInstance().tblPRGVisitationsLog = Gson().fromJson(response.toString(), Array<PRGVisitationsLog>::class.java).toCollection(ArrayList())
+                                                } else {
+                                                    var item = PRGVisitationsLog()
+                                                    item.recordid = -1
+                                                    PRGDataModel.getInstance().tblPRGVisitationsLog.add(item)
+                                                }
+                                                act.runOnUiThread {
+                                                    if (!isAdded || _binding == null) return@runOnUiThread
                                                     binding.recordsProgressView.visibility = View.GONE
                                                     binding.visitationfacilityListView.visibility = View.VISIBLE
-                                                    // WAS OLD ADAPTER
-                                                    var visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel,binding.addAllCheckBox.isChecked)
-                                                    binding.visitationfacilityListView.adapter = visitationPlanningAdapter
+                                                    FillVisitationList()
+                                                    if (binding.cityGroupCheckBox.isChecked)
+                                                        visitationsModel.listArray.sortWith(compareBy({it.city}, {it.BusinessName}))
+                                                    binding.visitationfacilityListView.adapter = VisitationPlanningNewAdapter(ctx, visitationsModel, binding.addAllCheckBox.isChecked)
                                                     totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-//                                                Utility.showMessageDialog(activity,"Filter Result"," " + totalVisitations + " Visitations Filtered ...")
+                                                    binding.resultsCount.text = "Filtered Visitations --> ( $totalVisitations )"
+                                                }
+                                            },
+                                            {
+                                                Log.v("Loading PRG Data error", "" + it.message)
+                                                PRGDataModel.getInstance().tblPRGVisitationsLog.add(PRGVisitationsLog().also { item -> item.recordid = -1 })
+                                                act.runOnUiThread {
+                                                    if (!isAdded || _binding == null) return@runOnUiThread
+                                                    binding.recordsProgressView.visibility = View.GONE
+                                                    binding.visitationfacilityListView.visibility = View.VISIBLE
+                                                    binding.visitationfacilityListView.adapter = VisitationPlanningNewAdapter(ctx, visitationsModel, binding.addAllCheckBox.isChecked)
+                                                    totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
                                                 }
                                                 it.printStackTrace()
                                             }))
-                                            }
-
-                                        }
                                     }, {
-                                Log.v("Loading PRG Data error", "" + it.message)
-                                var item = PRGCompletedVisitations()
-                                item.recordid = -1
-                                PRGDataModel.getInstance().tblPRGCompletedVisitations.add(item)
-                                activity!!.runOnUiThread {
-                                    binding.recordsProgressView.visibility = View.GONE
-                                    binding.visitationfacilityListView.visibility = View.VISIBLE
-                                    // WAS OLD ADAPTER
-                                    val visitationPlanningAdapter = VisitationPlanningNewAdapter(context, visitationsModel,binding.addAllCheckBox.isChecked)
-                                    binding.visitationfacilityListView.adapter = visitationPlanningAdapter
-                                    totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
-//                                    Utility.showMessageDialog(activity, "Filter Result", " " + totalVisitations + " Visitations Filtered ...")
-                                    Utility.showUnifiedInformationDialog(requireContext(),"Filter Result - "+ totalVisitations + " Visitations Filtered ...")
-                                }
-                                it.printStackTrace()
-                            }))
+                                        Log.v("Loading PRG Data error", "" + it.message)
+                                        PRGDataModel.getInstance().tblPRGCompletedVisitations.add(PRGCompletedVisitations().also { item -> item.recordid = -1 })
+                                        act.runOnUiThread {
+                                            if (!isAdded || _binding == null) return@runOnUiThread
+                                            binding.recordsProgressView.visibility = View.GONE
+                                            binding.visitationfacilityListView.visibility = View.VISIBLE
+                                            binding.visitationfacilityListView.adapter = VisitationPlanningNewAdapter(ctx, visitationsModel, binding.addAllCheckBox.isChecked)
+                                            totalVisitations = visitationsModel.completedVisitationsArray.size + visitationsModel.deficienciesArray.size + visitationsModel.pendingVisitationsArray.size
+                                        }
+                                        it.printStackTrace()
+                                    }))
                         }
                     }
             }
@@ -1041,38 +999,23 @@ class VisitationPlanningFragment : Fragment() {
     }
 
     private fun loadSpecialistName() {
-//        Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, Constants.getSpecialistNameFromEmail + ApplicationPrefs.getInstance(context).loggedInUserEmail,
-//                Response.Listener { response ->
-//                    activity!!.runOnUiThread {
-//                        specialistArrayModel = Gson().fromJson(response.toString(), Array<CsiSpecialist>::class.java).toCollection(ArrayList())
-                        specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
-                        var specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail.substring(0,ApplicationPrefs.getInstance(context).loggedInUserEmail.indexOf("@")).lowercase()
-                        if (specialistArrayModel != null && specialistArrayModel.size > 0) {
-//                            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
-                            requiredSpecialistName = specialistArrayModel.filter { s ->
-                                s.Email.lowercase(
-                                    getDefault()
-                                ).startsWith(specMail)}[0].FullName
-                            var positionID = specialistArrayModel.filter { s ->
-                                s.Email.lowercase(
-                                    getDefault()
-                                ).startsWith(specMail)}[0].PositionID
-                            if (positionID.equals("1")) {
-                                binding.visitationSpecialistName.setText(requiredSpecialistName)
-                            }
-//                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].NTLogin
-                            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s ->
-                                s.Email.lowercase(getDefault()).startsWith(specMail)}[0].NTLogin
-                            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s ->
-                                s.Email.lowercase(getDefault()).startsWith(specMail)}[0].FullName
-                        }
-                        loadClubCodes()
-//                    }
-//                }, Response.ErrorListener {
-//            Log.v("error while loading", "error while loading facilities")
-//            Log.v("Loading error", "" + it.message)
-//        }))
-
+        specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
+        val specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail
+            .substringBefore("@").lowercase()
+        if (specialistArrayModel != null && specialistArrayModel.size > 0) {
+            val specialist = specialistArrayModel.firstOrNull { s ->
+                s.Email.lowercase(getDefault()).startsWith(specMail)
+            }
+            if (specialist != null) {
+                requiredSpecialistName = specialist.FullName
+                if (specialist.PositionID.equals("1")) {
+                    binding.visitationSpecialistName.setText(requiredSpecialistName)
+                }
+                ApplicationPrefs.getInstance(activity).loggedInUserID = specialist.NTLogin
+                ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialist.FullName
+            }
+        }
+        loadClubCodes()
     }
 
 

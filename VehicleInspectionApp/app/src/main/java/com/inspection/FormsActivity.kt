@@ -99,6 +99,18 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         binding = ActivityFormsBinding.inflate(layoutInflater)
 //        setContentView(R.layout.activity_forms)
         setContentView(binding.root)
+
+        // Guard: if singletons were cleared by OS process kill, redirect to login
+        if (FacilityDataModel.getInstance().tblFacilities.isEmpty() ||
+            FacilityDataModel.getInstance().tblVisitationTracking.isEmpty() ||
+            IndicatorsDataModel.getInstance().tblScopeOfServices.isEmpty()) {
+            startActivity(Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
+            finish()
+            return
+        }
+
         setSupportActionBar(binding.appBarForms.toolbar)
         val theIntent = getIntent(); // gets the previously created intent
         val createNewVisitation = theIntent.getBooleanExtra("createNewVisitation",true)
