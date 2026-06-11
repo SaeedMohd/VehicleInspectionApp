@@ -13,8 +13,8 @@ android {
         applicationId "com.inspection"
         minSdk 24
         targetSdk 34
-        versionCode 131
-        versionName "3.33"
+        versionCode 134
+        versionName "3.34"
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
