@@ -53,7 +53,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        (activity as MainActivity).supportActionBar!!.title = "ACE AAR Inspection"
+        (activity as? MainActivity)?.supportActionBar?.title = "ACE AAR Inspection"
         return inflater.inflate(R.layout.fragment_forms, container, false)
     }
 
@@ -95,7 +95,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
                 dialog.show()
             } else {
                 Bugfender.i("Screen", "Visitation Planning")
-                (activity as MainActivity).supportActionBar!!.title = "Visitation Planning"
+                (activity as? MainActivity)?.supportActionBar?.title = "Visitation Planning"
                 var fragment = VisitationPlanningFragment()
                 fragment!!.isVisitationPlanning = true
                 val fragmentManagerSC = fragmentManager
@@ -138,7 +138,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
                 dialog.show()
             } else {
-                (activity as MainActivity).supportActionBar!!.title = "APP / Ad Hoc Visitation"
+                (activity as? MainActivity)?.supportActionBar?.title = "APP / Ad Hoc Visitation"
                 var fragment = AppAdHockVisitationFilterFragment()
                 fragment!!.isVisitationPlanning = false
                 val fragmentManagerSC = fragmentManager
@@ -181,7 +181,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
                 dialog.show()
             } else {
-                (activity as MainActivity).supportActionBar!!.title = "Today's Visitations"
+                (activity as? MainActivity)?.supportActionBar?.title = "Today's Visitations"
                 var fragment = TodayVisitationFragment()
 //                fragment!!.isVisitationPlanning = false
                 val fragmentManagerSC = fragmentManager
@@ -224,7 +224,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 
                 dialog.show()
             } else {
-                (activity as MainActivity).supportActionBar!!.title = "Completed Visitations"
+                (activity as? MainActivity)?.supportActionBar?.title = "Completed Visitations"
                 var fragment = CompletedVisitationsFragment()
                 val fragmentManagerSC = fragmentManager
                 val ftSC = fragmentManagerSC!!.beginTransaction()
@@ -251,7 +251,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 //                    Log.v("TOKEN --> ",response.toString())
 //                }
 //            })
-            (activity as MainActivity).supportActionBar!!.title = "My Performance"
+            (activity as? MainActivity)?.supportActionBar?.title = "My Performance"
 //            var fragment = PDFGenerateFragment()
 //            val fragmentManagerSC = fragmentManager
 //            val ftSC = fragmentManagerSC!!.beginTransaction()
@@ -274,7 +274,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 //                ftSC.replace(R.id.fragment,fragment2)
 //                ftSC.addToBackStack("frag")
 //                ftSC.commit()
-////                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
+////                (activity as? MainActivity)?.supportActionBar?.title = formsStringsArray[i].toString()
 //        }
 
 //        val arrayAdapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, formsStringsArray)
@@ -289,7 +289,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 ////                ftSC.replace(R.id.fragment,fragment)
 ////                ftSC.addToBackStack("")
 ////                ftSC.commit()
-////                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
+////                (activity as? MainActivity)?.supportActionBar?.title = formsStringsArray[i].toString()
 //
 //                fragment = VisitationPlanningFragment()
 //                val fragmentManagerSC = fragmentManager
@@ -297,7 +297,7 @@ class FragmentForms : androidx.fragment.app.Fragment(), OnClickListener {
 //                ftSC.replace(R.id.fragment,fragment)
 //                ftSC.addToBackStack("frag")
 //                ftSC.commit()
-//                (activity as MainActivity).supportActionBar!!.title = formsStringsArray[i].toString()
+//                (activity as? MainActivity)?.supportActionBar?.title = formsStringsArray[i].toString()
 //            }
 //        })
 
