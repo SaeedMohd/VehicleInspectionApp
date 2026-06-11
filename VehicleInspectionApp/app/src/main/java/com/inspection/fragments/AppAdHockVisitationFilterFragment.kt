@@ -371,20 +371,18 @@ class AppAdHockVisitationFilterFragment : Fragment() {
         binding.contractStatusTypeSpinner.adapter = coStatusAdapter
         binding.contractStatusTypeSpinner.setSelection(contractStatusArray.indexOf("Active"))
         specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
-        var specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail.substring(0,ApplicationPrefs.getInstance(context).loggedInUserEmail.indexOf("@")).lowercase()
+        val specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail
+            .substringBefore("@").lowercase()
         if (specialistArrayModel != null && specialistArrayModel.size > 0) {
-//             requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.toLowerCase().equals(ApplicationPrefs.getInstance(context).loggedInUserEmail.toLowerCase()) }[0].FullName
-            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.lowercase(getDefault())
-                .startsWith(specMail)}[0].FullName
-            binding.adHocFacilitySpecialistButton.setText(requiredSpecialistName)
-            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s ->
-                s.Email.lowercase(
-                    getDefault()
-                ).startsWith(specMail)}[0].NTLogin
-            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s ->
-                s.Email.lowercase(
-                    getDefault()
-                ).startsWith(specMail)}[0].FullName
+            val specialist = specialistArrayModel.firstOrNull { s ->
+                s.Email.lowercase(getDefault()).startsWith(specMail)
+            }
+            if (specialist != null) {
+                requiredSpecialistName = specialist.FullName
+                binding.adHocFacilitySpecialistButton.setText(requiredSpecialistName)
+                ApplicationPrefs.getInstance(activity).loggedInUserID = specialist.NTLogin
+                ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialist.FullName
+            }
         }
         loadClubCodes()
     }

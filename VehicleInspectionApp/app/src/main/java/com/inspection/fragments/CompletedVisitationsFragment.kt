@@ -482,17 +482,18 @@ class CompletedVisitationsFragment : Fragment(),
 
     private fun loadSpecialistName() {
         specialistArrayModel = TypeTablesModel.getInstance().EmployeeList
-        var specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail.substring(0,
-            ApplicationPrefs.getInstance(context).loggedInUserEmail.indexOf("@")).lowercase()
+        val specMail = ApplicationPrefs.getInstance(context).loggedInUserEmail
+            .substringBefore("@").lowercase()
         if (specialistArrayModel != null && specialistArrayModel.size > 0) {
-            requiredSpecialistName = specialistArrayModel.filter { s -> s.Email.lowercase(getDefault())
-                .startsWith(specMail)}[0].FullName
-            var positionID = specialistArrayModel.filter { s -> s.Email.lowercase(getDefault()).startsWith(specMail)}[0].PositionID
-            if (positionID.equals("1")) {
-                binding.visitationSpecialistName.setText(requiredSpecialistName)
+            val specialist = specialistArrayModel.firstOrNull { s ->
+                s.Email.lowercase(getDefault()).startsWith(specMail)
             }
-//            ApplicationPrefs.getInstance(activity).loggedInUserID = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].NTLogin
-//            ApplicationPrefs.getInstance(activity).loggedInUserFullName = specialistArrayModel.filter { s -> s.Email.toLowerCase().startsWith(specMail)}[0].FullName
+            if (specialist != null) {
+                requiredSpecialistName = specialist.FullName
+                if (specialist.PositionID.equals("1")) {
+                    binding.visitationSpecialistName.setText(requiredSpecialistName)
+                }
+            }
         }
 //        loadClubCodes()
     }
