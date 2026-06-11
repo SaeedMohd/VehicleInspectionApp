@@ -301,6 +301,10 @@ class FragmentARRAVPersonnel : Fragment() {
 
         binding.openCertificateGrid.setOnClickListener {
 //            fillCertificationGridAligned()
+            val personnel = FacilityDataModel.getInstance().tblPersonnel
+                .firstOrNull { it.PersonnelID == selectedPersonnelID }
+            val titleName = if (personnel != null) "${personnel.FirstName} ${personnel.LastName}" else "Personnel"
+            binding.certificateGridTitle.setText("Certification Grid for $titleName")
             (activity as FormsActivity).overrideBackButton = true
             binding.certificateGrid.visibility = View.VISIBLE
             binding.alphaBackgroundForPersonnelDialogs.visibility = View.VISIBLE
@@ -2423,7 +2427,10 @@ class FragmentARRAVPersonnel : Fragment() {
             }
         }
 
-        binding.certificateGridTitle.setText(FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + " - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName)
+        val certGridPersonnel = FacilityDataModel.getInstance().tblPersonnel
+            .firstOrNull { it.PersonnelID == selectedPersonnelID }
+        val certGridName = if (certGridPersonnel != null) "${certGridPersonnel.FirstName} ${certGridPersonnel.LastName}" else "Personnel"
+        binding.certificateGridTitle.setText("Certification Grid for $certGridName")
         var strASEListText = "ASE:"
         var strOEMListText = "OEM:"
         val rowLayoutParam = TableRow.LayoutParams()
@@ -3324,7 +3331,10 @@ class FragmentARRAVPersonnel : Fragment() {
             }
         }
 
-        binding.certificateGridTitle.setText(FacilityDataModel.getInstance().tblFacilities[0].FACNo.toString() + " - " + FacilityDataModel.getInstance().tblFacilities[0].BusinessName)
+        val alignedPersonnel = FacilityDataModel.getInstance().tblPersonnel
+            .firstOrNull { it.PersonnelID == selectedPersonnelID }
+        val alignedName = if (alignedPersonnel != null) "${alignedPersonnel.FirstName} ${alignedPersonnel.LastName}" else "Personnel"
+        binding.certificateGridTitle.setText("Certification Grid for $alignedName")
         var strASEListText = "ASE:"
         var strOEMListText = "OEM:"
 
