@@ -43,6 +43,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.inspection.MainActivity.Companion.activity
 import com.inspection.Utils.ApplicationPrefs
 import com.inspection.Utils.Constants
+import com.inspection.Utils.applyEdgeToEdgeWithTopAbsorber
 import com.inspection.Utils.Constants.IDLE_TIMEOUT
 import com.inspection.Utils.Utility
 import com.inspection.Utils.createPDF
@@ -99,11 +100,22 @@ class FormsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         binding = ActivityFormsBinding.inflate(layoutInflater)
 //        setContentView(R.layout.activity_forms)
         setContentView(binding.root)
+        // Let the toolbar's gradient background paint under the status bar
+        // instead of leaving a white strip above the title. Bottom/side insets
+        // still pad the drawer root so content clears the gesture nav.
+        binding.root.applyEdgeToEdgeWithTopAbsorber(binding.appBarForms.toolbar)
 
         // Guard: if singletons were cleared by OS process kill, redirect to login
         if (FacilityDataModel.getInstance().tblFacilities.isEmpty() ||
             FacilityDataModel.getInstance().tblVisitationTracking.isEmpty() ||
-            IndicatorsDataModel.getInstance().tblScopeOfServices.isEmpty()) {
+            IndicatorsDataModel.getInstance().tblScopeOfServices.isEmpty() ||
+            IndicatorsDataModel.getInstance().tblBilling.isEmpty() ||
+            IndicatorsDataModel.getInstance().tblDeffeciencies.isEmpty() ||
+            IndicatorsDataModel.getInstance().tblVisitation.isEmpty() ||
+            IndicatorsDataModel.getInstance().tblFacility.isEmpty() ||
+            IndicatorsDataModel.getInstance().tblComplaints.isEmpty() ||
+            IndicatorsDataModel.getInstance().tblSurveys.isEmpty() ||
+            IndicatorsDataModel.getInstance().tblPhotos.isEmpty()) {
             startActivity(Intent(this, LoginActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })

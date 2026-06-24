@@ -91,6 +91,16 @@ class MainActivity : AppCompatActivity(), LocationListener, NetworkSpeedDetector
         binding = ActivityMain1Binding.inflate(layoutInflater)
 //        setContentView(R.layout.activity_main1)
         setContentView(binding.root)
+        // NOTE: the toolbar grows upward to absorb the status-bar inset so its
+        // gradient background paints continuously under the status bar (no
+        // white strip). HOWEVER this also pushes the title down into a taller
+        // toolbar — the title can end up visually covered by the inset area
+        // on devices where the status bar is non-trivial. If the title looks
+        // clipped or off-center, adjust the toolbar's minHeight / title vertical
+        // gravity in app_bar_main1.xml.
+        binding.am1Toolbar.toolbar?.let { tb ->
+            binding.root.applyEdgeToEdgeWithTopAbsorber(tb)
+        }
         clearExpiredImages(this)
         mContext = this
         Bugfender.enableCrashReporting();

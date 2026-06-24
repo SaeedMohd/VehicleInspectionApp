@@ -118,6 +118,9 @@ class LoginActivity : AppCompatActivity() ,NetworkSpeedDetector.NetworkSpeedList
         binding = ActivityLoginBinding.inflate(layoutInflater)
 //        setContentView(R.layout.activity_login)
         setContentView(binding.root)
+        // Intentionally no system-bar inset padding here — the root carries the
+        // full-bleed background image and the login card is already
+        // center-in-parent, so edge-to-edge content is the desired look.
         window.setBackgroundDrawableResource(R.drawable.login_background_image_dark)
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         activity = this

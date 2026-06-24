@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayoutMediator
+import com.inspection.Utils.applyEdgeToEdgeWithTopAbsorber
 import com.inspection.databinding.ActivityApplicantBinding
 import com.inspection.fragments.ApplicantMapFragment
 import com.inspection.fragments.FacilityGroupFragment
@@ -33,6 +34,14 @@ class ApplicantActivity : AppCompatActivity() {
 
         binding = ActivityApplicantBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // NOTE: the topAppBar grows upward to absorb the status-bar inset so its
+        // background paints continuously under the status bar (no white strip).
+        // HOWEVER this also pushes the title down into a taller bar — the title
+        // can end up visually covered by the inset area on devices where the
+        // status bar is non-trivial. If the title looks clipped or off-center,
+        // adjust the toolbar's minHeight / title vertical gravity in
+        // activity_applicant.xml.
+        binding.root.applyEdgeToEdgeWithTopAbsorber(binding.topAppBar)
 
         setSupportActionBar(binding.topAppBar)
         binding.topAppBar.title = "Applicant Shops Management"

@@ -665,6 +665,7 @@ class FragmentVisitation : Fragment() {
         binding.waiverCommentsEditText.tag = "0"
         binding.emailEditText.setText("")
         binding.emailEditText.tag = "0"
+        Log.v("EmailEditText -->", "source=reset value=''")
         binding.facilityRepresentativesSpinner.setSelection(0)
         binding.staffTrainingProcessEditText.setText("")
         binding.staffTrainingProcessEditText.tag = "0"
@@ -701,6 +702,7 @@ class FragmentVisitation : Fragment() {
 
         if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
             binding.emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+            Log.v("EmailEditText -->", "source=tblFacilityEmail[0].email value='${FacilityDataModel.getInstance().tblFacilityEmail[0].email}'")
         }
 
         if (FacilityDataModel.getInstance().tblVisitationTracking.size > 0) {
@@ -788,7 +790,10 @@ class FragmentVisitation : Fragment() {
                         }
                     }
                     binding.visitationCommentsEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].comments)
-                    binding.emailEditText.setText(PRGDataModel.getInstance().tblPRGVisitationHeader[0].emailto)
+                    // Email always comes from tblFacilityEmail (set earlier at form
+                    // load) — the in-progress header's emailto is intentionally
+                    // ignored so a stale cached address can't override the current
+                    // facility's email.
                     emailEditTextPreviousValue = binding.emailEditText.text.toString()
                     binding.facilityRepresentativesSpinner.setSelection(facilityRepresentativeNames.indexOf(PRGDataModel.getInstance().tblPRGVisitationHeader[0].facilityrep))
                     binding.facilityRepresentativesSpinner.tag = binding.facilityRepresentativesSpinner.selectedItemPosition
@@ -881,6 +886,7 @@ class FragmentVisitation : Fragment() {
                 waiverCommentsPreviousValue = binding.waiverCommentsEditText.text.toString()
                 if (FacilityDataModel.getInstance().tblFacilityEmail.size > 0) {
                     binding.emailEditText.setText(FacilityDataModel.getInstance().tblFacilityEmail[0].email)
+                    Log.v("EmailEditText -->", "source=tblFacilityEmail[0].email (no-prg-header fallback) value='${FacilityDataModel.getInstance().tblFacilityEmail[0].email}'")
                 }
                 emailEditTextPreviousValue = binding.emailEditText.text.toString()
                 binding.staffTrainingProcessEditText.setText(FacilityDataModel.getInstance().tblVisitationTracking[0].StaffTraining)
@@ -1425,7 +1431,7 @@ class FragmentVisitation : Fragment() {
         binding.signatureConfirmButton.setOnClickListener {
 
             var bitmap = binding.signatureInkView.bitmap
-            var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config))
+            var isEmpty = bitmap.sameAs(Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config ?: Bitmap.Config.ARGB_8888))
             when (selectedSignature) {
                 requestedSignature.representative -> {
                     FacilityDataModel.getInstance().tblVisitationTracking[0].facilityRepresentativeSignature = bitmap
@@ -3153,6 +3159,7 @@ class FragmentVisitation : Fragment() {
                 binding.emailPdfCheckBox.isChecked = emailPdfCBPreviousValue
                 binding.waiverCommentsEditText.setText(waiverCommentsPreviousValue)
                 binding.emailEditText.setText(emailEditTextPreviousValue)
+                Log.v("EmailEditText -->", "source=restoreFromPrevious value='$emailEditTextPreviousValue'")
                 binding.staffTrainingProcessEditText.setText(staffTrainingProcessPreviousValue)
                 binding.qualityControlProcessEditText.setText(qualityControlProcessPreviousValue)
                 binding.aarSignEditText.setText(aarSignPreviousValue)

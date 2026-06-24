@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace "com.inspection"
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.inspection"
         minSdk 24
-        targetSdk 34
+        targetSdk 35
         versionCode 134
         versionName "3.34"
 

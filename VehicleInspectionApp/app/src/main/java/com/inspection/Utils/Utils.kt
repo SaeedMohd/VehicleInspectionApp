@@ -151,6 +151,48 @@ fun View.hideKeyboard() {
     imm.hideSoftInputFromWindow(getWindowToken(), 0)
 }
 
+/** Edge-to-edge: pad this view by the system bars + display cutout so its
+ *  content isn't drawn under the status bar, gesture-nav pill, or notch.
+ *  Apply to the activity's root view in onCreate after setContentView.
+ *  IME insets are intentionally NOT consumed — adjustResize keeps doing
+ *  its job for soft-keyboard handling. */
+fun View.applySystemBarInsetsAsPadding() {
+    androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+        val bars = insets.getInsets(
+            androidx.core.view.WindowInsetsCompat.Type.systemBars() or
+                    androidx.core.view.WindowInsetsCompat.Type.displayCutout()
+        )
+        v.setPadding(bars.left, bars.top, bars.right, bars.bottom)
+        androidx.core.view.WindowInsetsCompat.CONSUMED
+    }
+}
+
+/** Edge-to-edge variant for screens with a top app bar: the [topAbsorber]
+ *  view (a Toolbar / app-bar) grows upward to swallow the status-bar inset
+ *  so its background paints continuously under the status bar. The root
+ *  takes the remaining left/right/bottom insets so side cutouts and the
+ *  gesture-nav pill are still cleared.
+ *
+ *  The toolbar's initial paddingTop is preserved and additive, so layout
+ *  paddings aren't lost. */
+fun View.applyEdgeToEdgeWithTopAbsorber(topAbsorber: View) {
+    val initialAbsorberTop = topAbsorber.paddingTop
+    androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+        val bars = insets.getInsets(
+            androidx.core.view.WindowInsetsCompat.Type.systemBars() or
+                    androidx.core.view.WindowInsetsCompat.Type.displayCutout()
+        )
+        topAbsorber.setPadding(
+            topAbsorber.paddingLeft,
+            initialAbsorberTop + bars.top,
+            topAbsorber.paddingRight,
+            topAbsorber.paddingBottom
+        )
+        v.setPadding(bars.left, 0, bars.right, bars.bottom)
+        androidx.core.view.WindowInsetsCompat.CONSUMED
+    }
+}
+
 fun MarkChangeWasDone() {
     FacilityDataModelOrg.getInstance().changeWasDone = true
     Log.v("Mark Change ---> ", "CALLED *****")
