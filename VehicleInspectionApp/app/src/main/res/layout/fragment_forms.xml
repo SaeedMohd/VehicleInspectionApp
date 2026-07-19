@@ -16,14 +16,36 @@
         android:clipChildren="false"
         android:clipToPadding="false">
 
+        <!-- Programs Overview card (shared partial; click handler wired in FragmentForms.kt) -->
+        <include
+            android:id="@+id/programsOverviewCard"
+            layout="@layout/include_programs_overview_card" />
+
+        <!-- Survey Responses card (Total + Top 2 Q1) -->
+        <include
+            android:id="@+id/surveyResponsesCard"
+            layout="@layout/include_survey_responses_card" />
+
+        <!-- Extra breathing room between the summary card and the action buttons. -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <!-- Visitation Planning + Ad Hoc Visitation (side-by-side grid row) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
         <!-- Visitation Planning -->
         <LinearLayout
             android:id="@+id/visitationPlanningButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:paddingStart="14dp"
-            android:paddingEnd="14dp"
+            android:paddingEnd="7dp"
             android:paddingTop="3dp"
             android:paddingBottom="0dp"
             android:clickable="true"
@@ -99,10 +121,11 @@
         <!-- APP / Ad Hoc Visitation -->
         <LinearLayout
             android:id="@+id/adHocVisitationButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingStart="14dp"
+            android:paddingStart="7dp"
             android:paddingEnd="14dp"
             android:paddingTop="3dp"
             android:paddingBottom="0dp"
@@ -176,14 +199,29 @@
 
         </LinearLayout>
 
+        </LinearLayout>
+        <!-- end of side-by-side Visitation Planning / Ad Hoc row -->
+
+        <!-- Extra breathing room between the two grid rows. -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <!-- Today's Visitations + Completed Visitations (side-by-side grid row) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
         <!-- Today's Visitations -->
         <LinearLayout
             android:id="@+id/pinnedVisitationButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:paddingStart="14dp"
-            android:paddingEnd="14dp"
+            android:paddingEnd="7dp"
             android:paddingTop="3dp"
             android:paddingBottom="0dp"
             android:clickable="true"
@@ -228,7 +266,9 @@
                             android:text="Today's Visitations"
                             android:textColor="#1A237E"
                             android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -260,10 +300,11 @@
         <!-- Completed Visitations -->
         <LinearLayout
             android:id="@+id/completedVisitationsButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingStart="14dp"
+            android:paddingStart="7dp"
             android:paddingEnd="14dp"
             android:paddingTop="3dp"
             android:paddingBottom="0dp"
@@ -336,6 +377,9 @@
                 android:background="@drawable/card_bottom_shadow" />
 
         </LinearLayout>
+
+        </LinearLayout>
+        <!-- end of side-by-side Today's / Completed row -->
 
         <!-- Applicant (hidden) -->
         <LinearLayout

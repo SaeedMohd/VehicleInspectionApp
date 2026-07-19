@@ -104,7 +104,15 @@ object Constants {
     val getCompletedVisitations = permanentURL + "getPDFCompletedVisitations?specialist="
     val generatePDF = permanentURL + "generatePDF?"
     val getAccountLastSynced = permanentURL + "getAccountLastSynced?facNum="
+    val getRspByLogin = permanentURL + "getRspByLogin?clubCode="
+    val refreshFacilityRsp = permanentURL + "refreshFacilityRsp?facNum="
+    val getFacilityApporintmentProgram = permanentURL + "getFacilityApporintmentProgram?facNo="
+    val getAaaByLogin = permanentURL + "getAaaByLogin?clubCode="
+    val refreshFacilityAaa = permanentURL + "refreshFacilityAaa?facNum="
+    val isDirector = permanentURL + "isDirector?email="
+    val getDirectorOverview = permanentURL + "getDirectorOverview?email="
     val getPDFStats = permanentURL + "getPDFStats?specialist="
+    val getResponseCount = permanentURL + "getResponseCount?"
 
     val IDLE_TIMEOUT = if (BuildConfig.FLAVOR.equals("uat")) 30 * 60 * 1000L else 20 * 60 * 1000L // 15 minutes
     val getTypeTables = permanentURL + "getTableTypes"
@@ -139,6 +147,7 @@ object Constants {
     val rspLoginGet = "https://rsp.national.aaa.com/app/login"
     val rspLoginPost = "https://rsp.national.aaa.com/login?username=ace_cherya&password=Surfing12345678!"
     val UpdateAARPortalTrackingData = permanentURL + "updateAARPortalTracking?facNum="
+    val getRepairData = permanentURL + "getRepairData"
     val UpdateAmendmentOrderTrackingData = permanentURL + "updateAmendmentOrderTrackingData?facNum="
     val UpdateDeficiencyData = permanentURL + "updateDeficiencyData?facNum="
     val UpdateProgramsData = permanentURL + "updateProgramsData?facNum="
